@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import collections from "../assets/product/CollectionData";
+import { motion } from "framer-motion";
+import { FaShoppingCart } from "react-icons/fa";
 
 const FeaturedCollections = () => {
   const [showAll, setShowAll] = useState(false);
   const [currentIndexes, setCurrentIndexes] = useState(
     collections.reduce((acc, _, index) => ({ ...acc, [index]: 0 }), {})
   );
+  const [selectedCollection, setSelectedCollection] = useState(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -38,6 +42,22 @@ const FeaturedCollections = () => {
     }));
   };
 
+  const handleDetailedNext = () => {
+    if (selectedCollection) {
+      setSelectedImageIndex(
+        (prev) => (prev + 1) % selectedCollection.images.length
+      );
+    }
+  };
+
+  const handleDetailedPrev = () => {
+    if (selectedCollection) {
+      setSelectedImageIndex((prev) =>
+        prev === 0 ? selectedCollection.images.length - 1 : prev - 1
+      );
+    }
+  };
+
   return (
     <section className="py-16 md:py-24 bg-primary bg-opacity-50">
       <div className="container mx-auto px-4 text-center">
@@ -57,7 +77,11 @@ const FeaturedCollections = () => {
           .map((collection, index) => (
             <div
               key={index}
-              className="group w-64 overflow-hidden shadow-lg rounded-xl bg-white border border-[#E0C097] transition-transform transform hover:scale-105 flex flex-col justify-between"
+              className="group w-64 overflow-hidden shadow-lg rounded-xl bg-white border border-[#E0C097] transition-transform transform hover:scale-105 flex flex-col justify-between cursor-pointer"
+              onClick={() => {
+                setSelectedCollection(collection);
+                setSelectedImageIndex(0);
+              }}
             >
               <div className="relative overflow-hidden">
                 <img
@@ -66,16 +90,22 @@ const FeaturedCollections = () => {
                   className="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <button
-                  onClick={() => handlePrev(index)}
-                  className="absolute left-2 top-1/2 transform -translate-y-1/2 p-1 rounded-full"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlePrev(index);
+                  }}
+                  className="absolute left-2 top-1/2 transform -translate-y-1/2 p-1 rounded-full bg-white shadow-md"
                 >
-                  <span className="text-[#D4AF37] text-2xl">◀</span>
+                  <span className="text-[#D4AF37] text-2xl">←</span>
                 </button>
                 <button
-                  onClick={() => handleNext(index)}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 rounded-full"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleNext(index);
+                  }}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 rounded-full bg-white shadow-md"
                 >
-                  <span className="text-[#D4AF37] text-2xl">▶</span>
+                  <span className="text-[#D4AF37] text-2xl">→</span>
                 </button>
               </div>
               <div className="p-4 flex flex-col flex-grow">
@@ -85,14 +115,6 @@ const FeaturedCollections = () => {
                 <p className="text-[#6B4F27] text-sm flex-grow">
                   {collection.desc}
                 </p>
-                <div className="flex justify-between items-center mt-4">
-                  <button className="text-[#D4AF37] hover:text-red-500 transition-colors">
-                    ❤️
-                  </button>
-                  <button className="text-[#D4AF37] hover:text-green-500 transition-colors">
-                    🛒
-                  </button>
-                </div>
               </div>
             </div>
           ))}
@@ -108,6 +130,55 @@ const FeaturedCollections = () => {
           </button>
         )}
       </div>
+
+      {selectedCollection && (
+        <motion.div
+          initial={{ x: "100%" }}
+          animate={{ x: 0 }}
+          exit={{ x: "100%" }}
+          transition={{ duration: 0.3 }}
+          className="fixed top-0 right-0 w-80 md:w-96 h-full bg-white shadow-lg z-50 p-6 overflow-y-auto"
+        >
+          <button
+            className="absolute top-4 right-4 text-xl text-[#D4AF37]"
+            onClick={() => setSelectedCollection(null)}
+          >
+            ✖
+          </button>
+          <h3 className="text-2xl font-bold text-[#8B6A37] mb-4">
+            {selectedCollection.title}
+          </h3>
+          <div className="relative">
+            <img
+              src={selectedCollection.images[selectedImageIndex]}
+              alt={selectedCollection.title}
+              className="w-full h-64 object-cover rounded-lg"
+            />
+            <button
+              onClick={handleDetailedPrev}
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 p-1 rounded-full bg-white shadow-md"
+            >
+              <span className="text-[#D4AF37] text-2xl">←</span>
+            </button>
+            <button
+              onClick={handleDetailedNext}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 rounded-full bg-white shadow-md"
+            >
+              <span className="text-[#D4AF37] text-2xl">→</span>
+            </button>
+          </div>
+          <p className="text-[#6B4F27] mt-4">{selectedCollection.desc}</p>
+          <div className="flex items-center gap-4 mt-6">
+            <button className="bg-[#D4AF37] text-white px-6 py-3 rounded hover:bg-[#B8860B] transition-all flex items-center gap-2">
+              <FaShoppingCart />
+              Add to Cart
+            </button>
+            <button className="bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700 transition-all">
+              Buy Now
+            </button>
+          </div>
+        </motion.div>
+      )}
     </section>
   );
 };
