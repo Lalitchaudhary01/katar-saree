@@ -1,11 +1,9 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 
 const CartContext = createContext();
-
 export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
-  // Pehle localStorage se cart data load karne ka try karo
   const getInitialCart = () => {
     if (typeof window !== "undefined") {
       const savedCart = localStorage.getItem("cart");
@@ -16,7 +14,6 @@ export const CartProvider = ({ children }) => {
 
   const [cart, setCart] = useState(getInitialCart);
 
-  // Jab bhi cart update ho, toh localStorage me save karo
   useEffect(() => {
     if (typeof window !== "undefined") {
       localStorage.setItem("cart", JSON.stringify(cart));
@@ -26,16 +23,19 @@ export const CartProvider = ({ children }) => {
   const addToCart = (product) => {
     setCart((prevCart) => {
       const updatedCart = [...prevCart, product];
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
       return updatedCart;
     });
   };
 
   const removeFromCart = (id) => {
     setCart((prevCart) => {
-      const updatedCart = prevCart.filter((item) => item.id !== id);
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
-      return updatedCart;
+      const index = prevCart.findIndex((item) => item.id === id);
+      if (index !== -1) {
+        const updatedCart = [...prevCart];
+        updatedCart.splice(index, 1);
+        return updatedCart;
+      }
+      return prevCart;
     });
   };
 
