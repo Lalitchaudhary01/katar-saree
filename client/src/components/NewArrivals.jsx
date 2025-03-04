@@ -47,7 +47,7 @@ const NewArrivals = () => {
           <h2 className="text-3xl md:text-4xl font-semibold text-[#8B6A37] mb-3">
             New Arrivals
           </h2>
-          <p className="text-[#6B4F27] max-w-2xl mx-auto mb-6">
+          <p className="text-neutral-600 max-w-2xl mx-auto mb-6">
             The latest additions to our collection, blending tradition with
             contemporary design.
           </p>

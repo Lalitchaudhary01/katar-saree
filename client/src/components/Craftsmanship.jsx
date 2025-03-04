@@ -3,11 +3,10 @@ import React from "react";
 const Craftsmanship = () => {
   return (
     <section className="py-16 md:py-24 bg-primary bg-opacity-50 bg-[#FAF3E0]">
-      
       <div className="container mx-auto px-4">
         {/* Section Heading */}
         <div className="max-w-4xl mx-auto text-center mb-16">
-          <h2 className="font-primary text-3xl md:text-4xl text-secondary mb-4">
+          <h2 className="font-primary text-3xl md:text-4xl text-[#8B6A37] mb-4">
             The Art of Craftsmanship
           </h2>
           <p className="font-secondary text-neutral-600">
@@ -58,7 +57,7 @@ const Craftsmanship = () => {
 
           {/* Craftsmanship Description */}
           <div className="animate__animated animate__fadeIn animate__delay-1s">
-            <h3 className="font-primary text-2xl md:text-3xl text-secondary mb-6">
+            <h3 className="font-primary text-2xl md:text-3xl text-[#8B6A37] mb-6">
               The Weaving Process
             </h3>
             <p className="font-secondary text-neutral-700 mb-8 leading-relaxed">
@@ -71,7 +70,7 @@ const Craftsmanship = () => {
             </p>
 
             {/* Steps */}
-            <div className="space-y-6 mb-8">
+            <div className="space-y-6 mb-8 text-[#8B6A37]">
               <StepItem
                 number="1"
                 title="Design Creation"
@@ -91,7 +90,7 @@ const Craftsmanship = () => {
 
             <a
               href="#"
-              className="inline-block bg-secondary text-primary font-secondary px-6 py-3 rounded-sm hover:bg-opacity-90 transition-all duration-300 text-sm tracking-wider"
+              className="inline-block bg-[#8B6A37] text-primary font-secondary px-6 py-2 rounded-sm hover:bg-opacity-90 transition-all duration-300 text-sm tracking-wider"
             >
               Explore Our Techniques
             </a>
@@ -102,10 +101,10 @@ const Craftsmanship = () => {
         <div className="bg-white shadow-xl p-6 md:p-10 mb-20 relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-full pattern-bg opacity-5"></div>
           <div className="relative z-10">
-            <h3 className="font-primary text-2xl md:text-3xl text-secondary text-center mb-10">
+            <h3 className="font-primary text-2xl md:text-3xl text-[#8B6A37] text-center mb-10">
               Signature Techniques
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-[#8B6A37]">
               <TechniqueCard
                 image="https://source.unsplash.com/random/300x300/?silk,gold,weaving"
                 title="Kadhua Weaving"
@@ -141,10 +140,10 @@ const Craftsmanship = () => {
           </div>
           <div className="lg:col-span-2 animate__animated animate__fadeInRight">
             <div className="lg:pl-10">
-              <h3 className="font-primary text-2xl md:text-3xl text-secondary mb-6">
+              <h3 className="font-primary text-2xl md:text-3xl text-[#8B6A37] mb-6">
                 Meet Our Master Artisans
               </h3>
-              <p className="font-secondary text-neutral-700 mb-6 leading-relaxed">
+              <p className="font-secondary text-neutral-700 mb-6 leading-relaxed ">
                 Behind every Katan Banaras creation is a master artisan with
                 decades of experience. Many of our weavers are from families
                 that have practiced this art for generations, with techniques
@@ -156,7 +155,7 @@ const Craftsmanship = () => {
                 continues to thrive in an age of machine-made textiles.
               </p>
               <blockquote className="border-l-4 border-accent pl-4 py-2 mb-8">
-                <p className="font-primary text-lg text-secondary italic">
+                <p className="font-primary text-lg text-secondary italic text-[#8B6A37]">
                   "Each thread I weave carries the story of our culture, our
                   heritage, and our identity. When I sit at my loom, I am not
                   just creating a saree; I am preserving a legacy."
@@ -167,7 +166,7 @@ const Craftsmanship = () => {
               </blockquote>
               <a
                 href="#"
-                className="inline-block border border-secondary text-secondary font-secondary px-6 py-3 rounded-sm hover:bg-secondary hover:text-primary transition-all duration-300 text-sm tracking-wider"
+                className="inline-block border border-secondary text-[#8B6A37] font-secondary px-6 py-3 rounded-sm hover:bg-secondary hover:text-primary transition-all duration-300 text-sm tracking-wider"
               >
                 Meet Our Artisans
               </a>
@@ -179,7 +178,7 @@ const Craftsmanship = () => {
         <div className="bg-accent bg-opacity-10 p-8 md:p-12 text-center relative overflow-hidden animate__animated animate__fadeIn">
           <div className="absolute top-0 left-0 w-full h-full pattern-bg opacity-5"></div>
           <div className="relative z-10">
-            <h3 className="font-primary text-2xl md:text-3xl text-secondary mb-6">
+            <h3 className="font-primary text-2xl md:text-3xl text-[#8B6A37] mb-6">
               GI Certified Authenticity
             </h3>
             <p className="font-secondary text-neutral-700 mb-8 max-w-2xl mx-auto">
@@ -194,7 +193,7 @@ const Craftsmanship = () => {
             />
             <a
               href="#"
-              className="inline-block bg-secondary text-primary font-secondary px-6 py-3 rounded-sm hover:bg-opacity-90 transition-all duration-300 text-sm tracking-wider"
+              className="inline-block bg-[#8B6A37] text-primary font-secondary px-6 py-3 rounded-sm hover:bg-opacity-90 transition-all duration-300 text-sm tracking-wider"
             >
               Learn About Our Certifications
             </a>

@@ -64,7 +64,7 @@ const FeaturedCollections = () => {
         <h2 className="text-3xl md:text-4xl font-semibold text-[#8B6A37] mb-3">
           Featured Collections
         </h2>
-        <p className="text-[#6B4F27] max-w-2xl mx-auto mb-6">
+        <p className="text-neutral-600 max-w-2xl mx-auto mb-6">
           Explore our curated selection of premium handcrafted pieces, each
           telling a story of heritage and artistry.
         </p>
@@ -112,7 +112,7 @@ const FeaturedCollections = () => {
                 <h3 className="text-xl text-[#8B6A37] font-semibold mb-2">
                   {collection.title}
                 </h3>
-                <p className="text-[#6B4F27] text-sm flex-grow">
+                <p className="text-neutral-600 text-sm flex-grow">
                   {collection.desc}
                 </p>
               </div>

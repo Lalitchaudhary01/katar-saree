@@ -8,7 +8,7 @@ const OurHeritage = () => {
           <h2 className="font-primary text-3xl md:text-4xl text-secondary mb-4 text-[#8B6A37]">
             Our Heritage
           </h2>
-          <p className="font-secondary text-[#8B6A37]">
+          <p className="font-secondary text-neutral-600">
             A legacy of craftsmanship spanning generations, preserving the
             timeless art of Banarasi textiles
           </p>
@@ -41,14 +41,14 @@ const OurHeritage = () => {
             <h3 className="font-primary text-2xl md:text-3xl text-secondary mb-6 text-[#8B6A37]">
               A Legacy of Artistry
             </h3>
-            <p className="font-secondary text-[#8B6A37] mb-6 leading-relaxed">
+            <p className="font-secondary text-neutral-600 mb-6 leading-relaxed">
               For over seven decades, Katan Banaras has been synonymous with the
               finest handwoven Banarasi textiles. Our journey began in the
               narrow lanes of Varanasi, where our founder mastered the art of
               creating exquisite silk sarees under the guidance of master
               weavers.
             </p>
-            <p className="font-secondary text-[#8B6A37] mb-8 leading-relaxed">
+            <p className="font-secondary text-neutral-600 mb-8 leading-relaxed">
               Each piece in our collection represents hours of meticulous
               craftsmanship, with techniques passed down through generations. We
               work directly with artisan families, ensuring both the
@@ -78,7 +78,7 @@ const OurHeritage = () => {
               </a>
               <a
                 href="#craftsmanship"
-                className="inline-block border border-[#8B6A37] text-[#8B6A37] font-secondary px-6 py-2 rounded-sm hover:bg-secondary hover:bg-opacity-10 transition-all duration-300 text-sm tracking-wider"
+                className="inline-block border border-[#8B6A37] text-neutral-600 font-secondary px-6 py-2 rounded-sm hover:bg-secondary hover:bg-opacity-10 transition-all duration-300 text-sm tracking-wider"
               >
                 Our Craftsmanship
               </a>
