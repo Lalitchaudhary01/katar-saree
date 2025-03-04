@@ -3,6 +3,7 @@ import collections from "../assets/product/CollectionData";
 import { motion } from "framer-motion";
 import { FaShoppingCart } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
+import { toast } from "react-hot-toast";
 
 const FeaturedCollections = () => {
   const [showAll, setShowAll] = useState(false);
@@ -117,6 +118,11 @@ const FeaturedCollections = () => {
                 <p className="text-neutral-600 text-sm flex-grow">
                   {collection.desc}
                 </p>
+                {collection.price && (
+                  <p className="text-[#8B6A37] font-semibold text-lg mt-2">
+                    ₹{collection.price}
+                  </p>
+                )}
               </div>
             </div>
           ))}
@@ -139,7 +145,7 @@ const FeaturedCollections = () => {
           animate={{ x: 0 }}
           exit={{ x: "100%" }}
           transition={{ duration: 0.3 }}
-          className="fixed top-0 right-0 w-80 md:w-96 h-full bg-white shadow-lg z-50 p-6 overflow-y-auto"
+          className="fixed top-0 left-0 w-80 md:w-96 h-full bg-white shadow-lg z-50 p-6 overflow-y-auto"
         >
           <button
             className="absolute top-4 right-4 text-xl text-[#D4AF37]"
@@ -173,16 +179,27 @@ const FeaturedCollections = () => {
           <div className="flex items-center gap-4 mt-6">
             <button
               className="bg-[#D4AF37] text-white px-6 py-3 rounded hover:bg-[#B8860B] transition-all flex items-center gap-2"
-              onClick={() =>
+              onClick={() => {
                 addToCart({
                   title: selectedCollection.title,
                   image: selectedCollection.images[selectedImageIndex],
-                })
-              }
+                  price: selectedCollection.price, // ✅ Pass the price here
+                });
+                toast.success(`${selectedCollection.title} added to cart!`, {
+                  duration: 3000,
+                  position: "top-right",
+                  style: {
+                    background: "#D4AF37",
+                    color: "#fff",
+                    fontWeight: "bold",
+                  },
+                });
+              }}
             >
               <FaShoppingCart />
               Add to Cart
             </button>
+
             <button className="bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700 transition-all">
               Buy Now
             </button>

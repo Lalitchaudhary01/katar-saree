@@ -9,9 +9,13 @@ import {
   FaTwitter,
   FaLinkedin,
 } from "react-icons/fa";
+import { useCart } from "../context/CartContext";
 
 const Navbar = () => {
+  const { cart } = useCart();
+  const totalItems = cart.length;
   const navigate = useNavigate();
+
   return (
     <>
       {/* Top Navbar */}
@@ -21,7 +25,6 @@ const Navbar = () => {
           <span className="mr-4">📞 +91 7860783350</span>
           <span>📧 contact@katanbanaras.com</span>
         </div>
-
         {/* Social Media Icons */}
         <div className="flex space-x-4">
           <a href="#" className="hover:opacity-75">
@@ -43,7 +46,7 @@ const Navbar = () => {
           <img
             src="/KatanBanarasp.png"
             alt="Katan Saree Logo"
-            className="w-12 h-12  ml-12 object-contain"
+            className="w-12 h-12 ml-12 object-contain"
           />
         </div>
 
@@ -52,8 +55,6 @@ const Navbar = () => {
           <a href="/" className="hover:text-[#c98a5e]">
             Home
           </a>
-
-          {/* Dropdown Menus */}
           {[
             {
               title: "Sarees",
@@ -76,7 +77,6 @@ const Navbar = () => {
               </div>
             </div>
           ))}
-
           <a href="#" className="hover:text-[#c98a5e]">
             Collections
           </a>
@@ -89,25 +89,21 @@ const Navbar = () => {
         </nav>
 
         {/* Right Side Icons */}
-        <div className="flex space-x-4 text-gray-600">
-          <div className="flex space-x-4 text-gray-600">
-            <FaSearch
+        <div className="flex space-x-4 text-gray-600 relative">
+          <FaSearch className="cursor-pointer hover:text-[#c98a5e]" size={20} />
+          <FaUser className="cursor-pointer hover:text-[#c98a5e]" size={20} />
+          <FaHeart className="cursor-pointer hover:text-[#c98a5e]" size={20} />
+          <Link to="/cart" className="relative">
+            <FaShoppingCart
               className="cursor-pointer hover:text-[#c98a5e]"
               size={20}
             />
-            <FaUser className="cursor-pointer hover:text-[#c98a5e]" size={20} />
-            <FaHeart
-              className="cursor-pointer hover:text-[#c98a5e]"
-              size={20}
-            />
-
-            <Link to="/cart">
-              <FaShoppingCart
-                className="cursor-pointer hover:text-[#c98a5e]"
-                size={20}
-              />
-            </Link>
-          </div>
+            {totalItems > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                {totalItems}
+              </span>
+            )}
+          </Link>
         </div>
       </div>
     </>
