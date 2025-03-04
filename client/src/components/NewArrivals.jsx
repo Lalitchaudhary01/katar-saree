@@ -1,65 +1,115 @@
-import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
-const sarees = [
+const products = [
   {
-    name: "Banarasi Silk Saree",
-    description: "Hand-woven silk with gold zari",
-    price: "₹12,999",
-    category: "Silk Saree",
+    id: 1,
+    name: "Blush Pink Handwoven Silk",
+    description: "Pure Silk with Zari Border",
+    price: "₹24,500",
+    image: "https://source.unsplash.com/random/600x800/?silk,saree,pink",
+    colors: ["bg-pink-200", "bg-red-300", "bg-purple-200"],
   },
   {
-    name: "Kanchipuram Silk Saree",
-    description: "Pure silk with temple border",
-    price: "₹15,499",
-    category: "Kanchipuram Saree",
+    id: 2,
+    name: "Royal Gold Kanjivaram",
+    description: "Authentic Kanjivaram Silk",
+    price: "₹30,000",
+    image: "https://source.unsplash.com/random/600x800/?gold,saree",
+    colors: ["bg-yellow-300", "bg-gold-500", "bg-orange-300"],
   },
   {
-    name: "Designer Organza Saree",
-    description: "Floral embroidery with sequins",
-    price: "₹9,799",
-    category: "Organza Saree",
+    id: 3,
+    name: "Emerald Green Banarasi",
+    description: "Traditional Banarasi Weave",
+    price: "₹28,000",
+    image: "https://source.unsplash.com/random/600x800/?green,saree",
+    colors: ["bg-green-400", "bg-teal-500", "bg-lime-400"],
   },
   {
-    name: "Premium Linen Saree",
-    description: "Handloom with silver zari border",
-    price: "₹8,499",
-    category: "Linen Saree",
+    id: 4,
+    name: "Classic Red Bridal Saree",
+    description: "Perfect for Weddings",
+    price: "₹35,000",
+    image: "https://source.unsplash.com/random/600x800/?red,saree,bridal",
+    colors: ["bg-red-500", "bg-maroon-600", "bg-orange-400"],
   },
 ];
 
 const NewArrivals = () => {
   return (
-    <div className="bg-[#FAF3E0] py-12 px-6">
-      <h2 className="text-3xl font-semibold text-center text-[#4A2C2A] mb-6">
-        New Arrivals
-      </h2>
-      <p className="text-center text-[#6D4C41] mb-8">
-        Discover our latest collection of exquisite sarees, crafted with
-        precision and adorned with intricate details.
-      </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-        {sarees.map((saree, index) => (
-          <div key={index} className="bg-[#EFE5DC] p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold text-[#4A2C2A]">
-              {saree.category}
-            </h3>
-            <p className="text-sm text-[#6D4C41] mt-2">{saree.name}</p>
-            <p className="text-sm text-[#6D4C41] mt-1">{saree.description}</p>
-            <p className="text-lg font-bold text-[#D4A373] mt-3">
-              {saree.price}
-            </p>
-            <button className="mt-4 px-4 py-2 bg-[#D4A373] text-white rounded-lg hover:bg-[#B8865C]">
-              Add to Cart
-            </button>
-          </div>
-        ))}
+    <section id="new-arrivals" className="py-16 md:py-24 bg-[#FAF3E0]">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-semibold text-[#8B6A37] mb-3">
+            New Arrivals
+          </h2>
+          <p className="text-[#6B4F27] max-w-2xl mx-auto mb-6">
+            The latest additions to our collection, blending tradition with
+            contemporary design.
+          </p>
+          <div className="w-24 h-0.5 bg-accent mx-auto mt-6"></div>
+        </div>
+
+        {/* Swiper Carousel */}
+        <Swiper
+          modules={[Navigation, Pagination, Autoplay]}
+          spaceBetween={20}
+          slidesPerView={1}
+          breakpoints={{
+            640: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
+            1280: { slidesPerView: 4 },
+          }}
+          navigation
+          pagination={{ clickable: true }}
+          autoplay={{ delay: 3000 }}
+          className="product-carousel"
+        >
+          {products.map((product) => (
+            <SwiperSlide key={product.id}>
+              <div className="product-card group bg-white p-4 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105">
+                <div className="relative overflow-hidden rounded-lg">
+                  <span className="absolute top-4 right-4 bg-accent text-white text-xs font-secondary px-3 py-1 z-10">
+                    New
+                  </span>
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-80 object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300"></div>
+                </div>
+                <div className="mt-4">
+                  <h3 className="font-primary text-lg text-secondary">
+                    {product.name}
+                  </h3>
+                  <p className="font-secondary text-neutral-600 text-sm mt-1">
+                    {product.description}
+                  </p>
+                  <div className="mt-2 flex justify-between items-center">
+                    <p className="font-secondary text-secondary">
+                      {product.price}
+                    </p>
+                    <div className="flex">
+                      {product.colors.map((color, index) => (
+                        <span
+                          key={index}
+                          className={`h-4 w-4 rounded-full ${color} border border-neutral-200 mr-1`}
+                        ></span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
-      <div className="flex justify-center mt-8">
-        <button className="px-6 py-3 bg-[#A67651] text-white rounded-lg hover:bg-[#7C4E32]">
-          View All New Arrivals
-        </button>
-      </div>
-    </div>
+    </section>
   );
 };
 
