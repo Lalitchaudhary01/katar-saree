@@ -17,7 +17,7 @@ const collections = [
       "/images/maroon1.jpg",
       "/images/maroon2.jpg",
       "/images/maroon3.jpg",
-      "/images/maroon4.jpg",
+      "/images/maroon5.jpg",
     ],
     desc: "Very premium and lightweight fabric with a rich Pallu, beautiful border design, and Sona Rupa boutique work in gold and silver.",
   },

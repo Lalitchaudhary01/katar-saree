@@ -1,4 +1,5 @@
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FaSearch,
   FaUser,
@@ -10,6 +11,7 @@ import {
 } from "react-icons/fa";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   return (
     <>
       {/* Top Navbar */}
@@ -47,7 +49,7 @@ const Navbar = () => {
 
         {/* Navigation Links */}
         <nav className="flex space-x-6 text-gray-700 font-medium">
-          <a href="#" className="hover:text-[#c98a5e]">
+          <a href="/" className="hover:text-[#c98a5e]">
             Home
           </a>
 
@@ -58,7 +60,6 @@ const Navbar = () => {
               items: ["Silk Sarees", "Cotton Sarees", "Banarasi Sarees"],
             },
             { title: "Lehengas", items: ["Bridal Lehengas", "Party Wear"] },
-            { title: "Accessories", items: ["Jewelry", "Dupattas"] },
           ].map((menu, index) => (
             <div key={index} className="relative group">
               <button className="hover:text-[#c98a5e]">{menu.title} ▾</button>
@@ -89,13 +90,24 @@ const Navbar = () => {
 
         {/* Right Side Icons */}
         <div className="flex space-x-4 text-gray-600">
-          {[FaSearch, FaUser, FaHeart, FaShoppingCart].map((Icon, index) => (
-            <Icon
-              key={index}
+          <div className="flex space-x-4 text-gray-600">
+            <FaSearch
               className="cursor-pointer hover:text-[#c98a5e]"
               size={20}
             />
-          ))}
+            <FaUser className="cursor-pointer hover:text-[#c98a5e]" size={20} />
+            <FaHeart
+              className="cursor-pointer hover:text-[#c98a5e]"
+              size={20}
+            />
+
+            <Link to="/cart">
+              <FaShoppingCart
+                className="cursor-pointer hover:text-[#c98a5e]"
+                size={20}
+              />
+            </Link>
+          </div>
         </div>
       </div>
     </>

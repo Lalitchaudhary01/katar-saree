@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import collections from "../assets/product/CollectionData";
 import { motion } from "framer-motion";
 import { FaShoppingCart } from "react-icons/fa";
+import { useCart } from "../context/CartContext";
 
 const FeaturedCollections = () => {
   const [showAll, setShowAll] = useState(false);
@@ -57,6 +58,7 @@ const FeaturedCollections = () => {
       );
     }
   };
+  const { addToCart } = useCart();
 
   return (
     <section className="py-16 md:py-24 bg-primary bg-opacity-50">
@@ -169,7 +171,15 @@ const FeaturedCollections = () => {
           </div>
           <p className="text-[#6B4F27] mt-4">{selectedCollection.desc}</p>
           <div className="flex items-center gap-4 mt-6">
-            <button className="bg-[#D4AF37] text-white px-6 py-3 rounded hover:bg-[#B8860B] transition-all flex items-center gap-2">
+            <button
+              className="bg-[#D4AF37] text-white px-6 py-3 rounded hover:bg-[#B8860B] transition-all flex items-center gap-2"
+              onClick={() =>
+                addToCart({
+                  title: selectedCollection.title,
+                  image: selectedCollection.images[selectedImageIndex],
+                })
+              }
+            >
               <FaShoppingCart />
               Add to Cart
             </button>
