@@ -2,13 +2,18 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import collections from "../assets/product/CollectionData";
+import newArrivals from "../assets/product/NewArrival"; // Import NewArrivals
 import { toast } from "react-hot-toast";
 
 const CollectionDetail = () => {
   const { id } = useParams();
   const { addToCart } = useCart();
   const numericId = Number(id);
-  const collection = collections.find((item) => item.id === numericId);
+
+  // Find collection in both datasets
+  const collection =
+    collections.find((item) => item.id === numericId) ||
+    newArrivals.find((item) => item.id === numericId);
 
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
