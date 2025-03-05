@@ -11,6 +11,7 @@ import OurHeritage from "./components/OurHeritage";
 import Cart from "./components/Cart"; // Import the Cart component
 import { CartProvider } from "./context/CartContext"; // Import CartProvider
 import Checkout from "./components/Checkout";
+import CollectionDetails from "./components/CollectionDetails";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/collection/:id" element={<CollectionDetails />} />
         </Routes>
         <Footer />
       </Router>

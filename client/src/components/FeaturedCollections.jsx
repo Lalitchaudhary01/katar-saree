@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import collections from "../assets/product/CollectionData";
-import { motion } from "framer-motion";
-import { FaShoppingCart } from "react-icons/fa";
+// import { motion } from "framer-motion";
+import { FaEye } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
-import { toast } from "react-hot-toast";
+// import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const FeaturedCollections = () => {
   const [showAll, setShowAll] = useState(false);
   const [currentIndexes, setCurrentIndexes] = useState(
     collections.reduce((acc, _, index) => ({ ...acc, [index]: 0 }), {})
   );
-  const [selectedCollection, setSelectedCollection] = useState(null);
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  // const [selectedCollection, setSelectedCollection] = useState(null);
+  // const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -27,39 +28,8 @@ const FeaturedCollections = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const handleNext = (index) => {
-    setCurrentIndexes((prev) => ({
-      ...prev,
-      [index]: (prev[index] + 1) % collections[index].images.length,
-    }));
-  };
-
-  const handlePrev = (index) => {
-    setCurrentIndexes((prev) => ({
-      ...prev,
-      [index]:
-        prev[index] === 0
-          ? collections[index].images.length - 1
-          : prev[index] - 1,
-    }));
-  };
-
-  const handleDetailedNext = () => {
-    if (selectedCollection) {
-      setSelectedImageIndex(
-        (prev) => (prev + 1) % selectedCollection.images.length
-      );
-    }
-  };
-
-  const handleDetailedPrev = () => {
-    if (selectedCollection) {
-      setSelectedImageIndex((prev) =>
-        prev === 0 ? selectedCollection.images.length - 1 : prev - 1
-      );
-    }
-  };
-  const { addToCart } = useCart();
+  // const { addToCart } = useCart();
+  const navigate = useNavigate();
 
   return (
     <section className="py-16 md:py-24 bg-primary bg-opacity-50">
@@ -81,10 +51,6 @@ const FeaturedCollections = () => {
             <div
               key={index}
               className="group w-64 overflow-hidden shadow-lg rounded-xl bg-white border border-[#E0C097] transition-transform transform hover:scale-105 flex flex-col justify-between cursor-pointer"
-              onClick={() => {
-                setSelectedCollection(collection);
-                setSelectedImageIndex(0);
-              }}
             >
               <div className="relative overflow-hidden">
                 <img
@@ -93,22 +59,11 @@ const FeaturedCollections = () => {
                   className="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handlePrev(index);
-                  }}
-                  className="absolute left-2 top-1/2 transform -translate-y-1/2 p-1 rounded-full bg-white shadow-md"
+                  // onClick={() => setSelectedCollection(collection)}
+                  onClick={() => navigate(`/collection/${index}`)}
+                  className="absolute bottom-2 left-1/2 -translate-x-1/2 p-2 rounded-full bg-white shadow-md"
                 >
-                  <span className="text-[#D4AF37] text-2xl">←</span>
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleNext(index);
-                  }}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 rounded-full bg-white shadow-md"
-                >
-                  <span className="text-[#D4AF37] text-2xl">→</span>
+                  <FaEye className="text-[#D4AF37] text-xl" />
                 </button>
               </div>
               <div className="p-4 flex flex-col flex-grow">
@@ -118,9 +73,9 @@ const FeaturedCollections = () => {
                 <p className="text-neutral-600 text-sm flex-grow">
                   {collection.desc}
                 </p>
-                {collection.price && (
+                {collection.discountPrice && (
                   <p className="text-[#8B6A37] font-semibold text-lg mt-2">
-                    ₹{collection.price}
+                    ₹{collection.discountPrice}
                   </p>
                 )}
               </div>
@@ -139,7 +94,7 @@ const FeaturedCollections = () => {
         )}
       </div>
 
-      {selectedCollection && (
+      {/* {selectedCollection && (
         <motion.div
           initial={{ x: "100%" }}
           animate={{ x: 0 }}
@@ -162,18 +117,6 @@ const FeaturedCollections = () => {
               alt={selectedCollection.title}
               className="w-full h-64 object-cover rounded-lg"
             />
-            <button
-              onClick={handleDetailedPrev}
-              className="absolute left-2 top-1/2 transform -translate-y-1/2 p-1 rounded-full bg-white shadow-md"
-            >
-              <span className="text-[#D4AF37] text-2xl">←</span>
-            </button>
-            <button
-              onClick={handleDetailedNext}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 rounded-full bg-white shadow-md"
-            >
-              <span className="text-[#D4AF37] text-2xl">→</span>
-            </button>
           </div>
           <p className="text-[#6B4F27] mt-4">{selectedCollection.desc}</p>
           <div className="flex items-center gap-4 mt-6">
@@ -183,7 +126,7 @@ const FeaturedCollections = () => {
                 addToCart({
                   title: selectedCollection.title,
                   image: selectedCollection.images[selectedImageIndex],
-                  price: selectedCollection.price, // ✅ Pass the price here
+                  price: selectedCollection.price,
                 });
                 toast.success(`${selectedCollection.title} added to cart!`, {
                   duration: 3000,
@@ -205,7 +148,7 @@ const FeaturedCollections = () => {
             </button>
           </div>
         </motion.div>
-      )}
+      )} */}
     </section>
   );
 };

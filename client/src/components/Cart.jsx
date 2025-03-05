@@ -17,7 +17,7 @@ const Cart = () => {
       <h1 className="text-3xl font-bold mb-6 text-center relative">
         Your Shopping Cart
         {totalItems > 0 && (
-          <span className="ml-2 bg-red-500 text-white text-sm font-semibold px-2 py-1 rounded-full">
+          <span className="ml-2 bg-black-500 text-white text-sm font-semibold px-2 py-1 rounded-full">
             {totalItems}
           </span>
         )}
@@ -50,8 +50,9 @@ const Cart = () => {
 
                 {/* Product Details */}
                 <div className="flex-1 ml-4">
-                  <h2 className="text-lg font-semibold">{item.name}</h2>
+                  <h2 className="text-lg font-semibold">{item.title}</h2>
                   <p className="text-gray-600">₹{item.price}</p>
+                  <p className="text-gray-600">{item.size}</p>
                 </div>
 
                 {/* Remove Button */}
