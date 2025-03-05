@@ -11,44 +11,47 @@ const CollectionDetail = () => {
   const collection = collections.find((item) => item.id === numericId);
 
   const [selectedSize, setSelectedSize] = useState(null);
-  const [mainImage, setMainImage] = useState(collection?.images[0]); // Default upar pehli image
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [mainImage, setMainImage] = useState(collection?.images[0]);
 
   if (!collection) {
     return <p className="text-center text-red-500">Collection not found!</p>;
   }
 
   const handleAddToCart = () => {
-    if (!selectedSize) {
-      toast.error("Please select a size before adding to cart!");
+    if (!selectedSize || !selectedColor) {
+      toast.error("Please select a size and color before adding to cart!");
       return;
     }
 
     const cartItem = {
       id: collection.id,
       title: collection.title,
-      image: mainImage, // Selected image jayegi cart me
+      image: mainImage,
       price: collection.discountPrice,
       size: selectedSize,
+      color: selectedColor,
     };
 
     addToCart(cartItem);
-    toast.success(`${collection.title} (Size: ${selectedSize}) added to cart!`);
+    toast.success(
+      `${collection.title} (Size: ${selectedSize}, Color: ${selectedColor}) added to cart!`
+    );
   };
 
   return (
     <div className="container mx-auto p-6 max-w-3xl bg-white shadow-lg rounded-lg">
-      <h2 className="text-3xl font-bold text-center">{collection.title}</h2>
+      <h2 className="text-3xl font-bold text-center text-[#8B6A37]">
+        {collection.title}
+      </h2>
 
       {/* Image Section */}
       <div className="mt-4 flex flex-col items-center">
-        {/* Main Display Image */}
         <img
           src={mainImage}
           alt="Selected"
           className="w-80 h-80 object-cover border rounded-lg shadow-md"
         />
-
-        {/* Thumbnail Gallery */}
         <div className="flex gap-3 mt-4">
           {collection.images.slice(0, 4).map((img, index) => (
             <img
@@ -64,7 +67,6 @@ const CollectionDetail = () => {
         </div>
       </div>
 
-      {/* Details Section */}
       <p className="mt-4 text-gray-600 text-center">{collection.desc}</p>
       <div className="mt-2 text-center">
         <p className="text-lg font-semibold">
@@ -83,12 +85,33 @@ const CollectionDetail = () => {
             <button
               key={index}
               className={`px-4 py-2 border rounded-lg text-sm ${
-                selectedSize === size ? "bg-black text-white" : "bg-gray-200"
+                selectedSize === size
+                  ? "bg-[#8B6A37] text-white"
+                  : "bg-gray-200"
               }`}
               onClick={() => setSelectedSize(size)}
             >
               {size}
             </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Colors */}
+      <div className="mt-4 text-center">
+        <p className="font-semibold">Select Color:</p>
+        <div className="flex justify-center gap-3 mt-2">
+          {collection.colors.map((color, index) => (
+            <button
+              key={index}
+              className={`w-8 h-8 rounded-full border-2 ${
+                selectedColor === color
+                  ? "border-black scale-110"
+                  : "border-gray-300"
+              }`}
+              style={{ backgroundColor: color }}
+              onClick={() => setSelectedColor(color)}
+            ></button>
           ))}
         </div>
       </div>
