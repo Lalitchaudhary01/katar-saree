@@ -571,6 +571,7 @@ const Navbar = () => {
                           { name: "Story", link: "/about/story" },
                           { name: "OurHeritage", link: "/about/heritage" },
                           { name: "OurCraftmanship", link: "/about/craft" },
+                          { name: "About-Us", link: "/about" },
                         ]}
                       />
                       {/* Rest of the dropdown menu content */}
