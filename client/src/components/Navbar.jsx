@@ -84,10 +84,10 @@ const Navbar = () => {
           <Link to="/collection" className="hover:text-[#c98a5e]">
             Collections
           </Link>
-          <Link to="#" className="hover:text-[#c98a5e]">
+          <Link to="/about" className="hover:text-[#c98a5e]">
             About Us
           </Link>
-          <Link to="#" className="hover:text-[#c98a5e]">
+          <Link to="contact" className="hover:text-[#c98a5e]">
             Contact
           </Link>
         </nav>

@@ -20,6 +20,8 @@ import CollectionDetails from "./components/CollectionDetails";
 import SilkSarees from "./pages/SilkSaree";
 import CottonSarees from "./pages/CottonSarees";
 import BanarasiSarees from "./pages/BanarasiSarees";
+import About from "./components/About";
+import Contact from "./components/Contact";
 
 function AppContent() {
   const location = useLocation();
@@ -48,6 +50,8 @@ function AppContent() {
         <Route path="/sarees/cotton" element={<CottonSarees />} />
         <Route path="/sarees/banarasi" element={<BanarasiSarees />} />
         <Route path="/collection" element={<FeaturedCollections />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact/>} />
       </Routes>
       {/* Footer should not be displayed on CollectionDetails */}
       {location.pathname.startsWith("/collection/") ? null : <Footer />}
