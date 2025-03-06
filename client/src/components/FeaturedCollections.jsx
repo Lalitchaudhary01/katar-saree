@@ -70,10 +70,11 @@ const FeaturedCollections = () => {
         <h2 className="text-3xl md:text-5xl font-cardo font-bold text-[#8B6A37] mb-4 tracking-wide">
           Featured Collections
         </h2>
-        <p className="font-cardo text-neutral-600 max-w-2xl mx-auto mb-8 italic text-lg">
+        <p className="font-cardo text-neutral-600 max-w-2xl mx-auto mb-8 italic text-lg whitespace-nowrap">
           Explore our curated selection of premium handcrafted pieces, each
           telling a story of heritage and artistry.
         </p>
+
         <div className="w-32 h-0.5 bg-[#D4AF37] mx-auto"></div>
       </div>
 
