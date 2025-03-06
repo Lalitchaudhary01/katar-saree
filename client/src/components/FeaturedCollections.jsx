@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import collections from "../assets/product/CollectionData";
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import { FaEye, FaShoppingCart } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
 import { toast } from "react-hot-toast";
@@ -55,13 +55,22 @@ const FeaturedCollections = () => {
 
   return (
     <section className="py-16 md:py-24 bg-white">
-      {/* Add Cardo font import to the head of your document */}
       <style>
         {`
           @import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&display=swap');
           
           .font-cardo {
             font-family: 'Cardo', serif;
+          }
+
+          .card-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.5s, box-shadow 0.5s;
+          }
+
+          .card-3d:hover {
+            transform: rotateY(10deg) rotateX(10deg) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
           }
         `}
       </style>
@@ -82,26 +91,30 @@ const FeaturedCollections = () => {
         {collections
           .slice(0, showAll ? collections.length : 4)
           .map((collection, index) => (
-            <div
+            <motion.div
               key={index}
-              className="group w-64 overflow-hidden shadow-xl rounded-lg bg-white border border-[#E0C097] transition-transform transform hover:scale-105 flex flex-col justify-between cursor-pointer"
+              className="group w-64 overflow-hidden shadow-2xl rounded-lg bg-white border border-[#E0C097] transition-transform transform hover:scale-105 flex flex-col justify-between cursor-pointer card-3d"
               onMouseEnter={() => handleMouseEnter(index)}
               onMouseLeave={() => handleMouseLeave(index)}
+              whileHover={{ scale: 1.05, rotateY: 10, rotateX: 10 }}
+              transition={{ type: "spring", stiffness: 300 }}
             >
               <div className="relative overflow-hidden">
-                <img
+                <motion.img
                   src={collection.images[currentIndexes[index]]}
                   alt={collection.title}
                   className="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110"
                   onClick={() => navigate(`/collection/${index}`)}
+                  whileHover={{ scale: 1.1 }}
                 />
 
-                <button
+                <motion.button
                   onClick={() => setSelectedCollection(collection)}
                   className="absolute bottom-4 left-1/2 -translate-x-1/2 p-3 rounded-full bg-white shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-[#F9F6F0]"
+                  whileHover={{ scale: 1.1 }}
                 >
                   <FaEye className="text-[#D4AF37] text-xl" />
-                </button>
+                </motion.button>
               </div>
 
               <div className="p-5 flex flex-col flex-grow bg-white">
@@ -117,18 +130,20 @@ const FeaturedCollections = () => {
                   </p>
                 )}
               </div>
-            </div>
+            </motion.div>
           ))}
       </div>
 
       <div className="mt-16 text-center">
         {!showAll && (
-          <button
+          <motion.button
             onClick={() => setShowAll(true)}
-            className="bg-[#8B6A37] text-white px-10 py-3 rounded-md hover:bg-[#B8860B] transition-all font-cardo text-lg tracking-wide"
+            className="bg-[#8B6A37] text-white px-10 py-3 rounded-md hover:bg-[#B8860B] transition-all font-cardo text-lg tracking-wide shadow-lg"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             Explore All Collections
-          </button>
+          </motion.button>
         )}
       </div>
 
@@ -150,14 +165,15 @@ const FeaturedCollections = () => {
             {selectedCollection.title}
           </h3>
           <div className="mt-4 flex flex-col items-center">
-            <img
+            <motion.img
               src={mainImage}
               alt="Selected"
               className="w-80 h-80 object-cover border rounded-lg shadow-md"
+              whileHover={{ scale: 1.05 }}
             />
             <div className="flex gap-3 mt-4">
               {selectedCollection.images.slice(0, 4).map((img, index) => (
-                <img
+                <motion.img
                   key={index}
                   src={img}
                   alt={`Thumbnail ${index + 1}`}
@@ -165,6 +181,7 @@ const FeaturedCollections = () => {
                     mainImage === img ? "border-2 border-[#D4AF37]" : ""
                   }`}
                   onClick={() => setMainImage(img)}
+                  whileHover={{ scale: 1.1 }}
                 />
               ))}
             </div>
@@ -186,7 +203,7 @@ const FeaturedCollections = () => {
             <p className="font-bold font-cardo text-[#8B6A37]">Select Size:</p>
             <div className="flex justify-center gap-2 mt-3">
               {selectedCollection.sizes?.map((size, index) => (
-                <button
+                <motion.button
                   key={index}
                   className={`px-4 py-2 border font-cardo rounded-md text-sm transition-colors ${
                     selectedSize === size
@@ -194,9 +211,10 @@ const FeaturedCollections = () => {
                       : "bg-white text-[#8B6A37] border-[#D4AF37] hover:bg-[#F9F6F0]"
                   }`}
                   onClick={() => setSelectedSize(size)}
+                  whileHover={{ scale: 1.05 }}
                 >
                   {size}
-                </button>
+                </motion.button>
               ))}
             </div>
           </div>
@@ -205,7 +223,7 @@ const FeaturedCollections = () => {
             <p className="font-bold font-cardo text-[#8B6A37]">Select Color:</p>
             <div className="flex justify-center gap-3 mt-3">
               {selectedCollection.colors?.map((color, index) => (
-                <button
+                <motion.button
                   key={index}
                   className={`w-8 h-8 rounded-full border-2 transition-all hover:scale-105 ${
                     selectedColor === color
@@ -214,13 +232,14 @@ const FeaturedCollections = () => {
                   }`}
                   style={{ backgroundColor: color }}
                   onClick={() => setSelectedColor(color)}
-                ></button>
+                  whileHover={{ scale: 1.1 }}
+                ></motion.button>
               ))}
             </div>
           </div>
 
           <div className="flex items-center justify-center mt-8">
-            <button
+            <motion.button
               className="bg-[#D4AF37] text-white px-8 py-3 rounded-md hover:bg-[#B8860B] transition-all flex items-center gap-2 font-cardo text-lg shadow-md"
               onClick={() => {
                 if (!selectedSize || !selectedColor) {
@@ -246,9 +265,11 @@ const FeaturedCollections = () => {
                 toast.success(`${selectedCollection.title} added to cart!`);
               }}
               disabled={!selectedSize || !selectedColor}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               <FaShoppingCart /> Add to Cart
-            </button>
+            </motion.button>
           </div>
         </motion.div>
       )}

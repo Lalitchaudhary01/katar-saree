@@ -8,8 +8,7 @@ import {
   FaRupeeSign,
 } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
-import { HiOutlineMail } from "react-icons/hi";
-import { BsTelephone } from "react-icons/bs";
+import { FaEnvelope, FaPhone } from "react-icons/fa";
 
 const Navbar = () => {
   const { cart } = useCart();
@@ -95,7 +94,7 @@ const Navbar = () => {
           <li key={index} className="mb-2">
             <Link
               to={item.link}
-              className="text-[#6d4c41] hover:text-[#8b5e3c] font-cardo text-sm transition-colors duration-200"
+              className="text-[#6d4c41] hover:text-[#8b5e3c] font-cardo text-sm transition-colors duration-200 lowercase"
             >
               {item.name}
             </Link>
@@ -104,6 +103,7 @@ const Navbar = () => {
       </ul>
     </div>
   );
+
   const handleLogoClick = () => {
     if (window.location.pathname === "/") {
       window.scrollTo({
@@ -273,7 +273,7 @@ const Navbar = () => {
       {/* Main container with Cardo font */}
       <div className="font-cardo text-sm antialiased">
         {/* Shipping Info Bar - Only visible when not scrolled */}
-        {!scrolled && (
+        {/* {!scrolled && (
           <div className="w-full bg-[#5d4037] text-white py-2 px-4 flex justify-center items-center z-50 relative">
             <div className="flex items-center">
               <div className="flex items-center gap-2">
@@ -292,14 +292,31 @@ const Navbar = () => {
               <button className="absolute right-4 text-white">✕</button>
             </div>
           </div>
-        )}
+        )} */}
 
         {/* Brand and Icons Bar - Only visible when not scrolled */}
         {!scrolled && (
           <div className="w-full bg-white py-3 px-6 flex justify-between items-center border-b border-gray-100">
             {/* Branding */}
-            <div className="text-[#5d4037] italic">
-              Threads of Tradition, Crafted by KATAN
+            <div className="text-[#5d4037] flex space-x-3.5 italic space-y-2">
+              <div className="flex items-center space-x-2">
+                <FaEnvelope />
+                <a
+                  href="mailto:katanbanarasofficial@gmail.com"
+                  className="hover:underline"
+                >
+                  katanbanarasofficial@gmail.com
+                </a>
+              </div>
+              <div className="flex items-center space-x-2 space-y-2">
+                <FaPhone />
+                <a
+                  href="tel:+919876543210"
+                  className="hover:underline space-y-2"
+                >
+                  +91 98765 43210
+                </a>
+              </div>
             </div>
 
             {/* Right Side Icons */}
@@ -391,7 +408,7 @@ const Navbar = () => {
         >
           <div className="flex justify-between items-center">
             {/* Left Navigation */}
-            <div className="flex space-x-8 text-gray-700 uppercase tracking-wide text-sm">
+            <div className="flex ml-56 space-x-7 text-gray-700 uppercase tracking-wide text-sm">
               <div className="relative group">
                 <Link
                   to="/"
@@ -428,7 +445,7 @@ const Navbar = () => {
                 </DropdownMenu>
               </div>
 
-              <div className="relative group">
+              {/* <div className="relative group">
                 <Link
                   to="/campaigns"
                   className="hover:text-[#8b5e3c] flex items-center transition-colors"
@@ -457,11 +474,11 @@ const Navbar = () => {
                     </p>
                   </div>
                 </DropdownMenu>
-              </div>
+              </div> */}
             </div>
 
             {/* Center Logo */}
-            <div>
+            <div className="mx-14 ">
               <Link
                 to="/"
                 className="hover:opacity-90 transition-opacity"
@@ -476,12 +493,33 @@ const Navbar = () => {
             </div>
 
             {/* Right Navigation */}
-            <div className="flex space-x-8 text-gray-700 uppercase tracking-wide text-sm">
+            <div className="flex space-x-7 mr-56 text-gray-700 uppercase tracking-wide text-sm">
               {/* Show these menu items when not scrolled */}
               {!scrolled ? (
                 <>
-                  {/* Craft dropdown - update alignment to right */}
+                  {/* //campaign */}
                   <div className="relative group">
+                    <Link
+                      to="/campaigns"
+                      className="hover:text-[#8b5e3c] flex items-center transition-colors"
+                    >
+                      CAMPAIGNS <span className="ml-1">▼</span>
+                    </Link>
+                    <DropdownMenu align="right">
+                      {campaignsData.map(
+                        (category, idx) =>
+                          category.title && (
+                            <DropdownCategory
+                              key={idx}
+                              title={category.title}
+                              items={category.items}
+                            />
+                          )
+                      )}
+                    </DropdownMenu>
+                  </div>
+                  {/* Craft dropdown - update alignment to right */}
+                  {/* <div className="relative group">
                     <Link
                       to="/craft"
                       className="hover:text-[#8b5e3c] flex items-center transition-colors"
@@ -497,10 +535,10 @@ const Navbar = () => {
                         />
                       ))}
                     </DropdownMenu>
-                  </div>
+                  </div> */}
 
                   {/* Stories dropdown - update alignment to right */}
-                  <div className="relative group">
+                  {/* <div className="relative group">
                     <Link
                       to="/stories"
                       className="hover:text-[#8b5e3c] flex items-center transition-colors"
@@ -516,7 +554,7 @@ const Navbar = () => {
                         />
                       ))}
                     </DropdownMenu>
-                  </div>
+                  </div> */}
 
                   <div className="relative group">
                     <Link
@@ -530,13 +568,9 @@ const Navbar = () => {
                       <DropdownCategory
                         title="Our Story"
                         items={[
-                          { name: "Philosophy", link: "/about/philosophy" },
-                          { name: "Journey", link: "/about/journey" },
-                          { name: "Team", link: "/about/team" },
-                          {
-                            name: "Sustainability",
-                            link: "/about/sustainability",
-                          },
+                          { name: "Story", link: "/about/story" },
+                          { name: "OurHeritage", link: "/about/heritage" },
+                          { name: "OurCraftmanship", link: "/about/craft" },
                         ]}
                       />
                       {/* Rest of the dropdown menu content */}

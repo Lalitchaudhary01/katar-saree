@@ -42,8 +42,6 @@ function AppContent() {
               <Home />
               <FeaturedCollections />
               <NewArrivals />
-              <OurHeritage />
-              <Craftsmanship />
             </>
           }
         />
@@ -61,6 +59,8 @@ function AppContent() {
         <Route path="/return-policy" element={<ReturnPolicy />} />
         <Route path="/shipping-policy" element={<ShippingPolicy />} />
         <Route path="/terms-conditions" element={<TermsConditions />} />
+        <Route path="/about/heritage" element={<OurHeritage />} />
+        <Route path="/about/craft" element={<Craftsmanship />} />
       </Routes>
       {/* Footer should not be displayed on CollectionDetails */}
       {location.pathname.startsWith("/collection/") ? null : <Footer />}
