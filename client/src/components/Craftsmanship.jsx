@@ -6,10 +6,10 @@ const Craftsmanship = () => {
       <div className="container mx-auto px-4">
         {/* Section Heading */}
         <div className="max-w-4xl mx-auto text-center mb-16">
-          <h2 className="font-primary text-3xl md:text-4xl text-[#8B6A37] mb-4">
+          <h2 className="font-serif text-3xl md:text-4xl text-[#8B6A37] mb-4 italic">
             The Art of Craftsmanship
           </h2>
-          <p className="font-secondary text-neutral-600">
+          <p className="font-serif text-neutral-600">
             Discover the meticulous techniques and artistry behind every{" "}
             <b>Katan Banaras</b> creation.
           </p>
@@ -57,10 +57,10 @@ const Craftsmanship = () => {
 
           {/* Craftsmanship Description */}
           <div className="animate__animated animate__fadeIn animate__delay-1s max-w-[700px] mx-auto">
-            <h3 className="font-primary text-2xl md:text-3xl text-[#8B6A37] mb-6 text-center lg:text-left">
+            <h3 className="font-serif text-2xl md:text-3xl text-[#8B6A37] mb-6 text-center lg:text-left italic">
               The Weaving Process
             </h3>
-            <p className="font-secondary text-neutral-700 mb-8 leading-relaxed text-center lg:text-left">
+            <p className="font-serif text-neutral-700 mb-8 leading-relaxed text-center lg:text-left">
               Every <b>Katan Banaras</b> saree begins with the finest raw
               materials—
               <b>
@@ -80,7 +80,7 @@ const Craftsmanship = () => {
               <StepItem
                 number="1"
                 title="Design Creation"
-                description="Our designs are deeply inspired by Varanasi’s rich heritage, drawing motifs from Mughal-era architecture, sacred temples, and nature. Each pattern is carefully sketched before the weaving begins."
+                description="Our designs are deeply inspired by Varanasi's rich heritage, drawing motifs from Mughal-era architecture, sacred temples, and nature. Each pattern is carefully sketched before the weaving begins."
               />
               <StepItem
                 number="2"
@@ -97,7 +97,7 @@ const Craftsmanship = () => {
             <div className="text-center lg:text-left">
               <a
                 href="#"
-                className="inline-block bg-[#8B6A37] text-white font-secondary px-6 py-2 rounded-sm hover:bg-opacity-90 transition-all duration-300 text-sm tracking-wider"
+                className="inline-block bg-[#8B6A37] text-white font-serif px-6 py-2 rounded-sm hover:bg-opacity-90 transition-all duration-300 text-sm tracking-wider"
               >
                 Explore Our Techniques
               </a>
@@ -109,7 +109,7 @@ const Craftsmanship = () => {
         <div className="bg-white shadow-xl p-6 md:p-10 mb-20 relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-full pattern-bg opacity-5"></div>
           <div className="relative z-10">
-            <h3 className="font-primary text-2xl md:text-3xl text-[#8B6A37] text-center mb-10">
+            <h3 className="font-serif text-2xl md:text-3xl text-[#8B6A37] text-center mb-10 italic">
               Signature Techniques
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-[#8B6A37]">
@@ -148,33 +148,33 @@ const Craftsmanship = () => {
           </div>
           <div className="lg:col-span-2 animate__animated animate__fadeInRight">
             <div className="lg:pl-10">
-              <h3 className="font-primary text-2xl md:text-3xl text-[#8B6A37] mb-6">
+              <h3 className="font-serif text-2xl md:text-3xl text-[#8B6A37] mb-6 italic">
                 Meet Our Master Artisans
               </h3>
-              <p className="font-secondary text-neutral-700 mb-6 leading-relaxed ">
+              <p className="font-serif text-neutral-700 mb-6 leading-relaxed">
                 Behind every Katan Banaras creation is a master artisan with
                 decades of experience. Many of our weavers are from families
                 that have practiced this art for generations, with techniques
                 and knowledge passed down from father to son.
               </p>
-              <p className="font-secondary text-neutral-700 mb-8 leading-relaxed">
+              <p className="font-serif text-neutral-700 mb-8 leading-relaxed">
                 We take pride in providing sustainable livelihoods for over 150
                 artisan families, ensuring that this precious heritage craft
                 continues to thrive in an age of machine-made textiles.
               </p>
               <blockquote className="border-l-4 border-accent pl-4 py-2 mb-8">
-                <p className="font-primary text-lg text-secondary italic text-[#8B6A37]">
+                <p className="font-serif text-lg text-secondary italic text-[#8B6A37]">
                   "Each thread I weave carries the story of our culture, our
                   heritage, and our identity. When I sit at my loom, I am not
                   just creating a saree; I am preserving a legacy."
                 </p>
-                <footer className="font-secondary text-neutral-600 mt-2">
+                <footer className="font-serif text-neutral-600 mt-2">
                   — Raghav Mehta, Master Weaver (35 years of experience)
                 </footer>
               </blockquote>
               <a
                 href="#"
-                className="inline-block border border-secondary text-[#8B6A37] font-secondary px-6 py-3 rounded-sm hover:bg-secondary hover:text-primary transition-all duration-300 text-sm tracking-wider"
+                className="inline-block border border-secondary text-[#8B6A37] font-serif px-6 py-3 rounded-sm hover:bg-secondary hover:text-primary transition-all duration-300 text-sm tracking-wider"
               >
                 Meet Our Artisans
               </a>
@@ -186,10 +186,10 @@ const Craftsmanship = () => {
         {/* <div className="bg-accent bg-opacity-10 p-8 md:p-12 text-center relative overflow-hidden animate__animated animate__fadeIn">
           <div className="absolute top-0 left-0 w-full h-full pattern-bg opacity-5"></div>
           <div className="relative z-10">
-            <h3 className="font-primary text-2xl md:text-3xl text-[#8B6A37] mb-6">
+            <h3 className="font-serif text-2xl md:text-3xl text-[#8B6A37] mb-6 italic">
               GI Certified Authenticity
             </h3>
-            <p className="font-secondary text-neutral-700 mb-8 max-w-2xl mx-auto">
+            <p className="font-serif text-neutral-700 mb-8 max-w-2xl mx-auto">
               Every Katan Banaras creation comes with a Geographical Indication
               (GI) certification, guaranteeing its authentic origin and
               adherence to traditional craftsmanship standards.
@@ -201,7 +201,7 @@ const Craftsmanship = () => {
             />
             <a
               href="#"
-              className="inline-block bg-[#8B6A37] text-primary font-secondary px-6 py-3 rounded-sm hover:bg-opacity-90 transition-all duration-300 text-sm tracking-wider text-white"
+              className="inline-block bg-[#8B6A37] text-primary font-serif px-6 py-3 rounded-sm hover:bg-opacity-90 transition-all duration-300 text-sm tracking-wider text-white"
             >
               Learn About Our Certifications
             </a>
@@ -216,11 +216,11 @@ const Craftsmanship = () => {
 const StepItem = ({ number, title, description }) => (
   <div className="flex items-start">
     <div className="w-12 h-12 bg-accent bg-opacity-10 rounded-sm flex items-center justify-center mr-4 flex-shrink-0">
-      <span className="font-primary text-2xl text-accent">{number}</span>
+      <span className="font-serif text-2xl text-accent">{number}</span>
     </div>
     <div>
-      <h4 className="font-primary text-xl text-secondary mb-2">{title}</h4>
-      <p className="font-secondary text-neutral-600">{description}</p>
+      <h4 className="font-serif text-xl text-secondary mb-2">{title}</h4>
+      <p className="font-serif text-neutral-600">{description}</p>
     </div>
   </div>
 );
@@ -228,15 +228,15 @@ const StepItem = ({ number, title, description }) => (
 // Reusable Technique Card Component
 const TechniqueCard = ({ image, title, description }) => (
   <div className="text-center animate__animated animate__fadeIn">
-    <div className="relative mb-6 mx-auto w-40 h-40 overflow-hidden rounded-full">
+    <div className="relative mb-6 mx-auto w-40 h-40 overflow-hidden rounded-full border border-[#8B6A37] border-opacity-20 shadow-lg">
       <img
         src={image}
         alt={title}
         className="absolute inset-0 w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
       />
     </div>
-    <h4 className="font-primary text-xl text-secondary mb-2">{title}</h4>
-    <p className="font-secondary text-neutral-600 text-sm">{description}</p>
+    <h4 className="font-serif text-xl text-secondary mb-2 italic">{title}</h4>
+    <p className="font-serif text-neutral-600 text-sm">{description}</p>
   </div>
 );
 

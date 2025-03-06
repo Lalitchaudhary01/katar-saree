@@ -2,13 +2,13 @@ import React from "react";
 
 const OurHeritage = () => {
   return (
-    <section id="our-heritage" className="py-16 md:py-24 bg-white">
+    <section id="our-heritage" className="py-16 md:py-24 bg-white font-serif">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center mb-16">
-          <h2 className="font-primary text-3xl md:text-4xl text-secondary mb-4 text-[#8B6A37]">
+          <h2 className="font-serif text-3xl md:text-4xl text-secondary mb-4 text-[#8B6A37]">
             Our Heritage
           </h2>
-          <p className="font-secondary text-neutral-600">
+          <p className="font-serif text-neutral-600">
             A legacy of craftsmanship spanning generations, preserving the
             timeless art of Banarasi textiles.
           </p>
@@ -27,10 +27,8 @@ const OurHeritage = () => {
               <div className="absolute -bottom-6 -right-6 w-32 h-32 border-r-2 border-b-2 border-accent opacity-60"></div>
 
               <div className="absolute bottom-6 left-6 bg-primary p-4 shadow-lg bg-[#FAF3E0]">
-                <p className="text-secondary font-primary text-xl">
-                  Since 1956
-                </p>
-                <p className="text-accent font-secondary text-sm mt-1">
+                <p className="text-secondary font-serif text-xl">Since 1956</p>
+                <p className="text-accent font-serif text-sm mt-1">
                   Preserving tradition
                 </p>
               </div>
@@ -38,25 +36,25 @@ const OurHeritage = () => {
           </div>
 
           <div className="animate__animated animate__fadeInRight">
-            <h3 className="font-primary text-2xl md:text-3xl text-secondary mb-6 text-[#8B6A37]">
+            <h3 className="font-serif text-2xl md:text-3xl text-secondary mb-6 text-[#8B6A37]">
               A Legacy of Artistry
             </h3>
-            <p className="font-secondary text-neutral-600 mb-6 leading-relaxed">
+            <p className="font-serif text-neutral-600 mb-6 leading-relaxed">
               For over six decades, Katan Banaras has been a symbol of elegance,
               carrying forward the rich heritage of Banarasi handloom weaving.
               Founded in 1956 by Haji Usman Ali, a master weaver, our legacy
-              began in the heart of Varanasi’s weaving community. His dedication
+              began in the heart of Varanasi's weaving community. His dedication
               to authenticity and intricate craftsmanship laid the foundation
               for what we are today
             </p>
-            <p className="font-secondary text-neutral-600 mb-8 leading-relaxed">
+            <p className="font-serif text-neutral-600 mb-8 leading-relaxed">
               Today, under the leadership of the third generation—Mohammed
               Sadique Ansari and Mohammed Shahid Ansari—Katan Banaras continues
               to celebrate the unmatched beauty of handwoven silk. Every saree,
               suit, and dupatta we create tells a story of tradition, precision,
               and artistry..
             </p>
-            <p className="font-secondary text-neutral-600 mb-8 leading-relaxed">
+            <p className="font-serif text-neutral-600 mb-8 leading-relaxed">
               We are proud to ensure that every Katan Banaras creation is{" "}
               <b>
                 100% pure, Silk Mark certified, and lab tested for authenticity
@@ -81,13 +79,13 @@ const OurHeritage = () => {
             <div className="flex space-x-4">
               <a
                 href="#our-story"
-                className="inline-block bg-[#8B6A37] text-white text-primary font-secondary px-6 py-2 rounded-sm hover:bg-opacity-90 transition-all duration-300 text-sm tracking-wider"
+                className="inline-block bg-[#8B6A37] text-white font-serif px-6 py-2 rounded-sm hover:bg-opacity-90 transition-all duration-300 text-sm tracking-wider"
               >
                 Our Story
               </a>
               <a
                 href="#craftsmanship"
-                className="inline-block border border-[#8B6A37] text-neutral-600 font-secondary px-6 py-2 rounded-sm hover:bg-secondary hover:bg-opacity-10 transition-all duration-300 text-sm tracking-wider"
+                className="inline-block border border-[#8B6A37] text-neutral-600 font-serif px-6 py-2 rounded-sm hover:bg-secondary hover:bg-opacity-10 transition-all duration-300 text-sm tracking-wider"
               >
                 Our Craftsmanship
               </a>
@@ -119,15 +117,15 @@ const OurHeritage = () => {
         </div>
 
         <div className="mt-24 text-center">
-          <h3 className="font-primary text-2xl md:text-3xl text-[#8B6A37] mb-8">
+          <h3 className="font-serif text-2xl md:text-3xl text-[#8B6A37] mb-8">
             Our Timeline
           </h3>
           <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
             <div className="text-left">
-              <h4 className="text-[#8B6A37] font-semibold text-lg">
+              <h4 className="text-[#8B6A37] font-semibold text-lg font-serif">
                 Establishment
               </h4>
-              <p className="text-gray-700">
+              <p className="text-gray-700 font-serif">
                 Founded by <b>Haji Usman Ali</b> in the heart of Varanasi, Katan
                 Banaras began as a small weaving unit dedicated to crafting pure
                 Banarasi handloom sarees.
@@ -136,20 +134,20 @@ const OurHeritage = () => {
             <div></div> {/* Empty div for alignment */}
             <div></div> {/* Empty div for alignment */}
             <div className="text-right">
-              <h4 className="text-[#8B6A37] font-semibold text-lg">
+              <h4 className="text-[#8B6A37] font-semibold text-lg font-serif">
                 Growth & Legacy
               </h4>
-              <p className="text-gray-700">
+              <p className="text-gray-700 font-serif">
                 Under the leadership of <b>Haji Mohammad Zakir</b>, the brand
                 expanded, collaborating with skilled artisans to preserve the
                 authenticity of Banarasi textiles.
               </p>
             </div>
             <div className="text-left">
-              <h4 className="text-[#8B6A37] font-semibold text-lg">
+              <h4 className="text-[#8B6A37] font-semibold text-lg font-serif">
                 Global Reach
               </h4>
-              <p className="text-gray-700">
+              <p className="text-gray-700 font-serif">
                 With <b>Ansar Silk Export</b>, our parent company, we began
                 exporting premium Banarasi fabrics and garments worldwide,
                 showcasing India's rich textile heritage on a global stage.
@@ -158,10 +156,10 @@ const OurHeritage = () => {
             <div></div> {/* Empty div for alignment */}
             <div></div> {/* Empty div for alignment */}
             <div className="text-right">
-              <h4 className="text-[#8B6A37] font-semibold text-lg">
+              <h4 className="text-[#8B6A37] font-semibold text-lg font-serif">
                 A New Era
               </h4>
-              <p className="text-gray-700">
+              <p className="text-gray-700 font-serif">
                 Now led by the third generation—
                 <b>Mohammed Sadique Ansari and Mohammed Shahid Ansari</b>—Katan
                 Banaras continues to uphold its legacy while embracing
@@ -194,8 +192,8 @@ const FeatureItem = ({ icon, title, description }) => (
       </svg>
     </div>
     <div>
-      <h4 className="font-primary text-lg text-secondary mb-1">{title}</h4>
-      <p className="font-secondary text-neutral-600 text-sm">{description}</p>
+      <h4 className="font-serif text-lg text-secondary mb-1">{title}</h4>
+      <p className="font-serif text-neutral-600 text-sm">{description}</p>
     </div>
   </div>
 );
@@ -218,8 +216,8 @@ const FeatureCard = ({ icon, title, description }) => (
         />
       </svg>
     </div>
-    <h3 className="font-primary text-xl text-secondary mb-3">{title}</h3>
-    <p className="font-secondary text-neutral-600">{description}</p>
+    <h3 className="font-serif text-xl text-secondary mb-3">{title}</h3>
+    <p className="font-serif text-neutral-600">{description}</p>
   </div>
 );
 
@@ -232,21 +230,21 @@ const TimelineItem = ({ year, title, description, alignRight = false }) => (
     <div className="md:w-5/12 text-right md:pr-8 mb-4 md:mb-0 order-2 md:order-1">
       {!alignRight && (
         <>
-          <h4 className="font-primary text-xl text-secondary mb-2">{title}</h4>
-          <p className="font-secondary text-neutral-600">{description}</p>
+          <h4 className="font-serif text-xl text-secondary mb-2">{title}</h4>
+          <p className="font-serif text-neutral-600">{description}</p>
         </>
       )}
     </div>
     <div className="mx-auto md:mx-0 order-1 md:order-2 mb-4 md:mb-0">
-      <div className="bg-accent text-white font-primary text-xl py-2 px-4 rounded-sm">
+      <div className="bg-accent text-white font-serif text-xl py-2 px-4 rounded-sm">
         {year}
       </div>
     </div>
     <div className="md:w-5/12 md:pl-8 text-left mb-4 md:mb-0 order-3">
       {alignRight && (
         <>
-          <h4 className="font-primary text-xl text-secondary mb-2">{title}</h4>
-          <p className="font-secondary text-neutral-600">{description}</p>
+          <h4 className="font-serif text-xl text-secondary mb-2">{title}</h4>
+          <p className="font-serif text-neutral-600">{description}</p>
         </>
       )}
     </div>

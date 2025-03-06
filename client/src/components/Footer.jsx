@@ -8,8 +8,8 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* About Column */}
           <div>
-            <h3 className="font-primary text-2xl mb-6">Katan Banaras</h3>
-            <p className="font-secondary text-primary text-opacity-80 mb-6 leading-relaxed">
+            <h3 className="font-serif text-2xl mb-6 italic">Katan Banaras</h3>
+            <p className="font-serif text-primary text-opacity-80 mb-6 leading-relaxed">
               Exquisite handcrafted sarees and ethnic wear that celebrate
               India's rich textile heritage. Our creations blend traditional
               craftsmanship with contemporary elegance.
@@ -40,8 +40,10 @@ const Footer = () => {
 
           {/* Shop Column */}
           <div>
-            <h3 className="font-primary text-xl mb-6">Shop</h3>
-            <ul className="space-y-3 font-secondary">
+            <h3 className="font-serif text-xl mb-6 border-b border-primary border-opacity-20 pb-2">
+              Shop
+            </h3>
+            <ul className="space-y-3 font-serif">
               <FooterLink href="/New-arrivals" text="New Arrivals" />
               <FooterLink href="#" text="Best Sellers" />
               <FooterLink href="/sarees/silk" text="Banarasi Silk Sarees" />
@@ -54,8 +56,10 @@ const Footer = () => {
 
           {/* Information Column */}
           <div>
-            <h3 className="font-primary text-xl mb-6">Information</h3>
-            <ul className="space-y-3 font-secondary">
+            <h3 className="font-serif text-xl mb-6 border-b border-primary border-opacity-20 pb-2">
+              Information
+            </h3>
+            <ul className="space-y-3 font-serif">
               <FooterLink href="/about" text="About Us" />
               <FooterLink href="/collection" text="Collections" />
               <FooterLink href="/shipping-policy" text="Shipping Policy" />
@@ -68,8 +72,10 @@ const Footer = () => {
 
           {/* Contact Column */}
           <div>
-            <h3 className="font-primary text-xl mb-6">Contact Us</h3>
-            <ul className="space-y-4 font-secondary">
+            <h3 className="font-serif text-xl mb-6 border-b border-primary border-opacity-20 pb-2">
+              Contact Us
+            </h3>
+            <ul className="space-y-4 font-serif">
               <ContactItem
                 iconPath="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z"
                 text="B-14, Bada Lalpur, Sigra<br>Varanasi, Uttar Pradesh 221010<br>India"
@@ -124,7 +130,7 @@ const Footer = () => {
 
         {/* Copyright */}
         <div className="border-t border-primary border-opacity-20 pt-8 text-center">
-          <p className="font-secondary text-sm text-primary text-opacity-60">
+          <p className="font-serif text-sm text-primary text-opacity-60">
             &copy; 2023 Katan Banaras. All rights reserved. Handcrafted with{" "}
             <span className="text-accent">♥</span> in Varanasi, India.
           </p>
@@ -134,7 +140,7 @@ const Footer = () => {
       {/* Back to Top Button */}
       <button
         id="back-to-top"
-        className="fixed bottom-8 right-8 bg-accent text-primary p-3 rounded-full shadow-lg opacity-0 invisible transition-all duration-300 z-50"
+        className="fixed bottom-8 right-8 bg-accent text-primary p-3 rounded-full shadow-lg opacity-0 invisible transition-all duration-300 z-50 hover:bg-accent hover:shadow-xl"
         aria-label="Back to top"
       >
         <svg
@@ -179,7 +185,7 @@ const FooterLink = ({ href, text }) => (
   <li>
     <a
       href={href}
-      className="text-primary text-opacity-80 hover:text-accent transition-colors duration-300"
+      className="text-primary text-opacity-80 hover:text-accent transition-colors duration-300 hover:italic"
     >
       {text}
     </a>
@@ -220,7 +226,11 @@ const ContactItem = ({ iconPath, text, href }) => (
 
 // Reusable Payment Method Icon Component
 const PaymentMethodIcon = ({ src, alt }) => (
-  <img src={src} alt={alt} className="h-8 object-contain opacity-80" />
+  <img
+    src={src}
+    alt={alt}
+    className="h-8 object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
+  />
 );
 
 export default Footer;

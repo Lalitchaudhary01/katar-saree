@@ -72,7 +72,7 @@ const Checkout = () => {
         email: "user@example.com",
         contact: address.phone,
       },
-      theme: { color: "#6366f1" },
+      theme: { color: "#8B5CF6" },
     };
 
     const paymentObject = new window.Razorpay(options);
@@ -80,122 +80,148 @@ const Checkout = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-100 to-indigo-100">
-      <div className="w-full max-w-lg bg-white p-6 rounded-2xl shadow-2xl animate-fade-in">
-        <h1 className="text-3xl font-extrabold text-center text-gray-800 mb-6">
-          🛒 Secure Checkout
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-amber-50 to-purple-50">
+      <div className="w-full max-w-lg bg-white p-8 rounded-xl shadow-xl border border-gray-100">
+        <h1 className="text-3xl font-serif text-center text-gray-800 mb-8 tracking-wide">
+          🛒 Elegant Checkout
         </h1>
 
         {/* 📍 Address Form */}
         {!isAddressSaved ? (
-          <div className="mb-6">
-            <h2 className="text-xl font-semibold text-gray-700 mb-3">
+          <div className="mb-8">
+            <h2 className="text-xl font-serif text-gray-700 mb-4 border-b pb-2">
               Shipping Address
             </h2>
-            <div className="space-y-3">
-              <input
-                type="text"
-                placeholder="Full Name"
-                value={address.fullName}
-                onChange={(e) =>
-                  setAddress({ ...address, fullName: e.target.value })
-                }
-                className="w-full p-3 border rounded-lg"
-              />
-              {errors.fullName && (
-                <p className="text-red-500 text-sm">{errors.fullName}</p>
-              )}
+            <div className="space-y-4">
+              <div>
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  value={address.fullName}
+                  onChange={(e) =>
+                    setAddress({ ...address, fullName: e.target.value })
+                  }
+                  className="w-full p-3 border border-gray-300 rounded-lg font-serif text-gray-700 focus:ring-2 focus:ring-purple-300 focus:border-purple-300 focus:outline-none transition"
+                />
+                {errors.fullName && (
+                  <p className="text-red-500 text-sm font-serif mt-1">
+                    {errors.fullName}
+                  </p>
+                )}
+              </div>
 
-              <input
-                type="text"
-                placeholder="Phone Number"
-                value={address.phone}
-                onChange={(e) =>
-                  setAddress({ ...address, phone: e.target.value })
-                }
-                className="w-full p-3 border rounded-lg"
-              />
-              {errors.phone && (
-                <p className="text-red-500 text-sm">{errors.phone}</p>
-              )}
+              <div>
+                <input
+                  type="text"
+                  placeholder="Phone Number"
+                  value={address.phone}
+                  onChange={(e) =>
+                    setAddress({ ...address, phone: e.target.value })
+                  }
+                  className="w-full p-3 border border-gray-300 rounded-lg font-serif text-gray-700 focus:ring-2 focus:ring-purple-300 focus:border-purple-300 focus:outline-none transition"
+                />
+                {errors.phone && (
+                  <p className="text-red-500 text-sm font-serif mt-1">
+                    {errors.phone}
+                  </p>
+                )}
+              </div>
 
-              <input
-                type="text"
-                placeholder="Street Address"
-                value={address.street}
-                onChange={(e) =>
-                  setAddress({ ...address, street: e.target.value })
-                }
-                className="w-full p-3 border rounded-lg"
-              />
-              {errors.street && (
-                <p className="text-red-500 text-sm">{errors.street}</p>
-              )}
+              <div>
+                <input
+                  type="text"
+                  placeholder="Street Address"
+                  value={address.street}
+                  onChange={(e) =>
+                    setAddress({ ...address, street: e.target.value })
+                  }
+                  className="w-full p-3 border border-gray-300 rounded-lg font-serif text-gray-700 focus:ring-2 focus:ring-purple-300 focus:border-purple-300 focus:outline-none transition"
+                />
+                {errors.street && (
+                  <p className="text-red-500 text-sm font-serif mt-1">
+                    {errors.street}
+                  </p>
+                )}
+              </div>
 
-              <input
-                type="text"
-                placeholder="City"
-                value={address.city}
-                onChange={(e) =>
-                  setAddress({ ...address, city: e.target.value })
-                }
-                className="w-full p-3 border rounded-lg"
-              />
-              {errors.city && (
-                <p className="text-red-500 text-sm">{errors.city}</p>
-              )}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <input
+                    type="text"
+                    placeholder="City"
+                    value={address.city}
+                    onChange={(e) =>
+                      setAddress({ ...address, city: e.target.value })
+                    }
+                    className="w-full p-3 border border-gray-300 rounded-lg font-serif text-gray-700 focus:ring-2 focus:ring-purple-300 focus:border-purple-300 focus:outline-none transition"
+                  />
+                  {errors.city && (
+                    <p className="text-red-500 text-sm font-serif mt-1">
+                      {errors.city}
+                    </p>
+                  )}
+                </div>
 
-              <input
-                type="text"
-                placeholder="Pincode"
-                value={address.pincode}
-                onChange={(e) =>
-                  setAddress({ ...address, pincode: e.target.value })
-                }
-                className="w-full p-3 border rounded-lg"
-              />
-              {errors.pincode && (
-                <p className="text-red-500 text-sm">{errors.pincode}</p>
-              )}
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Pincode"
+                    value={address.pincode}
+                    onChange={(e) =>
+                      setAddress({ ...address, pincode: e.target.value })
+                    }
+                    className="w-full p-3 border border-gray-300 rounded-lg font-serif text-gray-700 focus:ring-2 focus:ring-purple-300 focus:border-purple-300 focus:outline-none transition"
+                  />
+                  {errors.pincode && (
+                    <p className="text-red-500 text-sm font-serif mt-1">
+                      {errors.pincode}
+                    </p>
+                  )}
+                </div>
+              </div>
             </div>
 
             <button
               onClick={handleSaveAddress}
-              className="w-full mt-4 py-3 text-lg font-semibold text-white bg-green-600 rounded-lg hover:bg-green-700 transition"
+              className="w-full mt-6 py-3 text-lg font-serif text-white bg-green-600 rounded-lg hover:bg-green-700 transition shadow-md"
             >
               📍 Save Address
             </button>
           </div>
         ) : (
-          <div className="bg-gray-50 p-4 rounded-lg shadow-md mb-6">
-            <h2 className="text-xl font-semibold text-gray-700 mb-3">
+          <div className="bg-gray-50 p-6 rounded-lg shadow-md mb-8 border border-gray-200">
+            <h2 className="text-xl font-serif text-gray-700 mb-3 border-b pb-2">
               Shipping Address
             </h2>
-            <p className="text-gray-800">
+            <p className="text-gray-800 font-serif leading-relaxed">
               {address.fullName}, {address.street}, {address.city} -{" "}
               {address.pincode}
             </p>
-            <p className="text-gray-600">📞 {address.phone}</p>
+            <p className="text-gray-600 font-serif mt-2">📞 {address.phone}</p>
           </div>
         )}
 
         {/* 💰 Total Amount */}
-        <p className="text-lg font-medium text-gray-800 text-center mb-4">
-          Total Amount:{" "}
-          <span className="text-indigo-600 font-bold">₹{totalAmount}</span>
-        </p>
+        <div className="text-center mb-6">
+          <p className="text-lg font-serif text-gray-800">
+            Total Amount:{" "}
+            <span className="text-purple-600 font-bold text-xl">
+              ₹{totalAmount}
+            </span>
+          </p>
+        </div>
 
         {/* Secure Payment Badge */}
-        <div className="flex justify-center items-center gap-2 text-green-600 font-semibold text-sm mb-4">
+        <div className="flex justify-center items-center gap-2 text-green-600 font-serif mb-6 bg-green-50 py-2 px-4 rounded-lg border border-green-100">
           <span className="text-lg">✅</span> Secure Payment with Razorpay
         </div>
 
         {/* 🚀 Payment Button */}
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-4">
           <button
             onClick={handlePayment}
-            className={`w-full py-3 text-lg font-semibold text-white bg-indigo-600 rounded-lg shadow-lg 
-            hover:bg-indigo-700 transition ${
+            className={`w-full py-3 text-lg font-serif text-white bg-purple-600 rounded-lg shadow-lg 
+            hover:bg-purple-700 transition ${
               !isAddressSaved && "opacity-50 cursor-not-allowed"
             }`}
             disabled={!isAddressSaved}
@@ -204,7 +230,7 @@ const Checkout = () => {
           </button>
           <button
             onClick={() => navigate(-1)}
-            className="w-full py-3 text-lg font-semibold text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition"
+            className="w-full py-3 text-lg font-serif text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition border border-gray-300"
           >
             ⬅️ Back to Cart
           </button>

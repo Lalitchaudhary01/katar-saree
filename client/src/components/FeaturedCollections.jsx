@@ -15,16 +15,16 @@ const FeaturedCollections = () => {
   const [selectedCollection, setSelectedCollection] = useState(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [selectedSize, setSelectedSize] = useState(null);
-  const [selectedColor, setSelectedColor] = useState(null); // Added missing state
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [mainImage, setMainImage] = useState(null);
 
   const hoverTimers = useRef({});
   const { addToCart } = useCart();
   const navigate = useNavigate();
-  const [mainImage, setMainImage] = useState(null); // Added missing state
 
   useEffect(() => {
     if (selectedCollection) {
-      setMainImage(selectedCollection.images[0]); // Set default image when modal opens
+      setMainImage(selectedCollection.images[0]);
     }
   }, [selectedCollection]);
 
@@ -54,25 +54,36 @@ const FeaturedCollections = () => {
   };
 
   return (
-    <section className="py-16 md:py-24 bg-primary bg-opacity-50">
+    <section className="py-16 md:py-24 bg-[#F9F6F0]">
+      {/* Add Cardo font import to the head of your document */}
+      <style>
+        {`
+          @import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&display=swap');
+          
+          .font-cardo {
+            font-family: 'Cardo', serif;
+          }
+        `}
+      </style>
+
       <div className="container mx-auto px-4 text-center">
-        <h2 className="text-3xl md:text-4xl font-semibold text-[#8B6A37] mb-3">
+        <h2 className="text-3xl md:text-5xl font-cardo font-bold text-[#8B6A37] mb-4 tracking-wide">
           Featured Collections
         </h2>
-        <p className="text-neutral-600 max-w-2xl mx-auto mb-6">
+        <p className="font-cardo text-neutral-600 max-w-2xl mx-auto mb-8 italic text-lg">
           Explore our curated selection of premium handcrafted pieces, each
           telling a story of heritage and artistry.
         </p>
-        <div className="w-24 h-1 bg-[#D4AF37] mx-auto"></div>
+        <div className="w-32 h-0.5 bg-[#D4AF37] mx-auto"></div>
       </div>
 
-      <div className="flex flex-wrap justify-center gap-6 mt-12">
+      <div className="flex flex-wrap justify-center gap-8 mt-16">
         {collections
           .slice(0, showAll ? collections.length : 4)
           .map((collection, index) => (
             <div
               key={index}
-              className="group w-64 overflow-hidden shadow-lg rounded-xl bg-white border border-[#E0C097] transition-transform transform hover:scale-105 flex flex-col justify-between cursor-pointer"
+              className="group w-64 overflow-hidden shadow-xl rounded-lg bg-white border border-[#E0C097] transition-transform transform hover:scale-105 flex flex-col justify-between cursor-pointer"
               onMouseEnter={() => handleMouseEnter(index)}
               onMouseLeave={() => handleMouseLeave(index)}
             >
@@ -83,23 +94,24 @@ const FeaturedCollections = () => {
                   className="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110"
                   onClick={() => navigate(`/collection/${index}`)}
                 />
+
                 <button
                   onClick={() => setSelectedCollection(collection)}
-                  className="absolute bottom-2 left-1/2 -translate-x-1/2 p-2 rounded-full bg-white shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  className="absolute bottom-4 left-1/2 -translate-x-1/2 p-3 rounded-full bg-white shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-[#F9F6F0]"
                 >
                   <FaEye className="text-[#D4AF37] text-xl" />
                 </button>
               </div>
 
-              <div className="p-4 flex flex-col flex-grow">
-                <h3 className="text-xl text-[#8B6A37] font-semibold mb-2">
+              <div className="p-5 flex flex-col flex-grow bg-white">
+                <h3 className="text-xl text-[#8B6A37] font-cardo font-bold mb-3">
                   {collection.title}
                 </h3>
-                <p className="text-neutral-600 text-sm flex-grow">
+                <p className="text-neutral-600 text-sm font-cardo flex-grow">
                   {collection.desc}
                 </p>
                 {collection.discountPrice && (
-                  <p className="text-[#8B6A37] font-semibold text-lg mt-2">
+                  <p className="text-[#8B6A37] font-cardo font-bold text-lg mt-3">
                     ₹{collection.discountPrice}
                   </p>
                 )}
@@ -112,7 +124,7 @@ const FeaturedCollections = () => {
         {!showAll && (
           <button
             onClick={() => setShowAll(true)}
-            className="bg-[#8B6A37] text-white px-8 py-3 rounded hover:bg-[#B8860B] transition-all"
+            className="bg-[#8B6A37] text-white px-10 py-3 rounded-md hover:bg-[#B8860B] transition-all font-cardo text-lg tracking-wide"
           >
             Explore All Collections
           </button>
@@ -125,15 +137,15 @@ const FeaturedCollections = () => {
           animate={{ x: 0 }}
           exit={{ x: "100%" }}
           transition={{ duration: 0.3 }}
-          className="fixed top-0 right-0 w-80 md:w-96 h-full bg-white shadow-lg z-50 p-6 overflow-y-auto"
+          className="fixed top-0 right-0 w-80 md:w-96 h-full bg-[#F9F6F0] shadow-lg z-50 p-6 overflow-y-auto font-cardo"
         >
           <button
-            className="absolute top-4 right-4 text-xl text-[#D4AF37]"
+            className="absolute top-4 right-4 text-xl text-[#D4AF37] hover:text-[#8B6A37] transition-colors"
             onClick={() => setSelectedCollection(null)}
           >
             ✖
           </button>
-          <h3 className="text-2xl font-bold text-[#8B6A37] mb-4">
+          <h3 className="text-2xl font-bold text-[#8B6A37] mb-4 font-cardo">
             {selectedCollection.title}
           </h3>
           <div className="mt-4 flex flex-col items-center">
@@ -148,35 +160,37 @@ const FeaturedCollections = () => {
                   key={index}
                   src={img}
                   alt={`Thumbnail ${index + 1}`}
-                  className={`w-16 h-16 object-cover border rounded-lg cursor-pointer ${
-                    mainImage === img ? "border-2 border-black" : ""
+                  className={`w-16 h-16 object-cover border rounded-lg cursor-pointer hover:opacity-80 transition-opacity ${
+                    mainImage === img ? "border-2 border-[#D4AF37]" : ""
                   }`}
                   onClick={() => setMainImage(img)}
                 />
               ))}
             </div>
           </div>
-          <p className="text-[#6B4F27] mt-4">{selectedCollection.desc}</p>
-          <div className="mt-2 text-center">
-            <p className="text-lg font-semibold">
+          <p className="text-[#6B4F27] mt-6 font-cardo italic">
+            {selectedCollection.desc}
+          </p>
+          <div className="mt-4 text-center">
+            <p className="text-lg font-cardo">
               Original Price: <s>₹{selectedCollection.originalPrice}</s>
             </p>
-            <p className="text-xl font-bold text-red-600">
+            <p className="text-xl font-bold text-red-600 font-cardo">
               Discount Price: ₹{selectedCollection.discountPrice} (
               {selectedCollection.discount})
             </p>
           </div>
 
-          <div className="mt-4 text-center">
-            <p className="font-semibold">Select Size:</p>
-            <div className="flex justify-center gap-2 mt-2">
+          <div className="mt-6 text-center">
+            <p className="font-bold font-cardo text-[#8B6A37]">Select Size:</p>
+            <div className="flex justify-center gap-2 mt-3">
               {selectedCollection.sizes?.map((size, index) => (
                 <button
                   key={index}
-                  className={`px-4 py-2 border rounded-lg text-sm ${
+                  className={`px-4 py-2 border font-cardo rounded-md text-sm transition-colors ${
                     selectedSize === size
-                      ? "bg-[#8B6A37] text-white"
-                      : "bg-gray-200"
+                      ? "bg-[#8B6A37] text-white border-[#8B6A37]"
+                      : "bg-white text-[#8B6A37] border-[#D4AF37] hover:bg-[#F9F6F0]"
                   }`}
                   onClick={() => setSelectedSize(size)}
                 >
@@ -186,15 +200,15 @@ const FeaturedCollections = () => {
             </div>
           </div>
 
-          <div className="mt-4 text-center">
-            <p className="font-semibold">Select Color:</p>
-            <div className="flex justify-center gap-3 mt-2">
+          <div className="mt-6 text-center">
+            <p className="font-bold font-cardo text-[#8B6A37]">Select Color:</p>
+            <div className="flex justify-center gap-3 mt-3">
               {selectedCollection.colors?.map((color, index) => (
                 <button
                   key={index}
-                  className={`w-8 h-8 rounded-full border-2 ${
+                  className={`w-8 h-8 rounded-full border-2 transition-all hover:scale-105 ${
                     selectedColor === color
-                      ? "border-black scale-110"
+                      ? "border-[#8B6A37] scale-110"
                       : "border-gray-300"
                   }`}
                   style={{ backgroundColor: color }}
@@ -204,9 +218,9 @@ const FeaturedCollections = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-4 mt-6">
+          <div className="flex items-center justify-center mt-8">
             <button
-              className="bg-[#D4AF37] text-white px-6 py-3 rounded hover:bg-[#B8860B] transition-all flex items-center gap-2"
+              className="bg-[#D4AF37] text-white px-8 py-3 rounded-md hover:bg-[#B8860B] transition-all flex items-center gap-2 font-cardo text-lg shadow-md"
               onClick={() => {
                 if (!selectedSize || !selectedColor) {
                   toast.error(
