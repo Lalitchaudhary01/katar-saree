@@ -8,6 +8,8 @@ import {
   FaRupeeSign,
 } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
+import { HiOutlineMail } from "react-icons/hi";
+import { BsTelephone } from "react-icons/bs";
 
 const Navbar = () => {
   const { cart } = useCart();
@@ -266,9 +268,19 @@ const Navbar = () => {
         {!scrolled && (
           <div className="w-full bg-[#5d4037] text-white py-2 px-4 flex justify-center items-center z-50 relative">
             <div className="flex items-center">
-              <span className="italic font-cardo">
-                Free shipping within India
-              </span>
+              <div className="flex items-center gap-2">
+                <HiOutlineMail className="h-5 w-5 text-white" />
+                <span className="font-cardo text-sm md:text-base">
+                  katanbanarasofficial@gmail.com
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2 ml-4">
+                <BsTelephone className="h-5 w-5 text-white" />
+                <span className="font-cardo text-sm md:text-base">
+                  +91 7860783350
+                </span>
+              </div>
               <button className="absolute right-4 text-white">✕</button>
             </div>
           </div>
