@@ -52,40 +52,44 @@ const Navbar = () => {
 
         {/* Navigation Links */}
         <nav className="flex space-x-6 text-gray-700 font-medium">
-          <a href="/" className="hover:text-[#c98a5e]">
+          <Link to="/" className="hover:text-[#c98a5e]">
             Home
-          </a>
-          {[
-            {
-              title: "Sarees",
-              items: ["Silk Sarees", "Cotton Sarees", "Banarasi Sarees"],
-            },
-            { title: "Lehengas", items: ["Bridal Lehengas", "Party Wear"] },
-          ].map((menu, index) => (
-            <div key={index} className="relative group">
-              <button className="hover:text-[#c98a5e]">{menu.title} ▾</button>
-              <div className="absolute hidden group-hover:block bg-white shadow-lg py-2 w-40">
-                {menu.items.map((item, i) => (
-                  <a
-                    key={i}
-                    href="#"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    {item}
-                  </a>
-                ))}
-              </div>
+          </Link>
+
+          {/* Dropdown for Sarees */}
+          <div className="relative group">
+            <button className="hover:text-[#c98a5e]">Sarees ▾</button>
+            <div className="absolute hidden group-hover:block bg-white shadow-lg py-2 w-40">
+              <Link
+                to="/sarees/silk"
+                className="block px-4 py-2 hover:bg-gray-100"
+              >
+                Silk Sarees
+              </Link>
+              <Link
+                to="/sarees/cotton"
+                className="block px-4 py-2 hover:bg-gray-100"
+              >
+                Cotton Sarees
+              </Link>
+              <Link
+                to="/sarees/banarasi"
+                className="block px-4 py-2 hover:bg-gray-100"
+              >
+                Banarasi Sarees
+              </Link>
             </div>
-          ))}
-          <a href="#" className="hover:text-[#c98a5e]">
+          </div>
+
+          <Link to="/collection" className="hover:text-[#c98a5e]">
             Collections
-          </a>
-          <a href="#" className="hover:text-[#c98a5e]">
+          </Link>
+          <Link to="#" className="hover:text-[#c98a5e]">
             About Us
-          </a>
-          <a href="#" className="hover:text-[#c98a5e]">
+          </Link>
+          <Link to="#" className="hover:text-[#c98a5e]">
             Contact
-          </a>
+          </Link>
         </nav>
 
         {/* Right Side Icons */}

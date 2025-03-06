@@ -17,6 +17,9 @@ import Cart from "./components/Cart";
 import { CartProvider } from "./context/CartContext";
 import Checkout from "./components/Checkout";
 import CollectionDetails from "./components/CollectionDetails";
+import SilkSarees from "./pages/SilkSaree";
+import CottonSarees from "./pages/CottonSarees";
+import BanarasiSarees from "./pages/BanarasiSarees";
 
 function AppContent() {
   const location = useLocation();
@@ -41,6 +44,10 @@ function AppContent() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/collection/:id" element={<CollectionDetails />} />
+        <Route path="/sarees/silk" element={<SilkSarees />} />
+        <Route path="/sarees/cotton" element={<CottonSarees />} />
+        <Route path="/sarees/banarasi" element={<BanarasiSarees />} />
+        <Route path="/collection" element={<FeaturedCollections />} />
       </Routes>
       {/* Footer should not be displayed on CollectionDetails */}
       {location.pathname.startsWith("/collection/") ? null : <Footer />}
