@@ -208,15 +208,26 @@ const FeaturedCollections = () => {
             <button
               className="bg-[#D4AF37] text-white px-6 py-3 rounded hover:bg-[#B8860B] transition-all flex items-center gap-2"
               onClick={() => {
+                if (!selectedSize || !selectedColor) {
+                  toast.error(
+                    "Please select a size and color before adding to cart!"
+                  );
+                  return;
+                }
+
                 addToCart({
+                  id:
+                    selectedCollection.id ||
+                    Math.random().toString(36).substr(2, 9),
                   title: selectedCollection.title,
-                  image: selectedCollection.images[selectedImageIndex],
+                  image: mainImage,
                   price:
                     selectedCollection.discountPrice ||
-                    selectedCollection.price,
+                    selectedCollection.originalPrice,
                   size: selectedSize,
-                  color: selectedColor, // Added color selection
+                  color: selectedColor,
                 });
+
                 toast.success(`${selectedCollection.title} added to cart!`);
               }}
               disabled={!selectedSize || !selectedColor}
