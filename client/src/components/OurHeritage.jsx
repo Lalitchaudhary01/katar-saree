@@ -10,7 +10,7 @@ const OurHeritage = () => {
           </h2>
           <p className="font-secondary text-neutral-600">
             A legacy of craftsmanship spanning generations, preserving the
-            timeless art of Banarasi textiles
+            timeless art of Banarasi textiles.
           </p>
           <div className="w-24 h-0.5 bg-accent mx-auto mt-6"></div>
         </div>
@@ -28,7 +28,7 @@ const OurHeritage = () => {
 
               <div className="absolute bottom-6 left-6 bg-primary p-4 shadow-lg bg-[#FAF3E0]">
                 <p className="text-secondary font-primary text-xl">
-                  Since 1952
+                  Since 1956
                 </p>
                 <p className="text-accent font-secondary text-sm mt-1">
                   Preserving tradition
@@ -42,37 +42,46 @@ const OurHeritage = () => {
               A Legacy of Artistry
             </h3>
             <p className="font-secondary text-neutral-600 mb-6 leading-relaxed">
-              For over seven decades, Katan Banaras has been synonymous with the
-              finest handwoven Banarasi textiles. Our journey began in the
-              narrow lanes of Varanasi, where our founder mastered the art of
-              creating exquisite silk sarees under the guidance of master
-              weavers.
+              For over six decades, Katan Banaras has been a symbol of elegance,
+              carrying forward the rich heritage of Banarasi handloom weaving.
+              Founded in 1956 by Haji Usman Ali, a master weaver, our legacy
+              began in the heart of Varanasi’s weaving community. His dedication
+              to authenticity and intricate craftsmanship laid the foundation
+              for what we are today
             </p>
             <p className="font-secondary text-neutral-600 mb-8 leading-relaxed">
-              Each piece in our collection represents hours of meticulous
-              craftsmanship, with techniques passed down through generations. We
-              work directly with artisan families, ensuring both the
-              preservation of this ancient art form and sustainable livelihoods
-              for our craftspeople.
+              Today, under the leadership of the third generation—Mohammed
+              Sadique Ansari and Mohammed Shahid Ansari—Katan Banaras continues
+              to celebrate the unmatched beauty of handwoven silk. Every saree,
+              suit, and dupatta we create tells a story of tradition, precision,
+              and artistry..
+            </p>
+            <p className="font-secondary text-neutral-600 mb-8 leading-relaxed">
+              We are proud to ensure that every Katan Banaras creation is{" "}
+              <b>
+                100% pure, Silk Mark certified, and lab tested for authenticity
+              </b>
+              . Our Zari work carries a <b>100-year guarantee</b>, making each
+              piece an heirloom for generations to come.
             </p>
 
             <div className="mb-10 grid grid-cols-2 gap-4 text-[#bd7e1f]">
               <FeatureItem
                 icon="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"
                 title="Handcrafted Excellence"
-                description="Each piece meticulously created by our master artisans"
+                description="Each saree is meticulously woven by master artisans, preserving age-old techniques."
               />
               <FeatureItem
                 icon="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
                 title="Ethical Sourcing"
-                description="Pure materials sourced responsibly"
+                description="We source only the finest silk and materials, ensuring sustainable and responsible craftsmanship."
               />
             </div>
 
             <div className="flex space-x-4">
               <a
                 href="#our-story"
-                className="inline-block bg-[#8B6A37] text-primary font-secondary px-6 py-2 rounded-sm hover:bg-opacity-90 transition-all duration-300 text-sm tracking-wider"
+                className="inline-block bg-[#8B6A37] text-white text-primary font-secondary px-6 py-2 rounded-sm hover:bg-opacity-90 transition-all duration-300 text-sm tracking-wider"
               >
                 Our Story
               </a>
@@ -119,39 +128,44 @@ const OurHeritage = () => {
                 Establishment
               </h4>
               <p className="text-gray-700">
-                Founded by Sri Kailash Prasad in the heart of Varanasi with just
-                two looms.
+                Founded by <b>Haji Usman Ali</b> in the heart of Varanasi, Katan
+                Banaras began as a small weaving unit dedicated to crafting pure
+                Banarasi handloom sarees.
               </p>
             </div>
             <div></div> {/* Empty div for alignment */}
             <div></div> {/* Empty div for alignment */}
             <div className="text-right">
               <h4 className="text-[#8B6A37] font-semibold text-lg">
-                Expansion
+                Growth & Legacy
               </h4>
               <p className="text-gray-700">
-                Expanded to 20 looms and began collaborating with master weavers
-                from across Uttar Pradesh.
+                Under the leadership of <b>Haji Mohammad Zakir</b>, the brand
+                expanded, collaborating with skilled artisans to preserve the
+                authenticity of Banarasi textiles.
               </p>
             </div>
             <div className="text-left">
               <h4 className="text-[#8B6A37] font-semibold text-lg">
-                National Recognition
+                Global Reach
               </h4>
               <p className="text-gray-700">
-                Received the National Award for Master Craftsman from the
-                President of India.
+                With <b>Ansar Silk Export</b>, our parent company, we began
+                exporting premium Banarasi fabrics and garments worldwide,
+                showcasing India's rich textile heritage on a global stage.
               </p>
             </div>
             <div></div> {/* Empty div for alignment */}
             <div></div> {/* Empty div for alignment */}
             <div className="text-right">
               <h4 className="text-[#8B6A37] font-semibold text-lg">
-                Global Presence
+                A New Era
               </h4>
               <p className="text-gray-700">
-                Launched international shipping and opened our first
-                international boutique in London.
+                Now led by the third generation—
+                <b>Mohammed Sadique Ansari and Mohammed Shahid Ansari</b>—Katan
+                Banaras continues to uphold its legacy while embracing
+                innovation in design and craftsmanship.
               </p>
             </div>
           </div>

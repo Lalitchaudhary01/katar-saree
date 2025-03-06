@@ -112,7 +112,7 @@ const FeaturedCollections = () => {
         {!showAll && (
           <button
             onClick={() => setShowAll(true)}
-            className="bg-[#D4AF37] text-white px-8 py-3 rounded hover:bg-[#B8860B] transition-all"
+            className="bg-[#8B6A37] text-white px-8 py-3 rounded hover:bg-[#B8860B] transition-all"
           >
             Explore All Collections
           </button>

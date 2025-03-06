@@ -10,18 +10,18 @@ const Craftsmanship = () => {
             The Art of Craftsmanship
           </h2>
           <p className="font-secondary text-neutral-600">
-            Discover the meticulous techniques and artistry behind every Katan
-            Banaras creation
+            Discover the meticulous techniques and artistry behind every{" "}
+            <b>Katan Banaras</b> creation.
           </p>
           <div className="w-24 h-0.5 bg-accent mx-auto mt-6"></div>
         </div>
 
         {/* Craftsmanship Showcase */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20 items-center">
           {/* Video Section */}
-          <div className="relative animate__animated animate__fadeIn">
-            <div className="absolute -top-4 -left-4 w-24 h-24 border-l-2 border-t-2 border-accent opacity-60"></div>
-            <div className="relative bg-neutral-100 shadow-xl aspect-video flex items-center justify-center overflow-hidden">
+          <div className="relative animate__animated animate__fadeIn flex justify-center">
+            <div className="absolute -top-4 -left-4 w-20 h-20 border-l-2 border-t-2 border-accent opacity-60"></div>
+            <div className="relative bg-neutral-100 shadow-xl aspect-video flex items-center justify-center overflow-hidden w-full max-w-[700px]">
               <img
                 src="https://source.unsplash.com/random/800x450/?weaving,silk,saree"
                 alt="The Art of Banarasi Weaving"
@@ -52,21 +52,27 @@ const Craftsmanship = () => {
                 </div>
               </button>
             </div>
-            <div className="absolute -bottom-4 -right-4 w-24 h-24 border-r-2 border-b-2 border-accent opacity-60"></div>
+            <div className="absolute -bottom-4 -right-4 w-20 h-20 border-r-2 border-b-2 border-accent opacity-60"></div>
           </div>
 
           {/* Craftsmanship Description */}
-          <div className="animate__animated animate__fadeIn animate__delay-1s">
-            <h3 className="font-primary text-2xl md:text-3xl text-[#8B6A37] mb-6">
+          <div className="animate__animated animate__fadeIn animate__delay-1s max-w-[700px] mx-auto">
+            <h3 className="font-primary text-2xl md:text-3xl text-[#8B6A37] mb-6 text-center lg:text-left">
               The Weaving Process
             </h3>
-            <p className="font-secondary text-neutral-700 mb-8 leading-relaxed">
-              Every Katan Banaras creation begins with the finest raw materials
-              – pure mulberry silk, zari made from silver and gold, and natural
-              dyes. Our master artisans employ techniques that have been
-              perfected over centuries, with each saree taking anywhere from 15
-              days to 6 months to complete, depending on the intricacy of the
-              design.
+            <p className="font-secondary text-neutral-700 mb-8 leading-relaxed text-center lg:text-left">
+              Every <b>Katan Banaras</b> saree begins with the finest raw
+              materials—
+              <b>
+                {" "}
+                pure mulberry silk, handwoven zari with silver and gold, and
+                natural dyes
+              </b>
+              . Our master artisans, carrying forward a legacy that dates back
+              to <b>1956</b>, use age-old techniques to craft each saree with
+              precision. Depending on the intricacy of the design, a single
+              piece can take anywhere from <b>15 days to 6 months</b> to
+              complete.
             </p>
 
             {/* Steps */}
@@ -74,26 +80,28 @@ const Craftsmanship = () => {
               <StepItem
                 number="1"
                 title="Design Creation"
-                description="Our designers draw inspiration from Varanasi's rich architectural heritage, ancient manuscripts, and nature to create unique motifs and patterns."
+                description="Our designs are deeply inspired by Varanasi’s rich heritage, drawing motifs from Mughal-era architecture, sacred temples, and nature. Each pattern is carefully sketched before the weaving begins."
               />
               <StepItem
                 number="2"
                 title="Yarn Preparation"
-                description="Fine silk threads are carefully selected, dyed using traditional techniques, and prepared for the loom through an intricate process called reeling."
+                description="We use the finest silk threads, dyed using traditional methods to retain their natural sheen and vibrancy. The process of reeling and warping ensures the silk is ready for the loom."
               />
               <StepItem
                 number="3"
                 title="Handloom Weaving"
-                description="Skilled artisans work at traditional pit looms, meticulously weaving each thread to create the intricate patterns and textures that define Banarasi textiles."
+                description="Our artisans work on traditional pit looms, skillfully interweaving silk and zari to create intricate patterns that define authentic Banarasi textiles. Every weave is a reflection of craftsmanship passed down through generations."
               />
             </div>
 
-            <a
-              href="#"
-              className="inline-block bg-[#8B6A37] text-primary font-secondary px-6 py-2 rounded-sm hover:bg-opacity-90 transition-all duration-300 text-sm tracking-wider"
-            >
-              Explore Our Techniques
-            </a>
+            <div className="text-center lg:text-left">
+              <a
+                href="#"
+                className="inline-block bg-[#8B6A37] text-white font-secondary px-6 py-2 rounded-sm hover:bg-opacity-90 transition-all duration-300 text-sm tracking-wider"
+              >
+                Explore Our Techniques
+              </a>
+            </div>
           </div>
         </div>
 
@@ -106,7 +114,7 @@ const Craftsmanship = () => {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-[#8B6A37]">
               <TechniqueCard
-                image="https://source.unsplash.com/random/300x300/?silk,gold,weaving"
+                image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdQpv1_ImrM960mWFp7D9fb5DTVNpQRKb0lQ&s"
                 title="Kadhua Weaving"
                 description="An intricate technique where each motif is individually woven using small shuttles, similar to tapestry weaving."
               />
@@ -193,7 +201,7 @@ const Craftsmanship = () => {
             />
             <a
               href="#"
-              className="inline-block bg-[#8B6A37] text-primary font-secondary px-6 py-3 rounded-sm hover:bg-opacity-90 transition-all duration-300 text-sm tracking-wider"
+              className="inline-block bg-[#8B6A37] text-primary font-secondary px-6 py-3 rounded-sm hover:bg-opacity-90 transition-all duration-300 text-sm tracking-wider text-white"
             >
               Learn About Our Certifications
             </a>
