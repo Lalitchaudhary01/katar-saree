@@ -42,9 +42,9 @@ const Footer = () => {
           <div>
             <h3 className="font-primary text-xl mb-6">Shop</h3>
             <ul className="space-y-3 font-secondary">
-              <FooterLink href="#" text="New Arrivals" />
+              <FooterLink href="/New-arrivals" text="New Arrivals" />
               <FooterLink href="#" text="Best Sellers" />
-              <FooterLink href="#" text="Banarasi Silk Sarees" />
+              <FooterLink href="/sarees/silk" text="Banarasi Silk Sarees" />
               <FooterLink href="#" text="Wedding Collection" />
               <FooterLink href="#" text="Lehengas" />
               <FooterLink href="#" text="Dupattas" />
@@ -56,13 +56,13 @@ const Footer = () => {
           <div>
             <h3 className="font-primary text-xl mb-6">Information</h3>
             <ul className="space-y-3 font-secondary">
-              <FooterLink href="#our-heritage" text="About Us" />
-              <FooterLink href="#featured-collections" text="Collections" />
-              <FooterLink href="#" text="Shipping Policy" />
-              <FooterLink href="#" text="Return Policy" />
-              <FooterLink href="#" text="Privacy Policy" />
-              <FooterLink href="#" text="Terms & Conditions" />
-              <FooterLink href="#footer" text="Contact Us" />
+              <FooterLink href="/about" text="About Us" />
+              <FooterLink href="/collection" text="Collections" />
+              <FooterLink href="/shipping-policy" text="Shipping Policy" />
+              <FooterLink href="/return-policy" text="Return Policy" />
+              <FooterLink href="/privacy-policy" text="Privacy Policy" />
+              <FooterLink href="/terms-conditions" text="Terms & Conditions" />
+              <FooterLink href="/contact" text="Contact Us" />
             </ul>
           </div>
 

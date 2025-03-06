@@ -183,7 +183,7 @@ const Craftsmanship = () => {
         </div>
 
         {/* Certification Banner */}
-        <div className="bg-accent bg-opacity-10 p-8 md:p-12 text-center relative overflow-hidden animate__animated animate__fadeIn">
+        {/* <div className="bg-accent bg-opacity-10 p-8 md:p-12 text-center relative overflow-hidden animate__animated animate__fadeIn">
           <div className="absolute top-0 left-0 w-full h-full pattern-bg opacity-5"></div>
           <div className="relative z-10">
             <h3 className="font-primary text-2xl md:text-3xl text-[#8B6A37] mb-6">
@@ -206,7 +206,7 @@ const Craftsmanship = () => {
               Learn About Our Certifications
             </a>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

@@ -15,6 +15,13 @@ const Navbar = () => {
   const { cart } = useCart();
   const totalItems = cart.length;
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
+
+  // Filtered Sarees List
+  const filteredSarees = silkSareesData.filter((saree) =>
+    saree.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <>

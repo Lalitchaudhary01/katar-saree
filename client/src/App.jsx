@@ -22,6 +22,10 @@ import CottonSarees from "./pages/CottonSarees";
 import BanarasiSarees from "./pages/BanarasiSarees";
 import About from "./components/About";
 import Contact from "./components/Contact";
+import PrivacyPolicy from "./components/policies/PrivacyPolicy";
+import ReturnPolicy from "./components/policies/ReturnPolicy";
+import ShippingPolicy from "./components/policies/ShippingPolicy";
+import TermsConditions from "./components/policies/TermsConditions";
 
 function AppContent() {
   const location = useLocation();
@@ -50,8 +54,13 @@ function AppContent() {
         <Route path="/sarees/cotton" element={<CottonSarees />} />
         <Route path="/sarees/banarasi" element={<BanarasiSarees />} />
         <Route path="/collection" element={<FeaturedCollections />} />
+        <Route path="/new-arrivals" element={<NewArrivals />} />
         <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact/>} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/return-policy" element={<ReturnPolicy />} />
+        <Route path="/shipping-policy" element={<ShippingPolicy />} />
+        <Route path="/terms-conditions" element={<TermsConditions />} />
       </Routes>
       {/* Footer should not be displayed on CollectionDetails */}
       {location.pathname.startsWith("/collection/") ? null : <Footer />}
