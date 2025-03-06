@@ -54,7 +54,7 @@ const FeaturedCollections = () => {
   };
 
   return (
-    <section className="py-16 md:py-24 bg-[#F9F6F0]">
+    <section className="py-16 md:py-24 bg-white">
       {/* Add Cardo font import to the head of your document */}
       <style>
         {`

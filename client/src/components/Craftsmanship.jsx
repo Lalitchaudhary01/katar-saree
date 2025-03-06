@@ -2,7 +2,7 @@ import React from "react";
 
 const Craftsmanship = () => {
   return (
-    <section className="py-16 md:py-24 bg-primary bg-opacity-50 bg-[#FAF3E0]">
+    <section className="py-16 md:py-24 bg-primary bg-opacity-50 bg-white">
       <div className="container mx-auto px-4">
         {/* Section Heading */}
         <div className="max-w-4xl mx-auto text-center mb-16">
