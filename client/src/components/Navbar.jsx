@@ -104,6 +104,14 @@ const Navbar = () => {
       </ul>
     </div>
   );
+  const handleLogoClick = () => {
+    if (window.location.pathname === "/") {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  };
 
   // Shopping Categories Data
   const shopData = [
@@ -454,7 +462,11 @@ const Navbar = () => {
 
             {/* Center Logo */}
             <div>
-              <Link to="/" className="hover:opacity-90 transition-opacity">
+              <Link
+                to="/"
+                className="hover:opacity-90 transition-opacity"
+                onClick={handleLogoClick}
+              >
                 <img
                   src="/KatanBanarasp.png"
                   alt="KATAN "
