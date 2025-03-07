@@ -92,16 +92,23 @@ const Navbar = () => {
         {title}
       </h3>
       <ul>
-        {items.map((item, index) => (
-          <li key={index} className="mb-2">
-            <Link
-              to={item.link}
-              className="text-[#6d4c41] hover:text-[#8b5e3c] font-cardo text-sm transition-colors duration-200"
-            >
-              {item.name}
-            </Link>
-          </li>
-        ))}
+        {items.map((item, index) => {
+          // Transform the item name to have only first letter capitalized
+          const formattedName =
+            item.name.charAt(0).toUpperCase() +
+            item.name.slice(1).toLowerCase();
+
+          return (
+            <li key={index} className="mb-2">
+              <Link
+                to={item.link}
+                className="text-[#6d4c41] hover:text-[#8b5e3c] font-cardo text-sm transition-colors duration-200"
+              >
+                {formattedName}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

@@ -76,15 +76,15 @@ const FeaturedCollections = () => {
       </style>
 
       <div className="container mx-auto px-4 text-center">
-        <h2 className="text-3xl md:text-5xl font-cardo font-bold text-[#8B6A37] mb-4 tracking-wide">
+        <h2 className="text-3xl md:text-5xl font-cardo font-bold text-black mb-4 tracking-wide">
           Featured Collections
         </h2>
-        <p className="font-cardo text-neutral-600 max-w-2xl mx-auto mb-8 italic text-lg whitespace-nowrap">
+        <p className="font-cardo text-neutral-900 max-w-2xl mx-auto mb-8 italic text-lg whitespace-nowrap">
           Explore our curated selection of premium handcrafted pieces, each
           telling a story of heritage and artistry.
         </p>
 
-        <div className="w-32 h-0.5 bg-[#D4AF37] mx-auto"></div>
+        <div className="w-32 h-0.5 bg-black mx-auto"></div>
       </div>
 
       <div className="flex flex-wrap justify-center gap-8 mt-16">
@@ -93,7 +93,7 @@ const FeaturedCollections = () => {
           .map((collection, index) => (
             <motion.div
               key={index}
-              className="group w-64 overflow-hidden shadow-2xl rounded-lg bg-white border border-[#E0C097] transition-transform transform hover:scale-105 flex flex-col justify-between cursor-pointer card-3d"
+              className="group w-64 overflow-hidden shadow-2xl rounded-lg bg-white border border-[#000000] transition-transform transform hover:scale-105 flex flex-col justify-between cursor-pointer card-3d"
               onMouseEnter={() => handleMouseEnter(index)}
               onMouseLeave={() => handleMouseLeave(index)}
               whileHover={{ scale: 1.05, rotateY: 10, rotateX: 10 }}
@@ -113,19 +113,19 @@ const FeaturedCollections = () => {
                   className="absolute bottom-4 left-1/2 -translate-x-1/2 p-3 rounded-full bg-white shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-[#F9F6F0]"
                   whileHover={{ scale: 1.1 }}
                 >
-                  <FaEye className="text-[#D4AF37] text-xl" />
+                  <FaEye className="text-black text-xl" />
                 </motion.button>
               </div>
 
               <div className="p-5 flex flex-col flex-grow bg-white">
-                <h3 className="text-xl text-[#8B6A37] font-cardo font-bold mb-3">
+                <h3 className="text-xl text-black font-cardo font-bold mb-3">
                   {collection.title}
                 </h3>
-                <p className="text-neutral-600 text-sm font-cardo flex-grow">
+                <p className="text-neutral-900 text-sm font-cardo flex-grow">
                   {collection.desc}
                 </p>
                 {collection.discountPrice && (
-                  <p className="text-[#8B6A37] font-cardo font-bold text-lg mt-3">
+                  <p className="text-black font-cardo font-bold text-lg mt-3">
                     ₹{collection.discountPrice}
                   </p>
                 )}
@@ -138,7 +138,7 @@ const FeaturedCollections = () => {
         {!showAll && (
           <motion.button
             onClick={() => setShowAll(true)}
-            className="bg-[#8B6A37] text-white px-10 py-3 rounded-md hover:bg-[#B8860B] transition-all font-cardo text-lg tracking-wide shadow-lg"
+            className="bg-black text-white px-10 py-3 rounded-md hover:bg-black-900 transition-all font-cardo text-lg tracking-wide shadow-lg"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
