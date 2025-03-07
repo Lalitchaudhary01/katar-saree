@@ -186,7 +186,7 @@ const FeaturedCollections = () => {
               ))}
             </div>
           </div>
-          <p className="text-[#6B4F27] mt-6 font-cardo italic">
+          <p className="text-gray-900 mt-6 font-cardo italic">
             {selectedCollection.desc}
           </p>
           <div className="mt-4 ">
@@ -196,7 +196,7 @@ const FeaturedCollections = () => {
                 ₹{selectedCollection.originalPrice}
               </s>
             </p>
-            <p className="text-xl font-bold text-[#8B6A37]">
+            <p className="text-xl font-bold text-black">
               ₹{selectedCollection.discountPrice}{" "}
               <span className="text-sm text-red-600">
                 ({selectedCollection.discount} off)
@@ -205,15 +205,15 @@ const FeaturedCollections = () => {
           </div>
 
           <div className="mt-6 ">
-            <p className="font-bold font-cardo text-[#8B6A37]">Select Size:</p>
+            <p className="font-bold font-cardo text-black">Select Size:</p>
             <div className="flex  gap-2 mt-3">
               {selectedCollection.sizes?.map((size, index) => (
                 <motion.button
                   key={index}
                   className={`px-4 py-2 border font-cardo rounded-md text-sm transition-colors ${
                     selectedSize === size
-                      ? "bg-[#8B6A37] text-white border-[#8B6A37]"
-                      : "bg-white text-[#8B6A37] border-[#D4AF37] hover:bg-[#F9F6F0]"
+                      ? "bg-black text-white border-black"
+                      : "bg-white text-[#8B6A37] border-black hover:bg-[#F9F6F0]"
                   }`}
                   onClick={() => setSelectedSize(size)}
                   whileHover={{ scale: 1.05 }}
@@ -225,14 +225,14 @@ const FeaturedCollections = () => {
           </div>
 
           <div className="mt-6 text-center">
-            <p className="font-bold font-cardo text-[#8B6A37]">Select Color:</p>
+            <p className="font-bold font-cardo text-black">Select Color:</p>
             <div className="flex  gap-3 mt-3">
               {selectedCollection.colors?.map((color, index) => (
                 <motion.button
                   key={index}
                   className={`w-8 h-8 rounded-full border-2 transition-all hover:scale-105 ${
                     selectedColor === color
-                      ? "border-[#8B6A37] scale-110"
+                      ? "border-black scale-110"
                       : "border-gray-300"
                   }`}
                   style={{ backgroundColor: color }}
@@ -245,7 +245,7 @@ const FeaturedCollections = () => {
 
           <div className="flex items-center justify-center mt-8">
             <motion.button
-              className="bg-[#D4AF37] text-white px-8 py-3 rounded-md hover:bg-[#B8860B] transition-all flex items-center gap-2 font-cardo text-lg shadow-md"
+              className="bg-black text-white px-8 py-3 rounded-md hover:bg-black transition-all flex items-center gap-2 font-cardo text-lg shadow-md"
               onClick={() => {
                 if (!selectedSize || !selectedColor) {
                   toast.error(
