@@ -10,6 +10,7 @@ import {
 
 import { useCart } from "../context/CartContext";
 import { FaEnvelope, FaPhone } from "react-icons/fa";
+import { SlArrowDown } from "react-icons/sl";
 
 const Navbar = () => {
   const { cart } = useCart();
@@ -415,7 +416,10 @@ const Navbar = () => {
                   to="/"
                   className="hover:text-[#8b5e3c] flex items-center transition-colors"
                 >
-                  SHOP <span className="ml-1">▼</span>
+                  SHOP{" "}
+                  <span className="ml-1">
+                    <SlArrowDown />
+                  </span>
                 </Link>
                 <DropdownMenu>
                   {shopData.map((category, idx) => (
@@ -433,7 +437,10 @@ const Navbar = () => {
                   to="/collections"
                   className="hover:text-[#8b5e3c] flex items-center transition-colors"
                 >
-                  COLLECTIONS <span className="ml-1">▼</span>
+                  COLLECTIONS{" "}
+                  <span className="ml-1">
+                    <SlArrowDown />
+                  </span>
                 </Link>
                 <DropdownMenu>
                   {collectionsData.map((category, idx) => (
@@ -486,9 +493,9 @@ const Navbar = () => {
                 onClick={handleLogoClick}
               >
                 <img
-                  src="/KatanBanarasp.png"
+                  src="/katan.png"
                   alt="KATAN "
-                  className="h-14 object-contain"
+                  className="h-16 w-30 object-contain"
                 />
               </Link>
             </div>
@@ -504,7 +511,10 @@ const Navbar = () => {
                       to="/campaigns"
                       className="hover:text-[#8b5e3c] flex items-center transition-colors"
                     >
-                      CAMPAIGNS <span className="ml-1">▼</span>
+                      CAMPAIGNS{" "}
+                      <span className="ml-1">
+                        <SlArrowDown />
+                      </span>
                     </Link>
                     <DropdownMenu align="right">
                       {campaignsData.map(
@@ -562,7 +572,10 @@ const Navbar = () => {
                       to="/about"
                       className="hover:text-[#8b5e3c] flex items-center transition-colors"
                     >
-                      ABOUT US <span className="ml-1">▼</span>
+                      ABOUT US{" "}
+                      <span className="ml-1">
+                        <SlArrowDown />
+                      </span>
                     </Link>
                     {/* Change to align="right" to keep it from overflowing left */}
                     <DropdownMenu align="right">

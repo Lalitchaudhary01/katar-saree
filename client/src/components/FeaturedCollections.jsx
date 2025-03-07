@@ -224,7 +224,7 @@ const FeaturedCollections = () => {
             </div>
           </div>
 
-          <div className="mt-6 ">
+          <div className="mt-6 text-center">
             <p className="font-bold font-cardo text-[#8B6A37]">Select Color:</p>
             <div className="flex  gap-3 mt-3">
               {selectedCollection.colors?.map((color, index) => (
