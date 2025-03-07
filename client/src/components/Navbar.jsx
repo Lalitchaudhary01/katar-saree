@@ -7,6 +7,7 @@ import {
   FaShoppingCart,
   FaRupeeSign,
 } from "react-icons/fa";
+
 import { useCart } from "../context/CartContext";
 import { FaEnvelope, FaPhone } from "react-icons/fa";
 

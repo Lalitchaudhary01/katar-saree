@@ -189,19 +189,24 @@ const FeaturedCollections = () => {
           <p className="text-[#6B4F27] mt-6 font-cardo italic">
             {selectedCollection.desc}
           </p>
-          <div className="mt-4 text-center">
-            <p className="text-lg font-cardo">
-              Original Price: <s>₹{selectedCollection.originalPrice}</s>
+          <div className="mt-4 ">
+            <p className="text-lg">
+              Original Price:{" "}
+              <s className="text-gray-500">
+                ₹{selectedCollection.originalPrice}
+              </s>
             </p>
-            <p className="text-xl font-bold text-red-600 font-cardo">
-              Discount Price: ₹{selectedCollection.discountPrice} (
-              {selectedCollection.discount})
+            <p className="text-xl font-bold text-[#8B6A37]">
+              ₹{selectedCollection.discountPrice}{" "}
+              <span className="text-sm text-red-600">
+                ({selectedCollection.discount} off)
+              </span>
             </p>
           </div>
 
-          <div className="mt-6 text-center">
+          <div className="mt-6 ">
             <p className="font-bold font-cardo text-[#8B6A37]">Select Size:</p>
-            <div className="flex justify-center gap-2 mt-3">
+            <div className="flex  gap-2 mt-3">
               {selectedCollection.sizes?.map((size, index) => (
                 <motion.button
                   key={index}
@@ -219,9 +224,9 @@ const FeaturedCollections = () => {
             </div>
           </div>
 
-          <div className="mt-6 text-center">
+          <div className="mt-6 ">
             <p className="font-bold font-cardo text-[#8B6A37]">Select Color:</p>
-            <div className="flex justify-center gap-3 mt-3">
+            <div className="flex  gap-3 mt-3">
               {selectedCollection.colors?.map((color, index) => (
                 <motion.button
                   key={index}
