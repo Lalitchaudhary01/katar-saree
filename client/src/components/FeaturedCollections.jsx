@@ -213,7 +213,7 @@ const FeaturedCollections = () => {
                   className={`px-4 py-2 border font-cardo rounded-md text-sm transition-colors ${
                     selectedSize === size
                       ? "bg-black text-white border-black"
-                      : "bg-white text-[#8B6A37] border-black hover:bg-[#F9F6F0]"
+                      : "bg-white text-black border-black hover:bg-[#F9F6F0]"
                   }`}
                   onClick={() => setSelectedSize(size)}
                   whileHover={{ scale: 1.05 }}
