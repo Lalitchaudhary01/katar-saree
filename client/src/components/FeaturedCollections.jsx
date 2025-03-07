@@ -156,12 +156,12 @@ const FeaturedCollections = () => {
           className="fixed top-0 right-0 w-80 md:w-96 h-full bg-[#F9F6F0] shadow-lg z-50 p-6 overflow-y-auto font-cardo"
         >
           <button
-            className="absolute top-4 right-4 text-xl text-[#D4AF37] hover:text-[#8B6A37] transition-colors"
+            className="absolute top-4 right-4 text-xl text-black hover:text-[#8B6A37] transition-colors"
             onClick={() => setSelectedCollection(null)}
           >
             ✖
           </button>
-          <h3 className="text-2xl font-bold text-[#8B6A37] mb-4 font-cardo">
+          <h3 className="text-2xl font-bold text-black mb-4 font-cardo">
             {selectedCollection.title}
           </h3>
           <div className="mt-4 flex flex-col items-center">
@@ -178,7 +178,7 @@ const FeaturedCollections = () => {
                   src={img}
                   alt={`Thumbnail ${index + 1}`}
                   className={`w-16 h-16 object-cover border rounded-lg cursor-pointer hover:opacity-80 transition-opacity ${
-                    mainImage === img ? "border-2 border-[#D4AF37]" : ""
+                    mainImage === img ? "border-2 border-[#0a0a09]" : ""
                   }`}
                   onClick={() => setMainImage(img)}
                   whileHover={{ scale: 1.1 }}
