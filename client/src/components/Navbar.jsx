@@ -96,7 +96,7 @@ const Navbar = () => {
           <li key={index} className="mb-2">
             <Link
               to={item.link}
-              className="text-[#6d4c41] hover:text-[#8b5e3c] font-cardo text-sm transition-colors duration-200 lowercase"
+              className="text-[#6d4c41] hover:text-[#8b5e3c] font-cardo text-sm transition-colors duration-200"
             >
               {item.name}
             </Link>
