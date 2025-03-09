@@ -87,7 +87,7 @@ const FeaturedCollections = () => {
         <div className="w-32 h-0.5 bg-black mx-auto"></div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 px-8 mt-16">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 px-8 mt-16 ">
         {collections
           .slice(0, showAll ? collections.length : 4) // Sirf 4 items display kar raha hai
           .map((collection, index) => (

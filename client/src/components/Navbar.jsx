@@ -409,11 +409,12 @@ const Navbar = () => {
         {/* Main Navigation - Fixed on scroll */}
         <div
           className={`w-full bg-white border-t border-b border-gray-200 py-6 px-6 
-                    ${
-                      scrolled
-                        ? "fixed top-0 left-0 shadow-md z-50 transition-all duration-300"
-                        : ""
-                    }`}
+            ${
+              scrolled
+                ? "fixed top-0 left-0  right-0 shadow-md z-50 transition-all duration-300 w-full"
+                : ""
+            }`}
+          style={{ transition: "all 0.3s ease" }}
         >
           <div className="relative flex justify-between items-center px-40">
             {/* Left Navigation */}
