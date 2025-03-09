@@ -79,7 +79,7 @@ const FeaturedCollections = () => {
         <h2 className="text-3xl md:text-5xl font-cardo font-bold text-black mb-4 tracking-wide">
           Featured Collections
         </h2>
-        <p className="font-cardo text-neutral-900 max-w-2xl mx-auto mb-8 italic text-lg whitespace-nowrap">
+        <p className="font-cardo text-neutral-900 max-w-2xl mx-auto mb-8  text-lg whitespace-nowrap">
           Explore our curated selection of premium handcrafted pieces, each
           telling a story of heritage and artistry.
         </p>
@@ -87,50 +87,41 @@ const FeaturedCollections = () => {
         <div className="w-32 h-0.5 bg-black mx-auto"></div>
       </div>
 
-      <div className="flex flex-wrap justify-center gap-8 mt-16">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 px-8 mt-16">
         {collections
-          .slice(0, showAll ? collections.length : 4)
+          .slice(0, showAll ? collections.length : 4) // Sirf 4 items display kar raha hai
           .map((collection, index) => (
-            <motion.div
+            <div
               key={index}
-              className="group w-64 overflow-hidden shadow-2xl rounded-lg bg-white border border-[#000000] transition-transform transform hover:scale-105 flex flex-col justify-between cursor-pointer card-3d"
-              onMouseEnter={() => handleMouseEnter(index)}
-              onMouseLeave={() => handleMouseLeave(index)}
-              whileHover={{ scale: 1.05, rotateY: 10, rotateX: 10 }}
-              transition={{ type: "spring", stiffness: 300 }}
+              className="group w-full max-w-[350px] mx-auto overflow-hidden shadow-xl rounded-2xl bg-white flex flex-col justify-between cursor-pointer"
             >
-              <div className="relative overflow-hidden">
-                <motion.img
+              <div className="relative overflow-hidden rounded-t-2xl">
+                <img
                   src={collection.images[currentIndexes[index]]}
                   alt={collection.title}
-                  className="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="w-full h-[500px] object-cover rounded-t-2xl"
                   onClick={() => navigate(`/collection/${index}`)}
-                  whileHover={{ scale: 1.1 }}
                 />
 
-                <motion.button
+                <button
                   onClick={() => setSelectedCollection(collection)}
-                  className="absolute bottom-4 left-1/2 -translate-x-1/2 p-3 rounded-full bg-white shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-[#F9F6F0]"
-                  whileHover={{ scale: 1.1 }}
+                  className="absolute bottom-4 left-1/2 -translate-x-1/2 p-3 rounded-full bg-white shadow-lg opacity-90 hover:opacity-100 transition-all duration-300 hover:bg-gray-100"
                 >
                   <FaEye className="text-black text-xl" />
-                </motion.button>
+                </button>
               </div>
 
-              <div className="p-5 flex flex-col flex-grow bg-white">
-                <h3 className="text-xl text-black font-cardo font-bold mb-3">
+              <div className="p-6 flex flex-col flex-grow bg-white rounded-b-2xl">
+                <h3 className="text-2xl text-black font-cardo font-bold mb-3">
                   {collection.title}
                 </h3>
-                <p className="text-neutral-900 text-sm font-cardo flex-grow">
-                  {collection.desc}
-                </p>
                 {collection.discountPrice && (
-                  <p className="text-black font-cardo font-bold text-lg mt-3">
+                  <p className="text-black font-cardo font-semibold text-lg mt-2">
                     ₹{collection.discountPrice}
                   </p>
                 )}
               </div>
-            </motion.div>
+            </div>
           ))}
       </div>
 

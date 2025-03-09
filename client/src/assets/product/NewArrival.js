@@ -3,9 +3,10 @@ const newArrivals = [
     id: 9,
     title: "Royal Purple Kanjivaram Silk",
     images: [
-      "/images/purple1.jpg",
-      "/images/purple2.jpg",
-      "/images/purple3.jpg",
+      "/images/green1.jpg",
+      "/images/green2.jpg",
+      "/images/green3.jpg",
+      "/images/green4.jpg",
     ],
     desc: "Handwoven Kanjivaram silk saree with pure gold zari work, perfect for grand celebrations.",
     originalPrice: 25999,
@@ -18,7 +19,12 @@ const newArrivals = [
   {
     id: 10,
     title: "Pastel Peach Organza Saree",
-    images: ["/images/peach1.jpg", "/images/peach2.jpg", "/images/peach3.jpg"],
+    images: [
+      "/images/green1.jpg",
+      "/images/green2.jpg",
+      "/images/green3.jpg",
+      "/images/green4.jpg",
+    ],
     desc: "A beautifully crafted pastel peach organza saree with floral embroidery and pearl detailing.",
     originalPrice: 18999,
     discountPrice: 15999, // ₹15,999
@@ -30,7 +36,12 @@ const newArrivals = [
   {
     id: 11,
     title: "Classic Red Banarasi Silk",
-    images: ["/images/red1.jpg", "/images/red2.jpg"],
+    images: [
+      "/images/maroon1.jpg",
+      "/images/maroon2.jpg",
+      "/images/maroon3.jpg",
+      "/images/maroon5.jpg",
+    ],
     desc: "An elegant red Banarasi silk saree with golden zari motifs, perfect for weddings and festivals.",
     originalPrice: 22999,
     discountPrice: 19999, // ₹19,999
@@ -43,9 +54,10 @@ const newArrivals = [
     id: 12,
     title: "Sapphire Blue Satin Georgette",
     images: [
-      "/images/sapphire1.jpg",
-      "/images/sapphire2.jpg",
-      "/images/sapphire3.jpg",
+      "/images/maroon1.jpg",
+      "/images/maroon2.jpg",
+      "/images/maroon3.jpg",
+      "/images/maroon5.jpg",
     ],
     desc: "A luxurious satin georgette saree in sapphire blue, enhanced with crystal embellishments.",
     originalPrice: 14999,
@@ -58,7 +70,12 @@ const newArrivals = [
   {
     id: 13,
     title: "Ivory White Chikankari Saree",
-    images: ["/images/white1.jpg", "/images/white2.jpg"],
+    images: [
+      "/images/maroon1.jpg",
+      "/images/maroon2.jpg",
+      "/images/maroon3.jpg",
+      "/images/maroon5.jpg",
+    ],
     desc: "Pure white Lucknowi Chikankari saree with fine hand embroidery, making it a timeless masterpiece.",
     originalPrice: 17999,
     discountPrice: 14999, // ₹14,999
@@ -70,7 +87,12 @@ const newArrivals = [
   {
     id: 14,
     title: "Blush Pink Soft Silk Saree",
-    images: ["/images/blush1.jpg", "/images/blush2.jpg", "/images/blush3.jpg"],
+    images: [
+      "/images/maroon1.jpg",
+      "/images/maroon2.jpg",
+      "/images/maroon3.jpg",
+      "/images/maroon5.jpg",
+    ],
     desc: "A delicate blush pink soft silk saree with silver zari work, ideal for an elegant evening look.",
     originalPrice: 19999,
     discountPrice: 16999, // ₹16,999

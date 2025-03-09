@@ -320,10 +320,10 @@ const Navbar = () => {
               <div className="flex items-center space-x-2 space-y-2">
                 <FaPhone />
                 <a
-                  href="tel:+919876543210"
+                  href="tel:+917860783350"
                   className="hover:underline space-y-2"
                 >
-                  +91 98765 43210
+                  +91 7860783350
                 </a>
               </div>
             </div>
@@ -334,10 +334,10 @@ const Navbar = () => {
                 to="/search"
                 className="flex items-center hover:text-[#8b5e3c] transition-colors"
               >
-                <FaSearch size={16} />
-                <span className="ml-2 uppercase text-xs tracking-wide">
+                <FaSearch size={18} />
+                {/* <span className="ml-2 uppercase text-xs tracking-wide">
                   SEARCH
-                </span>
+                </span> */}
               </Link>
 
               <div className="flex items-center relative" ref={currencyRef}>
@@ -370,20 +370,20 @@ const Navbar = () => {
                 to="/login"
                 className="flex items-center hover:text-[#8b5e3c] transition-colors"
               >
-                <FaUser size={16} />
-                <span className="ml-2 uppercase text-xs tracking-wide">
+                <FaUser size={18} />
+                {/* <span className="ml-2 uppercase text-xs tracking-wide">
                   LOGIN
-                </span>
+                </span> */}
               </Link>
 
               <Link
                 to="/wishlist"
                 className="flex items-center hover:text-[#8b5e3c] transition-colors"
               >
-                <FaHeart size={16} />
-                <span className="ml-2 uppercase text-xs tracking-wide">
+                <FaHeart size={18} />
+                {/* <span className="ml-2 uppercase text-xs tracking-wide">
                   WISHLIST
-                </span>
+                </span> */}
               </Link>
 
               <Link
@@ -391,16 +391,16 @@ const Navbar = () => {
                 className="flex items-center hover:text-[#8b5e3c] transition-colors"
               >
                 <div className="relative">
-                  <FaShoppingCart size={16} />
+                  <FaShoppingCart size={20} />
                   {totalItems > 0 && (
                     <span className="absolute -top-2 -right-2 bg-[#c98a5e] text-white text-xs font-bold px-1.5 rounded-full">
                       {totalItems}
                     </span>
                   )}
                 </div>
-                <span className="ml-2 uppercase text-xs tracking-wide">
+                {/* <span className="ml-2 uppercase text-xs tracking-wide">
                   CART
-                </span>
+                </span> */}
               </Link>
             </div>
           </div>
@@ -415,16 +415,16 @@ const Navbar = () => {
                         : ""
                     }`}
         >
-          <div className="flex justify-between items-center">
+          <div className="relative flex justify-between items-center px-40">
             {/* Left Navigation */}
-            <div className="flex ml-56 space-x-7 text-gray-700 uppercase tracking-wide text-sm">
+            <div className="flex space-x-5 text-gray-700 uppercase tracking-wide text-lg font-bold">
               <div className="relative group">
                 <Link
                   to="/"
                   className="hover:text-[#8b5e3c] flex items-center transition-colors"
                 >
                   SHOP{" "}
-                  <span className="ml-1">
+                  <span className="ml-1 transition-transform duration-300 group-hover:rotate-180">
                     <SlArrowDown />
                   </span>
                 </Link>
@@ -445,7 +445,7 @@ const Navbar = () => {
                   className="hover:text-[#8b5e3c] flex items-center transition-colors"
                 >
                   COLLECTIONS{" "}
-                  <span className="ml-1">
+                  <span className="ml-1 transition-transform duration-300 group-hover:rotate-180">
                     <SlArrowDown />
                   </span>
                 </Link>
@@ -459,41 +459,10 @@ const Navbar = () => {
                   ))}
                 </DropdownMenu>
               </div>
-
-              {/* <div className="relative group">
-                <Link
-                  to="/campaigns"
-                  className="hover:text-[#8b5e3c] flex items-center transition-colors"
-                >
-                  CAMPAIGNS <span className="ml-1">▼</span>
-                </Link>
-                <DropdownMenu>
-                  {campaignsData.map(
-                    (category, idx) =>
-                      category.title && (
-                        <DropdownCategory
-                          key={idx}
-                          title={category.title}
-                          items={category.items}
-                        />
-                      )
-                  )}
-                  <div>
-                    <img
-                      src="/campaign-image-1.jpg"
-                      alt="Silk & Wool"
-                      className="h-64 w-64 object-cover"
-                    />
-                    <p className="text-center mt-2 font-cardo text-[#5d4037]">
-                      SILK & WOOL
-                    </p>
-                  </div>
-                </DropdownMenu>
-              </div> */}
             </div>
 
-            {/* Center Logo */}
-            <div className="mx-14 ">
+            {/* Center Logo (Absolute Centered) */}
+            <div className="absolute left-1/2 transform -translate-x-1/2">
               <Link
                 to="/"
                 className="hover:opacity-90 transition-opacity"
@@ -501,78 +470,38 @@ const Navbar = () => {
               >
                 <img
                   src="/katan.png"
-                  alt="KATAN "
+                  alt="KATAN"
                   className="h-16 w-30 object-contain"
                 />
               </Link>
             </div>
 
             {/* Right Navigation */}
-            <div className="flex space-x-7 mr-56 text-gray-700 uppercase tracking-wide text-sm">
-              {/* Show these menu items when not scrolled */}
+            <div className="flex space-x-5 text-gray-700 uppercase tracking-wide text-lg font-bold">
               {!scrolled ? (
                 <>
-                  {/* //campaign */}
                   <div className="relative group">
                     <Link
                       to="/campaigns"
                       className="hover:text-[#8b5e3c] flex items-center transition-colors"
                     >
                       CAMPAIGNS{" "}
-                      <span className="ml-1">
+                      <span className="ml-1 transition-transform duration-300 group-hover:rotate-180">
                         <SlArrowDown />
                       </span>
                     </Link>
                     <DropdownMenu align="right">
-                      {campaignsData.map(
-                        (category, idx) =>
-                          category.title && (
-                            <DropdownCategory
-                              key={idx}
-                              title={category.title}
-                              items={category.items}
-                            />
-                          )
+                      {campaignsData.map((category, idx) =>
+                        category.title ? (
+                          <DropdownCategory
+                            key={idx}
+                            title={category.title}
+                            items={category.items}
+                          />
+                        ) : null
                       )}
                     </DropdownMenu>
                   </div>
-                  {/* Craft dropdown - update alignment to right */}
-                  {/* <div className="relative group">
-                    <Link
-                      to="/craft"
-                      className="hover:text-[#8b5e3c] flex items-center transition-colors"
-                    >
-                      CRAFT <span className="ml-1">▼</span>
-                    </Link>
-                    <DropdownMenu align="right">
-                      {craftData.map((category, idx) => (
-                        <DropdownCategory
-                          key={idx}
-                          title={category.title}
-                          items={category.items}
-                        />
-                      ))}
-                    </DropdownMenu>
-                  </div> */}
-
-                  {/* Stories dropdown - update alignment to right */}
-                  {/* <div className="relative group">
-                    <Link
-                      to="/stories"
-                      className="hover:text-[#8b5e3c] flex items-center transition-colors"
-                    >
-                      STORIES <span className="ml-1">▼</span>
-                    </Link>
-                    <DropdownMenu align="right">
-                      {storiesData.map((category, idx) => (
-                        <DropdownCategory
-                          key={idx}
-                          title={category.title}
-                          items={category.items}
-                        />
-                      ))}
-                    </DropdownMenu>
-                  </div> */}
 
                   <div className="relative group">
                     <Link
@@ -580,11 +509,10 @@ const Navbar = () => {
                       className="hover:text-[#8b5e3c] flex items-center transition-colors"
                     >
                       ABOUT US{" "}
-                      <span className="ml-1">
+                      <span className="ml-1 transition-transform duration-300 group-hover:rotate-180">
                         <SlArrowDown />
                       </span>
                     </Link>
-                    {/* Change to align="right" to keep it from overflowing left */}
                     <DropdownMenu align="right">
                       <DropdownCategory
                         title="Our Story"
@@ -595,7 +523,6 @@ const Navbar = () => {
                           { name: "About-Us", link: "/about" },
                         ]}
                       />
-                      {/* Rest of the dropdown menu content */}
                     </DropdownMenu>
                   </div>
                 </>

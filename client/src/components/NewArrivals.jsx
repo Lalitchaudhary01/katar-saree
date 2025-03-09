@@ -45,14 +45,14 @@ const NewArrivals = () => {
 
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-cardo font-bold text-[#8B6A37] mb-4 tracking-wide">
+          <h2 className="text-3xl md:text-5xl font-cardo font-bold text-black mb-4 tracking-wide">
             New Arrivals
           </h2>
-          <p className="font-cardo text-neutral-600 max-w-2xl mx-auto mb-8 italic text-lg">
+          <p className="font-cardo text-neutral-900 max-w-2xl mx-auto mb-8  text-lg">
             The latest additions to our collection, blending tradition with
             contemporary design.
           </p>
-          <div className="w-32 h-0.5 bg-[#D4AF37] mx-auto mt-6"></div>
+          <div className="w-32 h-0.5 bg-black mx-auto mt-6"></div>
         </div>
 
         <Swiper
@@ -65,42 +65,40 @@ const NewArrivals = () => {
             1280: { slidesPerView: 4 },
           }}
           navigation
-          pagination={{ clickable: true }}
+          pagination={false}
           autoplay={{ delay: 3000 }}
           className="product-carousel"
         >
           {newArrivals.map((product) => (
             <SwiperSlide key={product.id}>
-              <div className="product-card group bg-white p-5 rounded-lg shadow-xl transition-transform duration-300 hover:scale-105 relative border border-[#E0C097]">
+              <div className="product-card group bg-white p-5 rounded-lg shadow-xl relative h-5400px] flex flex-col">
+                {/* Image Section */}
                 <div className="relative overflow-hidden rounded-lg">
-                  <span className="absolute top-4 right-4 bg-[#D4AF37] text-white text-xs font-cardo px-3 py-1 z-10 tracking-wide">
+                  <span className="absolute top-4 right-4 bg-black text-white text-xs font-cardo px-3 py-1 z-10 tracking-wide">
                     New
                   </span>
                   <img
                     src={product.images[0]}
                     alt={product.title}
                     onClick={() => navigate(`/collection/${product.id}`)}
-                    className="w-full h-80 object-cover transition-transform duration-700 group-hover:scale-110 cursor-pointer"
+                    className="w-full h-[400px] object-cover rounded-lg"
                   />
                   <button
                     onClick={() => openModal(product)}
-                    className="absolute bottom-4 left-1/2 -translate-x-1/2 p-3 rounded-full bg-white shadow-md transition-transform hover:scale-110 opacity-0 group-hover:opacity-100 duration-300 hover:bg-[#F9F6F0]"
+                    className="absolute bottom-4 left-1/2 -translate-x-1/2 p-3 rounded-full bg-white shadow-md opacity-100 transition-all hover:scale-105 duration-300 hover:bg-[#F9F6F0]"
                   >
-                    <FaEye className="text-[#D4AF37] text-xl" />
+                    <FaEye className="text-black text-xl" />
                   </button>
                 </div>
-                <div className="mt-5">
-                  <h3 className="font-cardo text-xl text-[#8B6A37] font-bold">
+
+                {/* Product Details */}
+                <div className="mt-1 flex flex-col gap-1">
+                  <h3 className="font-cardo text-lg text-black font-bold">
                     {product.title}
                   </h3>
-                  <p className="font-cardo text-neutral-600 text-sm mt-2">
-                    {product.desc}
+                  <p className="font-cardo text-black font-bold text-base">
+                    ₹{product.discountPrice.toLocaleString()}
                   </p>
-                  <div className="mt-3 flex justify-between items-center">
-                    <p className="font-cardo text-[#8B6A37] font-bold text-lg">
-                      ₹{product.discountPrice.toLocaleString()}
-                    </p>
-                  </div>
                 </div>
               </div>
             </SwiperSlide>
