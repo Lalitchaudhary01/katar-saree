@@ -99,7 +99,7 @@ const FeaturedCollections = () => {
                 <img
                   src={collection.images[currentIndexes[index]]}
                   alt={collection.title}
-                  className="w-full h-[500px] object-cover rounded-t-2xl"
+                  className="w-full h-[510px] object-cover rounded-t-2xl"
                   onClick={() => navigate(`/collection/${index}`)}
                 />
 
@@ -111,17 +111,17 @@ const FeaturedCollections = () => {
                 </button>
               </div>
 
-              <div className="p-6 flex flex-col flex-grow bg-white rounded-b-2xl">
-                <h3 className="text-1xl text-black font-cardo font-bold mb-3">
+              <div className="p-4 flex flex-col flex-grow bg-white rounded-b-2xl">
+                <h3 className="text-1xl text-black font-cardo font-bold ">
                   {collection.title}
                 </h3>
                 {collection.originalPrice && (
-                  <p className="text-gray-500 line-through text-sm mb-2">
+                  <p className="text-gray-500 line-through text-sm ">
                     ₹{collection.originalPrice}
                   </p>
                 )}
                 {collection.discountPrice && (
-                  <p className="text-black font-cardo font-semibold text-lg mt-2">
+                  <p className="text-black font-cardo font-semibold text-lg ">
                     ₹{collection.discountPrice}
                   </p>
                 )}

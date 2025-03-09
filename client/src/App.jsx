@@ -40,7 +40,7 @@ function AppContent() {
           path="/"
           element={
             <>
-              {/* <TrendingSection /> */}
+              <TrendingSection />
               <Home />
               <FeaturedCollections />
               <NewArrivals />
