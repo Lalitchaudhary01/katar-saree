@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { useWishlist } from "../context/WishlistContext";
 import collections from "../assets/product/CollectionData";
 import newArrivals from "../assets/product/NewArrival";
 import { toast } from "react-hot-toast";
@@ -16,10 +17,14 @@ import {
 } from "react-icons/fa";
 import { CgSize } from "react-icons/cg";
 import { MdSecurity } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 const CollectionDetail = () => {
   const { id } = useParams();
   const { addToCart } = useCart();
+  const { isInWishlist, toggleWishlist } = useWishlist(); // Extract the needed functions from useWishlist
+  const navigate = useNavigate();
+
   const numericId = Number(id);
 
   const collection =
@@ -30,7 +35,7 @@ const CollectionDetail = () => {
   const [selectedColor, setSelectedColor] = useState(null);
   const [mainImage, setMainImage] = useState(collection?.images[0]);
   const [quantity, setQuantity] = useState(1);
-  const [isWishlisted, setIsWishlisted] = useState(false);
+
   const [activeTab, setActiveTab] = useState("description");
   const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
   const [showZoom, setShowZoom] = useState(false);
@@ -72,7 +77,7 @@ const CollectionDetail = () => {
       title: collection.title,
       image: mainImage,
       price: collection.discountPrice,
-      size: selectedSize,
+      // size: selectedSize,
       color: selectedColor,
       quantity: quantity,
       stock: collection.stock,
@@ -88,6 +93,28 @@ const CollectionDetail = () => {
 
     addToCart(cartItem);
     toast.success(`${collection.title} added to your cart!`);
+  };
+
+  const handleWishlistToggle = () => {
+    const wishlistItem = {
+      id: collection.id,
+      title: collection.title,
+      image: mainImage,
+      discountPrice: collection.discountPrice,
+      originalPrice: collection.originalPrice,
+      stock: collection.stock,
+      specialty: collection.specialty,
+      colors: collection.colors,
+    };
+
+    toggleWishlist(wishlistItem);
+
+    // Show a toast notification
+    if (isInWishlist(collection.id)) {
+      toast.success(`${collection.title} removed from your wishlist!`);
+    } else {
+      toast.success(`${collection.title} added to your wishlist!`);
+    }
   };
 
   const handleZoom = (e) => {
@@ -202,17 +229,19 @@ const CollectionDetail = () => {
                       <div className="absolute right-4 top-4 flex flex-col gap-2 z-10">
                         <motion.button
                           className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                            isWishlisted
+                            isInWishlist(collection.id)
                               ? "bg-red-500 text-white"
                               : "bg-white text-gray-700"
                           } shadow-md`}
-                          onClick={() => setIsWishlisted(!isWishlisted)}
+                          onClick={handleWishlistToggle}
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
                         >
                           <FaHeart
                             className={
-                              isWishlisted ? "text-white" : "text-gray-400"
+                              isInWishlist(collection.id)
+                                ? "text-white"
+                                : "text-gray-400"
                             }
                           />
                         </motion.button>
@@ -314,22 +343,25 @@ const CollectionDetail = () => {
                     Size guide
                   </button>
                 </div>
+                {/* Assuming you have sizes array in your collection data */}
                 <div className="grid grid-cols-4 gap-2">
-                  {collection.sizes.map((size, index) => (
-                    <motion.button
-                      key={index}
-                      className={`py-3 border rounded-lg text-center transition ${
-                        selectedSize === size
-                          ? "bg-black text-white border-black"
-                          : "bg-white text-gray-700 border-gray-200 hover:border-gray-800"
-                      }`}
-                      onClick={() => setSelectedSize(size)}
-                      whileHover={{ y: -2 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      {size}
-                    </motion.button>
-                  ))}
+                  {(collection.sizes || ["S", "M", "L", "XL"]).map(
+                    (size, index) => (
+                      <motion.button
+                        key={index}
+                        className={`py-3 border rounded-lg text-center transition ${
+                          selectedSize === size
+                            ? "bg-black text-white border-black"
+                            : "bg-white text-gray-700 border-gray-200 hover:border-gray-800"
+                        }`}
+                        onClick={() => setSelectedSize(size)}
+                        whileHover={{ y: -2 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        {size}
+                      </motion.button>
+                    )
+                  )}
                 </div>
               </div>
 
@@ -369,7 +401,7 @@ const CollectionDetail = () => {
                   Add to Cart
                 </motion.button>
                 <motion.button
-                  className="flex-1 bg-blue-600 text-white py-4 rounded-lg font-medium"
+                  className="flex-1 bg-[#8B6A37] text-white py-4 rounded-lg font-medium"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -668,8 +700,29 @@ const CollectionDetail = () => {
                     className="w-full h-full object-cover transition-transform group-hover:scale-105"
                   />
                   <div className="absolute top-2 right-2">
-                    <button className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md">
-                      <FaHeart className="text-gray-400 group-hover:text-red-500 transition" />
+                    <button
+                      className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md"
+                      onClick={() => {
+                        const wishlistItem = {
+                          id: item.id,
+                          title: item.title,
+                          image: item.images[0],
+                          discountPrice: item.discountPrice,
+                          originalPrice: item.originalPrice,
+                          stock: item.stock,
+                          specialty: item.specialty,
+                          colors: item.colors,
+                        };
+                        toggleWishlist(wishlistItem);
+                      }}
+                    >
+                      <FaHeart
+                        className={
+                          isInWishlist(item.id)
+                            ? "text-red-500"
+                            : "text-gray-400 group-hover:text-red-500 transition"
+                        }
+                      />
                     </button>
                   </div>
                 </div>
@@ -697,7 +750,10 @@ const CollectionDetail = () => {
                       ))}
                     </div>
                   </div>
-                  <button className="w-full mt-3 py-2 border border-black text-black rounded-lg hover:bg-black hover:text-white transition text-sm font-medium">
+                  <button
+                    onClick={() => navigate(`/collection/${item.id}`)}
+                    className="w-full mt-3 py-2 border border-black text-black rounded-lg hover:bg-black hover:text-white transition text-sm font-medium"
+                  >
                     Quick View
                   </button>
                 </div>

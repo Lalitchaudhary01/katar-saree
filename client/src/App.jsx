@@ -27,6 +27,8 @@ import ReturnPolicy from "./components/policies/ReturnPolicy";
 import ShippingPolicy from "./components/policies/ShippingPolicy";
 import TermsConditions from "./components/policies/TermsConditions";
 import TrendingSection from "./components/TrendingSection";
+import { WishlistProvider } from "./context/WishlistContext";
+import Wishlist from "./headers/Wishlist";
 
 function AppContent() {
   const location = useLocation();
@@ -40,7 +42,7 @@ function AppContent() {
           path="/"
           element={
             <>
-              <TrendingSection />
+              {/* <TrendingSection /> */}
               <Home />
               <FeaturedCollections />
               <NewArrivals />
@@ -63,6 +65,7 @@ function AppContent() {
         <Route path="/terms-conditions" element={<TermsConditions />} />
         <Route path="/about/heritage" element={<OurHeritage />} />
         <Route path="/about/craft" element={<Craftsmanship />} />
+        <Route path="/wishlist" element={<Wishlist />} />
       </Routes>
       {/* Footer should not be displayed on CollectionDetails */}
       {location.pathname.startsWith("/collection/") ? null : <Footer />}
@@ -73,9 +76,13 @@ function AppContent() {
 function App() {
   return (
     <CartProvider>
-      <Router>
-        <AppContent />
-      </Router>
+      <WishlistProvider>
+        {" "}
+        {/* Wrap everything inside WishlistProvider */}
+        <Router>
+          <AppContent />
+        </Router>
+      </WishlistProvider>
     </CartProvider>
   );
 }
