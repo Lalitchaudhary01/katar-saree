@@ -29,6 +29,7 @@ import TermsConditions from "./components/policies/TermsConditions";
 import TrendingSection from "./components/TrendingSection";
 import { WishlistProvider } from "./context/WishlistContext";
 import Wishlist from "./headers/Wishlist";
+import AuthPage from "./headers/AuthPage";
 
 function AppContent() {
   const location = useLocation();
@@ -66,6 +67,7 @@ function AppContent() {
         <Route path="/about/heritage" element={<OurHeritage />} />
         <Route path="/about/craft" element={<Craftsmanship />} />
         <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="login" element={<AuthPage />} />
       </Routes>
       {/* Footer should not be displayed on CollectionDetails */}
       {location.pathname.startsWith("/collection/") ? null : <Footer />}

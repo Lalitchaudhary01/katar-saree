@@ -56,7 +56,7 @@ const Wishlist = () => {
               add items you love!
             </p>
             <button
-              onClick={() => navigate("/collections")}
+              onClick={() => navigate("/collection")}
               className="bg-black text-white py-3 px-6 rounded-lg hover:bg-gray-800 transition"
             >
               Browse Collections
