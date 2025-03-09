@@ -112,9 +112,14 @@ const FeaturedCollections = () => {
               </div>
 
               <div className="p-6 flex flex-col flex-grow bg-white rounded-b-2xl">
-                <h3 className="text-2xl text-black font-cardo font-bold mb-3">
+                <h3 className="text-1xl text-black font-cardo font-bold mb-3">
                   {collection.title}
                 </h3>
+                {collection.originalPrice && (
+                  <p className="text-gray-500 line-through text-sm mb-2">
+                    ₹{collection.originalPrice}
+                  </p>
+                )}
                 {collection.discountPrice && (
                   <p className="text-black font-cardo font-semibold text-lg mt-2">
                     ₹{collection.discountPrice}

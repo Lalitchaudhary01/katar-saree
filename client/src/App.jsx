@@ -26,6 +26,7 @@ import PrivacyPolicy from "./components/policies/PrivacyPolicy";
 import ReturnPolicy from "./components/policies/ReturnPolicy";
 import ShippingPolicy from "./components/policies/ShippingPolicy";
 import TermsConditions from "./components/policies/TermsConditions";
+import TrendingSection from "./components/TrendingSection";
 
 function AppContent() {
   const location = useLocation();
@@ -39,6 +40,7 @@ function AppContent() {
           path="/"
           element={
             <>
+              {/* <TrendingSection /> */}
               <Home />
               <FeaturedCollections />
               <NewArrivals />

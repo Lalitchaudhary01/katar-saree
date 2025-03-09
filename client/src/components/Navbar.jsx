@@ -409,12 +409,11 @@ const Navbar = () => {
         {/* Main Navigation - Fixed on scroll */}
         <div
           className={`w-full bg-white border-t border-b border-gray-200 py-6 px-6 
-            ${
-              scrolled
-                ? "fixed top-0 left-0  right-0 shadow-md z-50 transition-all duration-300 w-full"
-                : ""
-            }`}
-          style={{ transition: "all 0.3s ease" }}
+                    ${
+                      scrolled
+                        ? "fixed top-0 left-0 shadow-md z-50 transition-all duration-300"
+                        : ""
+                    }`}
         >
           <div className="relative flex justify-between items-center px-40">
             {/* Left Navigation */}
@@ -567,14 +566,14 @@ const Navbar = () => {
                     to="/login"
                     className="flex items-center hover:text-[#8b5e3c] transition-colors"
                   >
-                    <FaUser size={18} />
+                    <FaUser size={16} />
                   </Link>
 
                   <Link
                     to="/wishlist"
                     className="flex items-center hover:text-[#8b5e3c] transition-colors"
                   >
-                    <FaHeart size={18} />
+                    <FaHeart size={16} />
                   </Link>
 
                   <Link
@@ -582,7 +581,7 @@ const Navbar = () => {
                     className="flex items-center hover:text-[#8b5e3c] transition-colors"
                   >
                     <div className="relative">
-                      <FaShoppingCart size={19} />
+                      <FaShoppingCart size={16} />
                       {totalItems > 0 && (
                         <span className="absolute -top-2 -right-2 bg-[#c98a5e] text-white text-xs font-bold px-1.5 rounded-full">
                           {totalItems}
