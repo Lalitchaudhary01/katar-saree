@@ -10,11 +10,18 @@ const collections = [
     ],
     desc: "Fully handwoven with tested zari, guaranteed for 100 years. A legacy from one of the oldest Banarasi silk manufacturers since 1956.",
     originalPrice: 19999,
-    discountPrice: 15999, // ₹15,999
+    discountPrice: 15999,
     discount: "20% OFF",
     sizes: ["S", "M", "L", "XL"],
     colors: ["Green", "Gold", "Maroon"],
     stock: 10,
+    details: {
+      color: "A beautiful shade of Bottle Green",
+      technique: "Traditional Kadhwa weaving technique",
+      fabric: "Pure Katan Silk",
+      speciality:
+        "Intricate handwoven motifs with luxurious zari work. A timeless masterpiece.",
+    },
   },
   {
     id: 1,
@@ -27,11 +34,18 @@ const collections = [
     ],
     desc: "Very premium and lightweight fabric with a rich Pallu, beautiful border design, and Sona Rupa boutique work in gold and silver.",
     originalPrice: 15999,
-    discountPrice: 12999, // ₹12,999
+    discountPrice: 12999,
     discount: "19% OFF",
     sizes: ["S", "M", "L", "XL"],
     colors: ["Maroon", "Wine", "Purple"],
     stock: 10,
+    details: {
+      color: "Deep and elegant Maroon/Wine shade",
+      technique: "Handloom weaving with Sona Rupa gold and silver work",
+      fabric: "Lightweight premium silk",
+      speciality:
+        "Rich pallu and exquisite border design, ideal for grand occasions.",
+    },
   },
   {
     id: 2,
@@ -44,11 +58,17 @@ const collections = [
     ],
     desc: "Navy blue tested silk with silver zari, fully handmade for a luxurious touch.",
     originalPrice: 11999,
-    discountPrice: 9999, // ₹9,999
+    discountPrice: 9999,
     discount: "17% OFF",
     sizes: ["S", "M", "L", "XL"],
     colors: ["Navy Blue", "Teal Blue"],
     stock: 10,
+    details: {
+      color: "Elegant Navy Blue",
+      technique: "Classic Banarasi handwoven artistry with silver zari",
+      fabric: "Pure Kora silk net",
+      speciality: "A lightweight and wispy drape with intricate detailing.",
+    },
   },
   {
     id: 3,
@@ -61,11 +81,18 @@ const collections = [
     ],
     desc: "A lightweight and breathable saree, easy to carry, perfect for summers.",
     originalPrice: 9999,
-    discountPrice: 8999, // ₹8,999
+    discountPrice: 8999,
     discount: "10% OFF",
     sizes: ["S", "M", "L", "XL"],
     colors: ["Red", "Pink", "Yellow"],
     stock: 10,
+    details: {
+      color: "Vibrant Red and Pink hues",
+      technique: "Traditional Bandhani hand tie-dyeing",
+      fabric: "Pure Khadi Georgette",
+      speciality:
+        "Soft and breathable, perfect for daily wear and festive occasions.",
+    },
   },
   {
     id: 4,
@@ -73,11 +100,18 @@ const collections = [
     images: ["/images/black1.jpg", "/images/black2.jpg", "/images/black3.jpg"],
     desc: "Authentic Banarasi handloom saree with intricate weaving, perfect for grand occasions.",
     originalPrice: 19999,
-    discountPrice: 17999, // ₹17,999
+    discountPrice: 17999,
     discount: "10% OFF",
     sizes: ["S", "M", "L", "XL"],
     colors: ["Black", "Gold"],
     stock: 10,
+    details: {
+      color: "Royal Black with Gold Zari",
+      technique: "Pure Banarasi handloom weaving",
+      fabric: "Fine silk with heavy zari work",
+      speciality:
+        "Perfect for weddings and grand celebrations with a regal touch.",
+    },
   },
   {
     id: 5,
@@ -85,11 +119,18 @@ const collections = [
     images: ["/images/maroon_handloom1.jpg", "/images/maroon_handloom2.jpg"],
     desc: "A royal blue zari woven silk saree with delicate gold patterns, making it an elegant choice.",
     originalPrice: 15999,
-    discountPrice: 13999, // ₹13,999
+    discountPrice: 13999,
     discount: "13% OFF",
     sizes: ["S", "M", "L", "XL"],
     colors: ["Royal Blue", "Silver"],
     stock: 10,
+    details: {
+      color: "Striking Royal Blue",
+      technique: "Zari woven silk with gold motifs",
+      fabric: "Luxurious silk",
+      speciality:
+        "An opulent choice with rich detailing for special occasions.",
+    },
   },
   {
     id: 6,
@@ -97,35 +138,17 @@ const collections = [
     images: ["/images/pink1.jpg", "/images/pink2.jpg", "/images/pink3.jpg"],
     desc: "Pure Kanjeevaram silk saree in a gorgeous pink shade, featuring gold zari borders and a luxurious pallu.",
     originalPrice: 27999,
-    discountPrice: 24999, // ₹24,999
+    discountPrice: 24999,
     discount: "11% OFF",
     sizes: ["S", "M", "L", "XL"],
     colors: ["Pink", "Gold"],
     stock: 10,
-  },
-  {
-    id: 7,
-    title: "Golden Tissue Banarasi Saree",
-    images: ["/images/golden1.jpg", "/images/golden2.jpg"],
-    desc: "A stunning golden tissue Banarasi saree, giving a royal and sophisticated look with intricate handwoven patterns.",
-    originalPrice: 22999,
-    discountPrice: 19999, // ₹19,999
-    discount: "13% OFF",
-    sizes: ["S", "M", "L", "XL"],
-    colors: ["Golden", "Beige"],
-    stock: 10,
-  },
-  {
-    id: 8,
-    title: "Emerald Green Patola Silk",
-    images: ["/images/patola1.jpg", "/images/patola2.jpg"],
-    desc: "Exquisite Patola silk saree in emerald green, showcasing the beauty of traditional Indian craftsmanship.",
-    originalPrice: 17999,
-    discountPrice: 15999, // ₹15,999
-    discount: "11% OFF",
-    sizes: ["S", "M", "L", "XL"],
-    colors: ["Emerald Green", "Teal"],
-    stock: 10,
+    details: {
+      color: "Elegant Pink with Gold Zari",
+      technique: "Authentic Kanjeevaram handwoven silk",
+      fabric: "Pure Kanjeevaram silk",
+      speciality: "A bridal favorite with a rich texture and grand zari work.",
+    },
   },
 ];
 
