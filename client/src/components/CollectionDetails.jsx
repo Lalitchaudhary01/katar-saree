@@ -84,7 +84,7 @@ const CollectionDetail = () => {
 
         {/* Right side - Details */}
         <div className="md:w-1/2">
-          <h2 className="text-3xl font-bold text-[#8B6A37] italic">
+          <h2 className="text-3xl font-bold text-black italic">
             {collection.title}
           </h2>
 
@@ -97,7 +97,7 @@ const CollectionDetail = () => {
               Original Price:{" "}
               <s className="text-gray-500">₹{collection.originalPrice}</s>
             </p>
-            <p className="text-xl font-bold text-[#8B6A37]">
+            <p className="text-xl font-bold text-black">
               ₹{collection.discountPrice}{" "}
               <span className="text-sm text-red-600">
                 ({collection.discount} off)
@@ -107,15 +107,15 @@ const CollectionDetail = () => {
 
           {/* Sizes with Animation */}
           <div className="mt-6">
-            <p className="font-semibold text-[#5c4a24]">Select Size:</p>
+            <p className="font-semibold text-black">Select Size:</p>
             <div className="flex flex-wrap gap-3 mt-2">
               {collection.sizes.map((size, index) => (
                 <motion.button
                   key={index}
                   className={`px-4 py-2 border rounded text-sm transition-all ${
                     selectedSize === size
-                      ? "bg-[#8B6A37] text-white border-[#8B6A37]"
-                      : "bg-[#f5f1e6] border-[#d4c8b0] hover:bg-[#e9e1d0]"
+                      ? "bg-black text-white border-black"
+                      : "bg-white text-black border-black hover:bg-[#F9F6F0]"
                   }`}
                   onClick={() => setSelectedSize(size)}
                   whileTap={{ scale: 0.9 }}
@@ -128,14 +128,14 @@ const CollectionDetail = () => {
 
           {/* Colors with Animation */}
           <div className="mt-6">
-            <p className="font-semibold text-[#5c4a24]">Select Color:</p>
+            <p className="font-semibold text-black">Select Color:</p>
             <div className="flex flex-wrap gap-4 mt-2">
               {collection.colors.map((color, index) => (
                 <motion.button
                   key={index}
                   className={`w-8 h-8 rounded-full transition-all ${
                     selectedColor === color
-                      ? "border-2 border-[#8B6A37] scale-110 shadow-md"
+                      ? "border-2 border-black scale-110 shadow-md"
                       : "border border-gray-300 hover:scale-105"
                   }`}
                   style={{ backgroundColor: color }}

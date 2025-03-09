@@ -73,19 +73,21 @@ const NewArrivals = () => {
             <SwiperSlide key={product.id}>
               <div className="product-card group bg-white p-5 rounded-lg shadow-xl relative h-5400px] flex flex-col">
                 {/* Image Section */}
-                <div className="relative overflow-hidden rounded-lg">
+                <div className="relative overflow-hidden rounded-lg group">
                   <span className="absolute top-4 right-4 bg-black text-white text-xs font-cardo px-3 py-1 z-10 tracking-wide">
                     New
                   </span>
+
                   <img
                     src={product.images[0]}
                     alt={product.title}
                     onClick={() => navigate(`/collection/${product.id}`)}
                     className="w-full h-[400px] object-cover rounded-lg"
                   />
+
                   <button
                     onClick={() => openModal(product)}
-                    className="absolute bottom-4 left-1/2 -translate-x-1/2 p-3 rounded-full bg-white shadow-md opacity-100 transition-all hover:scale-105 duration-300 hover:bg-[#F9F6F0]"
+                    className="absolute bottom-4 left-1/2 -translate-x-1/2 p-3 rounded-full bg-white shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:scale-105 hover:bg-[#F9F6F0]"
                   >
                     <FaEye className="text-black text-xl" />
                   </button>
