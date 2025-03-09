@@ -177,7 +177,7 @@ const FeaturedCollections = () => {
               ))}
             </div>
           </div>
-          <p className="text-gray-900 mt-6 font-cardo italic">
+          <p className="text-gray-900 mt-6 font-cardo ">
             {selectedCollection.desc}
           </p>
           <div className="mt-4 ">

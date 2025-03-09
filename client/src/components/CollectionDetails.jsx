@@ -5,6 +5,7 @@ import collections from "../assets/product/CollectionData";
 import newArrivals from "../assets/product/NewArrival";
 import { toast } from "react-hot-toast";
 import { motion } from "framer-motion";
+import { FaShoppingCart } from "react-icons/fa";
 
 const CollectionDetail = () => {
   const { id } = useParams();
@@ -149,7 +150,7 @@ const CollectionDetail = () => {
           {/* Buttons with Animation */}
           <div className="mt-8 flex flex-wrap gap-4">
             <motion.button
-              className="bg-[#8B6A37] text-white px-6 py-2 rounded-md shadow hover:bg-[#6d5429] transition"
+              className="bg-black text-white px-6 py-2 rounded-md shadow hover:bg-[#181716] transition"
               onClick={handleAddToCart}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -157,7 +158,7 @@ const CollectionDetail = () => {
               Add to Cart
             </motion.button>
             <motion.button
-              className="border border-[#8B6A37] text-[#8B6A37] px-6 py-2 rounded-md hover:bg-[#f5f1e6] transition"
+              className="border border-black text-[#191918] px-6 py-2 rounded-md hover:bg-[#f5f1e6] transition"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >

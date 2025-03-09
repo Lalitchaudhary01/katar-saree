@@ -117,12 +117,12 @@ const NewArrivals = () => {
           className="fixed top-0 right-0 w-80 md:w-96 h-full bg-[#F9F6F0] shadow-lg z-50 p-6 overflow-y-auto font-cardo"
         >
           <button
-            className="absolute top-4 right-4 text-xl text-[#D4AF37] hover:text-[#8B6A37] transition-colors"
+            className="absolute top-4 right-4 text-xl text-black hover:text-[#8B6A37] transition-colors"
             onClick={closeModal}
           >
             ✖
           </button>
-          <h3 className="text-2xl font-bold text-[#8B6A37] mb-4 font-cardo">
+          <h3 className="text-2xl font-bold text-black mb-4 font-cardo">
             {selectedProduct.title}
           </h3>
           <div className="mt-4 flex flex-col items-center">
@@ -138,17 +138,17 @@ const NewArrivals = () => {
                   src={img}
                   alt={`Thumbnail ${index + 1}`}
                   className={`w-16 h-16 object-cover border rounded-lg cursor-pointer hover:opacity-80 transition-opacity ${
-                    mainImage === img ? "border-2 border-[#D4AF37]" : ""
+                    mainImage === img ? "border-2 border-black" : ""
                   }`}
                   onClick={() => setMainImage(img)}
                 />
               ))}
             </div>
           </div>
-          <p className="text-[#6B4F27] mt-6 font-cardo italic">
+          <p className="text-gray-900 mt-6 font-cardo ">
             {selectedProduct.desc}
           </p>
-          <div className="mt-4 text-center">
+          <div className="mt-4 ">
             <p className="text-lg font-cardo">
               Original Price: <s>₹{selectedProduct.originalPrice}</s>
             </p>
@@ -158,46 +158,48 @@ const NewArrivals = () => {
             </p>
           </div>
 
-          <div className="mt-6 text-center">
-            <p className="font-bold font-cardo text-[#8B6A37]">Select Size:</p>
-            <div className="flex justify-center gap-2 mt-3">
+          <div className="mt-6 ">
+            <p className="font-bold font-cardo text-black">Select Size:</p>
+            <div className="flex  gap-2 mt-3">
               {selectedProduct.sizes?.map((size, index) => (
-                <button
+                <motion.button
                   key={index}
                   className={`px-4 py-2 border font-cardo rounded-md text-sm transition-colors ${
                     selectedSize === size
-                      ? "bg-[#8B6A37] text-white border-[#8B6A37]"
-                      : "bg-white text-[#8B6A37] border-[#D4AF37] hover:bg-[#F9F6F0]"
+                      ? "bg-black text-white border-black"
+                      : "bg-white text-black border-black hover:bg-[#F9F6F0]"
                   }`}
                   onClick={() => setSelectedSize(size)}
+                  whileHover={{ scale: 1.05 }}
                 >
                   {size}
-                </button>
+                </motion.button>
               ))}
             </div>
           </div>
 
           <div className="mt-6 text-center">
-            <p className="font-bold font-cardo text-[#8B6A37]">Select Color:</p>
-            <div className="flex justify-center gap-3 mt-3">
+            <p className="font-bold font-cardo text-black">Select Color:</p>
+            <div className="flex  gap-3 mt-3">
               {selectedProduct.colors?.map((color, index) => (
-                <button
+                <motion.button
                   key={index}
                   className={`w-8 h-8 rounded-full border-2 transition-all hover:scale-105 ${
                     selectedColor === color
-                      ? "border-[#8B6A37] scale-110"
+                      ? "border-black scale-110"
                       : "border-gray-300"
                   }`}
                   style={{ backgroundColor: color }}
                   onClick={() => setSelectedColor(color)}
-                ></button>
+                  whileHover={{ scale: 1.1 }}
+                ></motion.button>
               ))}
             </div>
           </div>
 
           <div className="flex items-center justify-center mt-8">
             <button
-              className="bg-[#D4AF37] text-white px-8 py-3 rounded-md hover:bg-[#B8860B] transition-all flex items-center gap-2 font-cardo text-lg shadow-md"
+              className="bg-black text-white px-8 py-3 rounded-md hover:bg-black transition-all flex items-center gap-2 font-cardo text-lg shadow-md"
               onClick={() => {
                 if (!selectedSize || !selectedColor) {
                   toast.error(
