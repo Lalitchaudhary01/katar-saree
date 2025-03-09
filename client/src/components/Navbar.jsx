@@ -566,14 +566,14 @@ const Navbar = () => {
                     to="/login"
                     className="flex items-center hover:text-[#8b5e3c] transition-colors"
                   >
-                    <FaUser size={16} />
+                    <FaUser size={18} />
                   </Link>
 
                   <Link
                     to="/wishlist"
                     className="flex items-center hover:text-[#8b5e3c] transition-colors"
                   >
-                    <FaHeart size={16} />
+                    <FaHeart size={18} />
                   </Link>
 
                   <Link
@@ -581,7 +581,7 @@ const Navbar = () => {
                     className="flex items-center hover:text-[#8b5e3c] transition-colors"
                   >
                     <div className="relative">
-                      <FaShoppingCart size={16} />
+                      <FaShoppingCart size={19} />
                       {totalItems > 0 && (
                         <span className="absolute -top-2 -right-2 bg-[#c98a5e] text-white text-xs font-bold px-1.5 rounded-full">
                           {totalItems}

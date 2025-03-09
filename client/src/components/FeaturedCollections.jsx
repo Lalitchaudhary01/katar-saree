@@ -95,7 +95,7 @@ const FeaturedCollections = () => {
               key={index}
               className="group w-full max-w-[350px] mx-auto overflow-hidden shadow-xl rounded-2xl bg-white flex flex-col justify-between cursor-pointer"
             >
-              <div className="relative overflow-hidden rounded-t-2xl">
+              <div className="relative overflow-hidden rounded-t-2xl group">
                 <img
                   src={collection.images[currentIndexes[index]]}
                   alt={collection.title}
@@ -105,7 +105,7 @@ const FeaturedCollections = () => {
 
                 <button
                   onClick={() => setSelectedCollection(collection)}
-                  className="absolute bottom-4 left-1/2 -translate-x-1/2 p-3 rounded-full bg-white shadow-lg opacity-90 hover:opacity-100 transition-all duration-300 hover:bg-gray-100"
+                  className="absolute bottom-4 left-1/2 -translate-x-1/2 p-3 rounded-full bg-white shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-gray-100"
                 >
                   <FaEye className="text-black text-xl" />
                 </button>
