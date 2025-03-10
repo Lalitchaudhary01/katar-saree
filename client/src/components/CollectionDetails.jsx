@@ -4,6 +4,7 @@ import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
 import collections from "../assets/product/CollectionData";
 import newArrivals from "../assets/product/NewArrival";
+import silkSarees from "../assets/product/SilkSaree";
 import { toast } from "react-hot-toast";
 import { motion } from "framer-motion";
 import {
@@ -29,9 +30,10 @@ const CollectionDetail = () => {
 
   const collection =
     collections.find((item) => item.id === numericId) ||
-    newArrivals.find((item) => item.id === numericId);
+    newArrivals.find((item) => item.id === numericId) ||
+    silkSarees.find((item) => item.id === numericId);
 
-  const [selectedSize, setSelectedSize] = useState(null);
+  // const [selectedSize, setSelectedSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
   const [mainImage, setMainImage] = useState(collection?.images[0]);
   const [quantity, setQuantity] = useState(1);
@@ -67,8 +69,8 @@ const CollectionDetail = () => {
   }
 
   const handleAddToCart = () => {
-    if (!selectedSize || !selectedColor) {
-      toast.error("Please select a size and color before adding to cart!");
+    if (!selectedColor) {
+      toast.error("Please select a color before adding to cart!");
       return;
     }
 
@@ -81,13 +83,11 @@ const CollectionDetail = () => {
       color: selectedColor,
       quantity: quantity,
       stock: collection.stock,
-      specialty: collection.specialty,
       details: {
-        color: "Elegant Pink with Gold Zari",
-        technique: "Authentic Kanjeevaram handwoven silk",
-        fabric: "Pure Kanjeevaram silk",
-        speciality:
-          "A bridal favorite with a rich texture and grand zari work.",
+        color: collection.details?.color || selectedColor,
+        technique: collection.details?.technique || "",
+        fabric: collection.details?.fabric || "",
+        speciality: collection.details?.speciality || "",
       },
     };
 
@@ -174,7 +174,7 @@ const CollectionDetail = () => {
                         <img
                           src={img}
                           alt={`Thumbnail ${index + 1}`}
-                          className="w-16 h-16 object-cover"
+                          className="w-16 h-full object-cover"
                         />
                         {mainImage === img && (
                           <motion.div
@@ -344,7 +344,7 @@ const CollectionDetail = () => {
                   </button>
                 </div>
                 {/* Assuming you have sizes array in your collection data */}
-                <div className="grid grid-cols-4 gap-2">
+                {/* <div className="grid grid-cols-4 gap-2">
                   {(collection.sizes || ["S", "M", "L", "XL"]).map(
                     (size, index) => (
                       <motion.button
@@ -362,7 +362,7 @@ const CollectionDetail = () => {
                       </motion.button>
                     )
                   )}
-                </div>
+                </div> */}
               </div>
 
               {/* Quantity */}
@@ -487,12 +487,19 @@ const CollectionDetail = () => {
                           Product Details
                         </h3>
                         <ul className="mt-2 space-y-2 text-gray-600">
-                          <li>Specialty: {collection.specialty}</li>
-                          <li>Color: Elegant Pink with Gold Zari</li>
                           <li>
-                            Technique: Authentic Kanjeevaram handwoven silk
+                            Specialty: {collection.details?.speciality || "N/A"}
                           </li>
-                          <li>Fabric: Pure Kanjeevaram silk</li>
+                          <li>
+                            Color:{" "}
+                            {collection.details?.color ||
+                              selectedColor ||
+                              "N/A"}
+                          </li>
+                          <li>
+                            Technique: {collection.details?.technique || "N/A"}
+                          </li>
+                          <li>Fabric: {collection.details?.fabric || "N/A"}</li>
                         </ul>
                       </div>
 
@@ -514,10 +521,13 @@ const CollectionDetail = () => {
                           Speciality
                         </h3>
                         <p className="mt-2 text-gray-600">
-                          A bridal favorite with a rich texture and grand zari
-                          work. Our Kanjeevaram collection features pure silk
-                          with intricate designs that are perfect for weddings
-                          and special occasions.
+                          {collection.details?.specialityDescription ||
+                            `A bridal favorite with a rich texture and grand design. Our ${
+                              collection.specialty || "premium"
+                            } collection features ${
+                              collection.details?.fabric ||
+                              "high-quality material"
+                            } with intricate designs that are perfect for weddings and special occasions.`}
                         </p>
                       </div>
 

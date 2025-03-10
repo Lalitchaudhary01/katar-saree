@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
-import collections from "../assets/product/CollectionData";
+import cottonSarees from "../assets/product/CottonSareeData";
 import { motion, useAnimation } from "framer-motion";
 import { FaEye, FaShoppingCart } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-const FeaturedCollections = () => {
+const Cotton = () => {
   const [showAll, setShowAll] = useState(false);
   const [currentIndexes, setCurrentIndexes] = useState(
-    collections.reduce((acc, _, index) => ({ ...acc, [index]: 0 }), {})
+    cottonSarees.reduce((acc, _, index) => ({ ...acc, [index]: 0 }), {})
   );
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [selectedCollection, setSelectedCollection] = useState(null);
+  const [selectedSaree, setSelectedSaree] = useState(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
@@ -23,10 +23,10 @@ const FeaturedCollections = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (selectedCollection) {
-      setMainImage(selectedCollection.images[0]);
+    if (selectedSaree) {
+      setMainImage(selectedSaree.images[0]);
     }
-  }, [selectedCollection]);
+  }, [selectedSaree]);
 
   useEffect(() => {
     return () => {
@@ -40,7 +40,7 @@ const FeaturedCollections = () => {
     hoverTimers.current[index] = setTimeout(() => {
       setCurrentIndexes((prevIndexes) => ({
         ...prevIndexes,
-        [index]: (prevIndexes[index] + 1) % collections[index].images.length,
+        [index]: (prevIndexes[index] + 1) % cottonSarees[index].images.length,
       }));
     }, 1000);
     setHoveredIndex(index);
@@ -54,7 +54,7 @@ const FeaturedCollections = () => {
   };
 
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section className="py-16 md:py-24 bg-[#F9F6F0]">
       <style>
         {`
           @import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&display=swap');
@@ -77,34 +77,36 @@ const FeaturedCollections = () => {
 
       <div className="container mx-auto px-4 text-center">
         <h2 className="text-3xl md:text-5xl font-cardo font-bold text-black mb-4 tracking-wide">
-          Featured Collections
+          Cotton Saree Collection
         </h2>
-        <p className="font-cardo text-neutral-900 max-w-2xl mx-auto mb-8  text-lg whitespace-nowrap">
-          Explore our curated selection of premium handcrafted pieces, each
-          telling a story of heritage and artistry.
+        <p className="font-cardo text-neutral-900 max-w-2xl mx-auto mb-8 text-lg whitespace-nowrap">
+          Embrace comfort and elegance with our breathable cotton sarees,
+          perfect for everyday wear and special occasions.
         </p>
 
         <div className="w-32 h-0.5 bg-black mx-auto"></div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 px-8 mt-16 ">
-        {collections
-          .slice(0, showAll ? collections.length : 4) // Sirf 4 items display kar raha hai
-          .map((collection, index) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 px-8 mt-16">
+        {cottonSarees
+          .slice(0, showAll ? cottonSarees.length : 4)
+          .map((saree, index) => (
             <div
               key={index}
               className="group w-full max-w-[350px] mx-auto overflow-hidden shadow-xl rounded-2xl bg-white flex flex-col justify-between cursor-pointer"
+              onMouseEnter={() => handleMouseEnter(index)}
+              onMouseLeave={() => handleMouseLeave(index)}
             >
               <div className="relative overflow-hidden rounded-t-2xl group">
                 <img
-                  src={collection.images[currentIndexes[index]]}
-                  alt={collection.title}
+                  src={saree.images[currentIndexes[index]]}
+                  alt={saree.title}
                   className="w-full h-[510px] object-cover rounded-t-2xl"
-                  onClick={() => navigate(`/collection/${index}`)}
+                  onClick={() => navigate(`/cotton-saree/${index}`)}
                 />
 
                 <button
-                  onClick={() => setSelectedCollection(collection)}
+                  onClick={() => setSelectedSaree(saree)}
                   className="absolute bottom-4 left-1/2 -translate-x-1/2 p-3 rounded-full bg-white shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-gray-100"
                 >
                   <FaEye className="text-black text-xl" />
@@ -112,17 +114,17 @@ const FeaturedCollections = () => {
               </div>
 
               <div className="p-4 flex flex-col flex-grow bg-white rounded-b-2xl">
-                <h3 className="text-1xl text-black font-cardo font-bold ">
-                  {collection.title}
+                <h3 className="text-1xl text-black font-cardo font-bold">
+                  {saree.title}
                 </h3>
-                {collection.originalPrice && (
-                  <p className="text-gray-500 line-through text-sm ">
-                    ₹{collection.originalPrice}
+                {saree.originalPrice && (
+                  <p className="text-gray-500 line-through text-sm">
+                    ₹{saree.originalPrice}
                   </p>
                 )}
-                {collection.discountPrice && (
-                  <p className="text-black font-cardo font-semibold text-lg ">
-                    ₹{collection.discountPrice}
+                {saree.discountPrice && (
+                  <p className="text-black font-cardo font-semibold text-lg">
+                    ₹{saree.discountPrice}
                   </p>
                 )}
               </div>
@@ -138,12 +140,12 @@ const FeaturedCollections = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            Explore All Collections
+            Explore All Cotton Sarees
           </motion.button>
         )}
       </div>
 
-      {selectedCollection && (
+      {selectedSaree && (
         <motion.div
           initial={{ x: "100%" }}
           animate={{ x: 0 }}
@@ -153,12 +155,12 @@ const FeaturedCollections = () => {
         >
           <button
             className="absolute top-4 right-4 text-xl text-black hover:text-[#8B6A37] transition-colors"
-            onClick={() => setSelectedCollection(null)}
+            onClick={() => setSelectedSaree(null)}
           >
             ✖
           </button>
           <h3 className="text-2xl font-bold text-black mb-4 font-cardo">
-            {selectedCollection.title}
+            {selectedSaree.title}
           </h3>
           <div className="mt-4 flex flex-col items-center">
             <motion.img
@@ -168,7 +170,7 @@ const FeaturedCollections = () => {
               whileHover={{ scale: 1.05 }}
             />
             <div className="flex gap-3 mt-4">
-              {selectedCollection.images.slice(0, 4).map((img, index) => (
+              {selectedSaree.images.slice(0, 4).map((img, index) => (
                 <motion.img
                   key={index}
                   src={img}
@@ -182,28 +184,24 @@ const FeaturedCollections = () => {
               ))}
             </div>
           </div>
-          <p className="text-gray-900 mt-6 font-cardo ">
-            {selectedCollection.desc}
-          </p>
-          <div className="mt-4 ">
+          <p className="text-gray-900 mt-6 font-cardo">{selectedSaree.desc}</p>
+          <div className="mt-4">
             <p className="text-lg">
               Original Price:{" "}
-              <s className="text-gray-500">
-                ₹{selectedCollection.originalPrice}
-              </s>
+              <s className="text-gray-500">₹{selectedSaree.originalPrice}</s>
             </p>
             <p className="text-xl font-bold text-black">
-              ₹{selectedCollection.discountPrice}{" "}
+              ₹{selectedSaree.discountPrice}{" "}
               <span className="text-sm text-red-600">
-                ({selectedCollection.discount} off)
+                ({selectedSaree.discount} off)
               </span>
             </p>
           </div>
 
-          {/* <div className="mt-6 ">
+          <div className="mt-6">
             <p className="font-bold font-cardo text-black">Select Size:</p>
-            <div className="flex  gap-2 mt-3">
-              {selectedCollection.sizes?.map((size, index) => (
+            <div className="flex gap-2 mt-3">
+              {selectedSaree.sizes?.map((size, index) => (
                 <motion.button
                   key={index}
                   className={`px-4 py-2 border font-cardo rounded-md text-sm transition-colors ${
@@ -218,12 +216,12 @@ const FeaturedCollections = () => {
                 </motion.button>
               ))}
             </div>
-          </div> */}
+          </div>
 
           <div className="mt-6 text-center">
             <p className="font-bold font-cardo text-black">Select Color:</p>
-            <div className="flex  gap-3 mt-3">
-              {selectedCollection.colors?.map((color, index) => (
+            <div className="flex gap-3 mt-3">
+              {selectedSaree.colors?.map((color, index) => (
                 <motion.button
                   key={index}
                   className={`w-8 h-8 rounded-full border-2 transition-all hover:scale-105 ${
@@ -243,7 +241,7 @@ const FeaturedCollections = () => {
             <motion.button
               className="bg-black text-white px-8 py-3 rounded-md hover:bg-black transition-all flex items-center gap-2 font-cardo text-lg shadow-md"
               onClick={() => {
-                if (!selectedColor) {
+                if (!selectedSize || !selectedColor) {
                   toast.error(
                     "Please select a size and color before adding to cart!"
                   );
@@ -252,21 +250,18 @@ const FeaturedCollections = () => {
 
                 addToCart({
                   id:
-                    selectedCollection.id ||
-                    Math.random().toString(36).substr(2, 9),
-                  title: selectedCollection.title,
+                    selectedSaree.id || Math.random().toString(36).substr(2, 9),
+                  title: selectedSaree.title,
                   image: mainImage,
                   price:
-                    selectedCollection.discountPrice ||
-                    selectedCollection.originalPrice,
-                  // size: selectedSize,
+                    selectedSaree.discountPrice || selectedSaree.originalPrice,
+                  size: selectedSize,
                   color: selectedColor,
                 });
 
-                toast.success(`${selectedCollection.title} added to cart!`);
+                toast.success(`${selectedSaree.title} added to cart!`);
               }}
-              // disabled={!selectedSize || !selectedColor}
-              disabled={!selectedColor}
+              disabled={!selectedSize || !selectedColor}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -279,4 +274,4 @@ const FeaturedCollections = () => {
   );
 };
 
-export default FeaturedCollections;
+export default Cotton;
