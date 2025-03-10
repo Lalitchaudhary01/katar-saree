@@ -47,7 +47,7 @@ function AppContent() {
               <Home />
               <FeaturedCollections />
               <NewArrivals />
-              <SilkSarees />
+              {/* <SilkSarees /> */}
             </>
           }
         />

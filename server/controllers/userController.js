@@ -15,17 +15,35 @@ const signup = async (req, res) => {
   }
 };
 
-// Login Controller (Email-only Login)
+// Login Controller (Session-based)
 const login = async (req, res) => {
   const { email } = req.body;
   try {
-    const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: "Invalid email" });
+    if (!email) return res.status(400).json({ message: "Email is required" });
 
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      console.log("❌ Login failed: User not found for email:", email);
+      return res.status(400).json({ message: "Invalid email" });
+    }
+
+    req.session.user = user; // Store user in session
+    console.log("✅ User logged in:", user);
     res.status(200).json({ message: "Login successful", user });
   } catch (error) {
+    console.error("❌ Server Error in login:", error.message);
     res.status(500).json({ message: "Server Error" });
   }
 };
 
-module.exports = { signup, login };
+// Logout Controller
+const logout = (req, res) => {
+  req.session.destroy((err) => {
+    if (err) return res.status(500).json({ message: "Logout failed" });
+
+    res.status(200).json({ message: "Logout successful" });
+  });
+};
+
+module.exports = { signup, login, logout };

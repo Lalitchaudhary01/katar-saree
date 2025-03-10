@@ -28,7 +28,7 @@ const collections = [
     id: 1,
     title: "Maroon/Wine Handloom Saree",
     images: [
-      "/images/maroon1.jpg",
+      "",
       "/images/maroon2.jpg",
       "/images/maroon3.jpg",
       "/images/maroon5.jpg",

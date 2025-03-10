@@ -3,11 +3,11 @@ const newArrivals = [
     id: 9,
     title: "Royal Purple Kanjivaram Silk",
     images: [
-      "/images/yellow.jpg",
       "/images/yellow1.webp",
       "/images/yellow2.webp",
       "/images/yellow3.webp",
       "/images/yellow4.webp",
+      "/images/yellow.jpg",
     ],
     desc: "Handwoven Kanjivaram silk saree with pure gold zari work, perfect for grand celebrations.",
     originalPrice: 25999,
@@ -20,7 +20,13 @@ const newArrivals = [
   {
     id: 10,
     title: "Pastel Peach Organza Saree",
-    images: ["/images/peach1.jpg", "/images/peach2.jpg", "/images/peach3.jpg"],
+    images: [
+      "/images/blacks2.webp",
+      "/images/blacks3.webp",
+      "/images/blacks4.webp",
+      "/images/blacks5.webp",
+      "/images/blacks1.jpg",
+    ],
     desc: "A beautifully crafted pastel peach organza saree with floral embroidery and pearl detailing.",
     originalPrice: 18999,
     discountPrice: 15999, // ₹15,999
@@ -32,7 +38,7 @@ const newArrivals = [
   {
     id: 11,
     title: "Classic Red Banarasi Silk",
-    images: ["/images/red1.jpg", "/images/red2.jpg"],
+    images: ["/images/IMG-20250222-WA0002_5000x.jpg", "/images/red2.jpg"],
     desc: "An elegant red Banarasi silk saree with golden zari motifs, perfect for weddings and festivals.",
     originalPrice: 22999,
     discountPrice: 19999, // ₹19,999

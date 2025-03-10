@@ -158,7 +158,7 @@ const NewArrivals = () => {
             </p>
           </div>
 
-          <div className="mt-6 ">
+          {/* <div className="mt-6 ">
             <p className="font-bold font-cardo text-black">Select Size:</p>
             <div className="flex  gap-2 mt-3">
               {selectedProduct.sizes?.map((size, index) => (
@@ -176,7 +176,7 @@ const NewArrivals = () => {
                 </motion.button>
               ))}
             </div>
-          </div>
+          </div> */}
 
           <div className="mt-6 text-center">
             <p className="font-bold font-cardo text-black">Select Color:</p>
@@ -201,10 +201,8 @@ const NewArrivals = () => {
             <button
               className="bg-black text-white px-8 py-3 rounded-md hover:bg-black transition-all flex items-center gap-2 font-cardo text-lg shadow-md"
               onClick={() => {
-                if (!selectedSize || !selectedColor) {
-                  toast.error(
-                    "Please select a size and color before adding to cart!"
-                  );
+                if (!selectedColor) {
+                  toast.error("Please select a  color before adding to cart!");
                   return;
                 }
                 addToCart({
@@ -212,12 +210,12 @@ const NewArrivals = () => {
                   title: selectedProduct.title,
                   image: mainImage,
                   price: selectedProduct.discountPrice,
-                  size: selectedSize,
+                  // size: selectedSize,
                   color: selectedColor,
                 });
                 toast.success(`${selectedProduct.title} added to cart!`);
               }}
-              disabled={!selectedSize || !selectedColor}
+              disabled={!selectedColor}
             >
               <FaShoppingCart /> Add to Cart
             </button>
