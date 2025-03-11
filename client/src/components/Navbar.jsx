@@ -11,6 +11,25 @@ import {
 import { useCart } from "../context/CartContext";
 import { FaEnvelope, FaPhone } from "react-icons/fa";
 import { SlArrowDown } from "react-icons/sl";
+import { FaWhatsapp } from "react-icons/fa";
+
+// First, move the WhatsApp button to a separate component
+// This will be rendered in your main App component, not just in Navbar
+export const WhatsAppButton = () => {
+  const phoneNumber = "+917860783350";
+
+  return (
+    <a
+      href={`https://wa.me/${phoneNumber}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="fixed bottom-6 right-6 bg-green-500 text-white flex items-center px-4 py-2 rounded-full shadow-lg hover:bg-green-600 transition-all duration-300 z-50"
+    >
+      <FaWhatsapp size={24} className="mr-2" />
+      <span className="font-semibold">Chat on WhatsApp</span>
+    </a>
+  );
+};
 
 const Navbar = () => {
   const { cart } = useCart();
@@ -24,6 +43,7 @@ const Navbar = () => {
   });
   const currencyRef = useRef(null);
   const [scrolled, setScrolled] = useState(false);
+  // Remove the phoneNumber from here since we moved it to the separate component
 
   const currencies = [
     { code: "INR", symbol: "₹", name: "Indian Rupee" },
@@ -122,131 +142,106 @@ const Navbar = () => {
     }
   };
 
-  // Shopping Categories Data
+  // UPDATED: Shopping Categories Data - Reorganized as requested
   const shopData = [
     {
-      title: "New Arrivals",
+      title: "Fresh off the Looms",
       items: [
-        { name: "Fresh off the Loom", link: "/new-arrivals/fresh" },
-        { name: "Freshly Tailored", link: "/new-arrivals/tailored" },
+        { name: "Trending Sarees", link: "/trending/sarees" },
+        { name: "Trending Suits", link: "/trending/suits" },
+      ],
+    },
+    {
+      title: "Collections",
+      items: [
+        { name: "Gifts", link: "/collections/gifts" },
+        { name: "Best Sellers", link: "/collections/best-sellers" },
+        { name: "Back in Stock", link: "/collections/back-in-stock" },
+        { name: "Pre Order", link: "/collections/pre-order" },
+        { name: "Ready to Ship", link: "/collections/ready-to-ship" },
+        { name: "Heavy Silk", link: "/collections/heavy-silk" },
+        { name: "Bridal Collection", link: "/collections/bridal" },
+        { name: "Casual Collection", link: "/collections/casual" },
       ],
     },
     {
       title: "Clothing",
       items: [
         { name: "Sarees", link: "/clothing/sarees" },
-        { name: "Lehengas", link: "/clothing/lehengas" },
-        { name: "Dupattas", link: "/clothing/dupattas" },
         { name: "Suits", link: "/clothing/suits" },
-        { name: "Blouses", link: "/clothing/blouses" },
-        { name: "Jackets", link: "/clothing/jackets" },
+        { name: "Dupattas", link: "/clothing/dupattas" },
       ],
     },
     {
       title: "Featured",
       items: [
-        { name: "Silk & Wool", link: "/featured/silk-wool" },
-        { name: "Antinomy", link: "/featured/antinomy" },
+        { name: "Silk", link: "/featured/silk" },
+        { name: "Katan Icon", link: "/featured/katan-icon" },
         { name: "Handwoven Fabrics", link: "/featured/handwoven" },
-        { name: "Bridal", link: "/featured/bridal" },
+        { name: "Katan Signature Class", link: "/featured/signature-class" },
       ],
     },
   ];
 
-  // Collections Data
+  // UPDATED: Collections Data - Reorganized as requested
   const collectionsData = [
     {
-      title: "Weaves & Patterns",
+      title: "Weaving and Patterns",
       items: [
-        { name: "Kashi", link: "/weaves/kashi" },
-        { name: "Zarkashi - Real Zari", link: "/weaves/zarkashi" },
-        { name: "Kadhua Bootis", link: "/weaves/kadhua" },
-        { name: "Tanchoi", link: "/weaves/tanchoi" },
-        { name: "Shikargah", link: "/weaves/shikargah" },
+        { name: "Kadhwa Bootis", link: "/weaves/kadhwa-bootis" },
+        { name: "Kadwa Buri", link: "/weaves/kadwa-buri" },
+        { name: "Kadhwa Strips", link: "/weaves/kadhwa-strips" },
+        { name: "Jaal Cutwork", link: "/weaves/jaal-cutwork" },
+        { name: "Jamawar", link: "/weaves/jamawar" },
+        { name: "Banarasi Bandhej", link: "/weaves/banarasi-bandhej" },
+        { name: "Minakari Bandhej", link: "/weaves/minakari-bandhej" },
+        { name: "Tasal Banarasi", link: "/weaves/tasal" },
       ],
     },
     {
-      title: "Fabrics",
+      title: "Rare Techniques",
+      items: [
+        { name: "The Most Rarest Weaving Technique", link: "/techniques/rare" },
+        { name: "Rankat", link: "/techniques/rankat" },
+        { name: "Bridal Sarees", link: "/techniques/bridal-sarees" },
+      ],
+    },
+  ];
+
+  // UPDATED: Changed Campaigns to Fabric Data
+  const fabricData = [
+    {
+      title: "Fabric Types",
       items: [
         { name: "Katan Silk", link: "/fabrics/katan" },
         { name: "Satin Silk", link: "/fabrics/satin" },
         { name: "Tissue Silk", link: "/fabrics/tissue" },
-        { name: "Textured Silk", link: "/fabrics/textured" },
-        { name: "Silk Pashmina Wool", link: "/fabrics/pashmina" },
+        { name: "Kora Organza Silk", link: "/fabrics/kora-organza" },
+        { name: "Handwoven Georgette", link: "/fabrics/handwoven-georgette" },
+        { name: "Tanchui", link: "/fabrics/tanchui" },
       ],
     },
     {
-      title: "How to Style",
+      title: "Fabric Collections",
       items: [
-        { name: "The Eid Edit", link: "/style/eid" },
-        { name: "Seasonal Selections", link: "/style/seasonal" },
-        { name: "Pastel Dreams", link: "/style/pastel" },
-        { name: "Modern Classics", link: "/style/modern" },
-        { name: "Tilfi Weddings", link: "/style/weddings" },
+        { name: "Wedding Fabrics", link: "/fabrics/wedding" },
+        { name: "Festival Fabrics", link: "/fabrics/festival" },
+        { name: "Everyday Elegance", link: "/fabrics/everyday" },
+        { name: "Premium Weaves", link: "/fabrics/premium" },
+      ],
+    },
+    {
+      title: "Fabric Care",
+      items: [
+        { name: "Silk Care Guide", link: "/fabrics/care-guide" },
+        { name: "Storage Tips", link: "/fabrics/storage" },
+        { name: "Dry Cleaning", link: "/fabrics/dry-cleaning" },
+        { name: "Rejuvenation Tips", link: "/fabrics/rejuvenation" },
       ],
     },
   ];
 
-  // Campaigns Data
-  const campaignsData = [
-    {
-      title: "Shop By Campaign",
-      items: [
-        { name: "Silk & Wool", link: "/campaign/silk-wool" },
-        { name: "Peony Pavilion", link: "/campaign/peony" },
-        { name: "SeeSaw", link: "/campaign/seesaw" },
-        { name: "Sandhi", link: "/campaign/sandhi" },
-        { name: "Of the First Water", link: "/campaign/first-water" },
-      ],
-    },
-    {
-      title: "Featured Campaign",
-      items: [
-        { name: "Songs of the Seasons", link: "/campaign/seasons" },
-        { name: "The Way of Flowers", link: "/campaign/flowers" },
-        { name: "Kala", link: "/campaign/kala" },
-        { name: "Quarter to Time", link: "/campaign/quarter" },
-        { name: "Gulab Bari", link: "/campaign/gulab" },
-      ],
-    },
-    {
-      title: "",
-      items: [],
-    },
-  ];
-
-  // Craft Data
-  const craftData = [
-    {
-      title: "Craft Techniques",
-      items: [
-        { name: "Handloom Weaving", link: "/craft/handloom" },
-        { name: "Zardozi Embroidery", link: "/craft/zardozi" },
-        { name: "Heritage Processes", link: "/craft/heritage" },
-        { name: "Dyeing Techniques", link: "/craft/dyeing" },
-      ],
-    },
-    {
-      title: "Material Science",
-      items: [
-        { name: "Pure Silk", link: "/craft/pure-silk" },
-        { name: "Wool & Blends", link: "/craft/wool" },
-        { name: "Gold & Silver Zari", link: "/craft/zari" },
-        { name: "Natural Dyes", link: "/craft/natural-dyes" },
-      ],
-    },
-    {
-      title: "Artisanal Knowledge",
-      items: [
-        { name: "Meet the Weavers", link: "/craft/weavers" },
-        { name: "Craft Preservation", link: "/craft/preservation" },
-        { name: "Workshops & Tours", link: "/craft/workshops" },
-        { name: "From Loom to Wardrobe", link: "/craft/journey" },
-      ],
-    },
-  ];
-
-  // Stories Data
+  // Stories Data - Kept as is
   const storiesData = [
     {
       title: "Heritage",
@@ -281,35 +276,13 @@ const Navbar = () => {
     <>
       {/* Main container with Cardo font */}
       <div className="font-cardo text-sm antialiased">
-        {/* Shipping Info Bar - Only visible when not scrolled */}
-        {/* {!scrolled && (
-          <div className="w-full bg-[#5d4037] text-white py-2 px-4 flex justify-center items-center z-50 relative">
-            <div className="flex items-center">
-              <div className="flex items-center gap-2">
-                <HiOutlineMail className="h-5 w-5 text-white" />
-                <span className="font-cardo text-sm md:text-base">
-                  katanbanarasofficial@gmail.com
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2 ml-4">
-                <BsTelephone className="h-5 w-5 text-white" />
-                <span className="font-cardo text-sm md:text-base">
-                  +91 7860783350
-                </span>
-              </div>
-              <button className="absolute right-4 text-white">✕</button>
-            </div>
-          </div>
-        )} */}
-
         {/* Brand and Icons Bar - Only visible when not scrolled */}
         {!scrolled && (
           <div className="w-full bg-white py-3 px-6 flex justify-between items-center border-b border-gray-100">
             {/* Branding */}
             <div className="text-[#5d4037] flex space-x-3.5 italic space-y-2">
               <div className="flex items-center space-x-2">
-                <FaEnvelope />
+                <FaEnvelope size={16} />
                 <a
                   href="mailto:katanbanarasofficial@gmail.com"
                   className="hover:underline"
@@ -318,28 +291,19 @@ const Navbar = () => {
                 </a>
               </div>
               <div className="flex items-center space-x-2 space-y-2">
-                <FaPhone />
+                <FaPhone size={16} />
                 <a
                   href="tel:+917860783350"
                   className="hover:underline space-y-2"
                 >
                   +91 7860783350
                 </a>
+                {/* WhatsApp button removed from here */}
               </div>
             </div>
 
             {/* Right Side Icons */}
             <div className="flex space-x-6 text-gray-600">
-              <Link
-                to="/search"
-                className="flex items-center hover:text-[#8b5e3c] transition-colors"
-              >
-                <FaSearch size={18} />
-                {/* <span className="ml-2 uppercase text-xs tracking-wide">
-                  SEARCH
-                </span> */}
-              </Link>
-
               <div className="flex items-center relative" ref={currencyRef}>
                 <button
                   className="flex items-center hover:text-[#8b5e3c] transition-colors"
@@ -365,25 +329,25 @@ const Navbar = () => {
                   </div>
                 )}
               </div>
+              <Link
+                to="/search"
+                className="flex items-center hover:text-[#8b5e3c] transition-colors"
+              >
+                <FaSearch size={27} />
+              </Link>
 
               <Link
                 to="/login"
                 className="flex items-center hover:text-[#8b5e3c] transition-colors"
               >
-                <FaUser size={18} />
-                {/* <span className="ml-2 uppercase text-xs tracking-wide">
-                  LOGIN
-                </span> */}
+                <FaUser size={27} />
               </Link>
 
               <Link
                 to="/wishlist"
                 className="flex items-center hover:text-[#8b5e3c] transition-colors"
               >
-                <FaHeart size={18} />
-                {/* <span className="ml-2 uppercase text-xs tracking-wide">
-                  WISHLIST
-                </span> */}
+                <FaHeart size={27} />
               </Link>
 
               <Link
@@ -391,16 +355,13 @@ const Navbar = () => {
                 className="flex items-center hover:text-[#8b5e3c] transition-colors"
               >
                 <div className="relative">
-                  <FaShoppingCart size={20} />
+                  <FaShoppingCart size={30} />
                   {totalItems > 0 && (
                     <span className="absolute -top-2 -right-2 bg-[#c98a5e] text-white text-xs font-bold px-1.5 rounded-full">
                       {totalItems}
                     </span>
                   )}
                 </div>
-                {/* <span className="ml-2 uppercase text-xs tracking-wide">
-                  CART
-                </span> */}
               </Link>
             </div>
           </div>
@@ -415,9 +376,9 @@ const Navbar = () => {
                         : ""
                     }`}
         >
-          <div className="relative flex justify-between items-center px-40">
-            {/* Left Navigation */}
-            <div className="flex space-x-5 text-gray-700 uppercase tracking-wide text-lg font-bold">
+          <div className="relative flex justify-between items-center px-20">
+            {/* Left Navigation - Moved closer to center logo */}
+            <div className="flex space-x-5 text-gray-700 uppercase tracking-wide text-lg font-bold ml-4">
               <div className="relative group">
                 <Link
                   to="/"
@@ -425,7 +386,7 @@ const Navbar = () => {
                 >
                   SHOP{" "}
                   <span className="ml-1 transition-transform duration-300 group-hover:rotate-180">
-                    <SlArrowDown />
+                    <SlArrowDown size={16} />
                   </span>
                 </Link>
                 <DropdownMenu>
@@ -446,7 +407,7 @@ const Navbar = () => {
                 >
                   COLLECTIONS{" "}
                   <span className="ml-1 transition-transform duration-300 group-hover:rotate-180">
-                    <SlArrowDown />
+                    <SlArrowDown size={16} />
                   </span>
                 </Link>
                 <DropdownMenu>
@@ -461,7 +422,7 @@ const Navbar = () => {
               </div>
             </div>
 
-            {/* Center Logo (Absolute Centered) */}
+            {/* Center Logo (Absolute Centered) - Made slightly larger */}
             <div className="absolute left-1/2 transform -translate-x-1/2">
               <Link
                 to="/"
@@ -471,27 +432,27 @@ const Navbar = () => {
                 <img
                   src="/katan.png"
                   alt="KATAN"
-                  className="h-16 w-30 object-contain"
+                  className="h-20 w-36 object-contain"
                 />
               </Link>
             </div>
 
-            {/* Right Navigation */}
-            <div className="flex space-x-5 text-gray-700 uppercase tracking-wide text-lg font-bold">
+            {/* Right Navigation - Moved closer to center logo */}
+            <div className="flex space-x-5 text-gray-700 uppercase tracking-wide text-lg font-bold mr-4">
               {!scrolled ? (
                 <>
                   <div className="relative group">
                     <Link
-                      to="/campaigns"
+                      to="/fabrics"
                       className="hover:text-[#8b5e3c] flex items-center transition-colors"
                     >
-                      CAMPAIGNS{" "}
+                      FABRIC{" "}
                       <span className="ml-1 transition-transform duration-300 group-hover:rotate-180">
-                        <SlArrowDown />
+                        <SlArrowDown size={16} />
                       </span>
                     </Link>
                     <DropdownMenu align="right">
-                      {campaignsData.map((category, idx) =>
+                      {fabricData.map((category, idx) =>
                         category.title ? (
                           <DropdownCategory
                             key={idx}
@@ -510,7 +471,7 @@ const Navbar = () => {
                     >
                       ABOUT US{" "}
                       <span className="ml-1 transition-transform duration-300 group-hover:rotate-180">
-                        <SlArrowDown />
+                        <SlArrowDown size={16} />
                       </span>
                     </Link>
                     <DropdownMenu align="right">
@@ -527,21 +488,14 @@ const Navbar = () => {
                   </div>
                 </>
               ) : (
-                // Show icons when scrolled
+                // Show icons when scrolled - Made larger
                 <div className="flex space-x-6 text-gray-600">
-                  <Link
-                    to="/search"
-                    className="flex items-center hover:text-[#8b5e3c] transition-colors"
-                  >
-                    <FaSearch size={16} />
-                  </Link>
-
                   <div className="flex items-center relative" ref={currencyRef}>
                     <button
                       className="flex items-center hover:text-[#8b5e3c] transition-colors"
                       onClick={handleCurrencyClick}
                     >
-                      <span className="flex items-center">
+                      <span className="flex items-center text-base">
                         {selectedCurrency.symbol}
                         <span className="ml-1">▼</span>
                       </span>
@@ -561,19 +515,25 @@ const Navbar = () => {
                       </div>
                     )}
                   </div>
+                  <Link
+                    to="/search"
+                    className="flex items-center hover:text-[#8b5e3c] transition-colors"
+                  >
+                    <FaSearch size={27} />
+                  </Link>
 
                   <Link
                     to="/login"
                     className="flex items-center hover:text-[#8b5e3c] transition-colors"
                   >
-                    <FaUser size={16} />
+                    <FaUser size={27} />
                   </Link>
 
                   <Link
                     to="/wishlist"
                     className="flex items-center hover:text-[#8b5e3c] transition-colors"
                   >
-                    <FaHeart size={16} />
+                    <FaHeart size={27} />
                   </Link>
 
                   <Link
@@ -581,7 +541,7 @@ const Navbar = () => {
                     className="flex items-center hover:text-[#8b5e3c] transition-colors"
                   >
                     <div className="relative">
-                      <FaShoppingCart size={16} />
+                      <FaShoppingCart size={30} />
                       {totalItems > 0 && (
                         <span className="absolute -top-2 -right-2 bg-[#c98a5e] text-white text-xs font-bold px-1.5 rounded-full">
                           {totalItems}

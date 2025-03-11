@@ -10,7 +10,7 @@ import Craftsmanship from "./components/Craftsmanship";
 import FeaturedCollections from "./components/FeaturedCollections";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
-import Navbar from "./components/Navbar";
+import Navbar, { WhatsAppButton } from "./components/Navbar";
 import NewArrivals from "./components/NewArrivals";
 import OurHeritage from "./components/OurHeritage";
 import Cart from "./components/Cart";
@@ -48,6 +48,7 @@ function AppContent() {
               <FeaturedCollections />
               <NewArrivals />
               {/* <SilkSarees /> */}
+              <WhatsAppButton />
             </>
           }
         />

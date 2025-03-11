@@ -41,6 +41,7 @@ const CollectionDetail = () => {
   const [activeTab, setActiveTab] = useState("description");
   const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
   const [showZoom, setShowZoom] = useState(false);
+  const [zoomed, setZoomed] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -116,16 +117,35 @@ const CollectionDetail = () => {
       toast.success(`${collection.title} added to your wishlist!`);
     }
   };
+  const handleBuyNow = () => {
+    if (!selectedColor) {
+      toast.error("Please select a color before buy!");
+      return;
+    }
+    navigate("/checkout", {
+      state: {
+        image: mainImage,
+        title: collection.title,
+        quantity,
+        color: selectedColor,
+        amount: collection.discountPrice * quantity,
+      },
+    });
+  };
 
-  const handleZoom = (e) => {
-    if (!showZoom) return;
-
+  const handleDoubleClickZoom = (e) => {
     const image = e.currentTarget;
-    const { left, top, width, height } = image.getBoundingClientRect();
-    const x = ((e.clientX - left) / width) * 100;
-    const y = ((e.clientY - top) / height) * 100;
+    if (!zoomed) {
+      const { left, top, width, height } = image.getBoundingClientRect();
+      const x = ((e.clientX - left) / width) * 100;
+      const y = ((e.clientY - top) / height) * 100;
 
-    setZoomPosition({ x, y });
+      image.style.transformOrigin = `${x}% ${y}%`;
+      image.style.transform = "scale(3)"; // Adjust zoom level as needed
+    } else {
+      image.style.transform = "scale(1)"; // Reset zoom
+    }
+    setZoomed(!zoomed);
   };
 
   // Calculate discount percentage
@@ -191,7 +211,7 @@ const CollectionDetail = () => {
                   <div className="relative flex-1 overflow-hidden rounded-xl">
                     <div className="group relative">
                       <motion.div
-                        className="relative rounded-xl overflow-hidden aspect-square"
+                        className="relative rounded-xl overflow-hidden h-[500px]" // Set a fixed height for full image visibility
                         whileHover={{ scale: 1.02 }}
                         transition={{ duration: 0.3 }}
                       >
@@ -206,10 +226,8 @@ const CollectionDetail = () => {
                         <img
                           src={mainImage}
                           alt={collection.title}
-                          className="w-full h-full object-cover cursor-zoom-in"
-                          onMouseMove={handleZoom}
-                          onMouseEnter={() => setShowZoom(true)}
-                          onMouseLeave={() => setShowZoom(false)}
+                          className="w-full h-full object-contain cursor-zoom-in transition-transform duration-300"
+                          onDoubleClick={handleDoubleClickZoom} // Apply double-click zoom
                         />
 
                         {showZoom && (
@@ -404,9 +422,11 @@ const CollectionDetail = () => {
                   className="flex-1 bg-[#8B6A37] text-white py-4 rounded-lg font-medium"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
+                  onClick={handleBuyNow}
                 >
                   Buy Now
                 </motion.button>
+                ;
               </div>
 
               {/* Product information */}
@@ -700,10 +720,10 @@ const CollectionDetail = () => {
             {collections.slice(0, 4).map((item) => (
               <motion.div
                 key={item.id}
-                className="group relative bg-white rounded-xl shadow-sm overflow-hidden"
+                className="group relative bg-white rounded-xl shadow-sm overflow-hidden flex flex-col h-[600px]"
                 whileHover={{ y: -5 }}
               >
-                <div className="aspect-square overflow-hidden">
+                <div className="overflow-hidden h-[70%]">
                   <img
                     src={item.images[0]}
                     alt={item.title}
@@ -736,7 +756,7 @@ const CollectionDetail = () => {
                     </button>
                   </div>
                 </div>
-                <div className="p-4">
+                <div className="p-4 flex-1 flex flex-col justify-between h-[30%]">
                   <h3 className="font-medium text-gray-900 line-clamp-1">
                     {item.title}
                   </h3>

@@ -1,241 +1,334 @@
-import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Checkout = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const cart = location.state?.cart || [];
-  const totalAmount = location.state?.totalAmount || 0;
+  const {
+    cart = [],
+    totalAmount,
+    image,
+    title,
+    quantity,
+    color,
+    amount,
+  } = location.state || {};
 
-  const [address, setAddress] = useState({
-    fullName: "",
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
     phone: "",
-    street: "",
+    address: "",
     city: "",
+    state: "",
     pincode: "",
+    paymentMethod: "razorpay",
   });
-  const [isAddressSaved, setIsAddressSaved] = useState(false);
-  const [errors, setErrors] = useState({});
 
-  useEffect(() => {
-    const loadRazorpay = async () => {
-      const script = document.createElement("script");
-      script.src = "https://checkout.razorpay.com/v1/checkout.js";
-      script.async = true;
-      document.body.appendChild(script);
-    };
-    loadRazorpay();
-  }, []);
+  const [step, setStep] = useState(1); // 1 for checkout, 2 for address, 3 for payment confirmation
 
-  // 🛑 Validate Form Inputs
-  const validateForm = () => {
-    let newErrors = {};
-    if (!address.fullName) newErrors.fullName = "Full Name is required";
-    if (!address.phone || address.phone.length !== 10)
-      newErrors.phone = "Valid Phone is required";
-    if (!address.street) newErrors.street = "Street Address is required";
-    if (!address.city) newErrors.city = "City is required";
-    if (!address.pincode || address.pincode.length !== 6)
-      newErrors.pincode = "Valid Pincode is required";
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
-  // 📝 Save Address
-  const handleSaveAddress = () => {
-    if (validateForm()) {
-      setIsAddressSaved(true);
-    }
+  const handleSubmitAddress = (e) => {
+    e.preventDefault();
+    setStep(3);
   };
 
-  // 💳 Handle Payment
   const handlePayment = () => {
-    if (!isAddressSaved) {
-      alert("❗ Please save your address before proceeding.");
-      return;
-    }
+    // Calculate final amount (in paise for RazorPay)
+    const finalAmount = ((totalAmount || amount) * 100).toFixed(0);
 
     const options = {
-      key: "YOUR_RAZORPAY_KEY",
-      amount: totalAmount * 100,
+      key: "YOUR_RAZORPAY_KEY_ID", // Replace with your actual Razorpay key
+      amount: finalAmount,
       currency: "INR",
-      name: "Your Shop",
-      description: "Purchase",
+      name: "Your Store Name",
+      description: "Payment for your order",
       handler: function (response) {
+        // Handle successful payment
         alert(
-          `🎉 Payment Successful! Payment ID: ${response.razorpay_payment_id}`
+          "Payment Successful! Payment ID: " + response.razorpay_payment_id
         );
+        navigate("/order-confirmation", {
+          state: {
+            orderId: response.razorpay_payment_id,
+            items:
+              cart.length > 0
+                ? cart
+                : [{ image, title, quantity, color, amount }],
+            amount: totalAmount || amount,
+            address: formData,
+          },
+        });
       },
       prefill: {
-        name: address.fullName,
-        email: "user@example.com",
-        contact: address.phone,
+        name: formData.name,
+        email: formData.email,
+        contact: formData.phone,
       },
-      theme: { color: "#8B5CF6" },
+      theme: {
+        color: "#000000",
+      },
     };
 
-    const paymentObject = new window.Razorpay(options);
-    paymentObject.open();
+    const razorpayInstance = new window.Razorpay(options);
+    razorpayInstance.open();
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-amber-50 to-purple-50">
-      <div className="w-full max-w-lg bg-white p-8 rounded-xl shadow-xl border border-gray-100">
-        <h1 className="text-3xl font-serif text-center text-gray-800 mb-8 tracking-wide">
-          🛒 Elegant Checkout
-        </h1>
+    <div className="max-w-3xl mx-auto p-6 bg-[#FAF3E0] rounded-lg shadow-lg">
+      {step === 1 && (
+        <>
+          <h2 className="text-2xl font-bold mb-4 text-center">Checkout</h2>
 
-        {/* 📍 Address Form */}
-        {!isAddressSaved ? (
-          <div className="mb-8">
-            <h2 className="text-xl font-serif text-gray-700 mb-4 border-b pb-2">
-              Shipping Address
-            </h2>
+          {/* Show cart items or single product */}
+          {cart.length > 0 ? (
             <div className="space-y-4">
-              <div>
-                <input
-                  type="text"
-                  placeholder="Full Name"
-                  value={address.fullName}
-                  onChange={(e) =>
-                    setAddress({ ...address, fullName: e.target.value })
-                  }
-                  className="w-full p-3 border border-gray-300 rounded-lg font-serif text-gray-700 focus:ring-2 focus:ring-purple-300 focus:border-purple-300 focus:outline-none transition"
-                />
-                {errors.fullName && (
-                  <p className="text-red-500 text-sm font-serif mt-1">
-                    {errors.fullName}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <input
-                  type="text"
-                  placeholder="Phone Number"
-                  value={address.phone}
-                  onChange={(e) =>
-                    setAddress({ ...address, phone: e.target.value })
-                  }
-                  className="w-full p-3 border border-gray-300 rounded-lg font-serif text-gray-700 focus:ring-2 focus:ring-purple-300 focus:border-purple-300 focus:outline-none transition"
-                />
-                {errors.phone && (
-                  <p className="text-red-500 text-sm font-serif mt-1">
-                    {errors.phone}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <input
-                  type="text"
-                  placeholder="Street Address"
-                  value={address.street}
-                  onChange={(e) =>
-                    setAddress({ ...address, street: e.target.value })
-                  }
-                  className="w-full p-3 border border-gray-300 rounded-lg font-serif text-gray-700 focus:ring-2 focus:ring-purple-300 focus:border-purple-300 focus:outline-none transition"
-                />
-                {errors.street && (
-                  <p className="text-red-500 text-sm font-serif mt-1">
-                    {errors.street}
-                  </p>
-                )}
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <input
-                    type="text"
-                    placeholder="City"
-                    value={address.city}
-                    onChange={(e) =>
-                      setAddress({ ...address, city: e.target.value })
-                    }
-                    className="w-full p-3 border border-gray-300 rounded-lg font-serif text-gray-700 focus:ring-2 focus:ring-purple-300 focus:border-purple-300 focus:outline-none transition"
+              {cart.map((item, index) => (
+                <div
+                  key={index}
+                  className="border rounded-lg p-4 flex gap-4 bg-white"
+                >
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-24 h-24 object-cover rounded-sm"
                   />
-                  {errors.city && (
-                    <p className="text-red-500 text-sm font-serif mt-1">
-                      {errors.city}
+                  <div>
+                    <h3 className="text-lg font-semibold">{item.title}</h3>
+                    <p>Quantity: {item.quantity || 1}</p>
+                    <p>
+                      Color:{" "}
+                      <span
+                        className="inline-block w-4 h-4 rounded-full border"
+                        style={{ backgroundColor: item.color }}
+                      ></span>
                     </p>
-                  )}
+                    <p className="text-lg font-bold">₹{item.price}</p>
+                  </div>
                 </div>
+              ))}
+            </div>
+          ) : image && title ? (
+            <div className="border rounded-lg p-4 flex gap-4 bg-white">
+              <img
+                src={image}
+                alt={title}
+                className="w-24 h-24 object-cover rounded-sm"
+              />
+              <div>
+                <h3 className="text-lg font-semibold">{title}</h3>
+                <p>Quantity: {quantity || 1}</p>
+                <p>
+                  Color:{" "}
+                  <span
+                    className="inline-block w-4 h-4 rounded-full border"
+                    style={{ backgroundColor: color }}
+                  ></span>
+                </p>
+                <p className="text-lg font-bold">₹{amount}</p>
+              </div>
+            </div>
+          ) : null}
 
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Pincode"
-                    value={address.pincode}
-                    onChange={(e) =>
-                      setAddress({ ...address, pincode: e.target.value })
-                    }
-                    className="w-full p-3 border border-gray-300 rounded-lg font-serif text-gray-700 focus:ring-2 focus:ring-purple-300 focus:border-purple-300 focus:outline-none transition"
-                  />
-                  {errors.pincode && (
-                    <p className="text-red-500 text-sm font-serif mt-1">
-                      {errors.pincode}
-                    </p>
-                  )}
-                </div>
+          {/* Total Amount & Continue to Address Button */}
+          <div className="mt-6 pt-4 border-t border-gray-300">
+            <h3 className="text-xl font-bold text-center">
+              Total Amount: ₹{totalAmount || amount}
+            </h3>
+            <button
+              onClick={() => setStep(2)}
+              className="w-full bg-black text-white px-6 py-3 mt-4 rounded-md hover:bg-opacity-90"
+            >
+              Continue to Address
+            </button>
+          </div>
+        </>
+      )}
+
+      {step === 2 && (
+        <>
+          <h2 className="text-2xl font-bold mb-4 text-center">
+            Shipping Details
+          </h2>
+
+          <form onSubmit={handleSubmitAddress} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border rounded-md"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border rounded-md"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border rounded-md"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  Pincode
+                </label>
+                <input
+                  type="text"
+                  name="pincode"
+                  value={formData.pincode}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border rounded-md"
+                  required
+                />
               </div>
             </div>
 
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Complete Address
+              </label>
+              <textarea
+                name="address"
+                value={formData.address}
+                onChange={handleInputChange}
+                className="w-full p-2 border rounded-md"
+                rows="3"
+                required
+              ></textarea>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">City</label>
+                <input
+                  type="text"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border rounded-md"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">State</label>
+                <input
+                  type="text"
+                  name="state"
+                  value={formData.state}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border rounded-md"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Payment Method
+              </label>
+              <div className="flex items-center space-x-4">
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="razorpay"
+                    checked={formData.paymentMethod === "razorpay"}
+                    onChange={handleInputChange}
+                    className="mr-2"
+                  />
+                  RazorPay
+                </label>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <button
+                type="submit"
+                className="w-full bg-black text-white px-6 py-3 rounded-md hover:bg-opacity-90"
+              >
+                Proceed to Payment
+              </button>
+              <button
+                type="button"
+                onClick={() => setStep(1)}
+                className="w-full mt-2 border border-black px-6 py-2 rounded-md"
+              >
+                Back to Cart
+              </button>
+            </div>
+          </form>
+        </>
+      )}
+
+      {step === 3 && (
+        <>
+          <h2 className="text-2xl font-bold mb-4 text-center">Order Summary</h2>
+
+          <div className="bg-white p-4 rounded-lg mb-4">
+            <h3 className="font-semibold text-lg mb-2">Shipping Address</h3>
+            <p>{formData.name}</p>
+            <p>{formData.address}</p>
+            <p>
+              {formData.city}, {formData.state} - {formData.pincode}
+            </p>
+            <p>Phone: {formData.phone}</p>
+          </div>
+
+          <div className="bg-white p-4 rounded-lg mb-4">
+            <h3 className="font-semibold text-lg mb-2">Order Details</h3>
+            <p className="font-bold">Total Amount: ₹{totalAmount || amount}</p>
+            <p>Payment Method: RazorPay</p>
+          </div>
+
+          <div className="mt-6">
             <button
-              onClick={handleSaveAddress}
-              className="w-full mt-6 py-3 text-lg font-serif text-white bg-green-600 rounded-lg hover:bg-green-700 transition shadow-md"
+              onClick={handlePayment}
+              className="w-full bg-black text-white px-6 py-3 rounded-md hover:bg-opacity-90"
             >
-              📍 Save Address
+              Pay Now
+            </button>
+            <button
+              onClick={() => setStep(2)}
+              className="w-full mt-2 border border-black px-6 py-2 rounded-md"
+            >
+              Edit Details
             </button>
           </div>
-        ) : (
-          <div className="bg-gray-50 p-6 rounded-lg shadow-md mb-8 border border-gray-200">
-            <h2 className="text-xl font-serif text-gray-700 mb-3 border-b pb-2">
-              Shipping Address
-            </h2>
-            <p className="text-gray-800 font-serif leading-relaxed">
-              {address.fullName}, {address.street}, {address.city} -{" "}
-              {address.pincode}
-            </p>
-            <p className="text-gray-600 font-serif mt-2">📞 {address.phone}</p>
-          </div>
-        )}
-
-        {/* 💰 Total Amount */}
-        <div className="text-center mb-6">
-          <p className="text-lg font-serif text-gray-800">
-            Total Amount:{" "}
-            <span className="text-purple-600 font-bold text-xl">
-              ₹{totalAmount}
-            </span>
-          </p>
-        </div>
-
-        {/* Secure Payment Badge */}
-        <div className="flex justify-center items-center gap-2 text-green-600 font-serif mb-6 bg-green-50 py-2 px-4 rounded-lg border border-green-100">
-          <span className="text-lg">✅</span> Secure Payment with Razorpay
-        </div>
-
-        {/* 🚀 Payment Button */}
-        <div className="flex flex-col gap-4">
-          <button
-            onClick={handlePayment}
-            className={`w-full py-3 text-lg font-serif text-white bg-purple-600 rounded-lg shadow-lg 
-            hover:bg-purple-700 transition ${
-              !isAddressSaved && "opacity-50 cursor-not-allowed"
-            }`}
-            disabled={!isAddressSaved}
-          >
-            💳 Pay Now
-          </button>
-          <button
-            onClick={() => navigate(-1)}
-            className="w-full py-3 text-lg font-serif text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition border border-gray-300"
-          >
-            ⬅️ Back to Cart
-          </button>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };
