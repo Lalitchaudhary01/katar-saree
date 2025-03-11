@@ -54,7 +54,7 @@ const FeaturedCollections = () => {
   };
 
   return (
-    <section className="py-16 md:py-24 bg-[#FDFBF7]">
+    <section className="py-16 md:py-24 bg-[#fdfdfd]">
       <style>
         {`
           @import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@400;500;600;700&display=swap');

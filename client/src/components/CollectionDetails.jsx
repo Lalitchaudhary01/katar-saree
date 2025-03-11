@@ -294,7 +294,7 @@ const CollectionDetail = () => {
                   <span className="text-gray-500 text-sm">(126 reviews)</span>
                 </div>
 
-                <h1 className="text-3xl font-bold text-gray-900">
+                <h1 className="text-2xl font-bold text-gray-900">
                   {collection.title}
                 </h1>
 

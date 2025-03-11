@@ -149,6 +149,10 @@ const Navbar = () => {
       items: [
         { name: "Trending Sarees", link: "/trending/sarees" },
         { name: "Trending Suits", link: "/trending/suits" },
+        { name: "Silk", link: "/featured/silk" },
+        { name: "Katan Icon", link: "/featured/katan-icon" },
+        { name: "Handwoven Fabrics", link: "/featured/handwoven" },
+        { name: "Katan Signature Class", link: "/featured/signature-class" },
       ],
     },
     {
@@ -173,12 +177,12 @@ const Navbar = () => {
       ],
     },
     {
-      title: "Featured",
+      // title: "Featured",
       items: [
-        { name: "Silk", link: "/featured/silk" },
-        { name: "Katan Icon", link: "/featured/katan-icon" },
-        { name: "Handwoven Fabrics", link: "/featured/handwoven" },
-        { name: "Katan Signature Class", link: "/featured/signature-class" },
+        // { name: "Silk", link: "/featured/silk" },
+        // { name: "Katan Icon", link: "/featured/katan-icon" },
+        // { name: "Handwoven Fabrics", link: "/featured/handwoven" },
+        // { name: "Katan Signature Class", link: "/featured/signature-class" },
       ],
     },
   ];
@@ -377,8 +381,8 @@ const Navbar = () => {
                     }`}
         >
           <div className="relative flex justify-between items-center px-20">
-            {/* Left Navigation - Moved closer to center logo */}
-            <div className="flex space-x-5 text-gray-700 uppercase tracking-wide text-lg font-bold ml-4">
+            {/* Left Navigation - Moved much closer to center logo */}
+            <div className="flex space-x-8 text-gray-700 uppercase tracking-wide text-lg font-bold ml-24 ">
               <div className="relative group">
                 <Link
                   to="/"
@@ -437,8 +441,8 @@ const Navbar = () => {
               </Link>
             </div>
 
-            {/* Right Navigation - Moved closer to center logo */}
-            <div className="flex space-x-5 text-gray-700 uppercase tracking-wide text-lg font-bold mr-4">
+            {/* Right Navigation - Moved much closer to center logo */}
+            <div className="flex space-x-8 text-gray-700 uppercase tracking-wide text-lg font-bold mr-34 ">
               {!scrolled ? (
                 <>
                   <div className="relative group">

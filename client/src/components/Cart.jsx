@@ -1,96 +1,176 @@
 import React from "react";
 import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
-import { Trash2 } from "lucide-react";
+import { Trash2, ShoppingBag, Plus, Minus } from "lucide-react";
 
 const Cart = () => {
-  const { cart, removeFromCart } = useCart();
+  const { cart, removeFromCart, updateQuantity } = useCart();
   const navigate = useNavigate();
-  const totalItems = cart.length;
-  const totalAmount = cart.reduce((total, item) => total + item.price, 0);
+  const totalItems = cart.reduce(
+    (total, item) => total + (item.quantity || 1),
+    0
+  );
+  const totalAmount = cart.reduce(
+    (total, item) => total + item.price * (item.quantity || 1),
+    0
+  );
 
   const handleCheckout = () => {
     navigate("/checkout", { state: { totalAmount } });
   };
 
+  const handleIncreaseQuantity = (itemId) => {
+    const item = cart.find((item) => item.id === itemId);
+    if (item) {
+      updateQuantity(itemId, (item.quantity || 1) + 1);
+    }
+  };
+
+  const handleDecreaseQuantity = (itemId) => {
+    const item = cart.find((item) => item.id === itemId);
+    if (item && (item.quantity || 1) > 1) {
+      updateQuantity(itemId, (item.quantity || 1) - 1);
+    }
+  };
+
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-[#FAF3E0] rounded-lg shadow-lg font-serif">
-      <h1 className="text-3xl font-bold mb-6 text-center relative text-black">
-        Your Shopping Cart
+    <div className="max-w-4xl mx-auto p-8 bg-white rounded-md shadow-xl font-sans">
+      <h1 className="text-4xl font-light mb-8 text-center text-gray-800 tracking-wider border-b border-gray-200 pb-4">
+        SHOPPING BAG
         {totalItems > 0 && (
-          <span className="ml-2 bg-black text-white text-sm font-semibold px-2 py-1 rounded-full">
+          <span className="ml-3 bg-black text-white text-sm px-3 py-1 rounded-sm">
             {totalItems}
           </span>
         )}
       </h1>
 
       {cart.length === 0 ? (
-        <div className="text-center text-gray-900 py-12">
-          <p className="text-lg mb-6">Your cart is empty.</p>
+        <div className="text-center py-16 flex flex-col items-center">
+          <ShoppingBag size={64} className="text-gray-300 mb-4" />
+          <p className="text-xl font-light mb-8 text-gray-600">
+            Your shopping bag is empty
+          </p>
           <a
             href="/"
-            className="mt-4 inline-block bg-[#8B6A37] text-white px-6 py-2 rounded-sm hover:bg-opacity-90 transition-all duration-300 tracking-wider"
+            className="mt-4 inline-block bg-black text-white px-10 py-3 hover:bg-gray-900 transition-all duration-300 tracking-widest text-sm font-light"
           >
-            Continue Shopping
+            CONTINUE SHOPPING
           </a>
         </div>
       ) : (
-        <div className="bg-white p-6 rounded-sm shadow-md border border-black border-opacity-20">
-          <ul className="divide-y divide-[#8B6A37] divide-opacity-20">
+        <div className="bg-white">
+          <ul className="divide-y divide-gray-100">
             {cart.map((item, index) => (
               <li
                 key={index}
-                className="flex items-center justify-between py-6"
+                className="flex items-center justify-between py-8"
               >
                 {/* Product Image */}
                 <div className="relative">
-                  <div className="absolute -top-2 -left-2 w-12 h-12 border-l border-t border-black border-opacity-40"></div>
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-24 h-24 object-cover rounded-sm shadow-sm relative z-10"
+                    className="w-32 h-40 object-cover"
                   />
-                  <div className="absolute -bottom-2 -right-2 w-12 h-12 border-r border-b border-black border-opacity-40"></div>
                 </div>
 
                 {/* Product Details */}
-                <div className="flex-1 ml-6">
-                  <h2 className="text-lg font-semibold text-black">
+                <div className="flex-1 ml-8">
+                  <h2 className="text-lg font-medium text-gray-800 tracking-wide">
                     {item.title}
                   </h2>
-                  <p className="text-gray font-semibold">₹{item.price}</p>
-                  <div className="flex mt-2 text-gray-600 text-sm">
-                    <p className="mr-4">
-                      Size: <span className="font-semibold">{item.size}</span>
+                  <p className="text-lg font-light mt-1">
+                    ₹{item.price.toLocaleString()}
+                  </p>
+                  <div className="flex mt-4 text-gray-500 text-sm space-x-6">
+                    <p className="font-light">
+                      Size: <span className="text-gray-700">{item.size}</span>
                     </p>
-                    <p>
-                      Color: <span className="font-semibold">{item.color}</span>
+                    <p className="font-light">
+                      Color: <span className="text-gray-700">{item.color}</span>
                     </p>
                   </div>
+
+                  {/* Quantity Controls */}
+                  <div className="flex items-center mt-4">
+                    <p className="text-sm font-light text-gray-500 mr-4">
+                      QUANTITY
+                    </p>
+                    <div className="flex items-center border border-gray-200">
+                      <button
+                        onClick={() => handleDecreaseQuantity(item.id)}
+                        className="px-3 py-1 border-r border-gray-200 hover:bg-gray-50"
+                        disabled={(item.quantity || 1) <= 1}
+                      >
+                        <Minus
+                          size={16}
+                          className={
+                            (item.quantity || 1) <= 1
+                              ? "text-gray-300"
+                              : "text-gray-600"
+                          }
+                        />
+                      </button>
+                      <span className="px-4 py-1 text-gray-800">
+                        {item.quantity || 1}
+                      </span>
+                      <button
+                        onClick={() => handleIncreaseQuantity(item.id)}
+                        className="px-3 py-1 border-l border-gray-200 hover:bg-gray-50"
+                      >
+                        <Plus size={16} className="text-gray-600" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Item Total */}
+                  <p className="text-sm font-medium mt-4 text-gray-800">
+                    Item Total:{" "}
+                    <span className="text-gray-900">
+                      ₹{(item.price * (item.quantity || 1)).toLocaleString()}
+                    </span>
+                  </p>
                 </div>
 
                 {/* Delete Button */}
                 <button
                   onClick={() => removeFromCart(item.id)}
-                  className="p-2 rounded-sm bg-black hover:bg-opacity-90 transition-all duration-300"
+                  className="p-2 hover:text-gray-500 transition-all duration-300"
                 >
-                  <Trash2 size={20} className="text-white" />
+                  <Trash2 size={20} className="text-gray-800" />
                 </button>
               </li>
             ))}
           </ul>
 
           {/* Checkout Section */}
-          <div className="mt-8 pt-6 border-t border-[#8B6A37] border-opacity-20">
-            <div className="flex justify-between items-center">
-              <span className="text-xl font-semibold text-[#000000]">
-                Total: <span className="text-[#343434]">₹{totalAmount}</span>
-              </span>
+          <div className="mt-10 pt-8 border-t border-gray-200">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-6 md:space-y-0">
+              <div className="space-y-1">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-sm font-light text-gray-500">SUBTOTAL</p>
+                  <span className="ml-8 text-lg font-light text-gray-800">
+                    ₹{totalAmount.toLocaleString()}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-sm font-light text-gray-500">SHIPPING</p>
+                  <span className="ml-8 text-lg font-light text-gray-800">
+                    FREE
+                  </span>
+                </div>
+                <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+                  <p className="text-sm font-medium text-gray-800">TOTAL</p>
+                  <span className="ml-8 text-2xl font-light text-gray-800">
+                    ₹{totalAmount.toLocaleString()}
+                  </span>
+                </div>
+              </div>
               <button
                 onClick={handleCheckout}
-                className="bg-black text-white px-8 py-3 rounded-sm hover:bg-opacity-90 transition-all duration-300 tracking-wider"
+                className="bg-black text-white w-full md:w-auto px-10 py-4 hover:bg-gray-900 transition-all duration-300 tracking-widest text-sm font-light"
               >
-                Proceed to Checkout
+                PROCEED TO CHECKOUT
               </button>
             </div>
           </div>
