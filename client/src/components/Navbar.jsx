@@ -367,9 +367,9 @@ const Navbar = () => {
           </div>
         )}
 
-        {/* Main Navigation - Fixed on scroll */}
+        {/* Main Navigation - Fixed on scroll - INCREASED HEIGHT */}
         <div
-          className={`w-full bg-white border-t border-b border-gray-200 py-6 px-6 
+          className={`w-full bg-white border-t border-b border-gray-200 py-10 px-6 
                     ${
                       scrolled
                         ? "fixed top-0 left-0 shadow-md z-50 transition-all duration-300"
@@ -422,7 +422,7 @@ const Navbar = () => {
               </div>
             </div>
 
-            {/* Center Logo (Absolute Centered) - Made slightly larger */}
+            {/* Center Logo (Absolute Centered) - Keeping same size */}
             <div className="absolute left-1/2 transform -translate-x-1/2">
               <Link
                 to="/"
@@ -432,7 +432,7 @@ const Navbar = () => {
                 <img
                   src="/katan.png"
                   alt="KATAN"
-                  className="h-20 w-36 object-contain"
+                  className="h-23 w-39 object-contain"
                 />
               </Link>
             </div>
@@ -479,8 +479,8 @@ const Navbar = () => {
                         title="Our Story"
                         items={[
                           { name: "Story", link: "/about/story" },
-                          { name: "OurHeritage", link: "/about/heritage" },
-                          { name: "OurCraftmanship", link: "/about/craft" },
+                          { name: "Our-Heritage", link: "/about/heritage" },
+                          { name: "Our-Craftmanship", link: "/about/craft" },
                           { name: "About-Us", link: "/about" },
                         ]}
                       />
@@ -555,8 +555,8 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Add a spacer div when navbar is fixed to prevent content jump */}
-        {scrolled && <div className="h-24"></div>}
+        {/* Add a spacer div when navbar is fixed to prevent content jump - INCREASED HEIGHT */}
+        {scrolled && <div className="h-32"></div>}
       </div>
     </>
   );
