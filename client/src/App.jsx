@@ -31,6 +31,7 @@ import { WishlistProvider } from "./context/WishlistContext";
 import Wishlist from "./headers/Wishlist";
 import AuthPage from "./headers/AuthPage";
 import Testimonials from "./components/Testimonials";
+import ServiceHighlights from "./components/ServiceHighlights";
 
 function AppContent() {
   const location = useLocation();
@@ -47,6 +48,8 @@ function AppContent() {
               {/* <TrendingSection /> */}
               <Home />
               <FeaturedCollections />
+              <ServiceHighlights />
+
               <NewArrivals />
               {/* <SilkSarees /> */}
               <Testimonials />

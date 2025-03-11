@@ -106,10 +106,11 @@ const FeaturedCollections = () => {
       </style>
 
       <div className="container mx-auto px-4 text-center">
-        <h2 className="text-3xl md:text-5xl font-playfair font-bold text-black mb-4 tracking-wide">
+        <h2 className="text-3xl md:text-5xl font-[Garamond] font-bold text-black mb-4 tracking-wide">
           Featured Collections
         </h2>
-        <p className="font-cardo text-neutral-800 max-w-2xl mx-auto mb-8 text-lg">
+
+        <p className="font-[Garamond] text-neutral-800 max-w-2xl mx-auto mb-8 text-lg">
           Explore our curated selection of premium handcrafted pieces, each
           telling a story of heritage and artistry.
         </p>
