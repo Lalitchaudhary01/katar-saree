@@ -94,13 +94,13 @@ const FeaturedCollections = () => {
             position: absolute;
             height: 1px;
             width: 100%;
-            background-color: #B38B59;
+            background-color: #000000;
             bottom: -2px;
             left: 0;
           }
           
           .discount-badge {
-            background: linear-gradient(135deg, #B38B59 0%, #D4B483 100%);
+            background: linear-gradient(135deg, #000000 0%, #333333 100%);
           }
         `}
       </style>
@@ -114,7 +114,7 @@ const FeaturedCollections = () => {
           telling a story of heritage and artistry.
         </p>
 
-        <div className="w-32 h-0.5 bg-[#B38B59] mx-auto"></div>
+        <div className="w-32 h-0.5 bg-black mx-auto"></div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 px-8 mt-16">
@@ -171,7 +171,7 @@ const FeaturedCollections = () => {
                     </p>
                   )}
                   {collection.discountPrice && (
-                    <p className="text-[#B38B59] font-cardo font-bold text-lg price-tag">
+                    <p className="text-black font-cardo font-bold text-lg price-tag">
                       ₹{collection.discountPrice}
                     </p>
                   )}
@@ -185,7 +185,7 @@ const FeaturedCollections = () => {
         {!showAll && (
           <motion.button
             onClick={() => setShowAll(true)}
-            className="bg-[#B38B59] text-white px-10 py-3 rounded-md hover:bg-[#9A7949] transition-all font-cardo text-lg tracking-wide shadow-lg"
+            className="bg-black text-white px-10 py-3 rounded-md hover:bg-gray-900 transition-all font-cardo text-lg tracking-wide shadow-lg"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -204,7 +204,7 @@ const FeaturedCollections = () => {
           className="fixed top-0 right-0 w-80 md:w-96 h-full bg-[#FDFBF7] shadow-lg z-50 p-6 overflow-y-auto font-cardo"
         >
           <button
-            className="absolute top-4 right-4 text-xl text-black hover:text-[#B38B59] transition-colors"
+            className="absolute top-4 right-4 text-xl text-black hover:text-gray-700 transition-colors"
             onClick={() => setSelectedCollection(null)}
           >
             ✖
@@ -226,7 +226,7 @@ const FeaturedCollections = () => {
                   src={img}
                   alt={`Thumbnail ${index + 1}`}
                   className={`w-16 h-16 object-cover border rounded-lg cursor-pointer hover:opacity-80 transition-opacity ${
-                    mainImage === img ? "border-2 border-[#B38B59]" : ""
+                    mainImage === img ? "border-2 border-black" : ""
                   }`}
                   onClick={() => setMainImage(img)}
                   whileHover={{ scale: 1.1 }}
@@ -244,12 +244,12 @@ const FeaturedCollections = () => {
                   ₹{selectedCollection.originalPrice}
                 </s>
               </p>
-              <p className="text-xl font-bold text-[#B38B59]">
+              <p className="text-xl font-bold text-black">
                 ₹{selectedCollection.discountPrice}
               </p>
             </div>
             <div className="text-right">
-              <span className="text-sm bg-[#B38B59]/10 text-[#B38B59] px-2 py-0.5 rounded">
+              <span className="text-sm bg-black/10 text-black px-2 py-0.5 rounded">
                 {selectedCollection.discount} off
               </span>
             </div>
@@ -263,7 +263,7 @@ const FeaturedCollections = () => {
                   key={index}
                   className={`w-8 h-8 rounded-full border-2 transition-all hover:scale-105 ${
                     selectedColor === color
-                      ? "border-[#B38B59] scale-110"
+                      ? "border-black scale-110"
                       : "border-gray-300"
                   }`}
                   style={{ backgroundColor: color }}
@@ -276,7 +276,7 @@ const FeaturedCollections = () => {
 
           <div className="flex items-center justify-center mt-8">
             <motion.button
-              className="bg-[#B38B59] text-white px-8 py-3 rounded-md hover:bg-[#9A7949] transition-all flex items-center gap-2 font-cardo text-lg shadow-md w-full"
+              className="bg-black text-white px-8 py-3 rounded-md hover:bg-gray-900 transition-all flex items-center gap-2 font-cardo text-lg shadow-md w-full"
               onClick={() => {
                 if (!selectedColor) {
                   toast.error("Please select a color before adding to cart!");
