@@ -54,77 +54,128 @@ const FeaturedCollections = () => {
   };
 
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section className="py-16 md:py-24 bg-[#FDFBF7]">
       <style>
         {`
-          @import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@400;500;600;700&display=swap');
           
           .font-cardo {
             font-family: 'Cardo', serif;
           }
-
-          .card-3d {
-            transform-style: preserve-3d;
-            transition: transform 0.5s, box-shadow 0.5s;
+          
+          .font-playfair {
+            font-family: 'Playfair Display', serif;
           }
 
-          .card-3d:hover {
-            transform: rotateY(10deg) rotateX(10deg) scale(1.05);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+          .card-hover {
+            transition: all 0.4s ease-in-out;
+          }
+          
+          .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+          }
+          
+          .image-zoom {
+            transition: transform 0.7s ease;
+          }
+          
+          .image-zoom:hover {
+            transform: scale(1.07);
+          }
+          
+          .price-tag {
+            position: relative;
+            display: inline-block;
+          }
+          
+          .price-tag:after {
+            content: '';
+            position: absolute;
+            height: 1px;
+            width: 100%;
+            background-color: #B38B59;
+            bottom: -2px;
+            left: 0;
+          }
+          
+          .discount-badge {
+            background: linear-gradient(135deg, #B38B59 0%, #D4B483 100%);
           }
         `}
       </style>
 
       <div className="container mx-auto px-4 text-center">
-        <h2 className="text-3xl md:text-5xl font-cardo font-bold text-black mb-4 tracking-wide">
+        <h2 className="text-3xl md:text-5xl font-playfair font-bold text-black mb-4 tracking-wide">
           Featured Collections
         </h2>
-        <p className="font-cardo text-neutral-900 max-w-2xl mx-auto mb-8  text-lg whitespace-nowrap">
+        <p className="font-cardo text-neutral-800 max-w-2xl mx-auto mb-8 text-lg">
           Explore our curated selection of premium handcrafted pieces, each
           telling a story of heritage and artistry.
         </p>
 
-        <div className="w-32 h-0.5 bg-black mx-auto"></div>
+        <div className="w-32 h-0.5 bg-[#B38B59] mx-auto"></div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 px-8 mt-16 ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 px-8 mt-16">
         {collections
-          .slice(0, showAll ? collections.length : 4) // Sirf 4 items display kar raha hai
+          .slice(0, showAll ? collections.length : 4)
           .map((collection, index) => (
             <div
               key={index}
-              className="group w-full max-w-[350px] mx-auto overflow-hidden shadow-xl rounded-2xl bg-white flex flex-col justify-between cursor-pointer"
+              className="group w-full max-w-[350px] mx-auto overflow-hidden bg-white flex flex-col justify-between cursor-pointer card-hover rounded-lg shadow-md"
+              onMouseEnter={() => handleMouseEnter(index)}
+              onMouseLeave={() => handleMouseLeave(index)}
             >
-              <div className="relative overflow-hidden rounded-t-2xl group">
-                <img
-                  src={collection.images[currentIndexes[index]]}
-                  alt={collection.title}
-                  className="w-full h-[510px] object-cover rounded-t-2xl"
-                  onClick={() => navigate(`/collection/${index}`)}
-                />
+              <div className="relative overflow-hidden group">
+                <div className="overflow-hidden">
+                  <img
+                    src={collection.images[currentIndexes[index]]}
+                    alt={collection.title}
+                    className="w-full h-[460px] object-cover image-zoom"
+                    onClick={() => navigate(`/collection/${index}`)}
+                  />
+                </div>
 
-                <button
-                  onClick={() => setSelectedCollection(collection)}
-                  className="absolute bottom-4 left-1/2 -translate-x-1/2 p-3 rounded-full bg-white shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-gray-100"
-                >
-                  <FaEye className="text-black text-xl" />
-                </button>
+                {/* Quick View Button - More Elegant */}
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/40 to-transparent h-24 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedCollection(collection);
+                    }}
+                    className="px-6 py-2.5 bg-white/90 backdrop-blur-sm text-black rounded-full font-cardo tracking-wide text-sm flex items-center gap-2 hover:bg-white transition-all duration-300 shadow-lg"
+                  >
+                    <FaEye className="text-black" /> Quick View
+                  </button>
+                </div>
+
+                {/* Discount Badge */}
+                {collection.discount && (
+                  <div className="absolute top-4 right-4">
+                    <div className="discount-badge text-white font-medium text-sm px-3 py-1 rounded-full shadow-md">
+                      {collection.discount} OFF
+                    </div>
+                  </div>
+                )}
               </div>
 
-              <div className="p-4 flex flex-col flex-grow bg-white rounded-b-2xl">
-                <h3 className="text-1xl text-black font-cardo font-bold ">
+              <div className="p-5 flex flex-col bg-white">
+                <h3 className="text-xl text-black font-playfair font-semibold mb-2">
                   {collection.title}
                 </h3>
-                {collection.originalPrice && (
-                  <p className="text-gray-500 line-through text-sm ">
-                    ₹{collection.originalPrice}
-                  </p>
-                )}
-                {collection.discountPrice && (
-                  <p className="text-black font-cardo font-semibold text-lg ">
-                    ₹{collection.discountPrice}
-                  </p>
-                )}
+                <div className="flex items-center justify-center gap-3">
+                  {collection.originalPrice && (
+                    <p className="text-gray-500 line-through text-sm font-cardo">
+                      ₹{collection.originalPrice}
+                    </p>
+                  )}
+                  {collection.discountPrice && (
+                    <p className="text-[#B38B59] font-cardo font-bold text-lg price-tag">
+                      ₹{collection.discountPrice}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           ))}
@@ -134,7 +185,7 @@ const FeaturedCollections = () => {
         {!showAll && (
           <motion.button
             onClick={() => setShowAll(true)}
-            className="bg-black text-white px-10 py-3 rounded-md hover:bg-black-900 transition-all font-cardo text-lg tracking-wide shadow-lg"
+            className="bg-[#B38B59] text-white px-10 py-3 rounded-md hover:bg-[#9A7949] transition-all font-cardo text-lg tracking-wide shadow-lg"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -143,21 +194,22 @@ const FeaturedCollections = () => {
         )}
       </div>
 
+      {/* Detailed View Sidebar - More Elegant */}
       {selectedCollection && (
         <motion.div
           initial={{ x: "100%" }}
           animate={{ x: 0 }}
           exit={{ x: "100%" }}
           transition={{ duration: 0.3 }}
-          className="fixed top-0 right-0 w-80 md:w-96 h-full bg-[#F9F6F0] shadow-lg z-50 p-6 overflow-y-auto font-cardo"
+          className="fixed top-0 right-0 w-80 md:w-96 h-full bg-[#FDFBF7] shadow-lg z-50 p-6 overflow-y-auto font-cardo"
         >
           <button
-            className="absolute top-4 right-4 text-xl text-black hover:text-[#8B6A37] transition-colors"
+            className="absolute top-4 right-4 text-xl text-black hover:text-[#B38B59] transition-colors"
             onClick={() => setSelectedCollection(null)}
           >
             ✖
           </button>
-          <h3 className="text-2xl font-bold text-black mb-4 font-cardo">
+          <h3 className="text-2xl font-bold text-black mb-4 font-playfair">
             {selectedCollection.title}
           </h3>
           <div className="mt-4 flex flex-col items-center">
@@ -174,7 +226,7 @@ const FeaturedCollections = () => {
                   src={img}
                   alt={`Thumbnail ${index + 1}`}
                   className={`w-16 h-16 object-cover border rounded-lg cursor-pointer hover:opacity-80 transition-opacity ${
-                    mainImage === img ? "border-2 border-[#0a0a09]" : ""
+                    mainImage === img ? "border-2 border-[#B38B59]" : ""
                   }`}
                   onClick={() => setMainImage(img)}
                   whileHover={{ scale: 1.1 }}
@@ -182,53 +234,36 @@ const FeaturedCollections = () => {
               ))}
             </div>
           </div>
-          <p className="text-gray-900 mt-6 font-cardo ">
+          <p className="text-gray-700 mt-6 font-cardo">
             {selectedCollection.desc}
           </p>
-          <div className="mt-4 ">
-            <p className="text-lg">
-              Original Price:{" "}
-              <s className="text-gray-500">
-                ₹{selectedCollection.originalPrice}
-              </s>
-            </p>
-            <p className="text-xl font-bold text-black">
-              ₹{selectedCollection.discountPrice}{" "}
-              <span className="text-sm text-red-600">
-                ({selectedCollection.discount} off)
+          <div className="mt-6 bg-white p-4 rounded-lg shadow-sm">
+            <div className="flex justify-between items-center">
+              <p className="text-lg">
+                <s className="text-gray-500">
+                  ₹{selectedCollection.originalPrice}
+                </s>
+              </p>
+              <p className="text-xl font-bold text-[#B38B59]">
+                ₹{selectedCollection.discountPrice}
+              </p>
+            </div>
+            <div className="text-right">
+              <span className="text-sm bg-[#B38B59]/10 text-[#B38B59] px-2 py-0.5 rounded">
+                {selectedCollection.discount} off
               </span>
-            </p>
+            </div>
           </div>
 
-          {/* <div className="mt-6 ">
-            <p className="font-bold font-cardo text-black">Select Size:</p>
-            <div className="flex  gap-2 mt-3">
-              {selectedCollection.sizes?.map((size, index) => (
-                <motion.button
-                  key={index}
-                  className={`px-4 py-2 border font-cardo rounded-md text-sm transition-colors ${
-                    selectedSize === size
-                      ? "bg-black text-white border-black"
-                      : "bg-white text-black border-black hover:bg-[#F9F6F0]"
-                  }`}
-                  onClick={() => setSelectedSize(size)}
-                  whileHover={{ scale: 1.05 }}
-                >
-                  {size}
-                </motion.button>
-              ))}
-            </div>
-          </div> */}
-
           <div className="mt-6 text-center">
-            <p className="font-bold font-cardo text-black">Select Color:</p>
-            <div className="flex  gap-3 mt-3">
+            <p className="font-bold font-playfair text-black">Select Color:</p>
+            <div className="flex justify-center gap-3 mt-3">
               {selectedCollection.colors?.map((color, index) => (
                 <motion.button
                   key={index}
                   className={`w-8 h-8 rounded-full border-2 transition-all hover:scale-105 ${
                     selectedColor === color
-                      ? "border-black scale-110"
+                      ? "border-[#B38B59] scale-110"
                       : "border-gray-300"
                   }`}
                   style={{ backgroundColor: color }}
@@ -241,12 +276,10 @@ const FeaturedCollections = () => {
 
           <div className="flex items-center justify-center mt-8">
             <motion.button
-              className="bg-black text-white px-8 py-3 rounded-md hover:bg-black transition-all flex items-center gap-2 font-cardo text-lg shadow-md"
+              className="bg-[#B38B59] text-white px-8 py-3 rounded-md hover:bg-[#9A7949] transition-all flex items-center gap-2 font-cardo text-lg shadow-md w-full"
               onClick={() => {
                 if (!selectedColor) {
-                  toast.error(
-                    "Please select a size and color before adding to cart!"
-                  );
+                  toast.error("Please select a color before adding to cart!");
                   return;
                 }
 
@@ -259,16 +292,14 @@ const FeaturedCollections = () => {
                   price:
                     selectedCollection.discountPrice ||
                     selectedCollection.originalPrice,
-                  // size: selectedSize,
                   color: selectedColor,
                 });
 
                 toast.success(`${selectedCollection.title} added to cart!`);
               }}
-              // disabled={!selectedSize || !selectedColor}
               disabled={!selectedColor}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
               <FaShoppingCart /> Add to Cart
             </motion.button>
