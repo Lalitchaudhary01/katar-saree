@@ -4,15 +4,17 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { FaEye, FaShoppingCart } from "react-icons/fa";
+import { FaEye, FaShoppingCart, FaHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useCart } from "../context/CartContext";
+import { useWishlist } from "../context/WishlistContext";
 import { toast } from "react-hot-toast";
 import newArrivals from "../assets/product/NewArrival";
 
 const NewArrivals = () => {
   const { addToCart } = useCart();
+  const { isInWishlist, toggleWishlist } = useWishlist();
   const navigate = useNavigate();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [mainImage, setMainImage] = useState(null);
@@ -28,6 +30,11 @@ const NewArrivals = () => {
 
   const closeModal = () => {
     setSelectedProduct(null);
+  };
+
+  const handleWishlistToggle = (e, product) => {
+    e.stopPropagation();
+    toggleWishlist(product);
   };
 
   return (
@@ -79,6 +86,18 @@ const NewArrivals = () => {
           .discount-badge {
             background: linear-gradient(135deg, #000000 0%, #333333 100%);
           }
+
+          .wishlist-btn {
+            transition: all 0.3s ease;
+          }
+
+          .wishlist-btn:hover {
+            transform: scale(1.15);
+          }
+
+          .wishlist-btn.active {
+            color: #FF3B30;
+          }
         `}
       </style>
 
@@ -123,7 +142,7 @@ const NewArrivals = () => {
                     />
                   </div>
 
-                  {/* Quick View Button */}
+                  {/* Quick View Button and Wishlist Icon */}
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/40 to-transparent h-24 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
                     <button
                       onClick={(e) => {
@@ -135,6 +154,22 @@ const NewArrivals = () => {
                       <FaEye className="text-black" /> Quick View
                     </button>
                   </div>
+
+                  {/* Wishlist Button */}
+                  <button
+                    onClick={(e) => handleWishlistToggle(e, product)}
+                    className={`absolute top-4 left-4 bg-white h-10 w-10 rounded-full flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 wishlist-btn ${
+                      isInWishlist(product.id) ? "active" : ""
+                    }`}
+                  >
+                    <FaHeart
+                      className={`text-xl ${
+                        isInWishlist(product.id)
+                          ? "text-red-500"
+                          : "text-gray-500"
+                      }`}
+                    />
+                  </button>
 
                   {/* New Badge */}
                   <div className="absolute top-4 right-4">
@@ -181,9 +216,25 @@ const NewArrivals = () => {
           >
             ✖
           </button>
-          <h3 className="text-2xl font-bold text-black mb-4 font-playfair">
-            {selectedProduct.title}
-          </h3>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-2xl font-bold text-black font-playfair">
+              {selectedProduct.title}
+            </h3>
+            <button
+              onClick={(e) => handleWishlistToggle(e, selectedProduct)}
+              className={`wishlist-btn ${
+                isInWishlist(selectedProduct.id) ? "active" : ""
+              }`}
+            >
+              <FaHeart
+                className={`text-2xl ${
+                  isInWishlist(selectedProduct.id)
+                    ? "text-red-500"
+                    : "text-gray-500"
+                }`}
+              />
+            </button>
+          </div>
           <div className="mt-4 flex flex-col items-center">
             <motion.img
               src={mainImage}

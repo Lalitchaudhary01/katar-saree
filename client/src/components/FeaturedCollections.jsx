@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import collections from "../assets/product/CollectionData";
 import { motion, useAnimation } from "framer-motion";
-import { FaEye, FaShoppingCart } from "react-icons/fa";
+import { FaEye, FaShoppingCart, FaHeart, FaRegHeart } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
+import { useWishlist } from "../context/WishlistContext";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -20,6 +21,7 @@ const FeaturedCollections = () => {
 
   const hoverTimers = useRef({});
   const { addToCart } = useCart();
+  const { isInWishlist, toggleWishlist } = useWishlist();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,6 +53,25 @@ const FeaturedCollections = () => {
       clearTimeout(hoverTimers.current[index]);
     }
     setHoveredIndex(null);
+  };
+
+  const handleWishlistToggle = (e, collection, index) => {
+    e.stopPropagation();
+
+    // Prepare the item with all necessary properties
+    const wishlistItem = {
+      id: collection.id || `collection-${index}`,
+      title: collection.title,
+      image: collection.images[currentIndexes[index]],
+      images: collection.images,
+      originalPrice: collection.originalPrice,
+      discountPrice: collection.discountPrice,
+      colors: collection.colors,
+      discount: collection.discount,
+      desc: collection.desc,
+    };
+
+    toggleWishlist(wishlistItem);
   };
 
   return (
@@ -102,6 +123,14 @@ const FeaturedCollections = () => {
           .discount-badge {
             background: linear-gradient(135deg, #000000 0%, #333333 100%);
           }
+          
+          .wishlist-btn {
+            transition: all 0.3s ease;
+          }
+          
+          .wishlist-btn:hover {
+            transform: scale(1.1);
+          }
         `}
       </style>
 
@@ -138,6 +167,20 @@ const FeaturedCollections = () => {
                   />
                 </div>
 
+                {/* Wishlist Button - Top Left */}
+                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <button
+                    onClick={(e) => handleWishlistToggle(e, collection, index)}
+                    className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md wishlist-btn hover:bg-gray-50"
+                  >
+                    {isInWishlist(collection.id || `collection-${index}`) ? (
+                      <FaHeart className="text-red-500 text-lg" />
+                    ) : (
+                      <FaRegHeart className="text-gray-800 text-lg" />
+                    )}
+                  </button>
+                </div>
+
                 {/* Quick View Button - More Elegant */}
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/40 to-transparent h-24 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
                   <button
@@ -153,7 +196,7 @@ const FeaturedCollections = () => {
 
                 {/* Discount Badge */}
                 {collection.discount && (
-                  <div className="absolute top-4 right-4">
+                  <div className="absolute top-4 left-4">
                     <div className="discount-badge text-white font-medium text-sm px-3 py-1 rounded-full shadow-md">
                       {collection.discount} OFF
                     </div>
@@ -210,9 +253,41 @@ const FeaturedCollections = () => {
           >
             ✖
           </button>
-          <h3 className="text-2xl font-bold text-black mb-4 font-playfair">
-            {selectedCollection.title}
-          </h3>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-2xl font-bold text-black font-playfair">
+              {selectedCollection.title}
+            </h3>
+
+            {/* Wishlist button in sidebar */}
+            <button
+              onClick={() => {
+                const wishlistItem = {
+                  id:
+                    selectedCollection.id ||
+                    Math.random().toString(36).substr(2, 9),
+                  title: selectedCollection.title,
+                  image: mainImage,
+                  images: selectedCollection.images,
+                  originalPrice: selectedCollection.originalPrice,
+                  discountPrice: selectedCollection.discountPrice,
+                  colors: selectedCollection.colors,
+                  discount: selectedCollection.discount,
+                  desc: selectedCollection.desc,
+                };
+                toggleWishlist(wishlistItem);
+              }}
+              className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm wishlist-btn hover:bg-gray-50"
+            >
+              {isInWishlist(
+                selectedCollection.id || Math.random().toString(36).substr(2, 9)
+              ) ? (
+                <FaHeart className="text-red-500 text-lg" />
+              ) : (
+                <FaRegHeart className="text-gray-800 text-lg" />
+              )}
+            </button>
+          </div>
+
           <div className="mt-4 flex flex-col items-center">
             <motion.img
               src={mainImage}

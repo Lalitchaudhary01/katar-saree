@@ -8,7 +8,7 @@ const ServiceHighlights = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
           {/* Free Shipping */}
           <div className="flex flex-col items-center justify-center">
-            <div className="w-12 h-12 flex items-center justify-center text-teal-600 mb-3">
+            <div className="w-12 h-12 flex items-center justify-center text-teal mb-3">
               <Truck size={44} strokeWidth={1.9} />
             </div>
             <h3
@@ -27,7 +27,7 @@ const ServiceHighlights = () => {
 
           {/* Store Pickup */}
           <div className="flex flex-col items-center justify-center">
-            <div className="w-12 h-12 flex items-center justify-center text-teal-600 mb-3">
+            <div className="w-12 h-12 flex items-center justify-center text-teal mb-3">
               <Store size={44} strokeWidth={1.9} />
             </div>
             <h3
@@ -46,7 +46,7 @@ const ServiceHighlights = () => {
 
           {/* Chat With Us */}
           <div className="flex flex-col items-center justify-center">
-            <div className="w-12 h-12 flex items-center justify-center text-teal-600 mb-3">
+            <div className="w-12 h-12 flex items-center justify-center text-teal mb-3">
               <MessageCircle size={44} strokeWidth={1.9} />
             </div>
             <h3
@@ -65,7 +65,7 @@ const ServiceHighlights = () => {
 
           {/* Locations */}
           <div className="flex flex-col items-center justify-center">
-            <div className="w-12 h-12 flex items-center justify-center text-teal-600 mb-3">
+            <div className="w-12 h-12 flex items-center justify-center text-teal mb-3">
               <MapPin size={44} strokeWidth={1.9} />
             </div>
             <h3

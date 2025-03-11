@@ -284,9 +284,9 @@ const Navbar = () => {
         {!scrolled && (
           <div className="w-full bg-white py-3 px-6 flex justify-between items-center border-b border-gray-100">
             {/* Branding */}
-            <div className="text-[#5d4037] flex space-x-3.5 italic space-y-2">
+            <div className="text-black flex space-x-3.5 italic space-y-2">
               <div className="flex items-center space-x-2">
-                <FaEnvelope size={16} />
+                <FaEnvelope size={18} />
                 <a
                   href="mailto:katanbanarasofficial@gmail.com"
                   className="hover:underline"
@@ -295,7 +295,7 @@ const Navbar = () => {
                 </a>
               </div>
               <div className="flex items-center space-x-2 space-y-2">
-                <FaPhone size={16} />
+                <FaPhone size={18} />
                 <a
                   href="tel:+917860783350"
                   className="hover:underline space-y-2"
@@ -307,32 +307,39 @@ const Navbar = () => {
             </div>
 
             {/* Right Side Icons */}
-            <div className="flex space-x-6 text-gray-600">
+            <div className="flex  space-x-6 text-gray-600">
               <div className="flex items-center relative" ref={currencyRef}>
                 <button
                   className="flex items-center hover:text-[#8b5e3c] transition-colors"
                   onClick={handleCurrencyClick}
                 >
-                  <span className="flex items-center uppercase text-xs tracking-wide">
-                    {selectedCurrency.code} {selectedCurrency.symbol}
-                    <span className="ml-1">▼</span>
+                  <span className="flex items-center uppercase text-lg tracking-wide font-semibold">
+                    <span className="text-2xl">{selectedCurrency.code}</span>
+                    <span className="ml-1 text-2xl">
+                      {selectedCurrency.symbol} ▼
+                    </span>
                   </span>
                 </button>
 
                 {showCurrency && (
-                  <div className="absolute top-full mt-2 right-0 bg-white shadow-md p-3 z-50 w-36">
+                  <div className="absolute top-full mt-2 right-0 bg-white shadow-md p-3 z-50 w-40">
                     {currencies.map((currency) => (
                       <button
                         key={currency.code}
-                        className="block w-full text-left px-2 py-1.5 hover:bg-[#f9f5f0] text-[#5d4037] transition-colors"
+                        className="block w-full text-left px-2 py-2 hover:bg-[#f9f5f0] text-[#5d4037] transition-colors text-lg font-medium"
                         onClick={() => handleCurrencySelect(currency)}
                       >
-                        {currency.symbol} - {currency.code}
+                        <span className="text-xl">{currency.symbol}</span> -
+                        <span className="text-xl font-semibold">
+                          {" "}
+                          {currency.code}
+                        </span>
                       </button>
                     ))}
                   </div>
                 )}
               </div>
+
               <Link
                 to="/search"
                 className="flex items-center hover:text-[#8b5e3c] transition-colors"
@@ -499,9 +506,9 @@ const Navbar = () => {
                       className="flex items-center hover:text-[#8b5e3c] transition-colors"
                       onClick={handleCurrencyClick}
                     >
-                      <span className="flex items-center text-base">
+                      <span className="flex text-2xl items-center text-base">
                         {selectedCurrency.symbol}
-                        <span className="ml-1">▼</span>
+                        <span className="ml-1 text-2xl">▼</span>
                       </span>
                     </button>
 
