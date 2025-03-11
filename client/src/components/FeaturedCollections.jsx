@@ -132,7 +132,7 @@ const FeaturedCollections = () => {
                   <img
                     src={collection.images[currentIndexes[index]]}
                     alt={collection.title}
-                    className="w-full h-[460px] object-cover image-zoom"
+                    className="w-full h-[560px] object-cover image-zoom"
                     onClick={() => navigate(`/collection/${index}`)}
                   />
                 </div>
