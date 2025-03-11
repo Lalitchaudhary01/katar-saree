@@ -30,6 +30,7 @@ import TrendingSection from "./components/TrendingSection";
 import { WishlistProvider } from "./context/WishlistContext";
 import Wishlist from "./headers/Wishlist";
 import AuthPage from "./headers/AuthPage";
+import Testimonials from "./components/Testimonials";
 
 function AppContent() {
   const location = useLocation();
@@ -48,6 +49,7 @@ function AppContent() {
               <FeaturedCollections />
               <NewArrivals />
               {/* <SilkSarees /> */}
+              <Testimonials />
               <WhatsAppButton />
             </>
           }
