@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useWishlist } from "../context/WishlistContext";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { useCurrency } from "../context/currencyContext";
 import { toast } from "react-hot-toast";
 import { motion } from "framer-motion";
 import {
@@ -17,6 +18,7 @@ const Wishlist = () => {
   const { wishlistItems, removeFromWishlist } = useWishlist();
   const { addToCart } = useCart();
   const navigate = useNavigate();
+  const { selectedCurrency, convertPrice, formatPrice } = useCurrency(); // Use the currency context
   const [hoveredItem, setHoveredItem] = useState(null);
 
   const handleAddToCart = (item) => {
@@ -251,11 +253,13 @@ const Wishlist = () => {
                     <div className="flex items-center justify-between mt-3 mb-4">
                       <div className="flex items-baseline gap-2">
                         <span className="font-playfair font-bold text-xl text-gray-900">
-                          ₹{item.discountPrice}
+                          {selectedCurrency.symbol}
+                          {formatPrice(convertPrice(item.discountPrice))}
                         </span>
                         {item.originalPrice > item.discountPrice && (
                           <span className="text-sm text-gray-500 line-through font-cardo">
-                            ₹{item.originalPrice}
+                            {selectedCurrency.symbol}
+                            {formatPrice(convertPrice(item.originalPrice))}
                           </span>
                         )}
                       </div>

@@ -1,17 +1,20 @@
 import React from "react";
 import { useCart } from "../context/CartContext";
+import { useCurrency } from "../context/currencyContext";
 import { useNavigate } from "react-router-dom";
 import { Trash2, ShoppingBag, Plus, Minus } from "lucide-react";
 
 const Cart = () => {
   const { cart, removeFromCart, updateQuantity } = useCart();
   const navigate = useNavigate();
+  const { selectedCurrency, convertPrice, formatPrice } = useCurrency();
+
   const totalItems = cart.reduce(
     (total, item) => total + (item.quantity || 1),
     0
   );
   const totalAmount = cart.reduce(
-    (total, item) => total + item.price * (item.quantity || 1),
+    (total, item) => total + convertPrice(item.price) * (item.quantity || 1),
     0
   );
 
@@ -21,21 +24,18 @@ const Cart = () => {
 
   const handleIncreaseQuantity = (itemId) => {
     const item = cart.find((item) => item.id === itemId);
-    if (item) {
-      updateQuantity(itemId, (item.quantity || 1) + 1);
-    }
+    if (item) updateQuantity(itemId, (item.quantity || 1) + 1);
   };
 
   const handleDecreaseQuantity = (itemId) => {
     const item = cart.find((item) => item.id === itemId);
-    if (item && (item.quantity || 1) > 1) {
+    if (item && (item.quantity || 1) > 1)
       updateQuantity(itemId, (item.quantity || 1) - 1);
-    }
   };
 
   return (
     <div className="max-w-4xl mx-auto p-8 bg-white rounded-md shadow-xl font-sans">
-      <h1 className="text-4xl font-light mb-8 text-center text-gray-800 tracking-wider border-b border-gray-200 pb-4">
+      <h1 className="text-4xl font-[Garamond] mb-8 text-center text-gray-800 tracking-wider border-b border-gray-200 pb-4">
         SHOPPING BAG
         {totalItems > 0 && (
           <span className="ml-3 bg-black text-white text-sm px-3 py-1 rounded-sm">
@@ -52,7 +52,7 @@ const Cart = () => {
           </p>
           <a
             href="/"
-            className="mt-4 inline-block bg-black text-white px-10 py-3 hover:bg-gray-900 transition-all duration-300 tracking-widest text-sm font-light"
+            className="mt-4 bg-black text-white px-10 py-3 hover:bg-gray-900 transition-all duration-300 tracking-widest text-sm font-light"
           >
             CONTINUE SHOPPING
           </a>
@@ -65,33 +65,32 @@ const Cart = () => {
                 key={index}
                 className="flex items-center justify-between py-8"
               >
-                {/* Product Image */}
-                <div className="relative">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-32 h-40 object-cover"
-                  />
-                </div>
-
-                {/* Product Details */}
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="w-32 h-40 object-cover"
+                />
                 <div className="flex-1 ml-8">
                   <h2 className="text-lg font-medium text-gray-800 tracking-wide">
                     {item.title}
                   </h2>
                   <p className="text-lg font-light mt-1">
-                    ₹{item.price.toLocaleString()}
+                    {selectedCurrency.symbol}
+                    {formatPrice(convertPrice(item.price))}
                   </p>
                   <div className="flex mt-4 text-gray-500 text-sm space-x-6">
-                    <p className="font-light">
-                      Size: <span className="text-gray-700">{item.size}</span>
-                    </p>
-                    <p className="font-light">
-                      Color: <span className="text-gray-700">{item.color}</span>
-                    </p>
+                    {item.size && (
+                      <p className="font-light">
+                        Size: <span className="text-gray-700">{item.size}</span>
+                      </p>
+                    )}
+                    {item.color && (
+                      <p className="font-light">
+                        Color:{" "}
+                        <span className="text-gray-700">{item.color}</span>
+                      </p>
+                    )}
                   </div>
-
-                  {/* Quantity Controls */}
                   <div className="flex items-center mt-4">
                     <p className="text-sm font-light text-gray-500 mr-4">
                       QUANTITY
@@ -122,17 +121,16 @@ const Cart = () => {
                       </button>
                     </div>
                   </div>
-
-                  {/* Item Total */}
                   <p className="text-sm font-medium mt-4 text-gray-800">
                     Item Total:{" "}
                     <span className="text-gray-900">
-                      ₹{(item.price * (item.quantity || 1)).toLocaleString()}
+                      {selectedCurrency.symbol}
+                      {formatPrice(
+                        convertPrice(item.price * (item.quantity || 1))
+                      )}
                     </span>
                   </p>
                 </div>
-
-                {/* Delete Button */}
                 <button
                   onClick={() => removeFromCart(item.id)}
                   className="p-2 hover:text-gray-500 transition-all duration-300"
@@ -142,15 +140,14 @@ const Cart = () => {
               </li>
             ))}
           </ul>
-
-          {/* Checkout Section */}
           <div className="mt-10 pt-8 border-t border-gray-200">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-6 md:space-y-0">
               <div className="space-y-1">
                 <div className="flex items-center justify-between mb-2">
                   <p className="text-sm font-light text-gray-500">SUBTOTAL</p>
                   <span className="ml-8 text-lg font-light text-gray-800">
-                    ₹{totalAmount.toLocaleString()}
+                    {selectedCurrency.symbol}
+                    {formatPrice(convertPrice(totalAmount))}
                   </span>
                 </div>
                 <div className="flex items-center justify-between mb-2">
@@ -162,7 +159,8 @@ const Cart = () => {
                 <div className="flex items-center justify-between pt-2 border-t border-gray-100">
                   <p className="text-sm font-medium text-gray-800">TOTAL</p>
                   <span className="ml-8 text-2xl font-light text-gray-800">
-                    ₹{totalAmount.toLocaleString()}
+                    {selectedCurrency.symbol}
+                    {formatPrice(convertPrice(totalAmount))}
                   </span>
                 </div>
               </div>

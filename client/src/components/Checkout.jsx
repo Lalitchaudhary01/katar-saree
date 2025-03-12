@@ -1,9 +1,11 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useCurrency } from "../context/currencyContext";
 
 const Checkout = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { selectedCurrency, convertPrice, formatPrice } = useCurrency();
   const {
     cart = [],
     totalAmount,
@@ -40,14 +42,86 @@ const Checkout = () => {
     setStep(3);
   };
 
+  // Function to convert price based on the item's original currency and the currently selected currency
+  const getItemPrice = (item) => {
+    // If the item has a stored price, use that, otherwise use the provided amount
+    const itemPrice = item.price || amount;
+
+    // If the item already has the current currency, no conversion needed
+    if (item.currency === selectedCurrency.code) {
+      return formatPrice(itemPrice);
+    }
+
+    // Convert price from item's currency (assumed INR if not specified) to selected currency
+    return formatPrice(convertPrice(itemPrice));
+  };
+
+  // Function to get the correct currency symbol for an item
+  const getItemCurrencySymbol = () => {
+    // Always use the currently selected currency symbol
+    return selectedCurrency.symbol;
+  };
+
+  // Calculate the total in the selected currency
+  const calculateTotal = () => {
+    if (cart && cart.length > 0) {
+      // If we have a cart with multiple items
+      return formatPrice(
+        cart.reduce((total, item) => {
+          const itemPrice = item.price || 0;
+          // Convert each item's price if needed
+          const convertedPrice = convertPrice(itemPrice);
+          return total + convertedPrice * (item.quantity || 1);
+        }, 0)
+      );
+    } else {
+      // Single item case
+      return formatPrice(convertPrice(amount));
+    }
+  };
+
   const handlePayment = () => {
     // Calculate final amount (in paise for RazorPay)
-    const finalAmount = ((totalAmount || amount) * 100).toFixed(0);
+    // For Razorpay, we need to convert everything to INR
+    let finalAmountInINR;
+
+    if (cart && cart.length > 0) {
+      // Calculate the sum of all items in INR
+      finalAmountInINR = cart.reduce((total, item) => {
+        // First get the price in the selected currency
+        const itemPriceInSelectedCurrency = item.price || 0;
+        // If selected currency is INR, no conversion needed
+        if (selectedCurrency.code === "INR") {
+          return total + itemPriceInSelectedCurrency * (item.quantity || 1);
+        }
+        // If selected currency is not INR, convert back to INR for Razorpay
+        // We need to divide by the conversion rate to go back to INR
+        const conversionRateToINR = 1 / convertPrice(1, "INR");
+        return (
+          total +
+          itemPriceInSelectedCurrency *
+            conversionRateToINR *
+            (item.quantity || 1)
+        );
+      }, 0);
+    } else {
+      // Single item case
+      if (selectedCurrency.code === "INR") {
+        finalAmountInINR = amount;
+      } else {
+        // Convert back to INR for Razorpay
+        const conversionRateToINR = 1 / convertPrice(1, "INR");
+        finalAmountInINR = amount * conversionRateToINR;
+      }
+    }
+
+    // Convert to paise for Razorpay (smallest currency unit)
+    const finalAmount = (finalAmountInINR * 100).toFixed(0);
 
     const options = {
       key: "YOUR_RAZORPAY_KEY_ID", // Replace with your actual Razorpay key
       amount: finalAmount,
-      currency: "INR",
+      currency: "INR", // Razorpay might require INR
       name: "Your Store Name",
       description: "Payment for your order",
       handler: function (response) {
@@ -62,7 +136,8 @@ const Checkout = () => {
               cart.length > 0
                 ? cart
                 : [{ image, title, quantity, color, amount }],
-            amount: totalAmount || amount,
+            amount: calculateTotal(),
+            currency: selectedCurrency,
             address: formData,
           },
         });
@@ -80,6 +155,13 @@ const Checkout = () => {
     const razorpayInstance = new window.Razorpay(options);
     razorpayInstance.open();
   };
+
+  // Get total amount in current currency for display
+  const displayTotal = totalAmount
+    ? formatPrice(convertPrice(totalAmount))
+    : amount
+    ? formatPrice(convertPrice(amount))
+    : "0";
 
   return (
     <div className="bg-gray-50 min-h-screen py-8">
@@ -174,7 +256,8 @@ const Checkout = () => {
                             </p>
                           </div>
                           <p className="mt-2 text-lg font-semibold text-black">
-                            {item.price}
+                            {getItemCurrencySymbol()}
+                            {getItemPrice(item)}
                           </p>
                         </div>
                       </div>
@@ -204,7 +287,8 @@ const Checkout = () => {
                         </p>
                       </div>
                       <p className="mt-2 text-lg font-semibold text-black">
-                        {amount}
+                        {getItemCurrencySymbol()}
+                        {formatPrice(convertPrice(amount))}
                       </p>
                     </div>
                   </div>
@@ -214,7 +298,10 @@ const Checkout = () => {
                 <div className="mt-6 pt-4 border-t border-gray-100">
                   <div className="flex justify-between items-center text-lg font-semibold mb-4">
                     <span>Subtotal:</span>
-                    <span>{totalAmount || amount}</span>
+                    <span>
+                      {getItemCurrencySymbol()}
+                      {displayTotal}
+                    </span>
                   </div>
                   <div className="flex justify-between items-center text-lg font-semibold mb-4">
                     <span>Shipping:</span>
@@ -222,7 +309,10 @@ const Checkout = () => {
                   </div>
                   <div className="flex justify-between items-center text-xl font-bold mt-2 pt-2 border-t border-gray-100">
                     <span>Total:</span>
-                    <span className="text-black">{totalAmount || amount}</span>
+                    <span className="text-black">
+                      {getItemCurrencySymbol()}
+                      {displayTotal}
+                    </span>
                   </div>
                   <button
                     onClick={() => setStep(2)}

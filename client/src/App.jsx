@@ -32,6 +32,7 @@ import Wishlist from "./headers/Wishlist";
 import AuthPage from "./headers/AuthPage";
 import Testimonials from "./components/Testimonials";
 import ServiceHighlights from "./components/ServiceHighlights";
+import { CurrencyProvider } from "./context/currencyContext";
 
 function AppContent() {
   const location = useLocation();
@@ -73,6 +74,7 @@ function AppContent() {
         <Route path="/terms-conditions" element={<TermsConditions />} />
         <Route path="/about/heritage" element={<OurHeritage />} />
         <Route path="/about/craft" element={<Craftsmanship />} />
+
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="login" element={<AuthPage />} />
       </Routes>
@@ -86,11 +88,13 @@ function App() {
   return (
     <CartProvider>
       <WishlistProvider>
-        {" "}
-        {/* Wrap everything inside WishlistProvider */}
-        <Router>
-          <AppContent />
-        </Router>
+        <CurrencyProvider>
+          {" "}
+          {/* Wrap everything inside WishlistProvider */}
+          <Router>
+            <AppContent />
+          </Router>
+        </CurrencyProvider>
       </WishlistProvider>
     </CartProvider>
   );

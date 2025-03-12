@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
+import { useCurrency } from "../context/currencyContext"; // Import the currency context
 import { toast } from "react-hot-toast";
 import newArrivals from "../assets/product/NewArrival";
 
@@ -20,6 +21,9 @@ const NewArrivals = () => {
   const [mainImage, setMainImage] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
+
+  // Use the currency context
+  const { selectedCurrency, convertPrice, formatPrice } = useCurrency();
 
   const openModal = (product) => {
     setSelectedProduct(product);
@@ -179,7 +183,7 @@ const NewArrivals = () => {
                   </div>
                 </div>
 
-                {/* Product Details */}
+                {/* Product Details with Currency Conversion */}
                 <div className="p-5 flex flex-col bg-white">
                   <h3 className="text-xl text-black font-playfair font-semibold mb-2">
                     {product.title}
@@ -187,11 +191,13 @@ const NewArrivals = () => {
                   <div className="flex items-center justify-center gap-3">
                     {product.originalPrice && (
                       <p className="text-gray-500 line-through text-sm font-cardo">
-                        ₹{product.originalPrice}
+                        {selectedCurrency.symbol}
+                        {formatPrice(convertPrice(product.originalPrice))}
                       </p>
                     )}
                     <p className="text-black font-cardo font-bold text-lg price-tag">
-                      ₹{product.discountPrice.toLocaleString()}
+                      {selectedCurrency.symbol}
+                      {formatPrice(convertPrice(product.discountPrice))}
                     </p>
                   </div>
                 </div>
@@ -201,7 +207,7 @@ const NewArrivals = () => {
         </Swiper>
       </div>
 
-      {/* Detailed View Sidebar */}
+      {/* Detailed View Sidebar with Currency Conversion */}
       {selectedProduct && (
         <motion.div
           initial={{ x: "100%" }}
@@ -264,11 +270,13 @@ const NewArrivals = () => {
             <div className="flex justify-between items-center">
               <p className="text-lg">
                 <s className="text-gray-500">
-                  ₹{selectedProduct.originalPrice}
+                  {selectedCurrency.symbol}
+                  {formatPrice(convertPrice(selectedProduct.originalPrice))}
                 </s>
               </p>
               <p className="text-xl font-bold text-black">
-                ₹{selectedProduct.discountPrice}
+                {selectedCurrency.symbol}
+                {formatPrice(convertPrice(selectedProduct.discountPrice))}
               </p>
             </div>
             <div className="text-right">
@@ -311,8 +319,11 @@ const NewArrivals = () => {
                   image: mainImage,
                   price: selectedProduct.discountPrice,
                   color: selectedColor,
+                  // Store the original price in INR for future conversion
+                  originalPriceINR: selectedProduct.discountPrice,
                 });
                 toast.success(`${selectedProduct.title} added to cart!`);
+                closeModal();
               }}
               disabled={!selectedColor}
               whileHover={{ scale: 1.02 }}

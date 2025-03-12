@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { useCurrency } from "../context/currencyContext";
 import { useWishlist } from "../context/WishlistContext";
 import collections from "../assets/product/CollectionData";
 import newArrivals from "../assets/product/NewArrival";
@@ -24,6 +25,7 @@ const CollectionDetail = () => {
   const { id } = useParams();
   const { addToCart } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist(); // Extract the needed functions from useWishlist
+  const { selectedCurrency, convertPrice, formatPrice } = useCurrency();
   const navigate = useNavigate();
 
   const numericId = Number(id);
@@ -304,17 +306,23 @@ const CollectionDetail = () => {
 
                 <div className="flex items-baseline gap-3 mt-6">
                   <span className="text-3xl font-bold text-gray-900">
-                    ₹{collection.discountPrice}
+                    {selectedCurrency.symbol}
+                    {formatPrice(convertPrice(collection.discountPrice))}
                   </span>
                   {collection.originalPrice > collection.discountPrice && (
                     <span className="text-xl text-gray-500 line-through">
-                      ₹{collection.originalPrice}
+                      {selectedCurrency.symbol}
+                      {formatPrice(convertPrice(collection.originalPrice))}
                     </span>
                   )}
                   {discountPercentage > 0 && (
                     <span className="text-sm font-medium text-green-600">
-                      Save ₹
-                      {collection.originalPrice - collection.discountPrice}
+                      save {selectedCurrency.symbol}
+                      {formatPrice(
+                        convertPrice(
+                          collection.originalPrice - collection.discountPrice
+                        )
+                      )}
                     </span>
                   )}
                 </div>
@@ -763,11 +771,13 @@ const CollectionDetail = () => {
                   <div className="flex items-center justify-between mt-2">
                     <div>
                       <span className="font-bold text-gray-900">
-                        ₹{item.discountPrice}
+                        {selectedCurrency.symbol}
+                        {formatPrice(convertPrice(item.discountPrice))}
                       </span>
                       {item.originalPrice > item.discountPrice && (
                         <span className="text-sm text-gray-500 line-through ml-2">
-                          ₹{item.originalPrice}
+                          {selectedCurrency.symbol}
+                          {formatPrice(convertPrice(item.originalPrice))}
                         </span>
                       )}
                     </div>

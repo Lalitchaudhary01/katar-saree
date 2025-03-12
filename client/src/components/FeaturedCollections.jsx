@@ -4,6 +4,7 @@ import { motion, useAnimation } from "framer-motion";
 import { FaEye, FaShoppingCart, FaHeart, FaRegHeart } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
+import { useCurrency } from "../context/currencyContext"; // Import the currency context
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -22,6 +23,7 @@ const FeaturedCollections = () => {
   const hoverTimers = useRef({});
   const { addToCart } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
+  const { selectedCurrency, convertPrice, formatPrice } = useCurrency(); // Use the currency context
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -69,6 +71,9 @@ const FeaturedCollections = () => {
       colors: collection.colors,
       discount: collection.discount,
       desc: collection.desc,
+      // Store currency information with the wishlist item
+      currencyCode: selectedCurrency.code,
+      currencySymbol: selectedCurrency.symbol,
     };
 
     toggleWishlist(wishlistItem);
@@ -182,7 +187,7 @@ const FeaturedCollections = () => {
                 </div>
 
                 {/* Quick View Button - More Elegant */}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/40 to-transparent h-24 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
+                <div className="absolute font-[Garamond] bottom-0 left-0 right-0 bg-gradient-to-t from-black/40 to-transparent h-24 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -190,14 +195,14 @@ const FeaturedCollections = () => {
                     }}
                     className="px-6 py-2.5 bg-white/90 backdrop-blur-sm text-black rounded-full font-cardo tracking-wide text-sm flex items-center gap-2 hover:bg-white transition-all duration-300 shadow-lg"
                   >
-                    <FaEye className="text-black" /> Quick View
+                    <FaEye className="text-black font-[Garamond]" /> Quick View
                   </button>
                 </div>
 
                 {/* Discount Badge */}
                 {collection.discount && (
                   <div className="absolute top-4 left-4">
-                    <div className="discount-badge text-white font-medium text-sm px-3 py-1 rounded-full shadow-md">
+                    <div className="discount-badge font-[Garamond]  text-white font-medium text-sm px-3 py-1 rounded-full shadow-md">
                       {collection.discount} OFF
                     </div>
                   </div>
@@ -205,18 +210,20 @@ const FeaturedCollections = () => {
               </div>
 
               <div className="p-5 flex flex-col bg-white">
-                <h3 className="text-xl text-black font-playfair font-semibold mb-2">
+                <h3 className="text-xl font-[Garamond] text-black font-playfair font-semibold mb-2">
                   {collection.title}
                 </h3>
-                <div className="flex items-center justify-center gap-3">
+                <div className="flex font-[Garamond] items-center justify-center gap-3">
                   {collection.originalPrice && (
                     <p className="text-gray-500 line-through text-sm font-cardo">
-                      ₹{collection.originalPrice}
+                      {selectedCurrency.symbol}
+                      {formatPrice(convertPrice(collection.originalPrice))}
                     </p>
                   )}
                   {collection.discountPrice && (
                     <p className="text-black font-cardo font-bold text-lg price-tag">
-                      ₹{collection.discountPrice}
+                      {selectedCurrency.symbol}
+                      {formatPrice(convertPrice(collection.discountPrice))}
                     </p>
                   )}
                 </div>
@@ -229,7 +236,7 @@ const FeaturedCollections = () => {
         {!showAll && (
           <motion.button
             onClick={() => setShowAll(true)}
-            className="bg-black text-white px-10 py-3 rounded-md hover:bg-gray-900 transition-all font-cardo text-lg tracking-wide shadow-lg"
+            className="font-[Garamond] bg-black text-white px-10 py-3 rounded-md hover:bg-gray-900 transition-all font-cardo text-lg tracking-wide shadow-lg"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -254,7 +261,7 @@ const FeaturedCollections = () => {
             ✖
           </button>
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-2xl font-bold text-black font-playfair">
+            <h3 className="text-2xl font-bold text-black font-[Garamond]">
               {selectedCollection.title}
             </h3>
 
@@ -273,6 +280,8 @@ const FeaturedCollections = () => {
                   colors: selectedCollection.colors,
                   discount: selectedCollection.discount,
                   desc: selectedCollection.desc,
+                  currencyCode: selectedCurrency.code,
+                  currencySymbol: selectedCurrency.symbol,
                 };
                 toggleWishlist(wishlistItem);
               }}
@@ -310,18 +319,20 @@ const FeaturedCollections = () => {
               ))}
             </div>
           </div>
-          <p className="text-gray-700 mt-6 font-cardo">
+          <p className="text-gray-700 mt-6 font-[Garamond]">
             {selectedCollection.desc}
           </p>
           <div className="mt-6 bg-white p-4 rounded-lg shadow-sm">
             <div className="flex justify-between items-center">
               <p className="text-lg">
                 <s className="text-gray-500">
-                  ₹{selectedCollection.originalPrice}
+                  {selectedCurrency.symbol}
+                  {formatPrice(convertPrice(selectedCollection.originalPrice))}
                 </s>
               </p>
               <p className="text-xl font-bold text-black">
-                ₹{selectedCollection.discountPrice}
+                {selectedCurrency.symbol}
+                {formatPrice(convertPrice(selectedCollection.discountPrice))}
               </p>
             </div>
             <div className="text-right">
@@ -332,7 +343,9 @@ const FeaturedCollections = () => {
           </div>
 
           <div className="mt-6 text-center">
-            <p className="font-bold font-playfair text-black">Select Color:</p>
+            <p className="font-bold font-[Garamond] text-black">
+              Select Color:
+            </p>
             <div className="flex justify-center gap-3 mt-3">
               {selectedCollection.colors?.map((color, index) => (
                 <motion.button
@@ -352,12 +365,18 @@ const FeaturedCollections = () => {
 
           <div className="flex items-center justify-center mt-8">
             <motion.button
-              className="bg-black text-white px-8 py-3 rounded-md hover:bg-gray-900 transition-all flex items-center gap-2 font-cardo text-lg shadow-md w-full"
+              className="bg-black text-white px-8 py-3 rounded-md hover:bg-gray-900 transition-all flex items-center gap-2 font-[Garamond] text-lg shadow-md w-full"
               onClick={() => {
                 if (!selectedColor) {
                   toast.error("Please select a color before adding to cart!");
                   return;
                 }
+
+                // Get the converted price
+                const convertedPrice = convertPrice(
+                  selectedCollection.discountPrice ||
+                    selectedCollection.originalPrice
+                );
 
                 addToCart({
                   id:
@@ -365,10 +384,12 @@ const FeaturedCollections = () => {
                     Math.random().toString(36).substr(2, 9),
                   title: selectedCollection.title,
                   image: mainImage,
-                  price:
-                    selectedCollection.discountPrice ||
-                    selectedCollection.originalPrice,
+                  // Use the converted price
+                  price: convertedPrice,
                   color: selectedColor,
+                  // Store the currency information with the cart item
+                  currencyCode: selectedCurrency.code,
+                  currencySymbol: selectedCurrency.symbol,
                 });
 
                 toast.success(`${selectedCollection.title} added to cart!`);
