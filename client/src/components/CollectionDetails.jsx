@@ -24,7 +24,7 @@ import { useNavigate } from "react-router-dom";
 const CollectionDetail = () => {
   const { id } = useParams();
   const { addToCart } = useCart();
-  const { isInWishlist, toggleWishlist } = useWishlist(); // Extract the needed functions from useWishlist
+  const { isInWishlist, toggleWishlist } = useWishlist();
   const { selectedCurrency, convertPrice, formatPrice } = useCurrency();
   const navigate = useNavigate();
 
@@ -35,7 +35,6 @@ const CollectionDetail = () => {
     newArrivals.find((item) => item.id === numericId) ||
     silkSarees.find((item) => item.id === numericId);
 
-  // const [selectedSize, setSelectedSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
   const [mainImage, setMainImage] = useState(collection?.images[0]);
   const [quantity, setQuantity] = useState(1);
@@ -49,21 +48,22 @@ const CollectionDetail = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  // Handle product not found
   if (!collection) {
     return (
-      <div className="flex flex-col items-center justify-center h-96">
+      <div className="flex flex-col items-center justify-center h-96 font-[Garamond]">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="text-center"
         >
-          <h2 className="text-2xl font-bold text-red-500 mb-4">
+          <h2 className="text-3xl font-bold text-red-700 mb-4">
             Product Not Found
           </h2>
-          <p className="text-gray-600">
-            The product you're looking for is no longer available.
+          <p className="text-gray-600 text-xl">
+            The saree you're looking for is no longer available.
           </p>
-          <button className="mt-6 bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition">
+          <button className="mt-8 bg-[#8B6A37] text-white px-8 py-3 rounded-none hover:bg-[#6D5329] transition font-light text-lg tracking-wide">
             Continue Shopping
           </button>
         </motion.div>
@@ -82,7 +82,6 @@ const CollectionDetail = () => {
       title: collection.title,
       image: mainImage,
       price: collection.discountPrice,
-      // size: selectedSize,
       color: selectedColor,
       quantity: quantity,
       stock: collection.stock,
@@ -112,16 +111,16 @@ const CollectionDetail = () => {
 
     toggleWishlist(wishlistItem);
 
-    // Show a toast notification
     if (isInWishlist(collection.id)) {
       toast.success(`${collection.title} removed from your wishlist!`);
     } else {
       toast.success(`${collection.title} added to your wishlist!`);
     }
   };
+
   const handleBuyNow = () => {
     if (!selectedColor) {
-      toast.error("Please select a color before buy!");
+      toast.error("Please select a color before proceeding to purchase!");
       return;
     }
     navigate("/checkout", {
@@ -143,9 +142,9 @@ const CollectionDetail = () => {
       const y = ((e.clientY - top) / height) * 100;
 
       image.style.transformOrigin = `${x}% ${y}%`;
-      image.style.transform = "scale(3)"; // Adjust zoom level as needed
+      image.style.transform = "scale(3)";
     } else {
-      image.style.transform = "scale(1)"; // Reset zoom
+      image.style.transform = "scale(1)";
     }
     setZoomed(!zoomed);
   };
@@ -157,35 +156,41 @@ const CollectionDetail = () => {
       100
   );
 
+  // Animation variants
+  const fadeIn = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  };
+
   return (
-    <div className="bg-gray-50 py-12">
+    <div className="bg-[#f8f5f0] py-16 font-[Garamond]">
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Breadcrumb */}
-        <div className="text-sm text-gray-500 mb-6 flex items-center">
-          <span>Home</span>
+        <div className="text-base text-black mb-8 flex items-center">
+          <span className="hover:underline cursor-pointer">Home</span>
           <FaChevronRight className="mx-2 text-xs" />
-          <span>Collections</span>
+          <span className="hover:underline cursor-pointer">Collections</span>
           <FaChevronRight className="mx-2 text-xs" />
           <span className="text-black font-medium">{collection.title}</span>
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="bg-white rounded-xl shadow-sm overflow-hidden"
+          variants={fadeIn}
+          initial="initial"
+          animate="animate"
+          className="bg-white shadow-md overflow-hidden"
         >
           <div className="flex flex-col lg:flex-row">
             {/* Left side - Images */}
-            <div className="lg:w-3/5 p-6">
+            <div className="lg:w-3/5 p-8">
               <div className="sticky top-24">
-                <div className="flex flex-col-reverse md:flex-row gap-4">
+                <div className="flex flex-col-reverse md:flex-row gap-6">
                   {/* Thumbnails */}
-                  <div className="flex md:flex-col gap-3 mt-4 md:mt-0">
+                  <div className="flex md:flex-col gap-4 mt-4 md:mt-0">
                     {collection.images.slice(0, 5).map((img, index) => (
                       <motion.div
                         key={index}
-                        className={`relative border rounded-lg overflow-hidden cursor-pointer ${
+                        className={`relative border overflow-hidden cursor-pointer ${
                           mainImage === img
                             ? "border-2 border-black shadow-md"
                             : "border-gray-200"
@@ -196,7 +201,7 @@ const CollectionDetail = () => {
                         <img
                           src={img}
                           alt={`Thumbnail ${index + 1}`}
-                          className="w-16 h-full object-cover"
+                          className="w-20 h-full object-cover"
                         />
                         {mainImage === img && (
                           <motion.div
@@ -210,16 +215,16 @@ const CollectionDetail = () => {
                   </div>
 
                   {/* Main Image */}
-                  <div className="relative flex-1 overflow-hidden rounded-xl">
+                  <div className="relative flex-1 overflow-hidden">
                     <div className="group relative">
                       <motion.div
-                        className="relative rounded-xl overflow-hidden h-[500px]" // Set a fixed height for full image visibility
-                        whileHover={{ scale: 1.02 }}
-                        transition={{ duration: 0.3 }}
+                        className="relative overflow-hidden h-[600px]"
+                        whileHover={{ scale: 1.01 }}
+                        transition={{ duration: 0.5 }}
                       >
-                        <div className="absolute top-4 left-4 z-10">
+                        <div className="absolute top-6 left-6 z-10">
                           {discountPercentage > 0 && (
-                            <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                            <span className="bg-black text-white px-4 py-1 text-base font-light tracking-wider">
                               {discountPercentage}% OFF
                             </span>
                           )}
@@ -228,8 +233,8 @@ const CollectionDetail = () => {
                         <img
                           src={mainImage}
                           alt={collection.title}
-                          className="w-full h-full object-contain cursor-zoom-in transition-transform duration-300"
-                          onDoubleClick={handleDoubleClickZoom} // Apply double-click zoom
+                          className="w-full h-full object-contain cursor-zoom-in transition-transform duration-500"
+                          onDoubleClick={handleDoubleClickZoom}
                         />
 
                         {showZoom && (
@@ -240,15 +245,21 @@ const CollectionDetail = () => {
                               backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
                               transform: "scale(1.5)",
                             }}
-                            onMouseMove={handleZoom}
+                            onMouseMove={(e) => {
+                              const { left, top, width, height } =
+                                e.currentTarget.getBoundingClientRect();
+                              const x = ((e.clientX - left) / width) * 100;
+                              const y = ((e.clientY - top) / height) * 100;
+                              setZoomPosition({ x, y });
+                            }}
                             onMouseLeave={() => setShowZoom(false)}
                           />
                         )}
                       </motion.div>
 
-                      <div className="absolute right-4 top-4 flex flex-col gap-2 z-10">
+                      <div className="absolute right-6 top-6 flex flex-col gap-3 z-10">
                         <motion.button
-                          className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                          className={`w-12 h-12 rounded-full flex items-center justify-center ${
                             isInWishlist(collection.id)
                               ? "bg-red-500 text-white"
                               : "bg-white text-gray-700"
@@ -260,18 +271,18 @@ const CollectionDetail = () => {
                           <FaHeart
                             className={
                               isInWishlist(collection.id)
-                                ? "text-white"
-                                : "text-gray-400"
+                                ? "text-white text-lg"
+                                : "text-gray-400 text-lg"
                             }
                           />
                         </motion.button>
 
                         <motion.button
-                          className="w-10 h-10 rounded-full bg-white text-gray-700 shadow-md flex items-center justify-center"
+                          className="w-12 h-12 rounded-full bg-white text-gray-700 shadow-md flex items-center justify-center"
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
                         >
-                          <FaShare className="text-gray-400" />
+                          <FaShare className="text-gray-400 text-lg" />
                         </motion.button>
                       </div>
                     </div>
@@ -281,10 +292,10 @@ const CollectionDetail = () => {
             </div>
 
             {/* Right side - Details */}
-            <div className="lg:w-2/5 p-8 border-l border-gray-100">
+            <div className="lg:w-2/5 p-10 border-l border-gray-100">
               {/* Basic product info */}
               <div>
-                <div className="flex items-center gap-2 mb-2">
+                <div className="flex items-center gap-2 mb-3">
                   <div className="flex text-amber-400">
                     {[...Array(5)].map((_, i) => (
                       <FaStar
@@ -293,19 +304,19 @@ const CollectionDetail = () => {
                       />
                     ))}
                   </div>
-                  <span className="text-gray-500 text-sm">(126 reviews)</span>
+                  <span className="text-gray-500 text-base">(126 reviews)</span>
                 </div>
 
-                <h1 className="text-2xl font-bold text-gray-900">
+                <h1 className="text-4xl font-normal text-gray-900 tracking-wide">
                   {collection.title}
                 </h1>
 
-                <p className="mt-3 text-gray-600 leading-relaxed line-clamp-3">
+                <p className="mt-4 text-gray-600 leading-relaxed text-lg line-clamp-3">
                   {collection.desc}
                 </p>
 
-                <div className="flex items-baseline gap-3 mt-6">
-                  <span className="text-3xl font-bold text-gray-900">
+                <div className="flex items-baseline gap-4 mt-8">
+                  <span className="text-3xl font-light text-black">
                     {selectedCurrency.symbol}
                     {formatPrice(convertPrice(collection.discountPrice))}
                   </span>
@@ -316,7 +327,7 @@ const CollectionDetail = () => {
                     </span>
                   )}
                   {discountPercentage > 0 && (
-                    <span className="text-sm font-medium text-green-600">
+                    <span className="text-lg font-light text-green-800">
                       save {selectedCurrency.symbol}
                       {formatPrice(
                         convertPrice(
@@ -328,27 +339,29 @@ const CollectionDetail = () => {
                 </div>
               </div>
 
-              <div className="h-px bg-gray-100 my-6"></div>
+              <div className="h-px bg-gray-200 my-8"></div>
 
               {/* Colors */}
-              <div className="mb-6">
-                <div className="flex justify-between items-center mb-3">
-                  <span className="font-medium text-gray-900">Color</span>
-                  <span className="text-sm text-gray-500">
+              <div className="mb-8">
+                <div className="flex justify-between items-center mb-4">
+                  <span className="font-medium text-xl text-gray-900">
+                    Color
+                  </span>
+                  <span className="text-base text-black">
                     {selectedColor || "Select a color"}
                   </span>
                 </div>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-4">
                   {collection.colors.map((color, index) => (
                     <motion.button
                       key={index}
-                      className={`relative w-12 h-12 rounded-full transition-all ${
+                      className={`relative w-14 h-14 rounded-full transition-all ${
                         selectedColor === color
                           ? "ring-2 ring-offset-2 ring-black"
                           : "ring-1 ring-gray-200"
                       }`}
                       onClick={() => setSelectedColor(color)}
-                      whileHover={{ y: -3 }}
+                      whileHover={{ y: -4 }}
                       whileTap={{ scale: 0.95 }}
                     >
                       <span
@@ -362,13 +375,13 @@ const CollectionDetail = () => {
 
               {/* Sizes */}
               <div className="mb-6">
-                <div className="flex justify-between items-center mb-3">
+                {/* <div className="flex justify-between items-center mb-3">
                   <span className="font-medium text-gray-900">Size</span>
                   <button className="flex items-center text-sm text-blue-600 hover:text-blue-800">
                     <CgSize className="mr-1" />
                     Size guide
                   </button>
-                </div>
+                </div> */}
                 {/* Assuming you have sizes array in your collection data */}
                 {/* <div className="grid grid-cols-4 gap-2">
                   {(collection.sizes || ["S", "M", "L", "XL"]).map(
