@@ -8,15 +8,11 @@ export const useWishlist = () => {
 };
 
 export const WishlistProvider = ({ children }) => {
-  const [wishlistItems, setWishlistItems] = useState([]);
-
-  // Load wishlist from localStorage on mount
-  useEffect(() => {
+  // Initialize state with data from localStorage if available
+  const [wishlistItems, setWishlistItems] = useState(() => {
     const storedWishlist = localStorage.getItem("wishlist");
-    if (storedWishlist) {
-      setWishlistItems(JSON.parse(storedWishlist));
-    }
-  }, []);
+    return storedWishlist ? JSON.parse(storedWishlist) : [];
+  });
 
   // Save wishlist to localStorage whenever it changes
   useEffect(() => {
@@ -31,7 +27,7 @@ export const WishlistProvider = ({ children }) => {
   // Add item to wishlist
   const addToWishlist = (item) => {
     if (!isInWishlist(item.id)) {
-      setWishlistItems([...wishlistItems, item]);
+      setWishlistItems((prevItems) => [...prevItems, item]);
       toast.success(`${item.title} added to your wishlist!`);
     }
   };
@@ -39,8 +35,7 @@ export const WishlistProvider = ({ children }) => {
   // Remove item from wishlist
   const removeFromWishlist = (id) => {
     const itemToRemove = wishlistItems.find((item) => item.id === id);
-    const newWishlist = wishlistItems.filter((item) => item.id !== id);
-    setWishlistItems(newWishlist);
+    setWishlistItems((prevItems) => prevItems.filter((item) => item.id !== id));
     if (itemToRemove) {
       toast.success(`${itemToRemove.title} removed from your wishlist!`);
     }

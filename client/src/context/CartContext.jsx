@@ -5,15 +5,11 @@ const CartContext = createContext();
 export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState([]);
-
-  // Load cart from localStorage on initial render
-  useEffect(() => {
+  // Initialize state with data from localStorage if available
+  const [cart, setCart] = useState(() => {
     const savedCart = localStorage.getItem("cart");
-    if (savedCart) {
-      setCart(JSON.parse(savedCart));
-    }
-  }, []);
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
 
   // Save cart to localStorage whenever it changes
   useEffect(() => {
@@ -23,39 +19,41 @@ export const CartProvider = ({ children }) => {
   // Add item to cart
   const addToCart = (item) => {
     // Check if the item already exists in the cart
-    const existingItemIndex = cart.findIndex(
-      (cartItem) =>
-        cartItem.id === item.id &&
-        cartItem.size === item.size &&
-        cartItem.color === item.color
-    );
+    setCart((prevCart) => {
+      const existingItemIndex = prevCart.findIndex(
+        (cartItem) =>
+          cartItem.id === item.id &&
+          cartItem.size === item.size &&
+          cartItem.color === item.color
+      );
 
-    if (existingItemIndex !== -1) {
-      // If item exists, update its quantity
-      const updatedCart = [...cart];
-      const existingItem = updatedCart[existingItemIndex];
-      updatedCart[existingItemIndex] = {
-        ...existingItem,
-        quantity: (existingItem.quantity || 1) + (item.quantity || 1),
-      };
-      setCart(updatedCart);
-    } else {
-      // If item doesn't exist, add it with quantity
-      setCart([...cart, { ...item, quantity: item.quantity || 1 }]);
-    }
+      if (existingItemIndex !== -1) {
+        // If item exists, update its quantity
+        const updatedCart = [...prevCart];
+        const existingItem = updatedCart[existingItemIndex];
+        updatedCart[existingItemIndex] = {
+          ...existingItem,
+          quantity: (existingItem.quantity || 1) + (item.quantity || 1),
+        };
+        return updatedCart;
+      } else {
+        // If item doesn't exist, add it with quantity
+        return [...prevCart, { ...item, quantity: item.quantity || 1 }];
+      }
+    });
   };
 
   // Remove item from cart
   const removeFromCart = (itemId) => {
-    setCart(cart.filter((item) => item.id !== itemId));
+    setCart((prevCart) => prevCart.filter((item) => item.id !== itemId));
   };
 
   // Update item quantity
   const updateQuantity = (itemId, newQuantity) => {
     if (newQuantity < 1) return;
 
-    setCart(
-      cart.map((item) =>
+    setCart((prevCart) =>
+      prevCart.map((item) =>
         item.id === itemId ? { ...item, quantity: newQuantity } : item
       )
     );
