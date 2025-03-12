@@ -130,19 +130,136 @@ const Navbar = () => {
 
   // All category data remains the same
   const shopData = [
-    // ...existing data
+    {
+      title: "Fresh off the Looms",
+      items: [
+        { name: "Trending Sarees", link: "/trending/sarees" },
+        { name: "Trending Suits", link: "/trending/suits" },
+        { name: "Silk", link: "/featured/silk" },
+        { name: "Katan Icon", link: "/featured/katan-icon" },
+        { name: "Handwoven Fabrics", link: "/featured/handwoven" },
+        { name: "Katan Signature Class", link: "/featured/signature-class" },
+      ],
+    },
+    {
+      title: "Collections",
+      items: [
+        { name: "Gifts", link: "/collections/gifts" },
+        { name: "Best Sellers", link: "/collections/best-sellers" },
+        { name: "Back in Stock", link: "/collections/back-in-stock" },
+        { name: "Pre Order", link: "/collections/pre-order" },
+        { name: "Ready to Ship", link: "/collections/ready-to-ship" },
+        { name: "Heavy Silk", link: "/collections/heavy-silk" },
+        { name: "Bridal Collection", link: "/collections/bridal" },
+        { name: "Casual Collection", link: "/collections/casual" },
+      ],
+    },
+    {
+      title: "Clothing",
+      items: [
+        { name: "Sarees", link: "/clothing/sarees" },
+        { name: "Suits", link: "/clothing/suits" },
+        { name: "Dupattas", link: "/clothing/dupattas" },
+      ],
+    },
+    {
+      // title: "Featured",
+      items: [
+        // { name: "Silk", link: "/featured/silk" },
+        // { name: "Katan Icon", link: "/featured/katan-icon" },
+        // { name: "Handwoven Fabrics", link: "/featured/handwoven" },
+        // { name: "Katan Signature Class", link: "/featured/signature-class" },
+      ],
+    },
   ];
 
+  // UPDATED: Collections Data - Reorganized as requested
   const collectionsData = [
-    // ...existing data
+    {
+      title: "Weaving and Patterns",
+      items: [
+        { name: "Kadhwa Bootis", link: "/weaves/kadhwa-bootis" },
+        { name: "Kadwa Buri", link: "/weaves/kadwa-buri" },
+        { name: "Kadhwa Strips", link: "/weaves/kadhwa-strips" },
+        { name: "Jaal Cutwork", link: "/weaves/jaal-cutwork" },
+        { name: "Jamawar", link: "/weaves/jamawar" },
+        { name: "Banarasi Bandhej", link: "/weaves/banarasi-bandhej" },
+        { name: "Minakari Bandhej", link: "/weaves/minakari-bandhej" },
+        { name: "Tasal Banarasi", link: "/weaves/tasal" },
+      ],
+    },
+    {
+      title: "Rare Techniques",
+      items: [
+        { name: "The Most Rarest Weaving Technique", link: "/techniques/rare" },
+        { name: "Rankat", link: "/techniques/rankat" },
+        { name: "Bridal Sarees", link: "/techniques/bridal-sarees" },
+      ],
+    },
   ];
 
+  // UPDATED: Changed Campaigns to Fabric Data
   const fabricData = [
-    // ...existing data
+    {
+      title: "Fabric Types",
+      items: [
+        { name: "Katan Silk", link: "/fabrics/katan" },
+        { name: "Satin Silk", link: "/fabrics/satin" },
+        { name: "Tissue Silk", link: "/fabrics/tissue" },
+        { name: "Kora Organza Silk", link: "/fabrics/kora-organza" },
+        { name: "Handwoven Georgette", link: "/fabrics/handwoven-georgette" },
+        { name: "Tanchui", link: "/fabrics/tanchui" },
+      ],
+    },
+    {
+      title: "Fabric Collections",
+      items: [
+        { name: "Wedding Fabrics", link: "/fabrics/wedding" },
+        { name: "Festival Fabrics", link: "/fabrics/festival" },
+        { name: "Everyday Elegance", link: "/fabrics/everyday" },
+        { name: "Premium Weaves", link: "/fabrics/premium" },
+      ],
+    },
+    {
+      title: "Fabric Care",
+      items: [
+        { name: "Silk Care Guide", link: "/fabrics/care-guide" },
+        { name: "Storage Tips", link: "/fabrics/storage" },
+        { name: "Dry Cleaning", link: "/fabrics/dry-cleaning" },
+        { name: "Rejuvenation Tips", link: "/fabrics/rejuvenation" },
+      ],
+    },
   ];
 
+  // Stories Data - Kept as is
   const storiesData = [
-    // ...existing data
+    {
+      title: "Heritage",
+      items: [
+        { name: "Banaras History", link: "/stories/banaras-history" },
+        { name: "Textile Legacy", link: "/stories/textile-legacy" },
+        { name: "Mughal Influence", link: "/stories/mughal" },
+        { name: "Royal Patrons", link: "/stories/royal-patrons" },
+      ],
+    },
+    {
+      title: "Artisan Stories",
+      items: [
+        { name: "Master Weavers", link: "/stories/master-weavers" },
+        { name: "Women in Craft", link: "/stories/women-in-craft" },
+        { name: "Generational Knowledge", link: "/stories/generational" },
+        { name: "Craft Revival", link: "/stories/revival" },
+      ],
+    },
+    {
+      title: "Editorial",
+      items: [
+        { name: "Style Chronicles", link: "/stories/style-chronicles" },
+        { name: "Wearing Heritage", link: "/stories/wearing-heritage" },
+        { name: "Sustainable Luxury", link: "/stories/sustainable" },
+        { name: "Celebration Guides", link: "/stories/celebrations" },
+      ],
+    },
   ];
 
   return (
