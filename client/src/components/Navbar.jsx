@@ -249,7 +249,7 @@ const Navbar = () => {
         {!scrolled && (
           <div className="w-full bg-white py-3 px-6 flex justify-between items-center border-b border-gray-100">
             <div className="text-black flex space-x-3.5 italic space-y-2">
-              <div className="hidden md:flex items-center space-x-2">
+              <div className="flex items-center space-x-2">
                 <FaEnvelope size={18} />
                 <a
                   href="mailto:katanbanarasofficial@gmail.com"
