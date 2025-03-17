@@ -249,7 +249,7 @@ const Navbar = () => {
         {!scrolled && (
           <div className="w-full bg-white py-3 px-6 flex justify-between items-center border-b border-gray-100">
             <div className="text-black flex space-x-3.5 italic space-y-2">
-              <div className="flex items-center space-x-2">
+              <div className="hidden md:flex items-center space-x-2">
                 <FaEnvelope size={18} />
                 <a
                   href="mailto:katanbanarasofficial@gmail.com"
@@ -269,8 +269,11 @@ const Navbar = () => {
               </div>
             </div>
 
-            <div className="flex space-x-6 text-gray-600">
-              <div className="flex items-center relative" ref={currencyRef}>
+            <div className=" flex space-x-6 text-gray-600">
+              <div
+                className="hidden md:flex items-center relative"
+                ref={currencyRef}
+              >
                 <button
                   className="flex items-center hover:text-[#8b5e3c] transition-colors"
                   onClick={handleCurrencyClick}
@@ -341,28 +344,28 @@ const Navbar = () => {
 
               <Link
                 to="/search"
-                className="flex items-center hover:text-[#8b5e3c] transition-colors"
+                className="hidden md:flex items-center hover:text-[#8b5e3c] transition-colors"
               >
                 <FaSearch size={23} />
               </Link>
 
               <Link
                 to="/login"
-                className="flex items-center hover:text-[#8b5e3c] transition-colors"
+                className="hidden md:flex items-center hover:text-[#8b5e3c] transition-colors"
               >
                 <FaUser size={23} />
               </Link>
 
               <Link
                 to="/wishlist"
-                className="flex items-center hover:text-[#8b5e3c] transition-colors"
+                className="hidden md:flex items-center hover:text-[#8b5e3c] transition-colors"
               >
                 <FaHeart size={23} />
               </Link>
 
               <Link
                 to="/cart"
-                className="flex items-center hover:text-[#8b5e3c] transition-colors"
+                className="hidden md:flex items-center hover:text-[#8b5e3c] transition-colors"
               >
                 <div className="relative">
                   <FaShoppingCart size={25} />
