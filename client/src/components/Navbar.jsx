@@ -7,9 +7,8 @@ import {
   FaShoppingCart,
   FaRupeeSign,
 } from "react-icons/fa";
-
 import { useCart } from "../context/CartContext";
-import { useCurrency } from "../context/currencyContext"; // Import the currency context
+import { useCurrency } from "../context/currencyContext";
 import { FaEnvelope, FaPhone } from "react-icons/fa";
 import { SlArrowDown } from "react-icons/sl";
 import { FaWhatsapp } from "react-icons/fa";
@@ -37,8 +36,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const currencyRef = useRef(null);
-
-  // Use the currency context instead of local state
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
   const {
     selectedCurrency,
     currencies,
@@ -47,7 +46,6 @@ const Navbar = () => {
     handleCurrencySelect,
   } = useCurrency();
 
-  // Listen for scroll events to change navbar style
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 100) {
@@ -63,11 +61,9 @@ const Navbar = () => {
     };
   }, []);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (currencyRef.current && !currencyRef.current.contains(event.target)) {
-        // Use the context function to close the dropdown
         if (showCurrency) {
           handleCurrencyClick();
         }
@@ -89,7 +85,6 @@ const Navbar = () => {
     }
   };
 
-  // Styled Components for Dropdown Menus
   const DropdownMenu = ({ children, align = "left" }) => (
     <div
       className={`absolute hidden group-hover:block top-full 
@@ -108,7 +103,6 @@ const Navbar = () => {
       </h3>
       <ul>
         {items.map((item, index) => {
-          // Transform the item name to have only first letter capitalized
           const formattedName =
             item.name.charAt(0).toUpperCase() +
             item.name.slice(1).toLowerCase();
@@ -128,7 +122,6 @@ const Navbar = () => {
     </div>
   );
 
-  // All category data remains the same
   const shopData = [
     {
       title: "Fresh off the Looms",
@@ -162,18 +155,8 @@ const Navbar = () => {
         { name: "Dupattas", link: "/clothing/dupattas" },
       ],
     },
-    {
-      // title: "Featured",
-      items: [
-        // { name: "Silk", link: "/featured/silk" },
-        // { name: "Katan Icon", link: "/featured/katan-icon" },
-        // { name: "Handwoven Fabrics", link: "/featured/handwoven" },
-        // { name: "Katan Signature Class", link: "/featured/signature-class" },
-      ],
-    },
   ];
 
-  // UPDATED: Collections Data - Reorganized as requested
   const collectionsData = [
     {
       title: "Weaving and Patterns",
@@ -198,7 +181,6 @@ const Navbar = () => {
     },
   ];
 
-  // UPDATED: Changed Campaigns to Fabric Data
   const fabricData = [
     {
       title: "Fabric Types",
@@ -231,7 +213,6 @@ const Navbar = () => {
     },
   ];
 
-  // Stories Data - Kept as is
   const storiesData = [
     {
       title: "Heritage",
@@ -264,12 +245,9 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Main container with Cardo font */}
       <div className="font-cardo text-sm antialiased">
-        {/* Brand and Icons Bar - Only visible when not scrolled */}
         {!scrolled && (
           <div className="w-full bg-white py-3 px-6 flex justify-between items-center border-b border-gray-100">
-            {/* Branding */}
             <div className="text-black flex space-x-3.5 italic space-y-2">
               <div className="flex items-center space-x-2">
                 <FaEnvelope size={18} />
@@ -291,7 +269,6 @@ const Navbar = () => {
               </div>
             </div>
 
-            {/* Right Side Icons */}
             <div className="flex space-x-6 text-gray-600">
               <div className="flex items-center relative" ref={currencyRef}>
                 <button
@@ -299,8 +276,8 @@ const Navbar = () => {
                   onClick={handleCurrencyClick}
                 >
                   <span className="flex items-center uppercase text-lg tracking-wide font-semibold">
-                    <span className="text-2xl">{selectedCurrency.code}</span>
-                    <span className="ml-1 text-2xl">
+                    <span className="text-1xl">{selectedCurrency.code}</span>
+                    <span className="ml-1 text-1xl">
                       {selectedCurrency.symbol} ▼
                     </span>
                   </span>
@@ -324,26 +301,63 @@ const Navbar = () => {
                   </div>
                 )}
               </div>
+              <button
+                className="lg:hidden absolute right-4 top-4 z-50 text-gray-700"
+                onClick={toggleMobileMenu}
+              >
+                {mobileMenuOpen ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                  </svg>
+                )}
+              </button>
 
               <Link
                 to="/search"
                 className="flex items-center hover:text-[#8b5e3c] transition-colors"
               >
-                <FaSearch size={27} />
+                <FaSearch size={23} />
               </Link>
 
               <Link
                 to="/login"
                 className="flex items-center hover:text-[#8b5e3c] transition-colors"
               >
-                <FaUser size={27} />
+                <FaUser size={23} />
               </Link>
 
               <Link
                 to="/wishlist"
                 className="flex items-center hover:text-[#8b5e3c] transition-colors"
               >
-                <FaHeart size={27} />
+                <FaHeart size={23} />
               </Link>
 
               <Link
@@ -351,7 +365,7 @@ const Navbar = () => {
                 className="flex items-center hover:text-[#8b5e3c] transition-colors"
               >
                 <div className="relative">
-                  <FaShoppingCart size={30} />
+                  <FaShoppingCart size={25} />
                   {totalItems > 0 && (
                     <span className="absolute -top-2 -right-2 bg-[#c98a5e] text-white text-xs font-bold px-1.5 rounded-full">
                       {totalItems}
@@ -363,18 +377,16 @@ const Navbar = () => {
           </div>
         )}
 
-        {/* Main Navigation - Fixed on scroll */}
         <div
-          className={`w-full bg-white border-t border-b border-gray-200 py-10 px-6 
-                    ${
-                      scrolled
-                        ? "fixed top-0 left-0 shadow-md z-50 transition-all duration-300"
-                        : ""
-                    }`}
+          className={`w-full bg-white border-t border-b border-gray-200 py-4 md:py-10 px-2 md:px-6 
+              ${
+                scrolled
+                  ? "fixed top-0 left-0 shadow-md z-50 transition-all duration-300"
+                  : ""
+              }`}
         >
           <div className="relative flex justify-between items-center px-20">
-            {/* Left Navigation */}
-            <div className="flex space-x-8 text-gray-700 uppercase tracking-wide text-lg font-bold ml-24 ">
+            <div className="hidden md:flex space-x-8 text-gray-700 uppercase tracking-wide text-lg font-bold ml-24 ">
               <div className="relative group">
                 <Link
                   to="/"
@@ -418,8 +430,7 @@ const Navbar = () => {
               </div>
             </div>
 
-            {/* Center Logo */}
-            <div className="absolute left-1/2 transform -translate-x-1/2">
+            <div className="absolute left-1/2 transform -translate-x-1/2 md:static md:transform-none md:left-auto lg:absolute lg:left-1/2 lg:transform lg:-translate-x-1/2">
               <Link
                 to="/"
                 className="hover:opacity-90 transition-opacity"
@@ -428,13 +439,12 @@ const Navbar = () => {
                 <img
                   src="/katan.png"
                   alt="KATAN"
-                  className="h-23 w-39 object-contain"
+                  className="h-16 w-auto md:h-23 md:w-39 object-contain"
                 />
               </Link>
             </div>
 
-            {/* Right Navigation */}
-            <div className="flex space-x-8 text-gray-700 uppercase tracking-wide text-lg font-bold mr-34 ">
+            <div className="hidden md:flex space-x-8 text-gray-700 uppercase tracking-wide text-lg font-bold mr-34 ">
               {!scrolled ? (
                 <>
                   <div className="relative group">
@@ -484,16 +494,15 @@ const Navbar = () => {
                   </div>
                 </>
               ) : (
-                // Show icons when scrolled - Made larger
                 <div className="flex space-x-6 text-gray-600">
                   <div className="flex items-center relative" ref={currencyRef}>
                     <button
                       className="flex items-center hover:text-[#8b5e3c] transition-colors"
                       onClick={handleCurrencyClick}
                     >
-                      <span className="flex text-2xl items-center text-base">
+                      <span className="flex text-1xl items-center text-base">
                         {selectedCurrency.symbol}
-                        <span className="ml-1 text-2xl">▼</span>
+                        <span className="ml-1 text-1xl">▼</span>
                       </span>
                     </button>
 
@@ -515,21 +524,21 @@ const Navbar = () => {
                     to="/search"
                     className="flex items-center hover:text-[#8b5e3c] transition-colors"
                   >
-                    <FaSearch size={27} />
+                    <FaSearch size={22} />
                   </Link>
 
                   <Link
                     to="/login"
                     className="flex items-center hover:text-[#8b5e3c] transition-colors"
                   >
-                    <FaUser size={27} />
+                    <FaUser size={22} />
                   </Link>
 
                   <Link
                     to="/wishlist"
                     className="flex items-center hover:text-[#8b5e3c] transition-colors"
                   >
-                    <FaHeart size={27} />
+                    <FaHeart size={22} />
                   </Link>
 
                   <Link
@@ -537,7 +546,7 @@ const Navbar = () => {
                     className="flex items-center hover:text-[#8b5e3c] transition-colors"
                   >
                     <div className="relative">
-                      <FaShoppingCart size={30} />
+                      <FaShoppingCart size={25} />
                       {totalItems > 0 && (
                         <span className="absolute -top-2 -right-2 bg-[#c98a5e] text-white text-xs font-bold px-1.5 rounded-full">
                           {totalItems}
@@ -550,9 +559,252 @@ const Navbar = () => {
             </div>
           </div>
         </div>
+        {/* Mobile Menu */}
+        <div
+          className={`fixed inset-0 bg-white z-50 transform transition-transform duration-300 ease-in-out ${
+            mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+          } lg:hidden`}
+        >
+          <div className="p-5 h-full overflow-y-auto">
+            <div className="flex justify-between items-center mb-8">
+              <Link to="/" onClick={() => setMobileMenuOpen(false)}>
+                <img
+                  src="/katan.png"
+                  alt="KATAN"
+                  className="h-16 w-auto object-contain"
+                />
+              </Link>
+              <button onClick={toggleMobileMenu} className="text-gray-700">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+
+            {/* Mobile Menu Items */}
+            <div className="space-y-6">
+              {/* SHOP */}
+              <div className="border-b border-gray-200 pb-4">
+                <div className="flex justify-between items-center">
+                  <Link
+                    to="/"
+                    className="text-gray-700 uppercase tracking-wide text-lg font-bold"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    SHOP
+                  </Link>
+                </div>
+                <div className="mt-3 ml-4 space-y-3">
+                  {shopData.map(
+                    (category, idx) =>
+                      category.title && (
+                        <div key={idx} className="mb-4">
+                          <h3 className="font-cardo text-[#5d4037] text-base mb-2">
+                            {category.title}
+                          </h3>
+                          <ul className="space-y-2">
+                            {category.items.map((item, index) => (
+                              <li key={index}>
+                                <Link
+                                  to={item.link}
+                                  className="text-[#6d4c41] block"
+                                  onClick={() => setMobileMenuOpen(false)}
+                                >
+                                  {item.name.charAt(0).toUpperCase() +
+                                    item.name.slice(1).toLowerCase()}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )
+                  )}
+                </div>
+              </div>
+
+              {/* COLLECTIONS */}
+              <div className="border-b border-gray-200 pb-4">
+                <div className="flex justify-between items-center">
+                  <Link
+                    to="/collections"
+                    className="text-gray-700 uppercase tracking-wide text-lg font-bold"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    COLLECTIONS
+                  </Link>
+                </div>
+                <div className="mt-3 ml-4 space-y-3">
+                  {collectionsData.map((category, idx) => (
+                    <div key={idx} className="mb-4">
+                      <h3 className="font-cardo text-[#5d4037] text-base mb-2">
+                        {category.title}
+                      </h3>
+                      <ul className="space-y-2">
+                        {category.items.map((item, index) => (
+                          <li key={index}>
+                            <Link
+                              to={item.link}
+                              className="text-[#6d4c41] block"
+                              onClick={() => setMobileMenuOpen(false)}
+                            >
+                              {item.name.charAt(0).toUpperCase() +
+                                item.name.slice(1).toLowerCase()}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* FABRIC */}
+              <div className="border-b border-gray-200 pb-4">
+                <div className="flex justify-between items-center">
+                  <Link
+                    to="/fabrics"
+                    className="text-gray-700 uppercase tracking-wide text-lg font-bold"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    FABRIC
+                  </Link>
+                </div>
+                <div className="mt-3 ml-4 space-y-3">
+                  {fabricData.map(
+                    (category, idx) =>
+                      category.title && (
+                        <div key={idx} className="mb-4">
+                          <h3 className="font-cardo text-[#5d4037] text-base mb-2">
+                            {category.title}
+                          </h3>
+                          <ul className="space-y-2">
+                            {category.items.map((item, index) => (
+                              <li key={index}>
+                                <Link
+                                  to={item.link}
+                                  className="text-[#6d4c41] block"
+                                  onClick={() => setMobileMenuOpen(false)}
+                                >
+                                  {item.name.charAt(0).toUpperCase() +
+                                    item.name.slice(1).toLowerCase()}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )
+                  )}
+                </div>
+              </div>
+
+              {/* ABOUT US */}
+              <div className="border-b border-gray-200 pb-4">
+                <div className="flex justify-between items-center">
+                  <Link
+                    to="/about"
+                    className="text-gray-700 uppercase tracking-wide text-lg font-bold"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    ABOUT US
+                  </Link>
+                </div>
+                <div className="mt-3 ml-4 space-y-3">
+                  <ul className="space-y-2">
+                    <li>
+                      <Link
+                        to="/about/story"
+                        className="text-[#6d4c41] block"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Story
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/about/heritage"
+                        className="text-[#6d4c41] block"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Our Heritage
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/about/craft"
+                        className="text-[#6d4c41] block"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Our Craftmanship
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/about"
+                        className="text-[#6d4c41] block"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        About Us
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Icons Row in Mobile */}
+              <div className="flex justify-around py-4">
+                <Link
+                  to="/search"
+                  className="text-gray-600"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <FaSearch size={20} />
+                </Link>
+                <Link
+                  to="/login"
+                  className="text-gray-600"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <FaUser size={20} />
+                </Link>
+                <Link
+                  to="/wishlist"
+                  className="text-gray-600"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <FaHeart size={20} />
+                </Link>
+                <Link
+                  to="/cart"
+                  className="text-gray-600"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <div className="relative">
+                    <FaShoppingCart size={22} />
+                    {totalItems > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-[#c98a5e] text-white text-xs font-bold px-1.5 rounded-full">
+                        {totalItems}
+                      </span>
+                    )}
+                  </div>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* Add a spacer div when navbar is fixed to prevent content jump - INCREASED HEIGHT */}
-        {scrolled && <div className="h-32"></div>}
+        {scrolled && <div className="h-20 md:h-32"></div>}
       </div>
     </>
   );
