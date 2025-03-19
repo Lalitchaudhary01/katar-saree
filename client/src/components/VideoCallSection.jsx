@@ -157,11 +157,11 @@ const VideoCallSection = () => {
       )}
 
       {/* Floating Contact Button */}
-      <div className="fixed bottom-6 right-6">
+      {/* <div className="fixed bottom-6 right-6">
         <button className="bg-amber-600 text-white rounded-full p-4 shadow-lg hover:bg-amber-700 transition duration-300">
           <Phone size={24} />
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };
