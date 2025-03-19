@@ -37,6 +37,7 @@ import { CurrencyProvider } from "./context/currencyContext";
 import Blog from "./components/Blog";
 import BlogPostDetails from "./components/BlogPostDetails";
 import VideoCallSection from "./components/VideoCallSection";
+import Packaging from "./components/Packaging";
 
 // Page transition variants
 const pageVariants = {
@@ -83,6 +84,7 @@ function AppContent() {
                 <NewArrivals />
                 <Testimonials />
                 <Blog />
+                <Packaging />
                 <WhatsAppButton />
               </PageWrapper>
             }
