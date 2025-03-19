@@ -249,7 +249,7 @@ const Navbar = () => {
         {!scrolled && (
           <div className="w-full bg-white py-3 px-6 flex justify-between items-center border-b border-gray-100">
             <div className="text-black flex space-x-3.5 italic space-y-2">
-              <div className="flex items-center space-x-2">
+              <div className="hidden md:flex items-center space-x-2">
                 <FaEnvelope size={18} />
                 <a
                   href="mailto:katanbanarasofficial@gmail.com"
@@ -258,7 +258,7 @@ const Navbar = () => {
                   katanbanarasofficial@gmail.com
                 </a>
               </div>
-              <div className="flex items-center space-x-2 space-y-2">
+              <div className="hidden md:flex items-center space-x-2 space-y-2">
                 <FaPhone size={18} />
                 <a
                   href="tel:+917860783350"
@@ -305,7 +305,7 @@ const Navbar = () => {
                 )}
               </div>
               <button
-                className="lg:hidden absolute right-4 top-4 z-50 text-gray-700"
+                className="lg:hidden fixed right-4 top-4 z-50 text-gray-700"
                 onClick={toggleMobileMenu}
               >
                 {mobileMenuOpen ? (

@@ -33,6 +33,8 @@ import AuthPage from "./headers/AuthPage";
 import Testimonials from "./components/Testimonials";
 import ServiceHighlights from "./components/ServiceHighlights";
 import { CurrencyProvider } from "./context/currencyContext";
+import Blog from "./components/Blog";
+import BlogPostDetails from "./components/BlogPostDetails";
 
 function AppContent() {
   const location = useLocation();
@@ -52,8 +54,10 @@ function AppContent() {
               <ServiceHighlights />
 
               <NewArrivals />
+
               {/* <SilkSarees /> */}
               <Testimonials />
+              <Blog />
               <WhatsAppButton />
             </>
           }
@@ -77,6 +81,8 @@ function AppContent() {
 
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="login" element={<AuthPage />} />
+
+        <Route path="/blog/:id" element={<BlogPostDetails />} />
       </Routes>
       {/* Footer should not be displayed on CollectionDetails */}
       {location.pathname.startsWith("/collection/") ? null : <Footer />}

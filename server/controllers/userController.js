@@ -1,4 +1,5 @@
 const User = require("../models/user.js");
+const Testimonial = require("../models/testimonial.js");
 
 // Signup Controller
 const signup = async (req, res) => {
@@ -46,4 +47,125 @@ const logout = (req, res) => {
   });
 };
 
-module.exports = { signup, login, logout };
+// Get all testimonials
+const getAllTestimonials = async (req, res) => {
+  try {
+    const testimonials = await Testimonial.find().sort({ createdAt: -1 });
+    res.status(200).json(testimonials);
+  } catch (error) {
+    console.error("❌ Error fetching testimonials:", error.message);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+// Get testimonial by ID
+const getTestimonialById = async (req, res) => {
+  try {
+    const testimonial = await Testimonial.findById(req.params.id);
+    if (!testimonial) {
+      return res.status(404).json({ message: "Testimonial not found" });
+    }
+    res.status(200).json(testimonial);
+  } catch (error) {
+    console.error("❌ Error fetching testimonial:", error.message);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+// Create new testimonial
+const createTestimonial = async (req, res) => {
+  const { name, position, text, rating } = req.body;
+
+  try {
+    // Optional: Check if user is logged in
+    const userId = req.session.user ? req.session.user._id : null;
+
+    const newTestimonial = new Testimonial({
+      name,
+      position,
+      text,
+      rating,
+      userId,
+    });
+
+    const savedTestimonial = await newTestimonial.save();
+    res.status(201).json(savedTestimonial);
+  } catch (error) {
+    console.error("❌ Error creating testimonial:", error.message);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+// Update testimonial
+const updateTestimonial = async (req, res) => {
+  const { name, position, text, rating } = req.body;
+
+  try {
+    const testimonial = await Testimonial.findById(req.params.id);
+
+    if (!testimonial) {
+      return res.status(404).json({ message: "Testimonial not found" });
+    }
+
+    // Optional: Check if the user is the owner of the testimonial
+    if (
+      req.session.user &&
+      testimonial.userId &&
+      testimonial.userId.toString() !== req.session.user._id.toString()
+    ) {
+      return res
+        .status(403)
+        .json({ message: "Not authorized to update this testimonial" });
+    }
+
+    const updatedTestimonial = await Testimonial.findByIdAndUpdate(
+      req.params.id,
+      { name, position, text, rating },
+      { new: true }
+    );
+
+    res.status(200).json(updatedTestimonial);
+  } catch (error) {
+    console.error("❌ Error updating testimonial:", error.message);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+// Delete testimonial
+const deleteTestimonial = async (req, res) => {
+  try {
+    const testimonial = await Testimonial.findById(req.params.id);
+
+    if (!testimonial) {
+      return res.status(404).json({ message: "Testimonial not found" });
+    }
+
+    // Optional: Check if the user is the owner of the testimonial
+    if (
+      req.session.user &&
+      testimonial.userId &&
+      testimonial.userId.toString() !== req.session.user._id.toString()
+    ) {
+      return res
+        .status(403)
+        .json({ message: "Not authorized to delete this testimonial" });
+    }
+
+    await Testimonial.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: "Testimonial deleted successfully" });
+  } catch (error) {
+    console.error("❌ Error deleting testimonial:", error.message);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+module.exports = {
+  signup,
+  login,
+  logout,
+  getAllTestimonials,
+  getTestimonialById,
+  createTestimonial,
+  updateTestimonial,
+  deleteTestimonial,
+};
