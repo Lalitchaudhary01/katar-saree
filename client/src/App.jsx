@@ -5,6 +5,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import { AnimatePresence, motion } from "framer-motion";
 import "./App.css";
 import Craftsmanship from "./components/Craftsmanship";
 import FeaturedCollections from "./components/FeaturedCollections";
@@ -37,6 +38,30 @@ import Blog from "./components/Blog";
 import BlogPostDetails from "./components/BlogPostDetails";
 import VideoCallSection from "./components/VideoCallSection";
 
+// Page transition variants
+const pageVariants = {
+  initial: { opacity: 0, y: 50 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -50 },
+};
+
+const transition = { duration: 0.4, ease: "easeInOut" };
+
+// Wrapper component for animations
+const PageWrapper = ({ children }) => {
+  return (
+    <motion.div
+      variants={pageVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      transition={transition}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
 function AppContent() {
   const location = useLocation();
 
@@ -44,49 +69,179 @@ function AppContent() {
     <>
       <Navbar />
       <Toaster position="top-right" reverseOrder={false} />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              {/* <TrendingSection /> */}
-              <Home />
-              <VideoCallSection />
-              <FeaturedCollections />
-              <ServiceHighlights />
 
-              <NewArrivals />
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route
+            path="/"
+            element={
+              <PageWrapper>
+                <Home />
+                <VideoCallSection />
+                <FeaturedCollections />
+                <ServiceHighlights />
+                <NewArrivals />
+                <Testimonials />
+                <Blog />
+                <WhatsAppButton />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/cart"
+            element={
+              <PageWrapper>
+                <Cart />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/checkout"
+            element={
+              <PageWrapper>
+                <Checkout />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/collection/:id"
+            element={
+              <PageWrapper>
+                <CollectionDetails />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/sarees/silk"
+            element={
+              <PageWrapper>
+                <SilkSarees />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/sarees/cotton"
+            element={
+              <PageWrapper>
+                <CottonSarees />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/sarees/banarasi"
+            element={
+              <PageWrapper>
+                <BanarasiSarees />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/collection"
+            element={
+              <PageWrapper>
+                <FeaturedCollections />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/new-arrivals"
+            element={
+              <PageWrapper>
+                <NewArrivals />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/about"
+            element={
+              <PageWrapper>
+                <About />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/contact"
+            element={
+              <PageWrapper>
+                <Contact />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/privacy-policy"
+            element={
+              <PageWrapper>
+                <PrivacyPolicy />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/return-policy"
+            element={
+              <PageWrapper>
+                <ReturnPolicy />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/shipping-policy"
+            element={
+              <PageWrapper>
+                <ShippingPolicy />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/terms-conditions"
+            element={
+              <PageWrapper>
+                <TermsConditions />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/about/heritage"
+            element={
+              <PageWrapper>
+                <OurHeritage />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/about/craft"
+            element={
+              <PageWrapper>
+                <Craftsmanship />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/wishlist"
+            element={
+              <PageWrapper>
+                <Wishlist />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <PageWrapper>
+                <AuthPage />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/blog/:id"
+            element={
+              <PageWrapper>
+                <BlogPostDetails />
+              </PageWrapper>
+            }
+          />
+        </Routes>
+      </AnimatePresence>
 
-              {/* <SilkSarees /> */}
-              <Testimonials />
-              <Blog />
-              <WhatsAppButton />
-            </>
-          }
-        />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/collection/:id" element={<CollectionDetails />} />
-        <Route path="/sarees/silk" element={<SilkSarees />} />
-        <Route path="/sarees/cotton" element={<CottonSarees />} />
-        <Route path="/sarees/banarasi" element={<BanarasiSarees />} />
-        <Route path="/collection" element={<FeaturedCollections />} />
-        <Route path="/new-arrivals" element={<NewArrivals />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/return-policy" element={<ReturnPolicy />} />
-        <Route path="/shipping-policy" element={<ShippingPolicy />} />
-        <Route path="/terms-conditions" element={<TermsConditions />} />
-        <Route path="/about/heritage" element={<OurHeritage />} />
-        <Route path="/about/craft" element={<Craftsmanship />} />
-
-        <Route path="/wishlist" element={<Wishlist />} />
-        <Route path="login" element={<AuthPage />} />
-
-        <Route path="/blog/:id" element={<BlogPostDetails />} />
-      </Routes>
-      {/* Footer should not be displayed on CollectionDetails */}
       {location.pathname.startsWith("/collection/") ? null : <Footer />}
     </>
   );
@@ -97,8 +252,6 @@ function App() {
     <CartProvider>
       <WishlistProvider>
         <CurrencyProvider>
-          {" "}
-          {/* Wrap everything inside WishlistProvider */}
           <Router>
             <AppContent />
           </Router>
