@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import collections from "../assets/product/CollectionData";
 import { motion } from "framer-motion";
-import { FaEye, FaShoppingCart, FaHeart, FaRegHeart } from "react-icons/fa";
+import {
+  FaEye,
+  FaShoppingCart,
+  FaHeart,
+  FaRegHeart,
+  FaChevronLeft,
+  FaChevronRight,
+} from "react-icons/fa";
 import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
 import { useCurrency } from "../context/currencyContext";
@@ -17,6 +24,8 @@ const FeaturedCollections = () => {
   const [selectedCollection, setSelectedCollection] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
   const [mainImage, setMainImage] = useState(null);
+  // New state for mobile navigation
+  const [visibleCardIndex, setVisibleCardIndex] = useState(0);
 
   const hoverTimers = useRef({});
   const { addToCart } = useCart();
@@ -73,6 +82,28 @@ const FeaturedCollections = () => {
     };
 
     toggleWishlist(wishlistItem);
+  };
+
+  // Function to handle next card on mobile
+  const handleNextCard = () => {
+    const maxIndex = Math.min(
+      showAll ? collections.length - 1 : 3,
+      collections.length - 1
+    );
+    setVisibleCardIndex((prevIndex) =>
+      prevIndex >= maxIndex ? 0 : prevIndex + 1
+    );
+  };
+
+  // Function to handle previous card on mobile
+  const handlePrevCard = () => {
+    const maxIndex = Math.min(
+      showAll ? collections.length - 1 : 3,
+      collections.length - 1
+    );
+    setVisibleCardIndex((prevIndex) =>
+      prevIndex <= 0 ? maxIndex : prevIndex - 1
+    );
   };
 
   return (
@@ -132,6 +163,41 @@ const FeaturedCollections = () => {
           .wishlist-btn:hover {
             transform: scale(1.1);
           }
+          
+          .mobile-arrow-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            background-color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            z-index: 10;
+            transition: all 0.3s ease;
+          }
+          
+          .mobile-arrow-nav:hover {
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+          }
+          
+          .mobile-arrow-nav.prev {
+            left: 8px;
+          }
+          
+          .mobile-arrow-nav.next {
+            right: 8px;
+          }
+          
+          @media (min-width: 768px) {
+            .mobile-arrow-nav {
+              display: none;
+            }
+          }
         `}
       </style>
 
@@ -148,85 +214,111 @@ const FeaturedCollections = () => {
         <div className="w-24 h-0.5 bg-black mx-auto"></div>
       </div>
 
-      {/* Mobile-optimized grid with 2 items per row */}
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 px-3 md:px-6 mt-8 md:mt-12">
-        {collections
-          .slice(0, showAll ? collections.length : 4)
-          .map((collection, index) => (
-            <div
-              key={index}
-              className="group w-full overflow-hidden bg-white flex flex-col justify-between cursor-pointer card-hover rounded-lg shadow-sm"
-              onMouseEnter={() => handleMouseEnter(index)}
-              onMouseLeave={() => handleMouseLeave(index)}
-            >
-              <div className="relative overflow-hidden group">
-                <div className="overflow-hidden">
-                  <img
-                    src={collection.images[currentIndexes[index]]}
-                    alt={collection.title}
-                    className="w-full h-[260px] md:h-[560px] object-cover image-zoom"
-                    onClick={() => navigate(`/collection/${index}`)}
-                  />
-                </div>
+      {/* Mobile navigation wrapper */}
+      <div className="relative">
+        {/* Mobile Navigation Arrows - Only visible on mobile */}
+        <button
+          className="mobile-arrow-nav prev"
+          onClick={handlePrevCard}
+          aria-label="Previous card"
+        >
+          <FaChevronLeft />
+        </button>
 
-                {/* Wishlist Button - Top Right */}
-                <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <button
-                    onClick={(e) => handleWishlistToggle(e, collection, index)}
-                    className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md wishlist-btn hover:bg-gray-50"
-                  >
-                    {isInWishlist(collection.id || `collection-${index}`) ? (
-                      <FaHeart className="text-red-500 text-sm" />
-                    ) : (
-                      <FaRegHeart className="text-gray-800 text-sm" />
-                    )}
-                  </button>
-                </div>
+        <button
+          className="mobile-arrow-nav next"
+          onClick={handleNextCard}
+          aria-label="Next card"
+        >
+          <FaChevronRight />
+        </button>
 
-                {/* Quick View Button */}
-                <div className="absolute font-[Garamond] bottom-0 left-0 right-0 bg-gradient-to-t from-black/40 to-transparent h-16 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-2">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedCollection(collection);
-                    }}
-                    className="px-3 py-1.5 bg-white/90 backdrop-blur-sm text-black rounded-full font-cardo tracking-wide text-xs flex items-center gap-1 hover:bg-white transition-all duration-300 shadow-lg"
-                  >
-                    <FaEye className="text-black text-xs" /> Quick View
-                  </button>
-                </div>
-
-                {/* Discount Badge */}
-                {collection.discount && (
-                  <div className="absolute top-2 left-2">
-                    <div className="discount-badge font-[Garamond] text-white font-medium text-xs px-2 py-0.5 rounded-full shadow-md">
-                      {collection.discount} OFF
-                    </div>
+        {/* Modified grid with mobile-specific display logic */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 px-3 md:px-6 mt-8 md:mt-12">
+          {collections
+            .slice(0, showAll ? collections.length : 4)
+            .map((collection, index) => (
+              <div
+                key={index}
+                className={`group w-full overflow-hidden bg-white flex flex-col justify-between cursor-pointer card-hover rounded-lg shadow-sm ${
+                  index === visibleCardIndex
+                    ? "block md:block"
+                    : "hidden md:block"
+                }`}
+                onMouseEnter={() => handleMouseEnter(index)}
+                onMouseLeave={() => handleMouseLeave(index)}
+              >
+                <div className="relative overflow-hidden group">
+                  <div className="overflow-hidden">
+                    <img
+                      src={collection.images[currentIndexes[index]]}
+                      alt={collection.title}
+                      className="w-full h-[260px] md:h-[560px] object-cover image-zoom"
+                      onClick={() => navigate(`/collection/${index}`)}
+                    />
                   </div>
-                )}
-              </div>
 
-              <div className="p-3 flex flex-col bg-white">
-                <h3 className="text-sm md:text-base font-[Garamond] text-black font-playfair font-semibold mb-1 truncate">
-                  {collection.title}
-                </h3>
-                <div className="flex font-[Garamond] items-center justify-center gap-2">
-                  {collection.originalPrice && (
-                    <p className="text-gray-500 line-through text-xs font-cardo">
-                      {selectedCurrency.symbol}
-                      {formatPrice(convertPrice(collection.originalPrice))}
-                    </p>
-                  )}
-                  {collection.discountPrice && (
-                    <p className="text-black font-cardo font-bold text-sm md:text-base price-tag">
-                      {selectedCurrency.symbol}
-                      {formatPrice(convertPrice(collection.discountPrice))}
-                    </p>
+                  {/* Wishlist Button - Top Right */}
+                  <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <button
+                      onClick={(e) =>
+                        handleWishlistToggle(e, collection, index)
+                      }
+                      className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md wishlist-btn hover:bg-gray-50"
+                    >
+                      {isInWishlist(collection.id || `collection-${index}`) ? (
+                        <FaHeart className="text-red-500 text-sm" />
+                      ) : (
+                        <FaRegHeart className="text-gray-800 text-sm" />
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Quick View Button */}
+                  <div className="absolute font-[Garamond] bottom-0 left-0 right-0 bg-gradient-to-t from-black/40 to-transparent h-16 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedCollection(collection);
+                      }}
+                      className="px-3 py-1.5 bg-white/90 backdrop-blur-sm text-black rounded-full font-cardo tracking-wide text-xs flex items-center gap-1 hover:bg-white transition-all duration-300 shadow-lg"
+                    >
+                      <FaEye className="text-black text-xs" /> Quick View
+                    </button>
+                  </div>
+
+                  {/* Discount Badge */}
+                  {collection.discount && (
+                    <div className="absolute top-2 left-2">
+                      <div className="discount-badge font-[Garamond] text-white font-medium text-xs px-2 py-0.5 rounded-full shadow-md">
+                        {collection.discount} OFF
+                      </div>
+                    </div>
                   )}
                 </div>
+
+                <div className="p-3 flex flex-col bg-white">
+                  <h3 className="text-sm md:text-base font-[Garamond] text-black font-playfair font-semibold mb-1 truncate">
+                    {collection.title}
+                  </h3>
+                  <div className="flex font-[Garamond] items-center justify-center gap-2">
+                    {collection.originalPrice && (
+                      <p className="text-gray-500 line-through text-xs font-cardo">
+                        {selectedCurrency.symbol}
+                        {formatPrice(convertPrice(collection.originalPrice))}
+                      </p>
+                    )}
+                    {collection.discountPrice && (
+                      <p className="text-black font-cardo font-bold text-sm md:text-base price-tag">
+                        {selectedCurrency.symbol}
+                        {formatPrice(convertPrice(collection.discountPrice))}
+                      </p>
+                    )}
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+        </div>
       </div>
 
       <div className="mt-8 md:mt-12 text-center">

@@ -6,6 +6,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { FaGift, FaLeaf, FaAward, FaShippingFast } from "react-icons/fa";
+import Testinomials from "./Testimonials";
 
 const packagingFeatures = [
   {
@@ -207,7 +208,7 @@ const Packaging = () => {
         </div>
 
         {/* Testimonials about packaging */}
-        <div className="mt-20">
+        {/* <div className="mt-20">
           <h3 className="text-2xl font-playfair font-bold text-center mb-10">
             Customer <span className="gold-text">Experience</span>
           </h3>
@@ -256,6 +257,9 @@ const Packaging = () => {
               </SwiperSlide>
             ))}
           </Swiper>
+        </div> */}
+        <div>
+          <Testinomials />
         </div>
 
         {/* Heritage Note */}
