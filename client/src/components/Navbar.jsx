@@ -562,6 +562,7 @@ const Navbar = () => {
             </div>
           </div>
         </div>
+
         {/* Mobile Menu */}
         <div
           className={`fixed inset-0 bg-white z-50 transform transition-transform duration-300 ease-in-out ${

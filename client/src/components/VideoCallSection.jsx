@@ -6,14 +6,14 @@ const VideoCallSection = () => {
 
   return (
     <div
-      className="relative min-h-screen w-full bg-cover bg-center overflow-hidden"
-      style={{
-        backgroundImage:
-          "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url('/api/placeholder/1920/1080')",
-      }}
+      className="relative min-h-screen w-full bg-white bg-center overflow-hidden"
+      //   style={{
+      //     backgroundImage:
+      //       "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url('/api/placeholder/1920/1080')",
+      //   }}
     >
       {/* Decorative elements */}
-      <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+      <div className="absolute inset-0 bg-white bg-opacity-20"></div>
 
       {/* Main content */}
       <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-16">
