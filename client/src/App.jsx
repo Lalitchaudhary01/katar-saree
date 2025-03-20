@@ -98,6 +98,14 @@ function AppContent() {
             }
           />
           <Route
+            path="/blog"
+            element={
+              <PageWrapper>
+                <Blog />
+              </PageWrapper>
+            }
+          />
+          <Route
             path="/checkout"
             element={
               <PageWrapper>

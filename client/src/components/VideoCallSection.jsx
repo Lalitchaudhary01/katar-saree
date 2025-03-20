@@ -1,152 +1,195 @@
-import React, { useState } from "react";
-import { Phone, Calendar, X } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Phone, Calendar, X, ShoppingBag, Clock, Star } from "lucide-react";
 
 const VideoCallSection = () => {
   const [showAppointmentForm, setShowAppointmentForm] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // Animate entrance
+    setIsVisible(true);
+  }, []);
 
   return (
-    <div
-      className="relative min-h-screen w-full bg-white bg-center overflow-hidden"
-      //   style={{
-      //     backgroundImage:
-      //       "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url('/api/placeholder/1920/1080')",
-      //   }}
-    >
-      {/* Decorative elements */}
-      <div className="absolute inset-0 bg-white bg-opacity-20"></div>
+    <div className="relative min-h-screen w-full bg-gradient-to-br from-stone-900 via-stone-800 to-amber-900 overflow-hidden">
+      {/* Luxury background elements */}
+      <div className="absolute top-0 left-0 w-full h-full opacity-20">
+        <div className="absolute top-10 left-10 w-64 h-64 rounded-full bg-amber-400 blur-3xl"></div>
+        <div className="absolute bottom-10 right-10 w-80 h-80 rounded-full bg-amber-500 blur-3xl"></div>
+      </div>
+      
+      {/* Decorative gold patterns */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-amber-400 to-amber-600"></div>
+        <div className="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-amber-600 to-amber-400"></div>
+        <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-amber-400 to-amber-600"></div>
+        <div className="absolute top-0 right-0 w-2 h-full bg-gradient-to-b from-amber-600 to-amber-400"></div>
+      </div>
 
       {/* Main content */}
       <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-16">
-        <div className="bg-white bg-opacity-95 backdrop-blur-sm shadow-2xl rounded-lg max-w-4xl w-full overflow-hidden">
+        <div 
+          className={`bg-white bg-opacity-95 backdrop-blur-md shadow-2xl rounded-lg max-w-4xl w-full overflow-hidden transform transition-all duration-1000 ${
+            isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
+          }`}
+        >
           <div className="flex flex-col md:flex-row">
-            {/* Left side - Image */}
-            <div className="w-full md:w-2/5 h-64 md:h-auto relative">
+            {/* Left side - Image with overlay */}
+            <div className="w-full md:w-2/5 h-64 md:h-auto relative overflow-hidden group">
               <img
                 src="/api/placeholder/800/1200"
                 alt="Luxury shopping collection"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
-              <div className="absolute top-4 left-4 bg-white bg-opacity-90 px-4 py-2 rounded-sm">
-                <span className="text-xs font-medium uppercase tracking-widest text-stone-800">
+              <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-50"></div>
+              <div className="absolute top-4 left-4 bg-black bg-opacity-40 backdrop-blur-sm px-4 py-2 rounded-sm border-l-2 border-amber-500">
+                <span className="text-xs font-medium uppercase tracking-widest text-amber-100">
                   Premium Collection
                 </span>
+              </div>
+              <div className="absolute bottom-4 left-4 right-4">
+                <div className="flex space-x-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star key={star} size={14} className="text-amber-400 fill-amber-400" />
+                  ))}
+                </div>
+                <p className="text-white text-sm mt-1">Exceptional luxury service</p>
               </div>
             </div>
 
             {/* Right side - Content */}
-            <div className="w-full md:w-3/5 p-8 md:p-12">
-              <h2 className="font-serif text-3xl mb-2 text-stone-900">
-                Personalized Shopping
-              </h2>
-              <div className="w-16 h-1 bg-amber-500 mb-6"></div>
+            <div className="w-full md:w-3/5 p-8 md:p-12 bg-gradient-to-br from-white to-stone-100">
+              <div className="transform transition-all duration-700 delay-300 translate-y-0 opacity-100">
+                <h2 className="font-serif text-3xl mb-2 text-stone-900 relative">
+                  <span className="relative z-10">Personalized Shopping</span>
+                  <span className="absolute -bottom-2 left-0 w-12 h-1 bg-amber-500 transform transition-all duration-300 group-hover:w-full"></span>
+                </h2>
+                <div className="w-16 h-1 bg-amber-500 mb-6 transform transition-all duration-500 hover:w-32"></div>
 
-              <p className="text-stone-700 mb-8 leading-relaxed">
-                Experience the pinnacle of luxury shopping with our personalized
-                video call service. Our expert consultants will guide you
-                through our exclusive collections, providing detailed insights
-                and recommendations tailored to your preferences.
-              </p>
+                <p className="text-stone-700 mb-8 leading-relaxed">
+                  Experience the pinnacle of luxury shopping with our personalized
+                  video call service. Our expert consultants will guide you
+                  through our exclusive collections, providing detailed insights
+                  and recommendations tailored to your preferences.
+                </p>
 
-              <div className="flex items-center mb-8">
-                <div className="flex items-center mr-6">
-                  <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center mr-3">
-                    <Calendar size={18} className="text-stone-700" />
+                <div className="flex flex-col sm:flex-row items-start sm:items-center mb-8 space-y-4 sm:space-y-0">
+                  <div className="flex items-center mr-6 group">
+                    <div className="w-10 h-10 rounded-full bg-stone-200 flex items-center justify-center mr-3 transition-all duration-300 group-hover:bg-amber-500 group-hover:text-white">
+                      <Calendar size={18} className="text-stone-700 group-hover:text-white transition-colors duration-300" />
+                    </div>
+                    <span className="text-sm group-hover:text-amber-800 transition-colors duration-300">Flexible Scheduling</span>
                   </div>
-                  <span className="text-sm">Flexible Scheduling</span>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center mr-3">
-                    <Phone size={18} className="text-stone-700" />
+                  <div className="flex items-center group">
+                    <div className="w-10 h-10 rounded-full bg-stone-200 flex items-center justify-center mr-3 transition-all duration-300 group-hover:bg-amber-500 group-hover:text-white">
+                      <Phone size={18} className="text-stone-700 group-hover:text-white transition-colors duration-300" />
+                    </div>
+                    <span className="text-sm group-hover:text-amber-800 transition-colors duration-300">Personalized Assistance</span>
                   </div>
-                  <span className="text-sm">Personalized Assistance</span>
                 </div>
+
+                <div className="flex items-center mb-8">
+                  <div className="flex items-center mr-6 group">
+                    <div className="w-10 h-10 rounded-full bg-stone-200 flex items-center justify-center mr-3 transition-all duration-300 group-hover:bg-amber-500 group-hover:text-white">
+                      <ShoppingBag size={18} className="text-stone-700 group-hover:text-white transition-colors duration-300" />
+                    </div>
+                    <span className="text-sm group-hover:text-amber-800 transition-colors duration-300">Exclusive Products</span>
+                  </div>
+                  <div className="flex items-center group">
+                    <div className="w-10 h-10 rounded-full bg-stone-200 flex items-center justify-center mr-3 transition-all duration-300 group-hover:bg-amber-500 group-hover:text-white">
+                      <Clock size={18} className="text-stone-700 group-hover:text-white transition-colors duration-300" />
+                    </div>
+                    <span className="text-sm group-hover:text-amber-800 transition-colors duration-300">24/7 Availability</span>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setShowAppointmentForm(true)}
+                  className="bg-gradient-to-r from-amber-600 to-amber-800 text-white flex items-center justify-center px-8 py-3 rounded-sm hover:from-amber-700 hover:to-amber-900 transition duration-300 uppercase tracking-wider text-sm transform hover:scale-105 shadow-md hover:shadow-lg"
+                >
+                  <Calendar size={16} className="mr-2" />
+                  Book Your Appointment
+                </button>
               </div>
-
-              <button
-                onClick={() => setShowAppointmentForm(true)}
-                className="bg-stone-900 text-white flex items-center justify-center px-8 py-3 rounded-sm hover:bg-amber-700 transition duration-300 uppercase tracking-wider text-sm"
-              >
-                <Calendar size={16} className="mr-2" />
-                Book Your Appointment
-              </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Appointment Form Modal */}
+      {/* Appointment Form Modal with animation */}
       {showAppointmentForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
-          <div className="bg-white p-8 rounded-lg w-full max-w-md">
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4 animate-fadeIn">
+          <div className="bg-gradient-to-br from-white to-stone-50 p-8 rounded-lg w-full max-w-md shadow-2xl transform animate-scaleIn">
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-serif text-stone-900">
+              <h3 className="text-2xl font-serif text-stone-900 relative">
                 Book Your Luxury Experience
+                <span className="absolute -bottom-2 left-0 w-12 h-0.5 bg-amber-500"></span>
               </h3>
               <button
                 onClick={() => setShowAppointmentForm(false)}
-                className="text-stone-500 hover:text-stone-900"
+                className="text-stone-500 hover:text-stone-900 transition-colors duration-300 hover:rotate-90 transform"
               >
                 <X size={24} />
               </button>
             </div>
 
             <form className="space-y-5">
-              <div>
+              <div className="transform transition-all duration-300 hover:translate-x-1">
                 <label className="block text-stone-700 mb-2 text-sm">
                   Full Name
                 </label>
                 <input
                   type="text"
-                  className="w-full px-4 py-3 border border-stone-200 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                  className="w-full px-4 py-3 border border-stone-200 focus:outline-none focus:ring-1 focus:ring-amber-500 transition-all duration-300"
                   placeholder="Your name"
                 />
               </div>
 
-              <div>
+              <div className="transform transition-all duration-300 hover:translate-x-1">
                 <label className="block text-stone-700 mb-2 text-sm">
                   Email
                 </label>
                 <input
                   type="email"
-                  className="w-full px-4 py-3 border border-stone-200 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                  className="w-full px-4 py-3 border border-stone-200 focus:outline-none focus:ring-1 focus:ring-amber-500 transition-all duration-300"
                   placeholder="Your email"
                 />
               </div>
 
-              <div>
+              <div className="transform transition-all duration-300 hover:translate-x-1">
                 <label className="block text-stone-700 mb-2 text-sm">
                   Phone
                 </label>
                 <input
                   type="tel"
-                  className="w-full px-4 py-3 border border-stone-200 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                  className="w-full px-4 py-3 border border-stone-200 focus:outline-none focus:ring-1 focus:ring-amber-500 transition-all duration-300"
                   placeholder="Your contact number"
                 />
               </div>
 
-              <div>
+              <div className="transform transition-all duration-300 hover:translate-x-1">
                 <label className="block text-stone-700 mb-2 text-sm">
                   Preferred Date & Time
                 </label>
                 <input
                   type="datetime-local"
-                  className="w-full px-4 py-3 border border-stone-200 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                  className="w-full px-4 py-3 border border-stone-200 focus:outline-none focus:ring-1 focus:ring-amber-500 transition-all duration-300"
                 />
               </div>
 
-              <div>
+              <div className="transform transition-all duration-300 hover:translate-x-1">
                 <label className="block text-stone-700 mb-2 text-sm">
                   Shopping Preferences
                 </label>
                 <textarea
-                  className="w-full px-4 py-3 border border-stone-200 focus:outline-none focus:ring-1 focus:ring-amber-500 h-24"
+                  className="w-full px-4 py-3 border border-stone-200 focus:outline-none focus:ring-1 focus:ring-amber-500 h-24 transition-all duration-300"
                   placeholder="Please share your shopping interests and preferences"
                 ></textarea>
               </div>
 
               <button
                 type="button"
-                className="w-full bg-amber-600 text-white py-4 uppercase tracking-wider hover:bg-amber-700 transition duration-300 flex items-center justify-center"
+                className="w-full bg-gradient-to-r from-amber-600 to-amber-800 text-white py-4 uppercase tracking-wider hover:from-amber-700 hover:to-amber-900 transition duration-300 flex items-center justify-center transform hover:scale-105 shadow-md hover:shadow-lg"
               >
                 <Calendar size={16} className="mr-2" />
                 Confirm Appointment
@@ -157,11 +200,11 @@ const VideoCallSection = () => {
       )}
 
       {/* Floating Contact Button */}
-      {/* <div className="fixed bottom-6 right-6">
-        <button className="bg-amber-600 text-white rounded-full p-4 shadow-lg hover:bg-amber-700 transition duration-300">
+      <div className="fixed bottom-6 right-6 animate-bounce">
+        <button className="bg-gradient-to-r from-amber-600 to-amber-800 text-white rounded-full p-4 shadow-lg hover:from-amber-700 hover:to-amber-900 transition duration-300 transform hover:scale-110">
           <Phone size={24} />
         </button>
-      </div> */}
+      </div>
     </div>
   );
 };
