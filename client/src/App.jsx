@@ -78,11 +78,12 @@ function AppContent() {
             element={
               <PageWrapper>
                 <Home />
-                <VideoCallSection />
+
                 <FeaturedCollections />
                 <ServiceHighlights />
                 <NewArrivals />
-                {/* <Testimonials /> */}
+                <VideoCallSection />
+                <Testimonials />
                 <Blog />
                 {/* <Packaging /> */}
                 <WhatsAppButton />
