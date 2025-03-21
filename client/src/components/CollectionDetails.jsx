@@ -21,7 +21,7 @@ import { CgSize } from "react-icons/cg";
 import { MdSecurity } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
-const CollectionDetail = () => {
+const CollectionDetails = () => {
   const { id } = useParams();
   const { addToCart } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
@@ -38,12 +38,10 @@ const CollectionDetail = () => {
   const [selectedColor, setSelectedColor] = useState(null);
   const [mainImage, setMainImage] = useState(collection?.images[0]);
   const [quantity, setQuantity] = useState(1);
-
   const [activeTab, setActiveTab] = useState("description");
   const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
   const [showZoom, setShowZoom] = useState(false);
   const [zoomed, setZoomed] = useState(false);
-
   const [touchStartX, setTouchStartX] = useState(null);
   const [touchEndX, setTouchEndX] = useState(null);
 
@@ -71,7 +69,8 @@ const CollectionDetail = () => {
         // Swipe right
         const currentIndex = collection.images.indexOf(mainImage);
         const prevIndex =
-          (currentIndex - 1 + collection.images.length) % collection.images.length;
+          (currentIndex - 1 + collection.images.length) %
+          collection.images.length;
         setMainImage(collection.images[prevIndex]);
       }
     }
@@ -202,7 +201,9 @@ const CollectionDetail = () => {
           <FaChevronRight className="mx-2 text-xs" />
           <span className="hover:underline cursor-pointer">Collections</span>
           <FaChevronRight className="mx-2 text-xs" />
-          <span className="text-black font-medium truncate max-w-xs">{collection.title}</span>
+          <span className="text-black font-medium truncate max-w-xs">
+            {collection.title}
+          </span>
         </div>
 
         <motion.div
@@ -334,11 +335,15 @@ const CollectionDetail = () => {
                     {[...Array(5)].map((_, i) => (
                       <FaStar
                         key={i}
-                        className={`text-sm md:text-base ${i < 4 ? "text-amber-400" : "text-gray-300"}`}
+                        className={`text-sm md:text-base ${
+                          i < 4 ? "text-amber-400" : "text-gray-300"
+                        }`}
                       />
                     ))}
                   </div>
-                  <span className="text-gray-500 text-sm md:text-base">(126 reviews)</span>
+                  <span className="text-gray-500 text-sm md:text-base">
+                    (126 reviews)
+                  </span>
                 </div>
 
                 <h1 className="text-2xl md:text-4xl font-normal text-gray-900 tracking-wide">
@@ -623,7 +628,9 @@ const CollectionDetail = () => {
                           <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium text-xs md:text-sm">
                             S
                           </div>
-                          <span className="font-medium text-sm md:text-base">Sanjana M.</span>
+                          <span className="font-medium text-sm md:text-base">
+                            Sanjana M.
+                          </span>
                         </div>
                         <span className="text-gray-500 text-xs md:text-sm">
                           2 months ago
@@ -652,7 +659,9 @@ const CollectionDetail = () => {
                           <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-medium text-xs md:text-sm">
                             R
                           </div>
-                          <span className="font-medium text-sm md:text-base">Ravi K.</span>
+                          <span className="font-medium text-sm md:text-base">
+                            Ravi K.
+                          </span>
                         </div>
                         <span className="text-gray-500 text-xs md:text-sm">
                           1 month ago
@@ -819,4 +828,4 @@ const CollectionDetail = () => {
   );
 };
 
-export default CollectionDetail;
+export default CollectionDetails;

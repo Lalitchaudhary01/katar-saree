@@ -227,8 +227,8 @@ const VideoCallSection = () => {
       )}
 
       {/* Floating Contact Button */}
-      <div className="fixed bottom-6 right-6 animate-bounce">
-        <button className="bg-gradient-to-r from-amber-600 to-amber-800 text-white rounded-full p-4 shadow-lg hover:from-amber-700 hover:to-amber-900 transition duration-300 transform hover:scale-110">
+      <div className="fixed bottom-6 left-6 animate-bounce">
+        <button className="bg-black text-white rounded-full p-4 shadow-lg hover:from-amber-700 hover:to-amber-900 transition duration-300 transform hover:scale-110">
           <Phone size={24} />
         </button>
       </div>
