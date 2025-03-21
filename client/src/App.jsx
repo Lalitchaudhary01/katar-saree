@@ -82,7 +82,7 @@ function AppContent() {
                 <FeaturedCollections />
                 <ServiceHighlights />
                 <NewArrivals />
-                <Testimonials />
+                {/* <Testimonials /> */}
                 <Blog />
                 <Packaging />
                 <WhatsAppButton />

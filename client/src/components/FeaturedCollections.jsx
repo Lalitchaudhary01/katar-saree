@@ -24,14 +24,39 @@ const FeaturedCollections = () => {
   const [selectedCollection, setSelectedCollection] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
   const [mainImage, setMainImage] = useState(null);
-  // New state for mobile navigation
+  // State for mobile navigation
   const [visibleCardIndex, setVisibleCardIndex] = useState(0);
+  // State to track if the user is on mobile
+  const [isMobile, setIsMobile] = useState(false);
 
   const hoverTimers = useRef({});
   const { addToCart } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { selectedCurrency, convertPrice, formatPrice } = useCurrency();
   const navigate = useNavigate();
+
+  // Check if user is on mobile
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Initial check
+    checkIfMobile();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", checkIfMobile);
+
+    // Cleanup
+    return () => window.removeEventListener("resize", checkIfMobile);
+  }, []);
+
+  // Set showAll to true on mobile to make all products available for navigation
+  useEffect(() => {
+    if (isMobile) {
+      setShowAll(true);
+    }
+  }, [isMobile]);
 
   useEffect(() => {
     if (selectedCollection) {
@@ -86,23 +111,17 @@ const FeaturedCollections = () => {
 
   // Function to handle next card on mobile
   const handleNextCard = () => {
-    const maxIndex = Math.min(
-      showAll ? collections.length - 1 : 3,
-      collections.length - 1
-    );
+    const maxIndex = collections.length - 2; // -2 because we show 2 cards at a time
     setVisibleCardIndex((prevIndex) =>
-      prevIndex >= maxIndex ? 0 : prevIndex + 1
+      prevIndex >= maxIndex ? 0 : prevIndex + 2
     );
   };
 
   // Function to handle previous card on mobile
   const handlePrevCard = () => {
-    const maxIndex = Math.min(
-      showAll ? collections.length - 1 : 3,
-      collections.length - 1
-    );
+    const maxIndex = collections.length - 2;
     setVisibleCardIndex((prevIndex) =>
-      prevIndex <= 0 ? maxIndex : prevIndex - 1
+      prevIndex <= 0 ? maxIndex : prevIndex - 2
     );
   };
 
@@ -192,12 +211,6 @@ const FeaturedCollections = () => {
           .mobile-arrow-nav.next {
             right: 8px;
           }
-          
-          @media (min-width: 768px) {
-            .mobile-arrow-nav {
-              display: none;
-            }
-          }
         `}
       </style>
 
@@ -216,9 +229,9 @@ const FeaturedCollections = () => {
 
       {/* Mobile navigation wrapper */}
       <div className="relative">
-        {/* Mobile Navigation Arrows - Only visible on mobile */}
+        {/* Mobile Navigation Arrows - Always visible on mobile */}
         <button
-          className="mobile-arrow-nav prev"
+          className="mobile-arrow-nav prev md:hidden"
           onClick={handlePrevCard}
           aria-label="Previous card"
         >
@@ -226,7 +239,7 @@ const FeaturedCollections = () => {
         </button>
 
         <button
-          className="mobile-arrow-nav next"
+          className="mobile-arrow-nav next md:hidden"
           onClick={handleNextCard}
           aria-label="Next card"
         >
@@ -236,15 +249,18 @@ const FeaturedCollections = () => {
         {/* Modified grid with mobile-specific display logic */}
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 px-3 md:px-6 mt-8 md:mt-12">
           {collections
-            .slice(0, showAll ? collections.length : 4)
+            .slice(0, showAll || isMobile ? collections.length : 4)
             .map((collection, index) => (
               <div
                 key={index}
                 className={`group w-full overflow-hidden bg-white flex flex-col justify-between cursor-pointer card-hover rounded-lg shadow-sm ${
-                  // Show cards in pairs on mobile
-                  index === visibleCardIndex || index === visibleCardIndex + 1
-                    ? "block md:block"
-                    : "hidden md:block"
+                  // Show only the current visible pair on mobile, show all up to limit on desktop
+                  isMobile
+                    ? index === visibleCardIndex ||
+                      index === visibleCardIndex + 1
+                      ? "block"
+                      : "hidden"
+                    : "block"
                 }`}
                 onMouseEnter={() => handleMouseEnter(index)}
                 onMouseLeave={() => handleMouseLeave(index)}
@@ -322,11 +338,12 @@ const FeaturedCollections = () => {
         </div>
       </div>
 
+      {/* "Explore All Collections" button - Hidden on mobile */}
       <div className="mt-8 md:mt-12 text-center">
-        {!showAll && (
+        {!showAll && !isMobile && (
           <motion.button
             onClick={() => setShowAll(true)}
-            className="font-[Garamond] bg-black text-white px-6 py-2 text-sm md:text-base rounded-md hover:bg-gray-900 transition-all font-cardo tracking-wide shadow-lg"
+            className="font-[Garamond] bg-black text-white px-6 py-2 text-sm md:text-base rounded-md hover:bg-gray-900 transition-all font-cardo tracking-wide shadow-lg hidden md:inline-block"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
