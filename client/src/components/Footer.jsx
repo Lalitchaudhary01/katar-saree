@@ -19,10 +19,10 @@ const Footer = () => {
       className="bg-secondary text-primary pt-8 md:pt-16 pb-8"
     >
       <div className="container mx-auto px-4">
-        {/* Footer Columns */}
-        <div className="grid grid-cols-1 gap-2 md:gap-8 mb-8 md:mb-12">
+        {/* Footer Columns - Using flex for desktop layout */}
+        <div className="md:flex md:flex-row md:justify-between md:gap-8 mb-8 md:mb-12">
           {/* About Column - Always expanded */}
-          <div className="mb-4 md:mb-0">
+          <div className="mb-4 md:mb-0 md:w-1/3">
             <h3 className="font-serif text-2xl mb-4 italic">Katan Banaras</h3>
             <p className="font-serif text-primary text-opacity-80 mb-4 leading-relaxed text-sm md:text-base">
               Exquisite handcrafted sarees and ethnic wear that celebrate
@@ -53,99 +53,105 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Shop Column - Collapsible on mobile */}
-          <div className="border-t md:border-t-0 border-primary border-opacity-20 py-2 md:py-0">
-            <div
-              className="flex justify-between items-center cursor-pointer md:cursor-default"
-              onClick={() => toggleSection("shop")}
-            >
-              <h3 className="font-serif text-xl mb-2 md:mb-6 md:border-b border-primary border-opacity-20 pb-2">
-                Shop
-              </h3>
-              <div className="md:hidden">
-                {expandedSection === "shop" ? <MinusIcon /> : <PlusIcon />}
+          {/* Navigation Columns Container - Flexible layout on desktop */}
+          <div className="md:flex md:flex-row md:justify-between md:gap-6 md:w-2/3">
+            {/* Shop Column - Collapsible on mobile */}
+            <div className="border-t md:border-t-0 border-primary border-opacity-20 py-2 md:py-0 md:flex-1">
+              <div
+                className="flex justify-between items-center cursor-pointer md:cursor-default"
+                onClick={() => toggleSection("shop")}
+              >
+                <h3 className="font-serif text-xl mb-2 md:mb-6 md:border-b border-primary border-opacity-20 pb-2">
+                  Shop
+                </h3>
+                <div className="md:hidden">
+                  {expandedSection === "shop" ? <MinusIcon /> : <PlusIcon />}
+                </div>
               </div>
+              <ul
+                className={`space-y-2 md:space-y-3 font-serif ${
+                  expandedSection === "shop" ? "block" : "hidden md:block"
+                }`}
+              >
+                <FooterLink href="/New-arrivals" text="New Arrivals" />
+                <FooterLink href="#" text="Best Sellers" />
+                <FooterLink href="/sarees/silk" text="Banarasi Silk Sarees" />
+                <FooterLink href="#" text="Wedding Collection" />
+                <FooterLink href="#" text="Lehengas" />
+                <FooterLink href="#" text="Dupattas" />
+                <FooterLink href="#" text="Accessories" />
+              </ul>
             </div>
-            <ul
-              className={`space-y-2 md:space-y-3 font-serif ${
-                expandedSection === "shop" ? "block" : "hidden md:block"
-              }`}
-            >
-              <FooterLink href="/New-arrivals" text="New Arrivals" />
-              <FooterLink href="#" text="Best Sellers" />
-              <FooterLink href="/sarees/silk" text="Banarasi Silk Sarees" />
-              <FooterLink href="#" text="Wedding Collection" />
-              <FooterLink href="#" text="Lehengas" />
-              <FooterLink href="#" text="Dupattas" />
-              <FooterLink href="#" text="Accessories" />
-            </ul>
-          </div>
 
-          {/* Information Column - Collapsible on mobile */}
-          <div className="border-t md:border-t-0 border-primary border-opacity-20 py-2 md:py-0">
-            <div
-              className="flex justify-between items-center cursor-pointer md:cursor-default"
-              onClick={() => toggleSection("info")}
-            >
-              <h3 className="font-serif text-xl mb-2 md:mb-6 md:border-b border-primary border-opacity-20 pb-2">
-                Information
-              </h3>
-              <div className="md:hidden">
-                {expandedSection === "info" ? <MinusIcon /> : <PlusIcon />}
+            {/* Information Column - Collapsible on mobile */}
+            <div className="border-t md:border-t-0 border-primary border-opacity-20 py-2 md:py-0 md:flex-1">
+              <div
+                className="flex justify-between items-center cursor-pointer md:cursor-default"
+                onClick={() => toggleSection("info")}
+              >
+                <h3 className="font-serif text-xl mb-2 md:mb-6 md:border-b border-primary border-opacity-20 pb-2">
+                  Information
+                </h3>
+                <div className="md:hidden">
+                  {expandedSection === "info" ? <MinusIcon /> : <PlusIcon />}
+                </div>
               </div>
+              <ul
+                className={`space-y-2 md:space-y-3 font-serif ${
+                  expandedSection === "info" ? "block" : "hidden md:block"
+                }`}
+              >
+                <FooterLink href="/about" text="About Us" />
+                <FooterLink href="/collection" text="Collections" />
+                <FooterLink href="/shipping-policy" text="Shipping Policy" />
+                <FooterLink href="/return-policy" text="Return Policy" />
+                <FooterLink href="/privacy-policy" text="Privacy Policy" />
+                <FooterLink
+                  href="/terms-conditions"
+                  text="Terms & Conditions"
+                />
+                <FooterLink href="/contact" text="Contact Us" />
+              </ul>
             </div>
-            <ul
-              className={`space-y-2 md:space-y-3 font-serif ${
-                expandedSection === "info" ? "block" : "hidden md:block"
-              }`}
-            >
-              <FooterLink href="/about" text="About Us" />
-              <FooterLink href="/collection" text="Collections" />
-              <FooterLink href="/shipping-policy" text="Shipping Policy" />
-              <FooterLink href="/return-policy" text="Return Policy" />
-              <FooterLink href="/privacy-policy" text="Privacy Policy" />
-              <FooterLink href="/terms-conditions" text="Terms & Conditions" />
-              <FooterLink href="/contact" text="Contact Us" />
-            </ul>
-          </div>
 
-          {/* Contact Column - Collapsible on mobile */}
-          <div className="border-t md:border-t-0 border-primary border-opacity-20 py-2 md:py-0">
-            <div
-              className="flex justify-between items-center cursor-pointer md:cursor-default"
-              onClick={() => toggleSection("contact")}
-            >
-              <h3 className="font-serif text-xl mb-2 md:mb-6 md:border-b border-primary border-opacity-20 pb-2">
-                Contact Us
-              </h3>
-              <div className="md:hidden">
-                {expandedSection === "contact" ? <MinusIcon /> : <PlusIcon />}
+            {/* Contact Column - Collapsible on mobile */}
+            <div className="border-t md:border-t-0 border-primary border-opacity-20 py-2 md:py-0 md:flex-1">
+              <div
+                className="flex justify-between items-center cursor-pointer md:cursor-default"
+                onClick={() => toggleSection("contact")}
+              >
+                <h3 className="font-serif text-xl mb-2 md:mb-6 md:border-b border-primary border-opacity-20 pb-2">
+                  Contact Us
+                </h3>
+                <div className="md:hidden">
+                  {expandedSection === "contact" ? <MinusIcon /> : <PlusIcon />}
+                </div>
               </div>
+              <ul
+                className={`space-y-3 md:space-y-4 font-serif ${
+                  expandedSection === "contact" ? "block" : "hidden md:block"
+                }`}
+              >
+                <ContactItem
+                  iconPath="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                  text="A31/12, Nawa Pura, HanumanPhTak<br>Varanasi, Uttar Pradesh, 221010,<br>India"
+                />
+                <ContactItem
+                  iconPath="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  text="katanbanarasofficial@gmail.com"
+                  href="mailto:katanbanarasofficial@gmail.com"
+                />
+                <ContactItem
+                  iconPath="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                  text="+91 7860783350"
+                  href="tel:+917860783350"
+                />
+                <ContactItem
+                  iconPath="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  text="Mon-Sat: 10:00 AM - 7:00 PM<br>Sunday: Closed"
+                />
+              </ul>
             </div>
-            <ul
-              className={`space-y-3 md:space-y-4 font-serif ${
-                expandedSection === "contact" ? "block" : "hidden md:block"
-              }`}
-            >
-              <ContactItem
-                iconPath="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                text="A31/12, Nawa Pura, HanumanPhTak<br>Varanasi, Uttar Pradesh, 221010,<br>India"
-              />
-              <ContactItem
-                iconPath="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                text="katanbanarasofficial@gmail.com"
-                href="mailto:katanbanarasofficial@gmail.com"
-              />
-              <ContactItem
-                iconPath="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                text="+91 7860783350"
-                href="tel:+917860783350"
-              />
-              <ContactItem
-                iconPath="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                text="Mon-Sat: 10:00 AM - 7:00 PM<br>Sunday: Closed"
-              />
-            </ul>
           </div>
         </div>
 
