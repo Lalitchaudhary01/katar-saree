@@ -84,7 +84,7 @@ function AppContent() {
                 <NewArrivals />
                 {/* <Testimonials /> */}
                 <Blog />
-                <Packaging />
+                {/* <Packaging /> */}
                 <WhatsAppButton />
               </PageWrapper>
             }
