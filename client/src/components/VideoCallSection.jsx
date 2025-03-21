@@ -13,18 +13,18 @@ const VideoCallSection = () => {
   return (
     <div className="relative min-h-screen w-full bg-white overflow-hidden">
       {/* Luxury background elements */}
-      <div className="absolute top-0 left-0 w-full h-full opacity-20">
+      {/* <div className="absolute top-0 left-0 w-full h-full opacity-20">
         <div className="absolute top-10 left-10 w-64 h-64 rounded-full bg-amber-400 blur-3xl"></div>
         <div className="absolute bottom-10 right-10 w-80 h-80 rounded-full bg-amber-500 blur-3xl"></div>
-      </div>
+      </div> */}
 
       {/* Decorative gold patterns */}
-      <div className="absolute inset-0 opacity-10">
+      {/* <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-amber-400 to-amber-600"></div>
         <div className="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-amber-600 to-amber-400"></div>
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-amber-400 to-amber-600"></div>
         <div className="absolute top-0 right-0 w-2 h-full bg-gradient-to-b from-amber-600 to-amber-400"></div>
-      </div>
+      </div> */}
 
       {/* Main content */}
       <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-16">

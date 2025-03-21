@@ -77,7 +77,7 @@ const Blog = () => {
 
       <div className="container mx-auto px-4 text-center">
         <h2 className="text-3xl md:text-5xl font-playfair font-bold text-black mb-4 tracking-wide">
-          Journal
+          Blogs
         </h2>
         <p className="font-cardo text-neutral-800 max-w-2xl mx-auto mb-8 text-lg">
           Insights, stories, and explorations into the world of refined living
@@ -88,7 +88,7 @@ const Blog = () => {
       </div>
 
       {/* Featured Post */}
-      <div className="container mx-auto px-4 mt-16">
+      {/* <div className="container mx-auto px-4 mt-16">
         <div
           className="blog-card cursor-pointer bg-white rounded-lg shadow-md overflow-hidden"
           onClick={() => navigate(`/blog/${featuredPost.id}`)}
@@ -144,7 +144,7 @@ const Blog = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Blog Posts Carousel */}
       <div className="container mx-auto px-4 mt-16">

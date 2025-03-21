@@ -269,7 +269,7 @@ const Navbar = () => {
               </div>
             </div>
 
-            <div className=" flex space-x-6 text-gray-600">
+            <div className=" flex space-x-6 text-black">
               <div
                 className="hidden md:flex items-center relative"
                 ref={currencyRef}
@@ -305,7 +305,7 @@ const Navbar = () => {
                 )}
               </div>
               <button
-                className="lg:hidden fixed right-4 top-4 z-50 text-gray-700"
+                className="lg:hidden fixed right-4 top-4 z-50 text-black"
                 onClick={toggleMobileMenu}
               >
                 {mobileMenuOpen ? (
@@ -388,7 +388,7 @@ const Navbar = () => {
       }`}
         >
           <div className="relative flex justify-between items-center px-20">
-            <div className="hidden md:flex space-x-8 text-gray-700 uppercase tracking-wide text-lg font-bold ml-24 ">
+            <div className="hidden md:flex space-x-8 text-black uppercase tracking-wide text-lg font-bold ml-24 ">
               <div className="relative group">
                 <Link
                   to="/"
@@ -446,7 +446,7 @@ const Navbar = () => {
               </Link>
             </div>
 
-            <div className="hidden md:flex space-x-8 text-gray-700 uppercase tracking-wide text-lg font-bold mr-34 ">
+            <div className="hidden md:flex space-x-8 text-black uppercase tracking-wide text-lg font-bold mr-34 ">
               {!scrolled ? (
                 <>
                   <div className="relative group">
@@ -496,7 +496,7 @@ const Navbar = () => {
                   </div>
                 </>
               ) : (
-                <div className="flex space-x-6 text-gray-600">
+                <div className="flex space-x-6 text-black">
                   <div className="flex items-center relative" ref={currencyRef}>
                     <button
                       className="flex items-center hover:text-[#8b5e3c] transition-colors"
@@ -577,7 +577,7 @@ const Navbar = () => {
                   className="h-16 w-auto object-contain"
                 />
               </Link>
-              <button onClick={toggleMobileMenu} className="text-gray-700">
+              <button onClick={toggleMobileMenu} className="text-black">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -602,7 +602,7 @@ const Navbar = () => {
                 <div className="flex justify-between items-center">
                   <Link
                     to="/"
-                    className="text-gray-700 uppercase tracking-wide text-lg font-bold"
+                    className="text-black uppercase tracking-wide text-lg font-bold"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     SHOP
@@ -613,7 +613,7 @@ const Navbar = () => {
                     (category, idx) =>
                       category.title && (
                         <div key={idx} className="mb-4">
-                          <h3 className="font-cardo text-[#5d4037] text-base mb-2">
+                          <h3 className="font-cardo text-black text-base mb-2">
                             {category.title}
                           </h3>
                           <ul className="space-y-2">
@@ -621,7 +621,7 @@ const Navbar = () => {
                               <li key={index}>
                                 <Link
                                   to={item.link}
-                                  className="text-[#6d4c41] block"
+                                  className="text-black block"
                                   onClick={() => setMobileMenuOpen(false)}
                                 >
                                   {item.name.charAt(0).toUpperCase() +
@@ -641,7 +641,7 @@ const Navbar = () => {
                 <div className="flex justify-between items-center">
                   <Link
                     to="/collections"
-                    className="text-gray-700 uppercase tracking-wide text-lg font-bold"
+                    className="text-black uppercase tracking-wide text-lg font-bold"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     COLLECTIONS
@@ -650,7 +650,7 @@ const Navbar = () => {
                 <div className="mt-3 ml-4 space-y-3">
                   {collectionsData.map((category, idx) => (
                     <div key={idx} className="mb-4">
-                      <h3 className="font-cardo text-[#5d4037] text-base mb-2">
+                      <h3 className="font-cardo text-black text-base mb-2">
                         {category.title}
                       </h3>
                       <ul className="space-y-2">
@@ -658,7 +658,7 @@ const Navbar = () => {
                           <li key={index}>
                             <Link
                               to={item.link}
-                              className="text-[#6d4c41] block"
+                              className="text-black block"
                               onClick={() => setMobileMenuOpen(false)}
                             >
                               {item.name.charAt(0).toUpperCase() +
@@ -677,7 +677,7 @@ const Navbar = () => {
                 <div className="flex justify-between items-center">
                   <Link
                     to="/fabrics"
-                    className="text-gray-700 uppercase tracking-wide text-lg font-bold"
+                    className="text-black uppercase tracking-wide text-lg font-bold"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     FABRIC
@@ -688,7 +688,7 @@ const Navbar = () => {
                     (category, idx) =>
                       category.title && (
                         <div key={idx} className="mb-4">
-                          <h3 className="font-cardo text-[#5d4037] text-base mb-2">
+                          <h3 className="font-cardo black text-base mb-2">
                             {category.title}
                           </h3>
                           <ul className="space-y-2">
@@ -696,7 +696,7 @@ const Navbar = () => {
                               <li key={index}>
                                 <Link
                                   to={item.link}
-                                  className="text-[#6d4c41] block"
+                                  className="text-black block"
                                   onClick={() => setMobileMenuOpen(false)}
                                 >
                                   {item.name.charAt(0).toUpperCase() +
@@ -716,7 +716,7 @@ const Navbar = () => {
                 <div className="flex justify-between items-center">
                   <Link
                     to="/about"
-                    className="text-gray-700 uppercase tracking-wide text-lg font-bold"
+                    className="text-black uppercase tracking-wide text-lg font-bold"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     ABOUT US
@@ -727,7 +727,7 @@ const Navbar = () => {
                     <li>
                       <Link
                         to="/about/story"
-                        className="text-[#6d4c41] block"
+                        className="text-black block"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         Story
@@ -736,7 +736,7 @@ const Navbar = () => {
                     <li>
                       <Link
                         to="/about/heritage"
-                        className="text-[#6d4c41] block"
+                        className="text-black block"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         Our Heritage
@@ -745,7 +745,7 @@ const Navbar = () => {
                     <li>
                       <Link
                         to="/about/craft"
-                        className="text-[#6d4c41] block"
+                        className="text-black block"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         Our Craftmanship
@@ -754,7 +754,7 @@ const Navbar = () => {
                     <li>
                       <Link
                         to="/about"
-                        className="text-[#6d4c41] block"
+                        className="text-black block"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         About Us
@@ -768,28 +768,28 @@ const Navbar = () => {
               <div className="flex justify-around py-4">
                 <Link
                   to="/search"
-                  className="text-gray-600"
+                  className="text-black"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <FaSearch size={20} />
                 </Link>
                 <Link
                   to="/login"
-                  className="text-gray-600"
+                  className="text-black"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <FaUser size={20} />
                 </Link>
                 <Link
                   to="/wishlist"
-                  className="text-gray-600"
+                  className="text-black"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <FaHeart size={20} />
                 </Link>
                 <Link
                   to="/cart"
-                  className="text-gray-600"
+                  className="text-black"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <div className="relative">

@@ -229,22 +229,26 @@ const FeaturedCollections = () => {
 
       {/* Mobile navigation wrapper */}
       <div className="relative">
-        {/* Mobile Navigation Arrows - Always visible on mobile */}
-        <button
-          className="mobile-arrow-nav prev md:hidden"
-          onClick={handlePrevCard}
-          aria-label="Previous card"
-        >
-          <FaChevronLeft />
-        </button>
+        {/* Mobile Navigation Arrows - Only visible on mobile */}
+        {isMobile && (
+          <>
+            <button
+              className="mobile-arrow-nav prev"
+              onClick={handlePrevCard}
+              aria-label="Previous card"
+            >
+              <FaChevronLeft />
+            </button>
 
-        <button
-          className="mobile-arrow-nav next md:hidden"
-          onClick={handleNextCard}
-          aria-label="Next card"
-        >
-          <FaChevronRight />
-        </button>
+            <button
+              className="mobile-arrow-nav next"
+              onClick={handleNextCard}
+              aria-label="Next card"
+            >
+              <FaChevronRight />
+            </button>
+          </>
+        )}
 
         {/* Modified grid with mobile-specific display logic */}
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 px-3 md:px-6 mt-8 md:mt-12">

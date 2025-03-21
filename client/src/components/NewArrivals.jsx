@@ -102,6 +102,33 @@ const NewArrivals = () => {
           .wishlist-btn.active {
             color: #FF3B30;
           }
+          
+          /* Custom navigation buttons styling */
+          .swiper-button-next,
+          .swiper-button-prev {
+            background-color: white !important;
+            color: black !important;
+            width: 35px !important;
+            height: 35px !important;
+            border-radius: 50% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2) !important;
+          }
+          
+          .swiper-button-next:after,
+          .swiper-button-prev:after {
+            font-size: 14px !important;
+            font-weight: bold !important;
+          }
+          
+          .swiper-button-next:hover,
+          .swiper-button-prev:hover {
+            background-color: #333 !important;
+            transform: scale(1.05) !important;
+            transition: all 0.3s ease !important;
+          }
         `}
       </style>
 

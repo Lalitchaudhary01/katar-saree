@@ -55,15 +55,13 @@ const Footer = () => {
 
           {/* Navigation Columns Container - Flexible layout on desktop */}
           <div className="md:flex md:flex-row md:justify-between md:gap-6 md:w-2/3">
-            {/* Shop Column - Collapsible on mobile */}
-            <div className="border-t md:border-t-0 border-primary border-opacity-20 py-2 md:py-0 md:flex-1">
+            {/* Shop Column - Collapsible on mobile - Removed border-t */}
+            <div className="py-2 md:py-0 md:flex-1">
               <div
                 className="flex justify-between items-center cursor-pointer md:cursor-default"
                 onClick={() => toggleSection("shop")}
               >
-                <h3 className="font-serif text-xl mb-2 md:mb-6 md:border-b border-primary border-opacity-20 pb-2">
-                  Shop
-                </h3>
+                <h3 className="font-serif text-xl mb-2 md:mb-6 pb-2">Shop</h3>
                 <div className="md:hidden">
                   {expandedSection === "shop" ? <MinusIcon /> : <PlusIcon />}
                 </div>
@@ -83,13 +81,13 @@ const Footer = () => {
               </ul>
             </div>
 
-            {/* Information Column - Collapsible on mobile */}
-            <div className="border-t md:border-t-0 border-primary border-opacity-20 py-2 md:py-0 md:flex-1">
+            {/* Information Column - Collapsible on mobile - Removed border-t */}
+            <div className="py-2 md:py-0 md:flex-1">
               <div
                 className="flex justify-between items-center cursor-pointer md:cursor-default"
                 onClick={() => toggleSection("info")}
               >
-                <h3 className="font-serif text-xl mb-2 md:mb-6 md:border-b border-primary border-opacity-20 pb-2">
+                <h3 className="font-serif text-xl mb-2 md:mb-6 pb-2">
                   Information
                 </h3>
                 <div className="md:hidden">
@@ -114,13 +112,13 @@ const Footer = () => {
               </ul>
             </div>
 
-            {/* Contact Column - Collapsible on mobile */}
-            <div className="border-t md:border-t-0 border-primary border-opacity-20 py-2 md:py-0 md:flex-1">
+            {/* Contact Column - Collapsible on mobile - Removed border-t */}
+            <div className="py-2 md:py-0 md:flex-1">
               <div
                 className="flex justify-between items-center cursor-pointer md:cursor-default"
                 onClick={() => toggleSection("contact")}
               >
-                <h3 className="font-serif text-xl mb-2 md:mb-6 md:border-b border-primary border-opacity-20 pb-2">
+                <h3 className="font-serif text-xl mb-2 md:mb-6 pb-2">
                   Contact Us
                 </h3>
                 <div className="md:hidden">

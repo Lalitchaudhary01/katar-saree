@@ -44,9 +44,40 @@ const CollectionDetail = () => {
   const [showZoom, setShowZoom] = useState(false);
   const [zoomed, setZoomed] = useState(false);
 
+  const [touchStartX, setTouchStartX] = useState(null);
+  const [touchEndX, setTouchEndX] = useState(null);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const handleTouchStart = (e) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEndX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX && touchEndX) {
+      const diffX = touchStartX - touchEndX;
+      if (diffX > 50) {
+        // Swipe left
+        const currentIndex = collection.images.indexOf(mainImage);
+        const nextIndex = (currentIndex + 1) % collection.images.length;
+        setMainImage(collection.images[nextIndex]);
+      } else if (diffX < -50) {
+        // Swipe right
+        const currentIndex = collection.images.indexOf(mainImage);
+        const prevIndex =
+          (currentIndex - 1 + collection.images.length) % collection.images.length;
+        setMainImage(collection.images[prevIndex]);
+      }
+    }
+    setTouchStartX(null);
+    setTouchEndX(null);
+  };
 
   // Handle product not found
   if (!collection) {
@@ -163,34 +194,34 @@ const CollectionDetail = () => {
   };
 
   return (
-    <div className="bg-[#f8f5f0] py-16 font-[Garamond]">
+    <div className="bg-white py-8 md:py-16 font-[Garamond]">
       <div className="container mx-auto px-4 max-w-7xl">
-        {/* Breadcrumb */}
-        <div className="text-base text-black mb-8 flex items-center">
+        {/* Breadcrumb - Enhanced for mobile */}
+        <div className="text-sm md:text-base text-black mb-4 md:mb-8 flex items-center overflow-x-auto whitespace-nowrap pb-2">
           <span className="hover:underline cursor-pointer">Home</span>
           <FaChevronRight className="mx-2 text-xs" />
           <span className="hover:underline cursor-pointer">Collections</span>
           <FaChevronRight className="mx-2 text-xs" />
-          <span className="text-black font-medium">{collection.title}</span>
+          <span className="text-black font-medium truncate max-w-xs">{collection.title}</span>
         </div>
 
         <motion.div
           variants={fadeIn}
           initial="initial"
           animate="animate"
-          className="bg-white shadow-md overflow-hidden"
+          className="bg-white shadow-md overflow-hidden rounded-lg"
         >
           <div className="flex flex-col lg:flex-row">
-            {/* Left side - Images */}
-            <div className="lg:w-3/5 p-8">
-              <div className="sticky top-24">
-                <div className="flex flex-col-reverse md:flex-row gap-6">
-                  {/* Thumbnails */}
-                  <div className="flex md:flex-col gap-4 mt-4 md:mt-0">
+            {/* Left side - Images - Improved for mobile */}
+            <div className="lg:w-3/5 p-4 md:p-8">
+              <div className="sticky top-16 md:top-24">
+                <div className="flex flex-col-reverse md:flex-row gap-4 md:gap-6">
+                  {/* Thumbnails - Horizontal scroll on mobile */}
+                  <div className="flex flex-row md:flex-col gap-3 mt-4 md:mt-0 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
                     {collection.images.slice(0, 5).map((img, index) => (
                       <motion.div
                         key={index}
-                        className={`relative border overflow-hidden cursor-pointer ${
+                        className={`relative border overflow-hidden cursor-pointer flex-shrink-0 ${
                           mainImage === img
                             ? "border-2 border-black shadow-md"
                             : "border-gray-200"
@@ -201,7 +232,7 @@ const CollectionDetail = () => {
                         <img
                           src={img}
                           alt={`Thumbnail ${index + 1}`}
-                          className="w-20 h-full object-cover"
+                          className="w-16 md:w-20 h-16 md:h-full object-cover"
                         />
                         {mainImage === img && (
                           <motion.div
@@ -214,17 +245,20 @@ const CollectionDetail = () => {
                     ))}
                   </div>
 
-                  {/* Main Image */}
+                  {/* Main Image - Better sizing for mobile */}
                   <div className="relative flex-1 overflow-hidden">
                     <div className="group relative">
                       <motion.div
-                        className="relative overflow-hidden h-[600px]"
+                        className="relative overflow-hidden h-64 sm:h-96 md:h-[500px] lg:h-[600px]"
                         whileHover={{ scale: 1.01 }}
                         transition={{ duration: 0.5 }}
+                        onTouchStart={handleTouchStart}
+                        onTouchMove={handleTouchMove}
+                        onTouchEnd={handleTouchEnd}
                       >
-                        <div className="absolute top-6 left-6 z-10">
+                        <div className="absolute top-3 left-3 md:top-6 md:left-6 z-10">
                           {discountPercentage > 0 && (
-                            <span className="bg-black text-white px-4 py-1 text-base font-light tracking-wider">
+                            <span className="bg-black text-white px-3 py-1 md:px-4 md:py-1 text-sm md:text-base font-light tracking-wider">
                               {discountPercentage}% OFF
                             </span>
                           )}
@@ -257,9 +291,9 @@ const CollectionDetail = () => {
                         )}
                       </motion.div>
 
-                      <div className="absolute right-6 top-6 flex flex-col gap-3 z-10">
+                      <div className="absolute right-3 top-3 md:right-6 md:top-6 flex flex-col gap-3 z-10">
                         <motion.button
-                          className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                          className={`w-8 h-8 md:w-12 md:h-12 rounded-full flex items-center justify-center ${
                             isInWishlist(collection.id)
                               ? "bg-red-500 text-white"
                               : "bg-white text-gray-700"
@@ -271,18 +305,18 @@ const CollectionDetail = () => {
                           <FaHeart
                             className={
                               isInWishlist(collection.id)
-                                ? "text-white text-lg"
-                                : "text-gray-400 text-lg"
+                                ? "text-white text-sm md:text-lg"
+                                : "text-gray-400 text-sm md:text-lg"
                             }
                           />
                         </motion.button>
 
                         <motion.button
-                          className="w-12 h-12 rounded-full bg-white text-gray-700 shadow-md flex items-center justify-center"
+                          className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white text-gray-700 shadow-md flex items-center justify-center"
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
                         >
-                          <FaShare className="text-gray-400 text-lg" />
+                          <FaShare className="text-gray-400 text-sm md:text-lg" />
                         </motion.button>
                       </div>
                     </div>
@@ -291,43 +325,43 @@ const CollectionDetail = () => {
               </div>
             </div>
 
-            {/* Right side - Details */}
-            <div className="lg:w-2/5 p-10 border-l border-gray-100">
+            {/* Right side - Details - Enhanced for mobile */}
+            <div className="lg:w-2/5 p-4 md:p-10 border-t lg:border-t-0 lg:border-l border-gray-100">
               {/* Basic product info */}
               <div>
-                <div className="flex items-center gap-2 mb-3">
+                <div className="flex items-center gap-2 mb-2 md:mb-3">
                   <div className="flex text-amber-400">
                     {[...Array(5)].map((_, i) => (
                       <FaStar
                         key={i}
-                        className={i < 4 ? "text-amber-400" : "text-gray-300"}
+                        className={`text-sm md:text-base ${i < 4 ? "text-amber-400" : "text-gray-300"}`}
                       />
                     ))}
                   </div>
-                  <span className="text-gray-500 text-base">(126 reviews)</span>
+                  <span className="text-gray-500 text-sm md:text-base">(126 reviews)</span>
                 </div>
 
-                <h1 className="text-4xl font-normal text-gray-900 tracking-wide">
+                <h1 className="text-2xl md:text-4xl font-normal text-gray-900 tracking-wide">
                   {collection.title}
                 </h1>
 
-                <p className="mt-4 text-gray-600 leading-relaxed text-lg line-clamp-3">
+                <p className="mt-2 md:mt-4 text-gray-600 leading-relaxed text-base md:text-lg line-clamp-3">
                   {collection.desc}
                 </p>
 
-                <div className="flex items-baseline gap-4 mt-8">
-                  <span className="text-3xl font-light text-black">
+                <div className="flex flex-wrap items-baseline gap-2 md:gap-4 mt-4 md:mt-8">
+                  <span className="text-2xl md:text-3xl font-light text-black">
                     {selectedCurrency.symbol}
                     {formatPrice(convertPrice(collection.discountPrice))}
                   </span>
                   {collection.originalPrice > collection.discountPrice && (
-                    <span className="text-xl text-gray-500 line-through">
+                    <span className="text-lg md:text-xl text-gray-500 line-through">
                       {selectedCurrency.symbol}
                       {formatPrice(convertPrice(collection.originalPrice))}
                     </span>
                   )}
                   {discountPercentage > 0 && (
-                    <span className="text-lg font-light text-green-800">
+                    <span className="text-base md:text-lg font-light text-green-800">
                       save {selectedCurrency.symbol}
                       {formatPrice(
                         convertPrice(
@@ -339,74 +373,41 @@ const CollectionDetail = () => {
                 </div>
               </div>
 
-              <div className="h-px bg-gray-200 my-8"></div>
+              <div className="h-px bg-gray-200 my-4 md:my-8"></div>
 
-              {/* Colors */}
-              <div className="mb-8">
-                <div className="flex justify-between items-center mb-4">
-                  <span className="font-medium text-xl text-gray-900">
+              {/* Colors - More touch-friendly on mobile */}
+              <div className="p-3 md:p-4 rounded-lg shadow-sm bg-white mb-4 md:mb-6">
+                <div className="flex justify-between items-center mb-2 md:mb-3">
+                  <span className="font-medium text-base md:text-lg text-gray-900">
                     Color
                   </span>
-                  <span className="text-base text-black">
+                  <span className="text-xs md:text-sm text-black">
                     {selectedColor || "Select a color"}
                   </span>
                 </div>
                 <div className="flex flex-wrap gap-4">
                   {collection.colors.map((color, index) => (
-                    <motion.button
+                    <button
                       key={index}
-                      className={`relative w-14 h-14 rounded-full transition-all ${
+                      className={`relative w-6 h-6 md:w-5 md:h-5 rounded-full transition-all ${
                         selectedColor === color
                           ? "ring-2 ring-offset-2 ring-black"
                           : "ring-1 ring-gray-200"
-                      }`}
+                      } hover:-translate-y-1`}
                       onClick={() => setSelectedColor(color)}
-                      whileHover={{ y: -4 }}
-                      whileTap={{ scale: 0.95 }}
                     >
                       <span
                         className="absolute inset-0 rounded-full"
                         style={{ backgroundColor: color }}
                       ></span>
-                    </motion.button>
+                    </button>
                   ))}
                 </div>
               </div>
 
-              {/* Sizes */}
-              <div className="mb-6">
-                {/* <div className="flex justify-between items-center mb-3">
-                  <span className="font-medium text-gray-900">Size</span>
-                  <button className="flex items-center text-sm text-blue-600 hover:text-blue-800">
-                    <CgSize className="mr-1" />
-                    Size guide
-                  </button>
-                </div> */}
-                {/* Assuming you have sizes array in your collection data */}
-                {/* <div className="grid grid-cols-4 gap-2">
-                  {(collection.sizes || ["S", "M", "L", "XL"]).map(
-                    (size, index) => (
-                      <motion.button
-                        key={index}
-                        className={`py-3 border rounded-lg text-center transition ${
-                          selectedSize === size
-                            ? "bg-black text-white border-black"
-                            : "bg-white text-gray-700 border-gray-200 hover:border-gray-800"
-                        }`}
-                        onClick={() => setSelectedSize(size)}
-                        whileHover={{ y: -2 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        {size}
-                      </motion.button>
-                    )
-                  )}
-                </div> */}
-              </div>
-
-              {/* Quantity */}
-              <div className="mb-6">
-                <span className="font-medium text-gray-900 block mb-3">
+              {/* Quantity - Larger touch targets for mobile */}
+              <div className="mb-4 md:mb-6">
+                <span className="font-medium text-gray-900 block mb-2 md:mb-3">
                   Quantity
                 </span>
                 <div className="flex items-center border border-gray-200 rounded-lg w-32">
@@ -428,47 +429,46 @@ const CollectionDetail = () => {
                 </div>
               </div>
 
-              {/* Buttons */}
-              <div className="flex gap-4 mt-8">
+              {/* Buttons - Better mobile layout */}
+              <div className="flex gap-3 md:gap-4 mt-4 md:mt-8">
                 <motion.button
-                  className="flex-1 bg-black text-white py-4 rounded-lg font-medium flex items-center justify-center gap-2"
+                  className="flex-1 bg-black text-white py-3 md:py-4 rounded-lg font-medium flex items-center justify-center gap-2 text-sm md:text-base"
                   onClick={handleAddToCart}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <FaShoppingCart />
+                  <FaShoppingCart className="text-sm md:text-base" />
                   Add to Cart
                 </motion.button>
                 <motion.button
-                  className="flex-1 bg-[#8B6A37] text-white py-4 rounded-lg font-medium"
+                  className="flex-1 bg-[#8B6A37] text-white py-3 md:py-4 rounded-lg font-medium text-sm md:text-base"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={handleBuyNow}
                 >
                   Buy Now
                 </motion.button>
-                ;
               </div>
 
-              {/* Product information */}
-              <div className="mt-8 space-y-3">
-                <div className="flex items-center gap-3 text-gray-700">
-                  <FaTruck className="text-blue-500" />
+              {/* Product information - Compact for mobile */}
+              <div className="mt-6 md:mt-8 space-y-2 md:space-y-3">
+                <div className="flex items-center gap-2 md:gap-3 text-gray-700 text-sm md:text-base">
+                  <FaTruck className="text-blue-500 text-sm md:text-base" />
                   <span>Free shipping on orders over ₹1000</span>
                 </div>
-                <div className="flex items-center gap-3 text-gray-700">
-                  <FaUndo className="text-blue-500" />
+                <div className="flex items-center gap-2 md:gap-3 text-gray-700 text-sm md:text-base">
+                  <FaUndo className="text-blue-500 text-sm md:text-base" />
                   <span>Easy 30 days return policy</span>
                 </div>
-                <div className="flex items-center gap-3 text-gray-700">
-                  <MdSecurity className="text-blue-500" />
+                <div className="flex items-center gap-2 md:gap-3 text-gray-700 text-sm md:text-base">
+                  <MdSecurity className="text-blue-500 text-sm md:text-base" />
                   <span>Secure payment guaranteed</span>
                 </div>
               </div>
 
               {/* Stock info */}
-              <div className="mt-6">
-                <div className="flex items-center gap-2">
+              <div className="mt-4 md:mt-6">
+                <div className="flex items-center gap-2 text-sm md:text-base">
                   <span className="font-medium">Availability:</span>
                   <span
                     className={
@@ -484,13 +484,13 @@ const CollectionDetail = () => {
             </div>
           </div>
 
-          {/* Product details tabs */}
-          <div className="border-t border-gray-100 mt-6">
-            <div className="flex overflow-x-auto scrollbar-hide">
+          {/* Product details tabs - Scrollable for mobile */}
+          <div className="border-t border-gray-100 mt-4 md:mt-6">
+            <div className="flex overflow-x-auto scrollbar-hide py-2">
               {["description", "details", "reviews", "shipping"].map((tab) => (
                 <button
                   key={tab}
-                  className={`px-6 py-4 font-medium text-sm whitespace-nowrap capitalize ${
+                  className={`px-4 md:px-6 py-3 md:py-4 font-medium text-xs md:text-sm whitespace-nowrap capitalize ${
                     activeTab === tab
                       ? "text-black border-b-2 border-black"
                       : "text-gray-600 hover:text-black"
@@ -502,17 +502,17 @@ const CollectionDetail = () => {
               ))}
             </div>
 
-            <div className="p-6">
+            <div className="p-4 md:p-6">
               {activeTab === "description" && (
-                <div className="prose max-w-none">
+                <div className="prose max-w-none text-sm md:text-base">
                   <p>{collection.desc}</p>
-                  <p className="mt-4">
+                  <p className="mt-3 md:mt-4">
                     Our {collection.title} is a celebration of traditional
                     craftsmanship with modern elegance. Each piece is
                     handcrafted by skilled artisans, ensuring unparalleled
                     quality and attention to detail.
                   </p>
-                  <p className="mt-4">
+                  <p className="mt-3 md:mt-4">
                     This versatile piece adds sophistication to any wardrobe and
                     is perfect for special occasions.
                   </p>
@@ -521,13 +521,13 @@ const CollectionDetail = () => {
 
               {activeTab === "details" && (
                 <div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                    <div className="space-y-3 md:space-y-4">
                       <div>
-                        <h3 className="font-medium text-gray-900">
+                        <h3 className="font-medium text-gray-900 text-sm md:text-base">
                           Product Details
                         </h3>
-                        <ul className="mt-2 space-y-2 text-gray-600">
+                        <ul className="mt-2 space-y-1 md:space-y-2 text-gray-600 text-sm md:text-base">
                           <li>
                             Specialty: {collection.details?.speciality || "N/A"}
                           </li>
@@ -545,10 +545,10 @@ const CollectionDetail = () => {
                       </div>
 
                       <div>
-                        <h3 className="font-medium text-gray-900">
+                        <h3 className="font-medium text-gray-900 text-sm md:text-base">
                           Care Instructions
                         </h3>
-                        <ul className="mt-2 space-y-2 text-gray-600">
+                        <ul className="mt-2 space-y-1 md:space-y-2 text-gray-600 text-sm md:text-base">
                           <li>Dry clean only</li>
                           <li>Store in a cool, dry place</li>
                           <li>Avoid direct sunlight</li>
@@ -556,12 +556,12 @@ const CollectionDetail = () => {
                       </div>
                     </div>
 
-                    <div className="space-y-4">
+                    <div className="space-y-3 md:space-y-4 mt-4 md:mt-0">
                       <div>
-                        <h3 className="font-medium text-gray-900">
+                        <h3 className="font-medium text-gray-900 text-sm md:text-base">
                           Speciality
                         </h3>
-                        <p className="mt-2 text-gray-600">
+                        <p className="mt-2 text-gray-600 text-sm md:text-base">
                           {collection.details?.specialityDescription ||
                             `A bridal favorite with a rich texture and grand design. Our ${
                               collection.specialty || "premium"
@@ -573,10 +573,10 @@ const CollectionDetail = () => {
                       </div>
 
                       <div>
-                        <h3 className="font-medium text-gray-900">
+                        <h3 className="font-medium text-gray-900 text-sm md:text-base">
                           Sizing Information
                         </h3>
-                        <p className="mt-2 text-gray-600">
+                        <p className="mt-2 text-gray-600 text-sm md:text-base">
                           Please refer to our size guide for detailed
                           measurements. If you're between sizes, we recommend
                           sizing up for a more comfortable fit.
@@ -588,10 +588,10 @@ const CollectionDetail = () => {
               )}
 
               {activeTab === "reviews" && (
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
+                <div className="space-y-4 md:space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div>
-                      <h3 className="font-medium text-gray-900">
+                      <h3 className="font-medium text-gray-900 text-sm md:text-base">
                         Customer Reviews
                       </h3>
                       <div className="flex items-center mt-1">
@@ -599,33 +599,33 @@ const CollectionDetail = () => {
                           {[...Array(5)].map((_, i) => (
                             <FaStar
                               key={i}
-                              className={
+                              className={`text-xs md:text-sm ${
                                 i < 4 ? "text-amber-400" : "text-gray-300"
-                              }
+                              }`}
                             />
                           ))}
                         </div>
-                        <span className="ml-2 text-gray-600">
+                        <span className="ml-2 text-gray-600 text-xs md:text-sm">
                           Based on 126 reviews
                         </span>
                       </div>
                     </div>
-                    <button className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-lg text-sm font-medium">
+                    <button className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium w-full sm:w-auto">
                       Write a review
                     </button>
                   </div>
 
                   <div>
                     {/* Sample reviews - would be dynamically loaded in real implementation */}
-                    <div className="border-b border-gray-100 pb-6 mb-6">
+                    <div className="border-b border-gray-100 pb-4 md:pb-6 mb-4 md:mb-6">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium">
+                          <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium text-xs md:text-sm">
                             S
                           </div>
-                          <span className="font-medium">Sanjana M.</span>
+                          <span className="font-medium text-sm md:text-base">Sanjana M.</span>
                         </div>
-                        <span className="text-gray-500 text-sm">
+                        <span className="text-gray-500 text-xs md:text-sm">
                           2 months ago
                         </span>
                       </div>
@@ -633,28 +633,28 @@ const CollectionDetail = () => {
                         {[...Array(5)].map((_, i) => (
                           <FaStar
                             key={i}
-                            className={
+                            className={`text-xs md:text-sm ${
                               i < 5 ? "text-amber-400" : "text-gray-300"
-                            }
+                            }`}
                           />
                         ))}
                       </div>
-                      <p className="text-gray-600">
+                      <p className="text-gray-600 text-sm md:text-base">
                         Absolutely stunning piece! The craftsmanship is
                         exceptional, and the gold zari work is just beautiful.
                         Perfect for my wedding reception. Highly recommend!
                       </p>
                     </div>
 
-                    <div className="border-b border-gray-100 pb-6 mb-6">
+                    <div className="border-b border-gray-100 pb-4 md:pb-6 mb-4 md:mb-6">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-medium">
+                          <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-medium text-xs md:text-sm">
                             R
                           </div>
-                          <span className="font-medium">Ravi K.</span>
+                          <span className="font-medium text-sm md:text-base">Ravi K.</span>
                         </div>
-                        <span className="text-gray-500 text-sm">
+                        <span className="text-gray-500 text-xs md:text-sm">
                           1 month ago
                         </span>
                       </div>
@@ -662,13 +662,13 @@ const CollectionDetail = () => {
                         {[...Array(5)].map((_, i) => (
                           <FaStar
                             key={i}
-                            className={
+                            className={`text-xs md:text-sm ${
                               i < 4 ? "text-amber-400" : "text-gray-300"
-                            }
+                            }`}
                           />
                         ))}
                       </div>
-                      <p className="text-gray-600">
+                      <p className="text-gray-600 text-sm md:text-base">
                         Bought this for my wife and she absolutely loves it. The
                         color is exactly as shown in the images, and the
                         material quality is excellent. Shipping was also very
@@ -678,7 +678,7 @@ const CollectionDetail = () => {
                   </div>
 
                   <div className="flex justify-center">
-                    <button className="text-blue-600 hover:text-blue-800 font-medium flex items-center">
+                    <button className="text-blue-600 hover:text-blue-800 font-medium flex items-center text-sm md:text-base">
                       Load more reviews
                       <FaChevronRight className="ml-1 text-xs" />
                     </button>
