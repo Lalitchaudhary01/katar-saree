@@ -379,14 +379,13 @@ const Navbar = () => {
             </div>
           </div>
         )}
-
         <div
-          className={`w-full bg-white border-t border-b border-gray-200 py-4 md:py-10 px-2 md:px-6 
-              ${
-                scrolled
-                  ? "fixed top-0 left-0 shadow-md z-50 transition-all duration-300"
-                  : ""
-              }`}
+          className={`w-full bg-white border-t border-b border-gray-200 pt-2 pb-8 md:py-10 px-2 md:px-6 
+      ${
+        scrolled
+          ? "fixed top-0 left-0 shadow-md z-50 transition-all duration-300"
+          : ""
+      }`}
         >
           <div className="relative flex justify-between items-center px-20">
             <div className="hidden md:flex space-x-8 text-gray-700 uppercase tracking-wide text-lg font-bold ml-24 ">
@@ -808,7 +807,7 @@ const Navbar = () => {
         </div>
 
         {/* Add a spacer div when navbar is fixed to prevent content jump - INCREASED HEIGHT */}
-        {scrolled && <div className="h-20 md:h-32"></div>}
+        {scrolled && <div className="h-28 md:h-32"></div>}
       </div>
     </>
   );
