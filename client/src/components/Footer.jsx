@@ -1,20 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Footer = () => {
+  // State for collapsible sections on mobile
+  const [expandedSection, setExpandedSection] = useState(null);
+
+  // Toggle section expansion
+  const toggleSection = (section) => {
+    if (expandedSection === section) {
+      setExpandedSection(null);
+    } else {
+      setExpandedSection(section);
+    }
+  };
+
   return (
-    <footer id="footer" className="bg-secondary text-primary pt-16 pb-8">
+    <footer
+      id="footer"
+      className="bg-secondary text-primary pt-8 md:pt-16 pb-8"
+    >
       <div className="container mx-auto px-4">
         {/* Footer Columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {/* About Column */}
-          <div>
-            <h3 className="font-serif text-2xl mb-6 italic">Katan Banaras</h3>
-            <p className="font-serif text-primary text-opacity-80 mb-6 leading-relaxed">
+        <div className="grid grid-cols-1 gap-2 md:gap-8 mb-8 md:mb-12">
+          {/* About Column - Always expanded */}
+          <div className="mb-4 md:mb-0">
+            <h3 className="font-serif text-2xl mb-4 italic">Katan Banaras</h3>
+            <p className="font-serif text-primary text-opacity-80 mb-4 leading-relaxed text-sm md:text-base">
               Exquisite handcrafted sarees and ethnic wear that celebrate
               India's rich textile heritage. Our creations blend traditional
               craftsmanship with contemporary elegance.
             </p>
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 mb-6">
               <SocialIcon
                 href="#"
                 ariaLabel="Facebook"
@@ -38,12 +53,24 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Shop Column */}
-          <div>
-            <h3 className="font-serif text-xl mb-6 border-b border-primary border-opacity-20 pb-2">
-              Shop
-            </h3>
-            <ul className="space-y-3 font-serif">
+          {/* Shop Column - Collapsible on mobile */}
+          <div className="border-t md:border-t-0 border-primary border-opacity-20 py-2 md:py-0">
+            <div
+              className="flex justify-between items-center cursor-pointer md:cursor-default"
+              onClick={() => toggleSection("shop")}
+            >
+              <h3 className="font-serif text-xl mb-2 md:mb-6 md:border-b border-primary border-opacity-20 pb-2">
+                Shop
+              </h3>
+              <div className="md:hidden">
+                {expandedSection === "shop" ? <MinusIcon /> : <PlusIcon />}
+              </div>
+            </div>
+            <ul
+              className={`space-y-2 md:space-y-3 font-serif ${
+                expandedSection === "shop" ? "block" : "hidden md:block"
+              }`}
+            >
               <FooterLink href="/New-arrivals" text="New Arrivals" />
               <FooterLink href="#" text="Best Sellers" />
               <FooterLink href="/sarees/silk" text="Banarasi Silk Sarees" />
@@ -54,12 +81,24 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Information Column */}
-          <div>
-            <h3 className="font-serif text-xl mb-6 border-b border-primary border-opacity-20 pb-2">
-              Information
-            </h3>
-            <ul className="space-y-3 font-serif">
+          {/* Information Column - Collapsible on mobile */}
+          <div className="border-t md:border-t-0 border-primary border-opacity-20 py-2 md:py-0">
+            <div
+              className="flex justify-between items-center cursor-pointer md:cursor-default"
+              onClick={() => toggleSection("info")}
+            >
+              <h3 className="font-serif text-xl mb-2 md:mb-6 md:border-b border-primary border-opacity-20 pb-2">
+                Information
+              </h3>
+              <div className="md:hidden">
+                {expandedSection === "info" ? <MinusIcon /> : <PlusIcon />}
+              </div>
+            </div>
+            <ul
+              className={`space-y-2 md:space-y-3 font-serif ${
+                expandedSection === "info" ? "block" : "hidden md:block"
+              }`}
+            >
               <FooterLink href="/about" text="About Us" />
               <FooterLink href="/collection" text="Collections" />
               <FooterLink href="/shipping-policy" text="Shipping Policy" />
@@ -70,12 +109,24 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact Column */}
-          <div>
-            <h3 className="font-serif text-xl mb-6 border-b border-primary border-opacity-20 pb-2">
-              Contact Us
-            </h3>
-            <ul className="space-y-4 font-serif">
+          {/* Contact Column - Collapsible on mobile */}
+          <div className="border-t md:border-t-0 border-primary border-opacity-20 py-2 md:py-0">
+            <div
+              className="flex justify-between items-center cursor-pointer md:cursor-default"
+              onClick={() => toggleSection("contact")}
+            >
+              <h3 className="font-serif text-xl mb-2 md:mb-6 md:border-b border-primary border-opacity-20 pb-2">
+                Contact Us
+              </h3>
+              <div className="md:hidden">
+                {expandedSection === "contact" ? <MinusIcon /> : <PlusIcon />}
+              </div>
+            </div>
+            <ul
+              className={`space-y-3 md:space-y-4 font-serif ${
+                expandedSection === "contact" ? "block" : "hidden md:block"
+              }`}
+            >
               <ContactItem
                 iconPath="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z"
                 text="A31/12, Nawa Pura, HanumanPhTak<br>Varanasi, Uttar Pradesh, 221010,<br>India"
@@ -99,8 +150,8 @@ const Footer = () => {
         </div>
 
         {/* Payment Methods */}
-        <div className="border-t border-primary border-opacity-20 pt-8 pb-6">
-          <div className="flex flex-wrap justify-center gap-6">
+        <div className="border-t border-primary border-opacity-20 pt-6 pb-4">
+          <div className="flex flex-wrap justify-center gap-3 md:gap-6">
             <PaymentMethodIcon
               src="https://source.unsplash.com/random/120x40/?visa,logo"
               alt="Visa"
@@ -129,8 +180,8 @@ const Footer = () => {
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-primary border-opacity-20 pt-8 text-center">
-          <p className="font-serif text-sm text-primary text-opacity-60">
+        <div className="border-t border-primary border-opacity-20 pt-6 text-center">
+          <p className="font-serif text-xs md:text-sm text-primary text-opacity-60">
             &copy; 2023 Katan Banaras. All rights reserved. Handcrafted with{" "}
             <span className="text-accent">♥</span> in Varanasi, India.
           </p>
@@ -140,12 +191,12 @@ const Footer = () => {
       {/* Back to Top Button */}
       <button
         id="back-to-top"
-        className="fixed bottom-8 right-8 bg-accent text-primary p-3 rounded-full shadow-lg opacity-0 invisible transition-all duration-300 z-50 hover:bg-accent hover:shadow-xl"
+        className="fixed bottom-4 right-4 md:bottom-8 md:right-8 bg-accent text-primary p-2 md:p-3 rounded-full shadow-lg opacity-0 invisible transition-all duration-300 z-50 hover:bg-accent hover:shadow-xl"
         aria-label="Back to top"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6"
+          className="h-5 w-5 md:h-6 md:w-6"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -162,6 +213,42 @@ const Footer = () => {
   );
 };
 
+// Plus Icon Component for collapsible sections on mobile
+const PlusIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-5 w-5"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+    />
+  </svg>
+);
+
+// Minus Icon Component for collapsible sections on mobile
+const MinusIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-5 w-5"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      d="M18 12H6"
+    />
+  </svg>
+);
+
 // Reusable Social Icon Component
 const SocialIcon = ({ href, ariaLabel, iconPath }) => (
   <a
@@ -171,7 +258,7 @@ const SocialIcon = ({ href, ariaLabel, iconPath }) => (
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className="h-6 w-6"
+      className="h-5 w-5 md:h-6 md:w-6"
       fill="currentColor"
       viewBox="0 0 24 24"
     >
@@ -185,7 +272,7 @@ const FooterLink = ({ href, text }) => (
   <li>
     <a
       href={href}
-      className="text-primary text-opacity-80 hover:text-accent transition-colors duration-300 hover:italic"
+      className="text-primary text-opacity-80 hover:text-accent transition-colors duration-300 hover:italic text-sm md:text-base"
     >
       {text}
     </a>
@@ -197,7 +284,7 @@ const ContactItem = ({ iconPath, text, href }) => (
   <li className="flex items-start">
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className="h-6 w-6 text-accent mr-3 flex-shrink-0"
+      className="h-5 w-5 md:h-6 md:w-6 text-accent mr-2 md:mr-3 flex-shrink-0 mt-1"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -212,12 +299,12 @@ const ContactItem = ({ iconPath, text, href }) => (
     {href ? (
       <a
         href={href}
-        className="text-primary text-opacity-80 hover:text-accent transition-colors duration-300"
+        className="text-primary text-opacity-80 hover:text-accent transition-colors duration-300 text-sm md:text-base"
         dangerouslySetInnerHTML={{ __html: text }}
       />
     ) : (
       <span
-        className="text-primary text-opacity-80"
+        className="text-primary text-opacity-80 text-sm md:text-base"
         dangerouslySetInnerHTML={{ __html: text }}
       />
     )}
@@ -229,7 +316,7 @@ const PaymentMethodIcon = ({ src, alt }) => (
   <img
     src={src}
     alt={alt}
-    className="h-8 object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
+    className="h-6 md:h-8 object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
   />
 );
 
