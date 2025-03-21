@@ -241,7 +241,8 @@ const FeaturedCollections = () => {
               <div
                 key={index}
                 className={`group w-full overflow-hidden bg-white flex flex-col justify-between cursor-pointer card-hover rounded-lg shadow-sm ${
-                  index === visibleCardIndex
+                  // Show cards in pairs on mobile
+                  index === visibleCardIndex || index === visibleCardIndex + 1
                     ? "block md:block"
                     : "hidden md:block"
                 }`}
