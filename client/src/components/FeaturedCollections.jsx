@@ -440,7 +440,7 @@ const FeaturedCollections = () => {
                     {collection.discount && (
                       <div className="absolute top-3 left-3 pointer-events-none">
                         <div className="elegant-badge text-white text-xs px-2.5 py-1 rounded-sm shadow-md">
-                          {collection.discount} OFF
+                          {collection.discount}
                         </div>
                       </div>
                     )}
