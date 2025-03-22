@@ -34,25 +34,25 @@ const Cart = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-10 bg-white rounded-none shadow-xl font-[Garamond]">
-      <h1 className="text-5xl font-[Garamond] mb-10 text-center text-black tracking-wider border-b border-gray-200 pb-6">
+    <div className="w-full max-w-6xl mx-auto p-4 sm:p-6 md:p-10 bg-white rounded-none shadow-xl font-[Garamond]">
+      <h1 className="text-3xl sm:text-4xl md:text-5xl font-[Garamond] mb-6 md:mb-10 text-center text-black tracking-wider border-b border-gray-200 pb-4 md:pb-6">
         YOUR HERITAGE COLLECTION
         {totalItems > 0 && (
-          <span className="ml-4 bg-black text-white text-sm px-3 py-1 rounded-none">
+          <span className="ml-2 md:ml-4 bg-black text-white text-xs sm:text-sm px-2 sm:px-3 py-1 rounded-none">
             {totalItems}
           </span>
         )}
       </h1>
 
       {cart.length === 0 ? (
-        <div className="text-center py-20 flex flex-col items-center">
-          <ShoppingBag size={80} className="text-gray-300 mb-6" />
-          <p className="text-2xl font-[Garamond] mb-10 text-black">
+        <div className="text-center py-10 md:py-20 flex flex-col items-center">
+          <ShoppingBag size={60} className="text-gray-300 mb-4 md:mb-6" />
+          <p className="text-xl md:text-2xl font-[Garamond] mb-6 md:mb-10 text-black px-4">
             Your collection awaits your exquisite taste
           </p>
           <a
             href="/"
-            className="mt-6 bg-black text-white px-16 py-4 hover:bg-gray-900 transition-all duration-300 tracking-widest text-sm font-[Garamond]"
+            className="mt-4 md:mt-6 bg-black text-white px-8 sm:px-12 md:px-16 py-3 md:py-4 hover:bg-gray-900 transition-all duration-300 tracking-widest text-xs sm:text-sm font-[Garamond]"
           >
             EXPLORE OUR COLLECTION
           </a>
@@ -63,25 +63,25 @@ const Cart = () => {
             {cart.map((item, index) => (
               <li
                 key={index}
-                className="flex items-center justify-between py-12"
+                className="flex flex-col sm:flex-row items-start sm:items-center justify-between py-6 sm:py-8 md:py-12 space-y-4 sm:space-y-0"
               >
-                <div className="relative">
+                <div className="relative mx-auto sm:mx-0">
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-40 h-52 object-cover border border-gray-100"
+                    className="w-32 h-40 sm:w-36 sm:h-48 md:w-40 md:h-52 object-cover border border-gray-100"
                   />
                   <div className="absolute inset-0 border border-gray-200 opacity-30"></div>
                 </div>
-                <div className="flex-1 ml-12">
-                  <h2 className="text-xl font-[Garamond] text-black tracking-wide">
+                <div className="flex-1 w-full sm:ml-6 md:ml-12">
+                  <h2 className="text-lg sm:text-xl font-[Garamond] text-black tracking-wide">
                     {item.title}
                   </h2>
-                  <p className="text-xl font-[Garamond] mt-2 text-black">
+                  <p className="text-lg sm:text-xl font-[Garamond] mt-1 sm:mt-2 text-black">
                     {selectedCurrency.symbol}
                     {formatPrice(convertPrice(item.price))}
                   </p>
-                  <div className="flex mt-6 text-black text-sm space-x-10">
+                  <div className="flex mt-3 md:mt-6 text-black text-xs sm:text-sm space-x-4 sm:space-x-10">
                     {item.size && (
                       <p className="font-[Garamond]">
                         Size: <span className="text-black">{item.size}</span>
@@ -93,18 +93,18 @@ const Cart = () => {
                       </p>
                     )}
                   </div>
-                  <div className="flex items-center mt-6">
-                    <p className="text-sm font-[Garamond] text-black mr-4">
+                  <div className="flex items-center mt-3 md:mt-6">
+                    <p className="text-xs sm:text-sm font-[Garamond] text-black mr-2 sm:mr-4">
                       QUANTITY
                     </p>
                     <div className="flex items-center border border-gray-300">
                       <button
                         onClick={() => handleDecreaseQuantity(item.id)}
-                        className="px-3 py-1 border-r border-gray-300 hover:bg-gray-50"
+                        className="px-2 sm:px-3 py-1 border-r border-gray-300 hover:bg-gray-50"
                         disabled={(item.quantity || 1) <= 1}
                       >
                         <Minus
-                          size={16}
+                          size={14}
                           className={
                             (item.quantity || 1) <= 1
                               ? "text-gray-300"
@@ -112,18 +112,25 @@ const Cart = () => {
                           }
                         />
                       </button>
-                      <span className="px-6 py-1 text-black">
+                      <span className="px-3 sm:px-6 py-1 text-black">
                         {item.quantity || 1}
                       </span>
                       <button
                         onClick={() => handleIncreaseQuantity(item.id)}
-                        className="px-3 py-1 border-l border-gray-300 hover:bg-gray-50"
+                        className="px-2 sm:px-3 py-1 border-l border-gray-300 hover:bg-gray-50"
                       >
-                        <Plus size={16} className="text-black" />
+                        <Plus size={14} className="text-black" />
                       </button>
                     </div>
+                    <button
+                      onClick={() => removeFromCart(item.id)}
+                      className="ml-auto p-2 sm:p-3 hover:text-gray-500 transition-all duration-300"
+                      aria-label="Remove item"
+                    >
+                      <Trash2 size={18} className="text-black" />
+                    </button>
                   </div>
-                  <p className="text-sm font-[Garamond] mt-6 text-black">
+                  <p className="text-xs sm:text-sm font-[Garamond] mt-3 md:mt-6 text-black">
                     Item Total:{" "}
                     <span className="text-black font-medium">
                       {selectedCurrency.symbol}
@@ -133,36 +140,34 @@ const Cart = () => {
                     </span>
                   </p>
                 </div>
-                <button
-                  onClick={() => removeFromCart(item.id)}
-                  className="p-3 hover:text-gray-500 transition-all duration-300"
-                >
-                  <Trash2 size={20} className="text-black" />
-                </button>
               </li>
             ))}
           </ul>
-          <div className="mt-16 pt-12 border-t border-gray-200">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-8 md:space-y-0">
-              <div className="space-y-4 bg-gray-50 p-8 w-full md:w-auto">
-                <div className="flex items-center justify-between mb-2">
-                  <p className="text-sm font-[Garamond] text-black">SUBTOTAL</p>
-                  <span className="ml-20 text-lg font-[Garamond] text-black">
+          <div className="mt-8 sm:mt-12 md:mt-16 pt-6 sm:pt-8 md:pt-12 border-t border-gray-200">
+            <div className="flex flex-col space-y-6 md:space-y-0">
+              <div className="space-y-3 bg-gray-50 p-4 sm:p-6 md:p-8 w-full">
+                <div className="flex items-center justify-between mb-1 sm:mb-2">
+                  <p className="text-xs sm:text-sm font-[Garamond] text-black">
+                    SUBTOTAL
+                  </p>
+                  <span className="ml-4 sm:ml-20 text-base sm:text-lg font-[Garamond] text-black">
                     {selectedCurrency.symbol}
                     {formatPrice(convertPrice(totalAmount))}
                   </span>
                 </div>
-                <div className="flex items-center justify-between mb-2">
-                  <p className="text-sm font-[Garamond] text-black">SHIPPING</p>
-                  <span className="ml-20 text-lg font-[Garamond] text-black">
+                <div className="flex items-center justify-between mb-1 sm:mb-2">
+                  <p className="text-xs sm:text-sm font-[Garamond] text-black">
+                    SHIPPING
+                  </p>
+                  <span className="ml-4 sm:ml-20 text-base sm:text-lg font-[Garamond] text-black">
                     COMPLIMENTARY
                   </span>
                 </div>
-                <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-                  <p className="text-sm font-[Garamond] font-medium text-black">
+                <div className="flex items-center justify-between pt-3 sm:pt-4 border-t border-gray-200">
+                  <p className="text-xs sm:text-sm font-[Garamond] font-medium text-black">
                     TOTAL
                   </p>
-                  <span className="ml-20 text-2xl font-[Garamond] text-black">
+                  <span className="ml-4 sm:ml-20 text-xl sm:text-2xl font-[Garamond] text-black">
                     {selectedCurrency.symbol}
                     {formatPrice(convertPrice(totalAmount))}
                   </span>
@@ -170,12 +175,12 @@ const Cart = () => {
               </div>
               <button
                 onClick={handleCheckout}
-                className="bg-black text-white w-full md:w-auto px-16 py-4 hover:bg-gray-900 transition-all duration-300 tracking-widest text-sm font-[Garamond]"
+                className="bg-black text-white w-full px-4 py-3 sm:py-4 hover:bg-gray-900 transition-all duration-300 tracking-widest text-xs sm:text-sm font-[Garamond]"
               >
                 COMPLETE YOUR PURCHASE
               </button>
             </div>
-            <p className="text-center text-xs text-black mt-10 font-[Garamond] tracking-wider">
+            <p className="text-center text-xs text-black mt-6 sm:mt-10 font-[Garamond] tracking-wider px-4">
               Each piece is handcrafted with heritage artisanship and delivered
               with the utmost care
             </p>
