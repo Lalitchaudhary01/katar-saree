@@ -39,6 +39,7 @@ import BlogPostDetails from "./components/BlogPostDetails";
 import VideoCallSection from "./components/VideoCallSection";
 import Packaging from "./components/Packaging";
 import Layout from "./context/Layout"; // Import Layout component - adjust the path as needed
+import SearchPage from "./components/SearchPage";
 
 // Page transition variants
 const pageVariants = {
@@ -240,6 +241,14 @@ function AppContent() {
             element={
               <PageWrapper>
                 <AuthPage />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/search"
+            element={
+              <PageWrapper>
+                <SearchPage />
               </PageWrapper>
             }
           />
