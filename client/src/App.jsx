@@ -117,7 +117,7 @@ function AppContent() {
             }
           />
           <Route
-            path="/collection/:id"
+            path="/collection/:id" 
             element={
               <PageWrapper>
                 <CollectionDetails />
@@ -141,7 +141,7 @@ function AppContent() {
             }
           />
           <Route
-            path="/sarees/banarasi"
+            path="/featured/silk"
             element={
               <PageWrapper>
                 <BanarasiSarees />
