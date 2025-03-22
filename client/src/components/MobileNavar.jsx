@@ -29,57 +29,72 @@ const MobileNavbar = ({
 
   return (
     <>
-      <button
-        className="lg:hidden fixed right-4 top-4 z-50 text-black"
-        onClick={toggleMobileMenu}
-      >
-        {mobileMenuOpen ? (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        ) : (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
-        )}
-      </button>
+      {/* Fixed Header with Logo and Menu Button */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 bg-white z-40 flex items-center px-4 py-2 shadow-sm">
+        {/* Menu button on the left */}
+        <button className="text-black" onClick={toggleMobileMenu}>
+          {mobileMenuOpen ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          )}
+        </button>
+
+        {/* Centered logo */}
+        <div className="flex-1 flex justify-center">
+          <Link to="/">
+            <img
+              src="/katan.png"
+              alt="KATAN"
+              className="h-14 w-auto object-contain"
+            />
+          </Link>
+        </div>
+
+        {/* Empty div to balance the header */}
+        <div style={{ width: "24px" }}></div>
+      </div>
 
       {/* Mobile Menu */}
       <div
         className={`fixed inset-0 bg-white z-50 transform transition-transform duration-300 ease-in-out ${
           mobileMenuOpen ? "translate-x-0" : "translate-x-full"
-        } lg:hidden`}
+        } lg:hidden pt-16`} // Added pt-16 to account for the fixed header
       >
         <div className="p-5 h-full overflow-y-auto">
           <div className="flex justify-between items-center mb-8">
-            <Link to="/" onClick={() => setMobileMenuOpen(false)}>
+            <Link to="/">
               <img
                 src="/katan.png"
                 alt="KATAN"
-                className="h-16 w-auto object-contain"
+                className="h-14 w-auto object-contain"
               />
             </Link>
             <button onClick={toggleMobileMenu} className="text-black">
