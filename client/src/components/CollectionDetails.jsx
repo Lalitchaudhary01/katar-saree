@@ -250,7 +250,7 @@ const CollectionDetails = () => {
                   <div className="relative flex-1 overflow-hidden">
                     <div className="group relative">
                       <motion.div
-                        className="relative overflow-hidden h-64 sm:h-96 md:h-[500px] lg:h-[600px]"
+                        className="relative overflow-hidden h-[80vh] sm:h-96 md:h-[500px] lg:h-[600px]" // Adjusted height for mobile, original height for desktop
                         whileHover={{ scale: 1.01 }}
                         transition={{ duration: 0.5 }}
                         onTouchStart={handleTouchStart}
@@ -265,13 +265,15 @@ const CollectionDetails = () => {
                           )}
                         </div>
 
+                        {/* Main Image */}
                         <img
                           src={mainImage}
                           alt={collection.title}
-                          className="w-full h-full object-contain cursor-zoom-in transition-transform duration-500"
+                          className="w-full h-full sm:object-contain object-cover cursor-zoom-in transition-transform duration-500" // object-contain for desktop, object-cover for mobile
                           onDoubleClick={handleDoubleClickZoom}
                         />
 
+                        {/* Zoom Overlay */}
                         {showZoom && (
                           <div
                             className="absolute inset-0 bg-cover bg-no-repeat opacity-0 group-hover:opacity-100 z-20 cursor-zoom-out"
@@ -292,6 +294,7 @@ const CollectionDetails = () => {
                         )}
                       </motion.div>
 
+                      {/* Wishlist and Share Buttons */}
                       <div className="absolute right-3 top-3 md:right-6 md:top-6 flex flex-col gap-3 z-10">
                         <motion.button
                           className={`w-8 h-8 md:w-12 md:h-12 rounded-full flex items-center justify-center ${
