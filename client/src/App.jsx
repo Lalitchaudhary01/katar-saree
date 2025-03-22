@@ -38,6 +38,7 @@ import Blog from "./components/Blog";
 import BlogPostDetails from "./components/BlogPostDetails";
 import VideoCallSection from "./components/VideoCallSection";
 import Packaging from "./components/Packaging";
+import Layout from "./context/Layout"; // Import Layout component - adjust the path as needed
 
 // Page transition variants
 const pageVariants = {
@@ -260,15 +261,17 @@ function AppContent() {
 
 function App() {
   return (
-    <CartProvider>
-      <WishlistProvider>
-        <CurrencyProvider>
-          <Router>
-            <AppContent />
-          </Router>
-        </CurrencyProvider>
-      </WishlistProvider>
-    </CartProvider>
+    <Layout>
+      <CartProvider>
+        <WishlistProvider>
+          <CurrencyProvider>
+            <Router>
+              <AppContent />
+            </Router>
+          </CurrencyProvider>
+        </WishlistProvider>
+      </CartProvider>
+    </Layout>
   );
 }
 
