@@ -7,7 +7,7 @@ import collections from "../assets/product/CollectionData";
 import newArrivals from "../assets/product/NewArrival";
 import silkSarees from "../assets/product/SilkSaree";
 import { toast } from "react-hot-toast";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   FaShoppingCart,
   FaHeart,
@@ -21,7 +21,7 @@ import { CgSize } from "react-icons/cg";
 import { MdSecurity } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
-// Import the new components
+// Import the components
 import RecommendedProducts from "./RecommendedProducts";
 import ProductDetailsTabs from "./ProductDetailsTabs";
 
@@ -50,15 +50,10 @@ const CollectionDetails = () => {
 
   // Get recommended products
   const getRecommendedProducts = () => {
-    // Combine all product arrays
     const allProducts = [...collections, ...newArrivals, ...silkSarees];
-
-    // Filter out the current product
     const filteredProducts = allProducts.filter(
       (item) => item.id !== numericId
     );
-
-    // Get random products
     return filteredProducts.sort(() => 0.5 - Math.random());
   };
 
@@ -104,13 +99,13 @@ const CollectionDetails = () => {
           animate={{ opacity: 1 }}
           className="text-center"
         >
-          <h2 className="text-3xl font-bold text-red-700 mb-4">
+          <h2 className="text-3xl font-bold text-black mb-4">
             Product Not Found
           </h2>
-          <p className="text-gray-600 text-xl">
+          <p className="text-gray-800 text-xl">
             The saree you're looking for is no longer available.
           </p>
-          <button className="mt-8 bg-[#8B6A37] text-white px-8 py-3 rounded-none hover:bg-[#6D5329] transition font-light text-lg tracking-wide">
+          <button className="mt-8 bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-900 transition font-light text-lg tracking-wide">
             Continue Shopping
           </button>
         </motion.div>
@@ -189,7 +184,7 @@ const CollectionDetails = () => {
       const y = ((e.clientY - top) / height) * 100;
 
       image.style.transformOrigin = `${x}% ${y}%`;
-      image.style.transform = "scale(3)";
+      image.style.transform = "scale(2.5)";
     } else {
       image.style.transform = "scale(1)";
     }
@@ -206,18 +201,28 @@ const CollectionDetails = () => {
   // Animation variants
   const fadeIn = {
     initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+    animate: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  };
+
+  const imageTransition = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1, transition: { duration: 0.3 } },
+    exit: { opacity: 0, transition: { duration: 0.2 } },
   };
 
   return (
-    <div className="bg-white py-8 md:py-16 font-[Garamond]">
-      <div className="container mx-auto px-4 max-w-7xl">
+    <div className="bg-white py-12 md:py-16 font-[Garamond]">
+      <div className="container mx-auto px-4 max-w-6xl">
         {/* Breadcrumb - Enhanced for mobile */}
-        <div className="text-sm md:text-base text-black mb-4 md:mb-8 flex items-center overflow-x-auto whitespace-nowrap pb-2">
-          <span className="hover:underline cursor-pointer">Home</span>
-          <FaChevronRight className="mx-2 text-xs" />
-          <span className="hover:underline cursor-pointer">Collections</span>
-          <FaChevronRight className="mx-2 text-xs" />
+        <div className="text-sm md:text-base text-black mb-6 md:mb-8 flex items-center overflow-x-auto whitespace-nowrap pb-2">
+          <span className="hover:underline cursor-pointer transition-colors duration-300">
+            Home
+          </span>
+          <FaChevronRight className="mx-2 text-xs text-gray-400" />
+          <span className="hover:underline cursor-pointer transition-colors duration-300">
+            Collections
+          </span>
+          <FaChevronRight className="mx-2 text-xs text-gray-400" />
           <span className="text-black font-medium truncate max-w-xs">
             {collection.title}
           </span>
@@ -227,98 +232,109 @@ const CollectionDetails = () => {
           variants={fadeIn}
           initial="initial"
           animate="animate"
-          className="bg-white shadow-md overflow-hidden rounded-lg"
+          className="bg-white shadow-lg overflow-hidden rounded-2xl border border-gray-100"
         >
           <div className="flex flex-col lg:flex-row">
             {/* Left side - Images - Improved for mobile */}
             <div className="lg:w-3/5 p-4 md:p-8">
               <div className="sticky top-16 md:top-24">
                 <div className="flex flex-col-reverse md:flex-row gap-4 md:gap-6">
-                  {/* Thumbnails - Horizontal scroll on mobile */}
-                  <div className="flex flex-row md:flex-col gap-3 mt-4 md:mt-0 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+                  {/* Thumbnails - Horizontal scroll on mobile, vertical on desktop */}
+                  <div className="flex flex-row md:flex-col gap-3 mt-4 md:mt-0 overflow-x-auto pb-2 md:pb-0 flex-shrink-0 max-h-80 md:max-h-full scrollbar-hide">
                     {collection.images.slice(0, 5).map((img, index) => (
                       <motion.div
                         key={index}
-                        className={`relative border overflow-hidden cursor-pointer flex-shrink-0 ${
+                        className={`relative overflow-hidden cursor-pointer flex-shrink-0 rounded-lg ${
                           mainImage === img
-                            ? "border-2 border-black shadow-md"
-                            : "border-gray-200"
+                            ? "ring-2 ring-black shadow-md"
+                            : "ring-1 ring-gray-200"
                         }`}
                         whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.98 }}
                         onClick={() => setMainImage(img)}
                       >
                         <img
                           src={img}
                           alt={`Thumbnail ${index + 1}`}
-                          className="w-16 md:w-20 h-16 md:h-full object-cover"
+                          className="w-16 md:w-20 h-16 md:h-20 object-cover"
                         />
                         {mainImage === img && (
                           <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            className="absolute inset-0 bg-black bg-opacity-10"
+                            className="absolute inset-0 bg-black bg-opacity-5"
                           />
                         )}
                       </motion.div>
                     ))}
                   </div>
 
-                  {/* Main Image - Better sizing for mobile */}
-                  <div className="relative flex-1 overflow-hidden">
+                  {/* Main Image with fade animation - FIXED HEIGHT ISSUE HERE */}
+                  <div className="relative flex-1 overflow-hidden rounded-xl">
                     <div className="group relative">
-                      <motion.div
-                        className="relative overflow-hidden h-[80vh] sm:h-96 md:h-[500px] lg:h-[600px]" // Adjusted height for mobile, original height for desktop
-                        whileHover={{ scale: 1.01 }}
-                        transition={{ duration: 0.5 }}
-                        onTouchStart={handleTouchStart}
-                        onTouchMove={handleTouchMove}
-                        onTouchEnd={handleTouchEnd}
-                      >
-                        <div className="absolute top-3 left-3 md:top-6 md:left-6 z-10">
-                          {discountPercentage > 0 && (
-                            <span className="bg-black text-white px-3 py-1 md:px-4 md:py-1 text-sm md:text-base font-light tracking-wider">
-                              {discountPercentage}% OFF
-                            </span>
-                          )}
-                        </div>
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={mainImage}
+                          className="relative overflow-hidden h-96 sm:h-96 md:h-[500px] lg:h-[600px]"
+                          variants={imageTransition}
+                          initial="initial"
+                          animate="animate"
+                          exit="exit"
+                          onTouchStart={handleTouchStart}
+                          onTouchMove={handleTouchMove}
+                          onTouchEnd={handleTouchEnd}
+                        >
+                          <div className="absolute top-3 left-3 md:top-6 md:left-6 z-10">
+                            {discountPercentage > 0 && (
+                              <motion.span
+                                className="bg-black text-white px-3 py-1 md:px-4 md:py-1 text-sm md:text-base font-light tracking-wider rounded-lg"
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.2 }}
+                              >
+                                {discountPercentage}% OFF
+                              </motion.span>
+                            )}
+                          </div>
 
-                        {/* Main Image */}
-                        <img
-                          src={mainImage}
-                          alt={collection.title}
-                          className="w-full h-full sm:object-contain object-cover cursor-zoom-in transition-transform duration-500" // object-contain for desktop, object-cover for mobile
-                          onDoubleClick={handleDoubleClickZoom}
-                        />
-
-                        {/* Zoom Overlay */}
-                        {showZoom && (
-                          <div
-                            className="absolute inset-0 bg-cover bg-no-repeat opacity-0 group-hover:opacity-100 z-20 cursor-zoom-out"
-                            style={{
-                              backgroundImage: `url(${mainImage})`,
-                              backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
-                              transform: "scale(1.5)",
-                            }}
-                            onMouseMove={(e) => {
-                              const { left, top, width, height } =
-                                e.currentTarget.getBoundingClientRect();
-                              const x = ((e.clientX - left) / width) * 100;
-                              const y = ((e.clientY - top) / height) * 100;
-                              setZoomPosition({ x, y });
-                            }}
-                            onMouseLeave={() => setShowZoom(false)}
+                          {/* Main Image */}
+                          <img
+                            src={mainImage}
+                            alt={collection.title}
+                            className="w-full h-full object-contain cursor-zoom-in transition-transform duration-300 ease-out"
+                            onDoubleClick={handleDoubleClickZoom}
                           />
-                        )}
-                      </motion.div>
+
+                          {/* Zoom Overlay */}
+                          {showZoom && (
+                            <div
+                              className="absolute inset-0 bg-cover bg-no-repeat opacity-0 group-hover:opacity-100 z-20 cursor-zoom-out"
+                              style={{
+                                backgroundImage: `url(${mainImage})`,
+                                backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
+                                transform: "scale(1.5)",
+                              }}
+                              onMouseMove={(e) => {
+                                const { left, top, width, height } =
+                                  e.currentTarget.getBoundingClientRect();
+                                const x = ((e.clientX - left) / width) * 100;
+                                const y = ((e.clientY - top) / height) * 100;
+                                setZoomPosition({ x, y });
+                              }}
+                              onMouseLeave={() => setShowZoom(false)}
+                            />
+                          )}
+                        </motion.div>
+                      </AnimatePresence>
 
                       {/* Wishlist and Share Buttons */}
                       <div className="absolute right-3 top-3 md:right-6 md:top-6 flex flex-col gap-3 z-10">
                         <motion.button
-                          className={`w-8 h-8 md:w-12 md:h-12 rounded-full flex items-center justify-center ${
+                          className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center ${
                             isInWishlist(collection.id)
                               ? "bg-red-500 text-white"
                               : "bg-white text-gray-700"
-                          } shadow-md`}
+                          } shadow-md backdrop-blur-sm bg-opacity-90`}
                           onClick={handleWishlistToggle}
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
@@ -333,7 +349,7 @@ const CollectionDetails = () => {
                         </motion.button>
 
                         <motion.button
-                          className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white text-gray-700 shadow-md flex items-center justify-center"
+                          className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white text-gray-700 shadow-md backdrop-blur-sm bg-opacity-90 flex items-center justify-center"
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
                         >
@@ -347,10 +363,15 @@ const CollectionDetails = () => {
             </div>
 
             {/* Right side - Details - Enhanced for mobile */}
-            <div className="lg:w-2/5 p-4 md:p-10 border-t lg:border-t-0 lg:border-l border-gray-100">
+            <div className="lg:w-2/5 p-6 md:p-10 border-t lg:border-t-0 lg:border-l border-gray-100">
               {/* Basic product info */}
               <div>
-                <div className="flex items-center gap-2 mb-2 md:mb-3">
+                <motion.div
+                  className="flex items-center gap-2 mb-3 md:mb-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.1 }}
+                >
                   <div className="flex text-amber-400">
                     {[...Array(5)].map((_, i) => (
                       <FaStar
@@ -364,17 +385,32 @@ const CollectionDetails = () => {
                   <span className="text-gray-500 text-sm md:text-base">
                     (126 reviews)
                   </span>
-                </div>
+                </motion.div>
 
-                <h1 className="text-2xl md:text-4xl font-normal text-gray-900 tracking-wide">
+                <motion.h1
+                  className="text-2xl md:text-4xl font-normal text-black tracking-wide"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
                   {collection.title}
-                </h1>
+                </motion.h1>
 
-                <p className="mt-2 md:mt-4 text-gray-600 leading-relaxed text-base md:text-lg line-clamp-3">
+                <motion.p
+                  className="mt-3 md:mt-4 text-gray-700 leading-relaxed text-base md:text-lg line-clamp-3"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                >
                   {collection.desc}
-                </p>
+                </motion.p>
 
-                <div className="flex flex-wrap items-baseline gap-2 md:gap-4 mt-4 md:mt-8">
+                <motion.div
+                  className="flex flex-wrap items-baseline gap-2 md:gap-4 mt-6 md:mt-8"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                >
                   <span className="text-2xl md:text-3xl font-light text-black">
                     {selectedCurrency.symbol}
                     {formatPrice(convertPrice(collection.discountPrice))}
@@ -395,15 +431,20 @@ const CollectionDetails = () => {
                       )}
                     </span>
                   )}
-                </div>
+                </motion.div>
               </div>
 
-              <div className="h-px bg-gray-200 my-4 md:my-8"></div>
+              <div className="h-px bg-gray-100 my-6 md:my-8"></div>
 
               {/* Colors - More touch-friendly on mobile */}
-              <div className="p-3 md:p-4 rounded-lg shadow-sm bg-white mb-4 md:mb-6">
-                <div className="flex justify-between items-center mb-2 md:mb-3">
-                  <span className="font-medium text-base md:text-lg text-gray-900">
+              <motion.div
+                className="p-4 md:p-5 rounded-xl shadow-sm bg-gray-50 mb-5 md:mb-6"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+              >
+                <div className="flex justify-between items-center mb-3 md:mb-4">
+                  <span className="font-medium text-base md:text-lg text-black">
                     Color
                   </span>
                   <span className="text-xs md:text-sm text-black">
@@ -412,52 +453,68 @@ const CollectionDetails = () => {
                 </div>
                 <div className="flex flex-wrap gap-4">
                   {collection.colors.map((color, index) => (
-                    <button
+                    <motion.button
                       key={index}
-                      className={`relative w-6 h-6 md:w-5 md:h-5 rounded-full transition-all ${
+                      className={`relative w-8 h-8 md:w-9 md:h-9 rounded-full transition-all ${
                         selectedColor === color
                           ? "ring-2 ring-offset-2 ring-black"
                           : "ring-1 ring-gray-200"
-                      } hover:-translate-y-1`}
+                      }`}
                       onClick={() => setSelectedColor(color)}
+                      whileHover={{ scale: 1.1, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
                     >
                       <span
                         className="absolute inset-0 rounded-full"
                         style={{ backgroundColor: color }}
                       ></span>
-                    </button>
+                    </motion.button>
                   ))}
                 </div>
-              </div>
+              </motion.div>
 
               {/* Quantity - Larger touch targets for mobile */}
-              <div className="mb-4 md:mb-6">
-                <span className="font-medium text-gray-900 block mb-2 md:mb-3">
+              <motion.div
+                className="mb-5 md:mb-6"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+              >
+                <span className="font-medium text-black block mb-3 md:mb-4">
                   Quantity
                 </span>
-                <div className="flex items-center border border-gray-200 rounded-lg w-32">
-                  <button
-                    className="w-10 h-10 flex items-center justify-center text-lg text-gray-600 hover:text-gray-800"
+                <div className="flex items-center border border-gray-200 rounded-lg w-36 overflow-hidden">
+                  <motion.button
+                    className="w-12 h-12 flex items-center justify-center text-lg text-black hover:bg-gray-50"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    whileTap={{ scale: 0.95 }}
                   >
                     -
-                  </button>
-                  <span className="flex-1 text-center">{quantity}</span>
-                  <button
-                    className="w-10 h-10 flex items-center justify-center text-lg text-gray-600 hover:text-gray-800"
+                  </motion.button>
+                  <span className="flex-1 text-center font-light">
+                    {quantity}
+                  </span>
+                  <motion.button
+                    className="w-12 h-12 flex items-center justify-center text-lg text-black hover:bg-gray-50"
                     onClick={() =>
                       setQuantity(Math.min(collection.stock, quantity + 1))
                     }
+                    whileTap={{ scale: 0.95 }}
                   >
                     +
-                  </button>
+                  </motion.button>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Buttons - Better mobile layout */}
-              <div className="flex gap-3 md:gap-4 mt-4 md:mt-8">
+              <motion.div
+                className="flex gap-4 mt-6 md:mt-8"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 }}
+              >
                 <motion.button
-                  className="flex-1 bg-black text-white py-3 md:py-4 rounded-lg font-medium flex items-center justify-center gap-2 text-sm md:text-base"
+                  className="flex-1 bg-white border-2 border-black text-black py-3 md:py-4 rounded-xl font-medium flex items-center justify-center gap-2 text-sm md:text-base transition-colors hover:bg-black hover:text-white"
                   onClick={handleAddToCart}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -466,35 +523,51 @@ const CollectionDetails = () => {
                   Add to Cart
                 </motion.button>
                 <motion.button
-                  className="flex-1 bg-[#8B6A37] text-white py-3 md:py-4 rounded-lg font-medium text-sm md:text-base"
+                  className="flex-1 bg-black text-white py-3 md:py-4 rounded-xl font-medium text-sm md:text-base transition-colors hover:bg-gray-900"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={handleBuyNow}
                 >
                   Buy Now
                 </motion.button>
-              </div>
+              </motion.div>
 
               {/* Product information - Compact for mobile */}
-              <div className="mt-6 md:mt-8 space-y-2 md:space-y-3">
-                <div className="flex items-center gap-2 md:gap-3 text-gray-700 text-sm md:text-base">
-                  <FaTruck className="text-blue-500 text-sm md:text-base" />
+              <motion.div
+                className="mt-8 md:mt-10 space-y-3 md:space-y-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8 }}
+              >
+                <div className="flex items-center gap-3 md:gap-4 text-gray-700 text-sm md:text-base">
+                  <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center">
+                    <FaTruck className="text-blue-500 text-sm md:text-base" />
+                  </div>
                   <span>Free shipping on orders over ₹1000</span>
                 </div>
-                <div className="flex items-center gap-2 md:gap-3 text-gray-700 text-sm md:text-base">
-                  <FaUndo className="text-blue-500 text-sm md:text-base" />
+                <div className="flex items-center gap-3 md:gap-4 text-gray-700 text-sm md:text-base">
+                  <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center">
+                    <FaUndo className="text-blue-500 text-sm md:text-base" />
+                  </div>
                   <span>Easy 30 days return policy</span>
                 </div>
-                <div className="flex items-center gap-2 md:gap-3 text-gray-700 text-sm md:text-base">
-                  <MdSecurity className="text-blue-500 text-sm md:text-base" />
+                <div className="flex items-center gap-3 md:gap-4 text-gray-700 text-sm md:text-base">
+                  <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center">
+                    <MdSecurity className="text-blue-500 text-sm md:text-base" />
+                  </div>
                   <span>Secure payment guaranteed</span>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Stock info */}
-              <div className="mt-4 md:mt-6">
+              <motion.div
+                className="mt-6 md:mt-8 p-4 bg-gray-50 rounded-xl"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.9 }}
+              >
                 <div className="flex items-center gap-2 text-sm md:text-base">
-                  <span className="font-medium">Availability:</span>
+                  <span className="font-medium text-black">Availability:</span>
                   <span
                     className={
                       collection.stock > 0 ? "text-green-600" : "text-red-600"
@@ -505,7 +578,7 @@ const CollectionDetails = () => {
                       : "Out of Stock"}
                   </span>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
 
@@ -514,7 +587,13 @@ const CollectionDetails = () => {
         </motion.div>
 
         {/* Recommended Products */}
-        <RecommendedProducts products={getRecommendedProducts()} />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1, duration: 0.5 }}
+        >
+          <RecommendedProducts products={getRecommendedProducts()} />
+        </motion.div>
       </div>
     </div>
   );
