@@ -12,22 +12,43 @@ import {
   FaTrash,
   FaShareAlt,
   FaEye,
+  FaCheck,
 } from "react-icons/fa";
 
 const Wishlist = () => {
   const { wishlistItems, removeFromWishlist } = useWishlist();
   const { addToCart } = useCart();
   const navigate = useNavigate();
-  const { selectedCurrency, convertPrice, formatPrice } = useCurrency(); // Use the currency context
+  const { selectedCurrency, convertPrice, formatPrice } = useCurrency();
   const [hoveredItem, setHoveredItem] = useState(null);
+  const [selectedColors, setSelectedColors] = useState({});
+
+  // Get unique items based on product ID
+  const uniqueWishlistItems = [
+    ...new Map(wishlistItems.map((item) => [item.id, item])).values(),
+  ];
+
+  const handleColorSelect = (itemId, color) => {
+    setSelectedColors({
+      ...selectedColors,
+      [itemId]: color,
+    });
+    toast.success(`Color selected!`);
+  };
 
   const handleAddToCart = (item) => {
+    // Check if color is selected for this item
+    if (item.colors && item.colors.length > 0 && !selectedColors[item.id]) {
+      toast.error("Please select a color first");
+      return;
+    }
+
     const cartItem = {
       id: item.id,
       title: item.title,
       image: item.image || item.images[0],
       price: item.discountPrice,
-      color: item.colors ? item.colors[0] : null,
+      color: selectedColors[item.id] || (item.colors ? item.colors[0] : null),
       quantity: 1,
       stock: item.stock,
       specialty: item.specialty,
@@ -35,6 +56,11 @@ const Wishlist = () => {
 
     addToCart(cartItem);
     toast.success(`${item.title} added to your cart!`);
+  };
+
+  // Add a dedicated function to handle viewing product details
+  const handleViewProduct = (itemId) => {
+    navigate(`/collection/${itemId}`);
   };
 
   const containerVariants = {
@@ -53,7 +79,7 @@ const Wishlist = () => {
   };
 
   return (
-    <div className="bg-[#FAF7F2] py-12 min-h-screen">
+    <div className="bg-white py-12 min-h-screen">
       <style>
         {`
           @import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@400;500;600;700&display=swap');
@@ -103,6 +129,47 @@ const Wishlist = () => {
           .btn-hover:hover:after {
             width: 100%;
           }
+          
+          .color-swatch {
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+          }
+          
+          .color-swatch.selected {
+            transform: scale(1.2);
+            border: 2px solid #000;
+          }
+          
+          .fancy-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.5), transparent);
+            margin: 1rem 0;
+          }
+          
+          .card-shadow {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+          }
+          
+          .color-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+          }
+          
+          .color-swatch:hover .color-tooltip {
+            opacity: 1;
+          }
         `}
       </style>
 
@@ -114,19 +181,19 @@ const Wishlist = () => {
           >
             <FaArrowLeft className="text-lg" />
           </button>
-          <h1 className="text-3xl font-playfair font-bold text-gray-900">
+          <h1 className="text-3xl font-playfair font-bold text-gray-800">
             My Wishlist
           </h1>
           <div className="ml-4 relative">
-            <span className="ml-1 px-3 py-1 gold-accent text-black font-medium rounded-full text-sm shadow-sm">
-              {wishlistItems.length}{" "}
-              {wishlistItems.length === 1 ? "Item" : "Items"}
+            <span className="ml-1 px-3 py-1 bg-black text-white font-medium rounded-full text-sm shadow-sm">
+              {uniqueWishlistItems.length}{" "}
+              {uniqueWishlistItems.length === 1 ? "Item" : "Items"}
             </span>
           </div>
         </div>
 
-        {wishlistItems.length === 0 ? (
-          <div className="bg-white rounded-xl shadow-sm p-16 text-center border border-gray-100">
+        {uniqueWishlistItems.length === 0 ? (
+          <div className="bg-white rounded-xl shadow-sm p-16 text-center border border-gray-100 card-shadow">
             <div className="w-24 h-24 bg-[#FDF5E6] rounded-full flex items-center justify-center mx-auto mb-8 shadow-sm">
               <FaHeart className="text-[#D4AF37] text-3xl" />
             </div>
@@ -150,9 +217,8 @@ const Wishlist = () => {
           <>
             <div className="mb-8 p-5 bg-[#FDF5E6] rounded-lg border border-[#E8D9B5] shadow-sm">
               <p className="font-cardo text-gray-700 text-center">
-                <span className="font-semibold">Tip:</span> Our collections are
-                limited editions. Add your favorites to cart before they sell
-                out!
+                <span className="font-semibold">Tip:</span> Please select a
+                color variant before adding items to your cart.
               </p>
             </div>
 
@@ -162,10 +228,10 @@ const Wishlist = () => {
               initial="hidden"
               animate="visible"
             >
-              {wishlistItems.map((item, index) => (
+              {uniqueWishlistItems.map((item, index) => (
                 <motion.div
                   key={item.id}
-                  className="bg-white rounded-lg shadow-sm overflow-hidden item-hover border border-gray-50"
+                  className="bg-white rounded-lg shadow-sm overflow-hidden item-hover border border-gray-50 card-shadow"
                   variants={itemVariants}
                   onMouseEnter={() => setHoveredItem(index)}
                   onMouseLeave={() => setHoveredItem(null)}
@@ -175,8 +241,8 @@ const Wishlist = () => {
                       <img
                         src={item.image || (item.images && item.images[0])}
                         alt={item.title}
-                        className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
-                        onClick={() => navigate(`/collection/${item.id}`)}
+                        className="w-full h-full object-cover transition-transform duration-700 hover:scale-110 cursor-pointer"
+                        onClick={() => handleViewProduct(item.id)}
                       />
                     </div>
 
@@ -188,10 +254,11 @@ const Wishlist = () => {
                     >
                       <div className="flex justify-between items-center">
                         <motion.button
-                          onClick={() => navigate(`/collection/${item.id}`)}
-                          className="bg-white/90 backdrop-blur-sm text-black p-2 rounded-full shadow-md"
+                          onClick={() => handleViewProduct(item.id)}
+                          className="bg-white/90 backdrop-blur-sm text-black p-2 rounded-full shadow-md cursor-pointer"
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
+                          aria-label="View product details"
                         >
                           <FaEye className="text-lg" />
                         </motion.button>
@@ -227,8 +294,8 @@ const Wishlist = () => {
                     {/* Discount tag if exists */}
                     {item.discount && (
                       <div className="absolute top-4 left-4">
-                        <div className="gold-accent text-black font-medium px-3 py-1 rounded-full text-sm shadow-md">
-                          {item.discount} OFF
+                        <div className="bg-black text-white font-medium px-3 py-1 rounded-full text-sm shadow-md">
+                          {item.discount}
                         </div>
                       </div>
                     )}
@@ -237,7 +304,7 @@ const Wishlist = () => {
                   <div className="p-5 border-t border-gray-100">
                     <h3
                       className="font-playfair font-semibold text-xl text-gray-900 hover:text-[#D4AF37] transition-colors cursor-pointer mb-1"
-                      onClick={() => navigate(`/collection/${item.id}`)}
+                      onClick={() => handleViewProduct(item.id)}
                     >
                       {item.title}
                     </h3>
@@ -250,7 +317,9 @@ const Wishlist = () => {
                         : "Handcrafted premium saree"}
                     </p>
 
-                    <div className="flex items-center justify-between mt-3 mb-4">
+                    <div className="fancy-divider"></div>
+
+                    <div className="flex items-center justify-between mb-4">
                       <div className="flex items-baseline gap-2">
                         <span className="font-playfair font-bold text-xl text-gray-900">
                           {selectedCurrency.symbol}
@@ -263,41 +332,77 @@ const Wishlist = () => {
                           </span>
                         )}
                       </div>
+                    </div>
 
-                      {/* Color options if available */}
-                      {item.colors && item.colors.length > 0 && (
-                        <div className="flex gap-1">
-                          {item.colors.slice(0, 3).map((color, idx) => (
+                    {/* Color selection */}
+                    {item.colors && item.colors.length > 0 && (
+                      <div className="mb-4">
+                        <p className="text-sm text-gray-500 mb-2 font-cardo">
+                          Select Color:
+                        </p>
+                        <div className="flex gap-2 flex-wrap">
+                          {item.colors.map((color, idx) => (
                             <div
                               key={idx}
-                              className="w-4 h-4 rounded-full border border-gray-300"
+                              className={`relative w-6 h-6 rounded-full shadow-sm color-swatch ${
+                                selectedColors[item.id] === color
+                                  ? "selected"
+                                  : ""
+                              }`}
                               style={{ backgroundColor: color }}
-                            ></div>
-                          ))}
-                          {item.colors.length > 3 && (
-                            <div className="w-4 h-4 rounded-full bg-gray-100 flex items-center justify-center text-[8px] text-gray-600">
-                              +{item.colors.length - 3}
+                              onClick={() => handleColorSelect(item.id, color)}
+                            >
+                              {selectedColors[item.id] === color && (
+                                <div className="absolute inset-0 flex items-center justify-center text-white">
+                                  <FaCheck size={10} />
+                                </div>
+                              )}
+                              <div className="color-tooltip">
+                                {color.charAt(0).toUpperCase() + color.slice(1)}
+                              </div>
                             </div>
-                          )}
+                          ))}
                         </div>
-                      )}
-                    </div>
+                      </div>
+                    )}
 
                     <motion.button
                       onClick={() => handleAddToCart(item)}
-                      className="w-full bg-black text-white py-3 rounded-md font-cardo text-base hover:bg-gray-900 transition flex items-center justify-center gap-2 btn-hover"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                      className={`w-full py-3 rounded-md font-cardo text-base flex items-center justify-center gap-2 btn-hover ${
+                        item.colors &&
+                        item.colors.length > 0 &&
+                        !selectedColors[item.id]
+                          ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                          : "bg-black text-white hover:bg-gray-900"
+                      }`}
+                      whileHover={
+                        item.colors &&
+                        item.colors.length > 0 &&
+                        !selectedColors[item.id]
+                          ? {}
+                          : { scale: 1.02 }
+                      }
+                      whileTap={
+                        item.colors &&
+                        item.colors.length > 0 &&
+                        !selectedColors[item.id]
+                          ? {}
+                          : { scale: 0.98 }
+                      }
                     >
                       <FaShoppingCart className="text-sm" />
-                      Add to Cart
+                      {item.colors &&
+                      item.colors.length > 0 &&
+                      !selectedColors[item.id]
+                        ? "Select a Color"
+                        : "Add to Cart"}
                     </motion.button>
                   </div>
                 </motion.div>
               ))}
             </motion.div>
 
-            {wishlistItems.length > 0 && (
+            {uniqueWishlistItems.length > 0 && (
               <div className="mt-12 flex justify-center">
                 <motion.button
                   onClick={() => navigate("/collection")}

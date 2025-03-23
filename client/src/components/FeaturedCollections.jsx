@@ -323,7 +323,7 @@ const FeaturedCollections = () => {
 
       <div className="container mx-auto px-4 lg:px-8 text-center">
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-cormorant font-semibold text-[#1a1a1a] mb-4 tracking-wider">
-          Curated Collections
+          Featured Collections
         </h2>
 
         <p className="font-montserrat text-neutral-600 max-w-2xl mx-auto mb-8 text-sm md:text-base tracking-wide leading-relaxed">
