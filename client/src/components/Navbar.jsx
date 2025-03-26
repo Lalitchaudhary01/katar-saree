@@ -128,305 +128,314 @@ const Navbar = () => {
         <FaTruck className="mr-2" size={20} />
         Free Shipping on Orders Above ₹25,000 | Flat 10% Off on First Order
       </div>
-      <div className="font-cardo text-sm antialiased">
-        {/* Mobile Navbar */}
-        <MobileNavbar
-          shopData={shopData}
-          collectionsData={collectionsData}
-          fabricData={fabricData}
-          totalItems={totalItems}
-          selectedCurrency={selectedCurrency}
-          currencies={currencies}
-          handleCurrencyClick={handleCurrencyClick}
-          handleCurrencySelect={handleCurrencySelect}
-          showCurrency={showCurrency}
-          currencyRef={currencyRef}
-          mobileMenuOpen={mobileMenuOpen}
-          toggleMobileMenu={toggleMobileMenu}
-        />
 
-        {!scrolled && (
-          <div className="w-full bg-white py-3 px-6 flex justify-between items-center border-b border-gray-100">
-            <div className="text-black flex space-x-3.5 italic space-y-2">
-              <div className="hidden md:flex items-center space-x-2">
-                <FaEnvelope size={18} />
-                <a
-                  href="mailto:katanbanarasofficial@gmail.com"
-                  className="hover:underline"
-                >
-                  katanbanarasofficial@gmail.com
-                </a>
+      <div className="font-cardo text-sm antialiased">
+        {/* Mobile Navbar - Only visible on mobile screens */}
+        <div className="block md:hidden">
+          <MobileNavbar
+            shopData={shopData}
+            collectionsData={collectionsData}
+            fabricData={fabricData}
+            totalItems={totalItems}
+            selectedCurrency={selectedCurrency}
+            currencies={currencies}
+            handleCurrencyClick={handleCurrencyClick}
+            handleCurrencySelect={handleCurrencySelect}
+            showCurrency={showCurrency}
+            currencyRef={currencyRef}
+            mobileMenuOpen={mobileMenuOpen}
+            toggleMobileMenu={toggleMobileMenu}
+          />
+        </div>
+
+        {/* Desktop Navbar - Hidden on mobile screens */}
+        <div className="hidden md:block">
+          {!scrolled && (
+            <div className="w-full bg-white py-3 px-6 flex justify-between items-center border-b border-gray-100">
+              <div className="text-black flex space-x-3.5 italic space-y-2">
+                <div className="hidden md:flex items-center space-x-2">
+                  <FaEnvelope size={18} />
+                  <a
+                    href="mailto:katanbanarasofficial@gmail.com"
+                    className="hover:underline"
+                  >
+                    katanbanarasofficial@gmail.com
+                  </a>
+                </div>
+                <div className="hidden md:flex items-center space-x-2 space-y-2">
+                  <FaPhone size={18} />
+                  <a
+                    href="tel:+917860783350"
+                    className="hover:underline space-y-2"
+                  >
+                    +91 7860783350
+                  </a>
+                </div>
               </div>
-              <div className="hidden md:flex items-center space-x-2 space-y-2">
-                <FaPhone size={18} />
-                <a
-                  href="tel:+917860783350"
-                  className="hover:underline space-y-2"
+
+              <div className="flex space-x-6 text-black">
+                <div
+                  className="hidden md:flex items-center relative"
+                  ref={currencyRef}
                 >
-                  +91 7860783350
-                </a>
+                  <button
+                    className="flex items-center hover:text-[#8b5e3c] transition-colors"
+                    onClick={handleCurrencyClick}
+                  >
+                    <span className="flex items-center uppercase text-lg tracking-wide font-semibold">
+                      <span className="text-1xl">{selectedCurrency.code}</span>
+                      <span className="ml-1 text-1xl">
+                        {selectedCurrency.symbol} ▼
+                      </span>
+                    </span>
+                  </button>
+
+                  {showCurrency && (
+                    <div className="absolute top-full mt-2 right-0 bg-white shadow-md p-3 z-50 w-40">
+                      {currencies.map((currency) => (
+                        <button
+                          key={currency.code}
+                          className="block w-full text-left px-2 py-2 hover:bg-[#f9f5f0] text-[#5d4037] transition-colors text-lg font-medium"
+                          onClick={() => handleCurrencySelect(currency)}
+                        >
+                          <span className="text-xl">{currency.symbol}</span> -
+                          <span className="text-xl font-semibold">
+                            {" "}
+                            {currency.code}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <Link
+                  to="/search"
+                  className="hidden md:flex items-center hover:text-[#8b5e3c] transition-colors"
+                >
+                  <FiSearch size={23} />
+                </Link>
+
+                <Link
+                  to="/login"
+                  className="hidden md:flex items-center hover:text-[#8b5e3c] transition-colors"
+                >
+                  <FiUser size={23} />
+                </Link>
+
+                <Link
+                  to="/wishlist"
+                  className="hidden md:flex items-center hover:text-[#8b5e3c] transition-colors"
+                >
+                  <FiHeart size={23} />
+                </Link>
+
+                <Link
+                  to="/cart"
+                  className="hidden md:flex items-center hover:text-[#8b5e3c] transition-colors"
+                >
+                  <div className="relative">
+                    <FiShoppingCart size={25} />
+                    {totalItems > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-[#c98a5e] text-white text-xs font-bold px-1.5 rounded-full">
+                        {totalItems}
+                      </span>
+                    )}
+                  </div>
+                </Link>
               </div>
             </div>
+          )}
 
-            <div className="flex space-x-6 text-black">
-              <div
-                className="hidden md:flex items-center relative"
-                ref={currencyRef}
-              >
-                <button
-                  className="flex items-center hover:text-[#8b5e3c] transition-colors"
-                  onClick={handleCurrencyClick}
-                >
-                  <span className="flex items-center uppercase text-lg tracking-wide font-semibold">
-                    <span className="text-1xl">{selectedCurrency.code}</span>
-                    <span className="ml-1 text-1xl">
-                      {selectedCurrency.symbol} ▼
+          <div
+            className={`w-full bg-white border-t border-b border-gray-200 pt-2 pb-8 md:py-10 px-2 md:px-6 
+            ${
+              scrolled
+                ? "fixed top-0 left-0 shadow-md md:z-50 transition-all duration-300"
+                : ""
+            }`}
+          >
+            <div className="relative flex justify-between items-center px-20">
+              <div className="hidden md:flex space-x-8 text-black uppercase tracking-wide text-lg font-bold ml-24 ">
+                <div className="relative group">
+                  <Link
+                    to="/"
+                    className="hover:text-[#8b5e3c] flex items-center transition-colors"
+                  >
+                    SHOP{" "}
+                    <span className="ml-1 transition-transform duration-300 group-hover:rotate-180">
+                      <SlArrowDown size={16} />
                     </span>
-                  </span>
-                </button>
+                  </Link>
+                  <DropdownMenu>
+                    {shopData.map((category, idx) => (
+                      <DropdownCategory
+                        key={idx}
+                        title={category.title}
+                        items={category.items}
+                      />
+                    ))}
+                  </DropdownMenu>
+                </div>
 
-                {showCurrency && (
-                  <div className="absolute top-full mt-2 right-0 bg-white shadow-md p-3 z-50 w-40">
-                    {currencies.map((currency) => (
-                      <button
-                        key={currency.code}
-                        className="block w-full text-left px-2 py-2 hover:bg-[#f9f5f0] text-[#5d4037] transition-colors text-lg font-medium"
-                        onClick={() => handleCurrencySelect(currency)}
+                <div className="relative group">
+                  <Link
+                    to="/collections"
+                    className="hover:text-[#8b5e3c] flex items-center transition-colors"
+                  >
+                    COLLECTIONS{" "}
+                    <span className="ml-1 transition-transform duration-300 group-hover:rotate-180">
+                      <SlArrowDown size={16} />
+                    </span>
+                  </Link>
+                  <DropdownMenu>
+                    {collectionsData.map((category, idx) => (
+                      <DropdownCategory
+                        key={idx}
+                        title={category.title}
+                        items={category.items}
+                      />
+                    ))}
+                  </DropdownMenu>
+                </div>
+              </div>
+
+              <div className="absolute left-1/2 transform -translate-x-1/2 md:static md:transform-none md:left-auto lg:absolute lg:left-1/2 lg:transform lg:-translate-x-1/2">
+                <Link
+                  to="/"
+                  className="hover:opacity-90 transition-opacity"
+                  onClick={handleLogoClick}
+                >
+                  <img
+                    src="/katan.png"
+                    alt="KATAN"
+                    className="h-16 w-auto md:h-23 md:w-39 object-contain"
+                  />
+                </Link>
+              </div>
+
+              <div className="hidden md:flex space-x-8 text-black uppercase tracking-wide text-lg font-bold mr-34 ">
+                {!scrolled ? (
+                  <>
+                    <div className="relative group">
+                      <Link
+                        to="/fabrics"
+                        className="hover:text-[#8b5e3c] flex items-center transition-colors"
                       >
-                        <span className="text-xl">{currency.symbol}</span> -
-                        <span className="text-xl font-semibold">
-                          {" "}
-                          {currency.code}
+                        FABRIC{" "}
+                        <span className="ml-1 transition-transform duration-300 group-hover:rotate-180">
+                          <SlArrowDown size={16} />
+                        </span>
+                      </Link>
+                      <DropdownMenu align="right">
+                        {fabricData.map((category, idx) =>
+                          category.title ? (
+                            <DropdownCategory
+                              key={idx}
+                              title={category.title}
+                              items={category.items}
+                            />
+                          ) : null
+                        )}
+                      </DropdownMenu>
+                    </div>
+
+                    <div className="relative group">
+                      <Link
+                        to="/about"
+                        className="hover:text-[#8b5e3c] flex items-center transition-colors"
+                      >
+                        ABOUT US{" "}
+                        <span className="ml-1 transition-transform duration-300 group-hover:rotate-180">
+                          <SlArrowDown size={16} />
+                        </span>
+                      </Link>
+                      <DropdownMenu align="right">
+                        <DropdownCategory
+                          title="Our Story"
+                          items={[
+                            { name: "Story", link: "/about/story" },
+                            { name: "Our-Heritage", link: "/about/heritage" },
+                            { name: "Our-Craftmanship", link: "/about/craft" },
+                            { name: "About-Us", link: "/about" },
+                          ]}
+                        />
+                      </DropdownMenu>
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex space-x-6 text-black">
+                    <div
+                      className="flex items-center relative"
+                      ref={currencyRef}
+                    >
+                      <button
+                        className="flex items-center hover:text-[#8b5e3c] transition-colors"
+                        onClick={handleCurrencyClick}
+                      >
+                        <span className="flex text-1xl items-center text-base">
+                          {selectedCurrency.symbol}
+                          <span className="ml-1 text-1xl">▼</span>
                         </span>
                       </button>
-                    ))}
+
+                      {showCurrency && (
+                        <div className="absolute top-full mt-2 right-0 bg-white shadow-md p-2 z-50 w-36">
+                          {currencies.map((currency) => (
+                            <button
+                              key={currency.code}
+                              className="block w-full text-left px-2 py-1.5 hover:bg-[#f9f5f0] text-[#5d4037] transition-colors"
+                              onClick={() => handleCurrencySelect(currency)}
+                            >
+                              {currency.symbol} - {currency.code}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    <Link
+                      to="/search"
+                      className="flex items-center hover:text-[#8b5e3c] transition-colors"
+                    >
+                      <FiSearch size={22} />
+                    </Link>
+
+                    <Link
+                      to="/login"
+                      className="flex items-center hover:text-[#8b5e3c] transition-colors"
+                    >
+                      <FiUser size={22} />
+                    </Link>
+
+                    <Link
+                      to="/wishlist"
+                      className="flex items-center hover:text-[#8b5e3c] transition-colors"
+                    >
+                      <FiHeart size={22} />
+                    </Link>
+
+                    <Link
+                      to="/cart"
+                      className="flex items-center hover:text-[#8b5e3c] transition-colors"
+                    >
+                      <div className="relative">
+                        <FiShoppingCart size={25} />
+                        {totalItems > 0 && (
+                          <span className="absolute -top-2 -right-2 bg-[#c98a5e] text-white text-xs font-bold px-1.5 rounded-full">
+                            {totalItems}
+                          </span>
+                        )}
+                      </div>
+                    </Link>
                   </div>
                 )}
               </div>
-
-              <Link
-                to="/search"
-                className="hidden md:flex items-center hover:text-[#8b5e3c] transition-colors"
-              >
-                <FiSearch size={23} />
-              </Link>
-
-              <Link
-                to="/login"
-                className="hidden md:flex items-center hover:text-[#8b5e3c] transition-colors"
-              >
-                <FiUser size={23} />
-              </Link>
-
-              <Link
-                to="/wishlist"
-                className="hidden md:flex items-center hover:text-[#8b5e3c] transition-colors"
-              >
-                <FiHeart size={23} />
-              </Link>
-
-              <Link
-                to="/cart"
-                className="hidden md:flex items-center hover:text-[#8b5e3c] transition-colors"
-              >
-                <div className="relative">
-                  <FiShoppingCart size={25} />
-                  {totalItems > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-[#c98a5e] text-white text-xs font-bold px-1.5 rounded-full">
-                      {totalItems}
-                    </span>
-                  )}
-                </div>
-              </Link>
             </div>
           </div>
-        )}
 
-        <div
-          className={`w-full bg-white border-t border-b border-gray-200 pt-2 pb-8 md:py-10 px-2 md:px-6 
-          ${
-            scrolled
-              ? "fixed top-0 left-0 shadow-md md:z-50 transition-all duration-300"
-              : ""
-          }`}
-        >
-          <div className="relative flex justify-between items-center px-20">
-            <div className="hidden md:flex space-x-8 text-black uppercase tracking-wide text-lg font-bold ml-24 ">
-              <div className="relative group">
-                <Link
-                  to="/"
-                  className="hover:text-[#8b5e3c] flex items-center transition-colors"
-                >
-                  SHOP{" "}
-                  <span className="ml-1 transition-transform duration-300 group-hover:rotate-180">
-                    <SlArrowDown size={16} />
-                  </span>
-                </Link>
-                <DropdownMenu>
-                  {shopData.map((category, idx) => (
-                    <DropdownCategory
-                      key={idx}
-                      title={category.title}
-                      items={category.items}
-                    />
-                  ))}
-                </DropdownMenu>
-              </div>
-
-              <div className="relative group">
-                <Link
-                  to="/collections"
-                  className="hover:text-[#8b5e3c] flex items-center transition-colors"
-                >
-                  COLLECTIONS{" "}
-                  <span className="ml-1 transition-transform duration-300 group-hover:rotate-180">
-                    <SlArrowDown size={16} />
-                  </span>
-                </Link>
-                <DropdownMenu>
-                  {collectionsData.map((category, idx) => (
-                    <DropdownCategory
-                      key={idx}
-                      title={category.title}
-                      items={category.items}
-                    />
-                  ))}
-                </DropdownMenu>
-              </div>
-            </div>
-
-            <div className="absolute left-1/2 transform -translate-x-1/2 md:static md:transform-none md:left-auto lg:absolute lg:left-1/2 lg:transform lg:-translate-x-1/2">
-              <Link
-                to="/"
-                className="hover:opacity-90 transition-opacity"
-                onClick={handleLogoClick}
-              >
-                <img
-                  src="/katan.png"
-                  alt="KATAN"
-                  className="h-16 w-auto md:h-23 md:w-39 object-contain"
-                />
-              </Link>
-            </div>
-
-            <div className="hidden md:flex space-x-8 text-black uppercase tracking-wide text-lg font-bold mr-34 ">
-              {!scrolled ? (
-                <>
-                  <div className="relative group">
-                    <Link
-                      to="/fabrics"
-                      className="hover:text-[#8b5e3c] flex items-center transition-colors"
-                    >
-                      FABRIC{" "}
-                      <span className="ml-1 transition-transform duration-300 group-hover:rotate-180">
-                        <SlArrowDown size={16} />
-                      </span>
-                    </Link>
-                    <DropdownMenu align="right">
-                      {fabricData.map((category, idx) =>
-                        category.title ? (
-                          <DropdownCategory
-                            key={idx}
-                            title={category.title}
-                            items={category.items}
-                          />
-                        ) : null
-                      )}
-                    </DropdownMenu>
-                  </div>
-
-                  <div className="relative group">
-                    <Link
-                      to="/about"
-                      className="hover:text-[#8b5e3c] flex items-center transition-colors"
-                    >
-                      ABOUT US{" "}
-                      <span className="ml-1 transition-transform duration-300 group-hover:rotate-180">
-                        <SlArrowDown size={16} />
-                      </span>
-                    </Link>
-                    <DropdownMenu align="right">
-                      <DropdownCategory
-                        title="Our Story"
-                        items={[
-                          { name: "Story", link: "/about/story" },
-                          { name: "Our-Heritage", link: "/about/heritage" },
-                          { name: "Our-Craftmanship", link: "/about/craft" },
-                          { name: "About-Us", link: "/about" },
-                        ]}
-                      />
-                    </DropdownMenu>
-                  </div>
-                </>
-              ) : (
-                <div className="flex space-x-6 text-black">
-                  <div className="flex items-center relative" ref={currencyRef}>
-                    <button
-                      className="flex items-center hover:text-[#8b5e3c] transition-colors"
-                      onClick={handleCurrencyClick}
-                    >
-                      <span className="flex text-1xl items-center text-base">
-                        {selectedCurrency.symbol}
-                        <span className="ml-1 text-1xl">▼</span>
-                      </span>
-                    </button>
-
-                    {showCurrency && (
-                      <div className="absolute top-full mt-2 right-0 bg-white shadow-md p-2 z-50 w-36">
-                        {currencies.map((currency) => (
-                          <button
-                            key={currency.code}
-                            className="block w-full text-left px-2 py-1.5 hover:bg-[#f9f5f0] text-[#5d4037] transition-colors"
-                            onClick={() => handleCurrencySelect(currency)}
-                          >
-                            {currency.symbol} - {currency.code}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <Link
-                    to="/search"
-                    className="flex items-center hover:text-[#8b5e3c] transition-colors"
-                  >
-                    <FiSearch size={22} />
-                  </Link>
-
-                  <Link
-                    to="/login"
-                    className="flex items-center hover:text-[#8b5e3c] transition-colors"
-                  >
-                    <FiUser size={22} />
-                  </Link>
-
-                  <Link
-                    to="/wishlist"
-                    className="flex items-center hover:text-[#8b5e3c] transition-colors"
-                  >
-                    <FiHeart size={22} />
-                  </Link>
-
-                  <Link
-                    to="/cart"
-                    className="flex items-center hover:text-[#8b5e3c] transition-colors"
-                  >
-                    <div className="relative">
-                      <FiShoppingCart size={25} />
-                      {totalItems > 0 && (
-                        <span className="absolute -top-2 -right-2 bg-[#c98a5e] text-white text-xs font-bold px-1.5 rounded-full">
-                          {totalItems}
-                        </span>
-                      )}
-                    </div>
-                  </Link>
-                </div>
-              )}
-            </div>
-          </div>
+          {/* Add a spacer div when navbar is fixed to prevent content jump */}
+          {scrolled && <div className="h-28 md:h-32"></div>}
         </div>
-
-        {/* Add a spacer div when navbar is fixed to prevent content jump */}
-        {scrolled && <div className="h-28 md:h-32"></div>}
       </div>
     </>
   );
