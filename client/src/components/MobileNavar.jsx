@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import {
-  FaSearch,
-  FaUser,
-  FaHeart,
-  FaShoppingCart,
-  FaEnvelope,
-  FaPhone,
-} from "react-icons/fa";
+import { FaSearch, FaEnvelope, FaPhone } from "react-icons/fa";
+import { FiSearch, FiUser, FiHeart, FiShoppingCart } from "react-icons/fi";
 import { useCart } from "../context/CartContext";
 import { useCurrency } from "../context/currencyContext";
 
@@ -111,7 +105,7 @@ const MobileNavbar = ({
             className="text-black hover:text-[#8b5e3c] transition-all duration-300"
             aria-label="Search"
           >
-            <FaSearch size={18} />
+            <FiSearch size={18} />
           </Link>
           <Link
             to="/cart"
@@ -119,7 +113,7 @@ const MobileNavbar = ({
             aria-label="Cart"
           >
             <div className="relative">
-              <FaShoppingCart size={20} />
+              <FiShoppingCart size={20} />
               {totalItems > 0 && (
                 <span className="absolute -top-2 -right-2 bg-[#8b5e3c] text-white text-xs font-medium px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
                   {totalItems}
@@ -407,7 +401,7 @@ const MobileNavbar = ({
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <div className="w-10 h-10 rounded-full bg-[#f5f0e8] flex items-center justify-center mb-1">
-                  <FaUser size={15} />
+                  <FiUser size={15} />
                 </div>
                 <span className="text-xs mt-1 font-medium">Account</span>
               </Link>
@@ -417,7 +411,7 @@ const MobileNavbar = ({
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <div className="w-10 h-10 rounded-full bg-[#f5f0e8] flex items-center justify-center mb-1">
-                  <FaHeart size={15} />
+                  <FiHeart size={15} />
                 </div>
                 <span className="text-xs mt-1 font-medium">Wishlist</span>
               </Link>
@@ -427,7 +421,7 @@ const MobileNavbar = ({
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <div className="w-10 h-10 rounded-full bg-[#f5f0e8] flex items-center justify-center mb-1 relative">
-                  <FaShoppingCart size={15} />
+                  <FiShoppingCart size={15} />
                   {totalItems > 0 && (
                     <span className="absolute -top-1 -right-1 bg-[#8b5e3c] text-white text-xs font-medium w-5 h-5 flex items-center justify-center rounded-full">
                       {totalItems}
@@ -447,7 +441,7 @@ const MobileNavbar = ({
             className="flex items-center justify-center bg-black text-white py-3 px-4 rounded-md w-full hover:bg-[#7a4d2f] transition-all duration-300 font-medium shadow-md"
             onClick={() => setMobileMenuOpen(false)}
           >
-            <FaShoppingCart size={16} className="mr-2" />
+            <FiShoppingCart size={16} className="mr-2" />
             View Cart
           </Link>
         </div>
