@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -68,6 +68,18 @@ const PageWrapper = ({ children }) => {
   );
 };
 
+// ScrollToTop Component
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    // Scroll to the top of the page on route change
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
+
 function AppContent() {
   const location = useLocation();
 
@@ -75,6 +87,9 @@ function AppContent() {
     <>
       <Navbar />
       <Toaster position="top-right" reverseOrder={false} />
+
+      {/* Add ScrollToTop here */}
+      <ScrollToTop />
 
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
