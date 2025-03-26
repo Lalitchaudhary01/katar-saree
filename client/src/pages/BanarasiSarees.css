@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+.font-cardo {
+  font-family: 'Cardo', serif;
+}
+
+.font-playfair {
+  font-family: 'Playfair Display', serif;
+}
+
+.card-hover {
+  transition: all 0.4s ease-in-out;
+}
+
+.card-hover:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.image-zoom {
+  transition: transform 0.7s ease;
+}
+
+.image-zoom:hover {
+  transform: scale(1.07);
+}
+
+.price-tag {
+  position: relative;
+  display: inline-block;
+}
+
+.price-tag:after {
+  content: '';
+  position: absolute;
+  height: 1px;
+  width: 100%;
+  background-color: #000000;
+  bottom: -2px;
+  left: 0;
+}
+
+.discount-badge {
+  background: linear-gradient(135deg, #000000 0%, #333333 100%);
+}
+
+.wishlist-btn {
+  transition: all 0.3s ease;
+}
+
+.wishlist-btn:hover {
+  transform: scale(1.15);
+}
+
+.wishlist-btn.active {
+  color: #FF3B30;
+}
+
+/* Custom range slider styling */
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 3px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  background: #000;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+input[type=range]::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  background: #000;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+/* Custom checkbox styling */
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+.custom-checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  height: 18px;
+  width: 18px;
+  background-color: #fff;
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-checkbox input:checked ~ .checkmark {
+  background-color: #000;
+  border-color: #000;
+}
+
+.checkmark:after {
+  content: "";
+  display: none;
+}
+
+.custom-checkbox input:checked ~ .checkmark:after {
+  display: block;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}

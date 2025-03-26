@@ -6,6 +6,7 @@ import { useWishlist } from "../context/WishlistContext";
 import collections from "../assets/product/CollectionData";
 import newArrivals from "../assets/product/NewArrival";
 import silkSarees from "../assets/product/SilkSaree";
+import banarasiProducts from "../assets/product/BanarasiProduct";
 import { toast } from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -32,12 +33,15 @@ const CollectionDetails = () => {
   const { selectedCurrency, convertPrice, formatPrice } = useCurrency();
   const navigate = useNavigate();
 
-  const numericId = Number(id);
+  // Convert id to string for Banarasi products and number for other collections
+  const productId = isNaN(Number(id)) ? id : Number(id);
 
+  // Expanded search across all product collections
   const collection =
-    collections.find((item) => item.id === numericId) ||
-    newArrivals.find((item) => item.id === numericId) ||
-    silkSarees.find((item) => item.id === numericId);
+    collections.find((item) => item.id === productId) ||
+    newArrivals.find((item) => item.id === productId) ||
+    silkSarees.find((item) => item.id === productId) ||
+    banarasiProducts.find((item) => item.id === productId);
 
   const [selectedColor, setSelectedColor] = useState(null);
   const [mainImage, setMainImage] = useState(collection?.images[0]);
@@ -48,19 +52,7 @@ const CollectionDetails = () => {
   const [touchStartX, setTouchStartX] = useState(null);
   const [touchEndX, setTouchEndX] = useState(null);
 
-  // Get recommended products
-  const getRecommendedProducts = () => {
-    const allProducts = [...collections, ...newArrivals, ...silkSarees];
-    const filteredProducts = allProducts.filter(
-      (item) => item.id !== numericId
-    );
-    return filteredProducts.sort(() => 0.5 - Math.random());
-  };
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
+  // Handle touch events for image swiping
   const handleTouchStart = (e) => {
     setTouchStartX(e.touches[0].clientX);
   };
@@ -90,6 +82,56 @@ const CollectionDetails = () => {
     setTouchEndX(null);
   };
 
+  // Modified to include all product collections
+  const getRecommendedProducts = () => {
+    const allProducts = [
+      ...collections,
+      ...newArrivals,
+      ...silkSarees,
+      ...banarasiProducts,
+    ];
+    const filteredProducts = allProducts.filter(
+      (item) => item.id !== productId
+    );
+    return filteredProducts.sort(() => 0.5 - Math.random()).slice(0, 6);
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  // Modify color handling to support both named and hex colors
+  const processColor = (color) => {
+    // If color is a hex code, convert to name or use hex
+    if (color.startsWith("#")) {
+      const colorMap = {
+        "#8B0000": "Maroon",
+        "#FFD700": "Gold",
+        "#228B22": "Green",
+        "#800080": "Purple",
+        "#C0C0C0": "Silver",
+        "#000080": "Navy",
+        "#FF4500": "Orange Red",
+        "#4169E1": "Royal Blue",
+        "#000000": "Black",
+        "#FFDAB9": "Peach",
+        "#E6E6FA": "Lavender",
+        "#87CEFA": "Light Blue",
+        "#CD853F": "Peru",
+        "#A0522D": "Sienna",
+        "#D2B48C": "Tan",
+        "#556B2F": "Dark Olive Green",
+        "#8FBC8F": "Dark Sea Green",
+        "#2E8B57": "Sea Green",
+      };
+      return colorMap[color] || color;
+    }
+    return color;
+  };
+
+  // Modify colors array processing
+  const processedColors = collection?.colors?.map(processColor) || [];
+
   // Handle product not found
   if (!collection) {
     return (
@@ -105,7 +147,10 @@ const CollectionDetails = () => {
           <p className="text-gray-800 text-xl">
             The saree you're looking for is no longer available.
           </p>
-          <button className="mt-8 bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-900 transition font-light text-lg tracking-wide">
+          <button
+            onClick={() => navigate("/")}
+            className="mt-8 bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-900 transition font-light text-lg tracking-wide"
+          >
             Continue Shopping
           </button>
         </motion.div>
@@ -113,32 +158,23 @@ const CollectionDetails = () => {
     );
   }
 
-  const handleAddToCart = () => {
-    if (!selectedColor) {
-      toast.error("Please select a color before adding to cart!");
-      return;
+  // Handle double-click zoom
+  const handleDoubleClickZoom = (e) => {
+    const image = e.currentTarget;
+    if (!zoomed) {
+      const { left, top, width, height } = image.getBoundingClientRect();
+      const x = ((e.clientX - left) / width) * 100;
+      const y = ((e.clientY - top) / height) * 100;
+
+      image.style.transformOrigin = `${x}% ${y}%`;
+      image.style.transform = "scale(2.5)";
+    } else {
+      image.style.transform = "scale(1)";
     }
-
-    const cartItem = {
-      id: collection.id,
-      title: collection.title,
-      image: mainImage,
-      price: collection.discountPrice,
-      color: selectedColor,
-      quantity: quantity,
-      stock: collection.stock,
-      details: {
-        color: collection.details?.color || selectedColor,
-        technique: collection.details?.technique || "",
-        fabric: collection.details?.fabric || "",
-        speciality: collection.details?.speciality || "",
-      },
-    };
-
-    addToCart(cartItem);
-    toast.success(`${collection.title} added to your cart!`);
+    setZoomed(!zoomed);
   };
 
+  // Wishlist toggle handler
   const handleWishlistToggle = () => {
     const wishlistItem = {
       id: collection.id,
@@ -160,6 +196,34 @@ const CollectionDetails = () => {
     }
   };
 
+  // Add to cart handler
+  const handleAddToCart = () => {
+    if (!selectedColor) {
+      toast.error("Please select a color before adding to cart!");
+      return;
+    }
+
+    const cartItem = {
+      id: collection.id,
+      title: collection.title,
+      image: mainImage,
+      price: collection.discountPrice,
+      color: selectedColor,
+      quantity: quantity,
+      stock: collection.stock || 10, // Default stock if not provided
+      details: {
+        color: collection.details?.color || selectedColor,
+        technique: collection.details?.technique || "",
+        fabric: collection.details?.fabric || collection.material || "",
+        speciality: collection.details?.speciality || collection.desc || "",
+      },
+    };
+
+    addToCart(cartItem);
+    toast.success(`${collection.title} added to your cart!`);
+  };
+
+  // Buy now handler
   const handleBuyNow = () => {
     if (!selectedColor) {
       toast.error("Please select a color before proceeding to purchase!");
@@ -174,21 +238,6 @@ const CollectionDetails = () => {
         amount: collection.discountPrice * quantity,
       },
     });
-  };
-
-  const handleDoubleClickZoom = (e) => {
-    const image = e.currentTarget;
-    if (!zoomed) {
-      const { left, top, width, height } = image.getBoundingClientRect();
-      const x = ((e.clientX - left) / width) * 100;
-      const y = ((e.clientY - top) / height) * 100;
-
-      image.style.transformOrigin = `${x}% ${y}%`;
-      image.style.transform = "scale(2.5)";
-    } else {
-      image.style.transform = "scale(1)";
-    }
-    setZoomed(!zoomed);
   };
 
   // Calculate discount percentage
@@ -213,13 +262,19 @@ const CollectionDetails = () => {
   return (
     <div className="bg-white py-12 md:py-16 font-[Garamond]">
       <div className="container mx-auto px-4 max-w-6xl">
-        {/* Breadcrumb - Enhanced for mobile */}
+        {/* Breadcrumb */}
         <div className="text-sm md:text-base text-black mb-6 md:mb-8 flex items-center overflow-x-auto whitespace-nowrap pb-2">
-          <span className="hover:underline cursor-pointer transition-colors duration-300">
+          <span
+            className="hover:underline cursor-pointer transition-colors duration-300"
+            onClick={() => navigate("/")}
+          >
             Home
           </span>
           <FaChevronRight className="mx-2 text-xs text-gray-400" />
-          <span className="hover:underline cursor-pointer transition-colors duration-300">
+          <span
+            className="hover:underline cursor-pointer transition-colors duration-300"
+            onClick={() => navigate("/collections")}
+          >
             Collections
           </span>
           <FaChevronRight className="mx-2 text-xs text-gray-400" />
@@ -235,11 +290,11 @@ const CollectionDetails = () => {
           className="bg-white shadow-lg overflow-hidden rounded-2xl border border-gray-100"
         >
           <div className="flex flex-col lg:flex-row">
-            {/* Left side - Images - Improved for mobile */}
+            {/* Left side - Images */}
             <div className="lg:w-3/5 p-4 md:p-8">
               <div className="sticky top-16 md:top-24">
                 <div className="flex flex-col-reverse md:flex-row gap-4 md:gap-6">
-                  {/* Thumbnails - Horizontal scroll on mobile, vertical on desktop */}
+                  {/* Thumbnails */}
                   <div className="flex flex-row md:flex-col gap-3 mt-4 md:mt-0 overflow-x-auto pb-2 md:pb-0 flex-shrink-0 max-h-80 md:max-h-full scrollbar-hide">
                     {collection.images.slice(0, 5).map((img, index) => (
                       <motion.div
@@ -269,7 +324,7 @@ const CollectionDetails = () => {
                     ))}
                   </div>
 
-                  {/* Main Image with fade animation - FIXED HEIGHT ISSUE HERE */}
+                  {/* Main Image */}
                   <div className="relative flex-1 overflow-hidden rounded-xl">
                     <div className="group relative">
                       <AnimatePresence mode="wait">
@@ -284,6 +339,7 @@ const CollectionDetails = () => {
                           onTouchMove={handleTouchMove}
                           onTouchEnd={handleTouchEnd}
                         >
+                          {/* Discount Badge */}
                           <div className="absolute top-3 left-3 md:top-6 md:left-6 z-10">
                             {discountPercentage > 0 && (
                               <motion.span
@@ -303,6 +359,8 @@ const CollectionDetails = () => {
                             alt={collection.title}
                             className="w-full h-full object-contain cursor-zoom-in transition-transform duration-300 ease-out"
                             onDoubleClick={handleDoubleClickZoom}
+                            onMouseEnter={() => setShowZoom(true)}
+                            onMouseLeave={() => setShowZoom(false)}
                           />
 
                           {/* Zoom Overlay */}
@@ -362,7 +420,7 @@ const CollectionDetails = () => {
               </div>
             </div>
 
-            {/* Right side - Details - Enhanced for mobile */}
+            {/* Right side - Details */}
             <div className="lg:w-2/5 p-6 md:p-10 border-t lg:border-t-0 lg:border-l border-gray-100">
               {/* Basic product info */}
               <div>
@@ -433,10 +491,8 @@ const CollectionDetails = () => {
                   )}
                 </motion.div>
               </div>
-
               <div className="h-px bg-gray-100 my-6 md:my-8"></div>
-
-              {/* Colors - More touch-friendly on mobile */}
+              {/* Color Selection Section */}
               <motion.div
                 className="p-4 md:p-5 rounded-xl shadow-sm bg-gray-50 mb-5 md:mb-6"
                 initial={{ opacity: 0, y: 10 }}
@@ -452,28 +508,36 @@ const CollectionDetails = () => {
                   </span>
                 </div>
                 <div className="flex flex-wrap gap-4">
-                  {collection.colors.map((color, index) => (
-                    <motion.button
-                      key={index}
-                      className={`relative w-8 h-8 md:w-9 md:h-9 rounded-full transition-all ${
-                        selectedColor === color
-                          ? "ring-2 ring-offset-2 ring-black"
-                          : "ring-1 ring-gray-200"
-                      }`}
-                      onClick={() => setSelectedColor(color)}
-                      whileHover={{ scale: 1.1, y: -2 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <span
-                        className="absolute inset-0 rounded-full"
-                        style={{ backgroundColor: color }}
-                      ></span>
-                    </motion.button>
-                  ))}
+                  {processedColors.map((color, index) => {
+                    // Find the original color (hex or name) for background
+                    const originalColor = collection.colors[index];
+                    return (
+                      <motion.button
+                        key={index}
+                        className={`relative w-8 h-8 md:w-9 md:h-9 rounded-full transition-all ${
+                          selectedColor === color
+                            ? "ring-2 ring-offset-2 ring-black"
+                            : "ring-1 ring-gray-200"
+                        }`}
+                        onClick={() => setSelectedColor(color)}
+                        whileHover={{ scale: 1.1, y: -2 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <span
+                          className="absolute inset-0 rounded-full"
+                          style={{
+                            backgroundColor: originalColor.startsWith("#")
+                              ? originalColor
+                              : color,
+                          }}
+                        ></span>
+                      </motion.button>
+                    );
+                  })}
                 </div>
               </motion.div>
 
-              {/* Quantity - Larger touch targets for mobile */}
+              {/* Quantity Selection */}
               <motion.div
                 className="mb-5 md:mb-6"
                 initial={{ opacity: 0, y: 10 }}
@@ -506,7 +570,7 @@ const CollectionDetails = () => {
                 </div>
               </motion.div>
 
-              {/* Buttons - Better mobile layout */}
+              {/* Action Buttons */}
               <motion.div
                 className="flex gap-4 mt-6 md:mt-8"
                 initial={{ opacity: 0, y: 10 }}

@@ -32,7 +32,7 @@ import { WishlistProvider } from "./context/WishlistContext";
 import Wishlist from "./headers/Wishlist";
 import AuthPage from "./headers/AuthPage";
 import Testimonials from "./components/Testimonials";
-import ServiceHighlights from "./components/ServiceHighlights";
+// import ServiceHighlights from "./components/ServiceHighlights";
 import { CurrencyProvider } from "./context/currencyContext";
 import Blog from "./components/Blog";
 import BlogPostDetails from "./components/BlogPostDetails";
@@ -82,7 +82,7 @@ function AppContent() {
                 <Home />
 
                 <FeaturedCollections />
-                <ServiceHighlights />
+                {/* <ServiceHighlights /> */}
                 <NewArrivals />
                 <VideoCallSection />
                 <Testimonials />
@@ -117,7 +117,7 @@ function AppContent() {
             }
           />
           <Route
-            path="/collection/:id" 
+            path="/collection/:id"
             element={
               <PageWrapper>
                 <CollectionDetails />

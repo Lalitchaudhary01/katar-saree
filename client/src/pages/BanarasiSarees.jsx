@@ -1,167 +1,32 @@
-import { useState, useEffect } from "react";
-import { FaEye, FaShoppingCart, FaHeart, FaFilter } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import {
+  FaEye,
+  FaShoppingCart,
+  FaHeart,
+  FaRegHeart,
+  FaFilter,
+} from "react-icons/fa";
+
+// Context Hooks
 import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
 import { useCurrency } from "../context/currencyContext";
-import { toast } from "react-hot-toast";
 
-// Sample product data - replace with your actual data
-const banarasiProducts = [
-  {
-    id: "bs001",
-    title: "Royal Banarasi Silk",
-    desc: "Exquisite pure silk Banarasi saree with intricate gold zari work. Traditional craftsmanship meets contemporary design.",
-    images: [
-      "/images/banarasi/royal-silk-1.jpg",
-      "/images/banarasi/royal-silk-2.jpg",
-      "/images/banarasi/royal-silk-3.jpg",
-      "/images/banarasi/royal-silk-4.jpg",
-    ],
-    originalPrice: 18500,
-    discountPrice: 15999,
-    discount: "13% OFF",
-    colors: ["#8B0000", "#FFD700", "#228B22"],
-    category: "Silk",
-    tags: ["Wedding", "Festive", "Premium"],
-    material: "Pure Silk",
-  },
-  {
-    id: "bs002",
-    title: "Katan Silk Banarasi",
-    desc: "Luxurious Katan silk Banarasi saree with traditional motifs and intricate border work.",
-    images: [
-      "/images/banarasi/katan-silk-1.jpg",
-      "/images/banarasi/katan-silk-2.jpg",
-      "/images/banarasi/katan-silk-3.jpg",
-      "/images/banarasi/katan-silk-4.jpg",
-    ],
-    originalPrice: 15500,
-    discountPrice: 12999,
-    discount: "16% OFF",
-    colors: ["#800080", "#C0C0C0", "#000080"],
-    category: "Silk",
-    tags: ["Wedding", "Premium"],
-    material: "Katan Silk",
-  },
-  {
-    id: "bs003",
-    title: "Georgette Banarasi",
-    desc: "Lightweight Georgette Banarasi saree with modern patterns perfect for parties and formal occasions.",
-    images: [
-      "/images/banarasi/georgette-1.jpg",
-      "/images/banarasi/georgette-2.jpg",
-      "/images/banarasi/georgette-3.jpg",
-      "/images/banarasi/georgette-4.jpg",
-    ],
-    originalPrice: 9500,
-    discountPrice: 7999,
-    discount: "16% OFF",
-    colors: ["#FF4500", "#4169E1", "#000000"],
-    category: "Georgette",
-    tags: ["Party", "Casual"],
-    material: "Georgette",
-  },
-  {
-    id: "bs004",
-    title: "Organza Banarasi",
-    desc: "Sheer Organza Banarasi saree with delicate embroidery and contemporary design elements.",
-    images: [
-      "/images/banarasi/organza-1.jpg",
-      "/images/banarasi/organza-2.jpg",
-      "/images/banarasi/organza-3.jpg",
-      "/images/banarasi/organza-4.jpg",
-    ],
-    originalPrice: 12500,
-    discountPrice: 9999,
-    discount: "20% OFF",
-    colors: ["#FFDAB9", "#E6E6FA", "#87CEFA"],
-    category: "Organza",
-    tags: ["Party", "Premium"],
-    material: "Organza",
-  },
-  {
-    id: "bs005",
-    title: "Tussar Silk Banarasi",
-    desc: "Rich Tussar silk Banarasi saree with traditional motifs and handcrafted border work.",
-    images: [
-      "/images/banarasi/tussar-1.jpg",
-      "/images/banarasi/tussar-2.jpg",
-      "/images/banarasi/tussar-3.jpg",
-      "/images/banarasi/tussar-4.jpg",
-    ],
-    originalPrice: 13500,
-    discountPrice: 11499,
-    discount: "15% OFF",
-    colors: ["#CD853F", "#A0522D", "#D2B48C"],
-    category: "Silk",
-    tags: ["Festive", "Premium"],
-    material: "Tussar Silk",
-  },
-  {
-    id: "bs006",
-    title: "Cotton Silk Banarasi",
-    desc: "Comfortable Cotton Silk blend Banarasi saree, perfect for semi-formal occasions and daily wear.",
-    images: [
-      "/images/banarasi/cotton-silk-1.jpg",
-      "/images/banarasi/cotton-silk-2.jpg",
-      "/images/banarasi/cotton-silk-3.jpg",
-      "/images/banarasi/cotton-silk-4.jpg",
-    ],
-    originalPrice: 7500,
-    discountPrice: 5999,
-    discount: "20% OFF",
-    colors: ["#556B2F", "#8FBC8F", "#2E8B57"],
-    category: "Cotton Silk",
-    tags: ["Casual", "Daily"],
-    material: "Cotton Silk",
-  },
-  {
-    id: "bs007",
-    title: "Tissue Banarasi",
-    desc: "Lightweight Tissue Banarasi saree with reflective zari work, perfect for evening occasions.",
-    images: [
-      "/images/banarasi/tissue-1.jpg",
-      "/images/banarasi/tissue-2.jpg",
-      "/images/banarasi/tissue-3.jpg",
-      "/images/banarasi/tissue-4.jpg",
-    ],
-    originalPrice: 10500,
-    discountPrice: 8499,
-    discount: "19% OFF",
-    colors: ["#FFD700", "#C0C0C0", "#FFF8DC"],
-    category: "Tissue",
-    tags: ["Party", "Evening"],
-    material: "Tissue",
-  },
-  {
-    id: "bs008",
-    title: "Bridal Banarasi",
-    desc: "Majestic Bridal Banarasi saree with heavy gold zari work and rich embellishments, perfect for wedding ceremonies.",
-    images: [
-      "/images/banarasi/bridal-1.jpg",
-      "/images/banarasi/bridal-2.jpg",
-      "/images/banarasi/bridal-3.jpg",
-      "/images/banarasi/bridal-4.jpg",
-    ],
-    originalPrice: 25000,
-    discountPrice: 21999,
-    discount: "12% OFF",
-    colors: ["#8B0000", "#B22222", "#800000"],
-    category: "Bridal",
-    tags: ["Wedding", "Bridal", "Premium"],
-    material: "Pure Silk",
-  },
-];
+// Components
+import QuickViewModal from "../reusable/QuickView";
+
+// Product Data
+import banarasiProducts from "../assets/product/BanarasiProduct";
+
+// Styles
+import "./BanarasiSarees.css";
 
 const BanarasiSarees = () => {
   const { addToCart } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const navigate = useNavigate();
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [mainImage, setMainImage] = useState(null);
-  const [selectedColor, setSelectedColor] = useState(null);
   const { selectedCurrency, convertPrice, formatPrice } = useCurrency();
 
   // Filter states
@@ -171,6 +36,10 @@ const BanarasiSarees = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [showFilters, setShowFilters] = useState(true);
+
+  // Quick View states
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
 
   // Extract all categories and tags for filters
   const categories = [
@@ -246,162 +115,19 @@ const BanarasiSarees = () => {
     setSearchQuery("");
   };
 
-  const openModal = (product) => {
+  const openQuickView = (product) => {
     setSelectedProduct(product);
-    setMainImage(product.images[0]);
-    setSelectedColor(null);
+    setIsQuickViewOpen(true);
   };
 
-  const closeModal = () => {
+  const closeQuickView = () => {
     setSelectedProduct(null);
-  };
-
-  const handleWishlistToggle = (e, product) => {
-    e.stopPropagation();
-    toggleWishlist(product);
+    setIsQuickViewOpen(false);
   };
 
   return (
-    <section className="py-16 md:py-24 bg-[#FDFBF7]">
-      <style>
-        {`
-          @import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@400;500;600;700&display=swap');
-          
-          .font-cardo {
-            font-family: 'Cardo', serif;
-          }
-          
-          .font-playfair {
-            font-family: 'Playfair Display', serif;
-          }
-
-          .card-hover {
-            transition: all 0.4s ease-in-out;
-          }
-          
-          .card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-          }
-          
-          .image-zoom {
-            transition: transform 0.7s ease;
-          }
-          
-          .image-zoom:hover {
-            transform: scale(1.07);
-          }
-          
-          .price-tag {
-            position: relative;
-            display: inline-block;
-          }
-          
-          .price-tag:after {
-            content: '';
-            position: absolute;
-            height: 1px;
-            width: 100%;
-            background-color: #000000;
-            bottom: -2px;
-            left: 0;
-          }
-          
-          .discount-badge {
-            background: linear-gradient(135deg, #000000 0%, #333333 100%);
-          }
-
-          .wishlist-btn {
-            transition: all 0.3s ease;
-          }
-
-          .wishlist-btn:hover {
-            transform: scale(1.15);
-          }
-
-          .wishlist-btn.active {
-            color: #FF3B30;
-          }
-
-          /* Custom range slider styling */
-          input[type=range] {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 3px;
-            background: #d3d3d3;
-            outline: none;
-            opacity: 0.7;
-            -webkit-transition: .2s;
-            transition: opacity .2s;
-          }
-
-          input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 15px;
-            height: 15px;
-            background: #000;
-            cursor: pointer;
-            border-radius: 50%;
-          }
-
-          input[type=range]::-moz-range-thumb {
-            width: 15px;
-            height: 15px;
-            background: #000;
-            cursor: pointer;
-            border-radius: 50%;
-          }
-
-          /* Custom checkbox styling */
-          .custom-checkbox {
-            display: flex;
-            align-items: center;
-            margin-bottom: 0.5rem;
-            cursor: pointer;
-          }
-
-          .custom-checkbox input {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-            height: 0;
-            width: 0;
-          }
-
-          .checkmark {
-            height: 18px;
-            width: 18px;
-            background-color: #fff;
-            border: 1px solid #aaa;
-            border-radius: 3px;
-            margin-right: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-
-          .custom-checkbox input:checked ~ .checkmark {
-            background-color: #000;
-            border-color: #000;
-          }
-
-          .checkmark:after {
-            content: "";
-            display: none;
-          }
-
-          .custom-checkbox input:checked ~ .checkmark:after {
-            display: block;
-            width: 5px;
-            height: 10px;
-            border: solid white;
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
-          }
-        `}
-      </style>
-
+    <section className="py-16 md:py-24 bg-[#FDFBF7] relative">
+      {/* Header */}
       <div className="container mx-auto px-4 text-center">
         <h2 className="text-3xl md:text-5xl font-playfair font-bold text-black mb-4 tracking-wide">
           Banarasi Sarees Collection
@@ -410,7 +136,6 @@ const BanarasiSarees = () => {
           Exquisite handcrafted traditional Banarasi silks with intricate
           designs passed down through generations.
         </p>
-
         <div className="w-32 h-0.5 bg-black mx-auto"></div>
       </div>
 
@@ -443,6 +168,7 @@ const BanarasiSarees = () => {
         </div>
       </div>
 
+      {/* Main Content */}
       <div className="container mx-auto px-4 mt-8">
         <div className="flex flex-col md:flex-row gap-8">
           {/* Filters Sidebar */}
@@ -569,7 +295,7 @@ const BanarasiSarees = () => {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            openModal(product);
+                            openQuickView(product);
                           }}
                           className="px-6 py-2.5 bg-white/90 backdrop-blur-sm text-black rounded-full font-cardo tracking-wide text-sm flex items-center gap-2 hover:bg-white transition-all duration-300 shadow-lg"
                         >
@@ -579,7 +305,10 @@ const BanarasiSarees = () => {
 
                       {/* Wishlist Button */}
                       <button
-                        onClick={(e) => handleWishlistToggle(e, product)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleWishlist(product);
+                        }}
                         className={`absolute top-4 left-4 bg-white h-10 w-10 rounded-full flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 wishlist-btn ${
                           isInWishlist(product.id) ? "active" : ""
                         }`}
@@ -627,132 +356,12 @@ const BanarasiSarees = () => {
         </div>
       </div>
 
-      {/* Detailed View Sidebar with Currency Conversion */}
-      {selectedProduct && (
-        <motion.div
-          initial={{ x: "100%" }}
-          animate={{ x: 0 }}
-          exit={{ x: "100%" }}
-          transition={{ duration: 0.3 }}
-          className="fixed top-0 right-0 w-80 md:w-96 h-full bg-[#FDFBF7] shadow-lg z-50 p-6 overflow-y-auto font-cardo"
-        >
-          <button
-            className="absolute top-4 right-4 text-xl text-black hover:text-gray-700 transition-colors"
-            onClick={closeModal}
-          >
-            ✖
-          </button>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-2xl font-bold text-black font-playfair">
-              {selectedProduct.title}
-            </h3>
-            <button
-              onClick={(e) => handleWishlistToggle(e, selectedProduct)}
-              className={`wishlist-btn ${
-                isInWishlist(selectedProduct.id) ? "active" : ""
-              }`}
-            >
-              <FaHeart
-                className={`text-2xl ${
-                  isInWishlist(selectedProduct.id)
-                    ? "text-red-500"
-                    : "text-gray-500"
-                }`}
-              />
-            </button>
-          </div>
-          <div className="mt-4 flex flex-col items-center">
-            <motion.img
-              src={mainImage}
-              alt="Selected"
-              className="w-80 h-80 object-cover border rounded-lg shadow-md"
-              whileHover={{ scale: 1.05 }}
-            />
-            <div className="flex gap-3 mt-4">
-              {selectedProduct.images.slice(0, 4).map((img, index) => (
-                <motion.img
-                  key={index}
-                  src={img}
-                  alt={`Thumbnail ${index + 1}`}
-                  className={`w-16 h-16 object-cover border rounded-lg cursor-pointer hover:opacity-80 transition-opacity ${
-                    mainImage === img ? "border-2 border-black" : ""
-                  }`}
-                  onClick={() => setMainImage(img)}
-                  whileHover={{ scale: 1.1 }}
-                />
-              ))}
-            </div>
-          </div>
-          <p className="text-gray-700 mt-6 font-cardo">
-            {selectedProduct.desc}
-          </p>
-          <div className="mt-6 bg-white p-4 rounded-lg shadow-sm">
-            <div className="flex justify-between items-center">
-              <p className="text-lg">
-                <s className="text-gray-500">
-                  {selectedCurrency.symbol}
-                  {formatPrice(convertPrice(selectedProduct.originalPrice))}
-                </s>
-              </p>
-              <p className="text-xl font-bold text-black">
-                {selectedCurrency.symbol}
-                {formatPrice(convertPrice(selectedProduct.discountPrice))}
-              </p>
-            </div>
-            <div className="text-right">
-              <span className="text-sm bg-black/10 text-black px-2 py-0.5 rounded">
-                {selectedProduct.discount}
-              </span>
-            </div>
-          </div>
-
-          <div className="mt-6 text-center">
-            <p className="font-bold font-playfair text-black">Select Color:</p>
-            <div className="flex justify-center gap-3 mt-3">
-              {selectedProduct.colors?.map((color, index) => (
-                <motion.button
-                  key={index}
-                  className={`w-8 h-8 rounded-full border-2 transition-all hover:scale-105 ${
-                    selectedColor === color
-                      ? "border-black scale-110"
-                      : "border-gray-300"
-                  }`}
-                  style={{ backgroundColor: color }}
-                  onClick={() => setSelectedColor(color)}
-                  whileHover={{ scale: 1.1 }}
-                ></motion.button>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex items-center justify-center mt-8">
-            <motion.button
-              className="bg-black text-white px-8 py-3 rounded-md hover:bg-gray-900 transition-all flex items-center gap-2 font-cardo text-lg shadow-md w-full"
-              onClick={() => {
-                if (!selectedColor) {
-                  toast.error("Please select a color before adding to cart!");
-                  return;
-                }
-                addToCart({
-                  id: selectedProduct.id,
-                  title: selectedProduct.title,
-                  image: mainImage,
-                  price: selectedProduct.discountPrice,
-                  color: selectedColor,
-                  originalPriceINR: selectedProduct.discountPrice,
-                });
-                toast.success(`${selectedProduct.title} added to cart!`);
-                closeModal();
-              }}
-              disabled={!selectedColor}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <FaShoppingCart /> Add to Cart
-            </motion.button>
-          </div>
-        </motion.div>
-      )}
+      {/* Quick View Modal */}
+      <QuickViewModal
+        selectedProduct={selectedProduct}
+        isOpen={isQuickViewOpen}
+        onClose={closeQuickView}
+      />
     </section>
   );
 };
