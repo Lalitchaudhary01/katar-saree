@@ -1,13 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  FaSearch,
-  FaUser,
-  FaHeart,
-  FaShoppingCart,
-  FaEnvelope,
-  FaPhone,
-} from "react-icons/fa";
+import { FaSearch, FaEnvelope, FaPhone, FaTruck } from "react-icons/fa";
+import { FiSearch, FiUser, FiHeart, FiShoppingCart } from "react-icons/fi";
 import { SlArrowDown } from "react-icons/sl";
 import { FaWhatsapp } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
@@ -130,6 +124,10 @@ const Navbar = () => {
 
   return (
     <>
+      <div className="bg-[#f0f0f0] text-black py-2 text-center text-sm font-medium flex justify-center items-center">
+        <FaTruck className="mr-2" size={20} />
+        Free Shipping on Orders Above ₹25,000 | Flat 10% Off on First Order
+      </div>
       <div className="font-cardo text-sm antialiased">
         {/* Mobile Navbar */}
         <MobileNavbar
@@ -210,21 +208,21 @@ const Navbar = () => {
                 to="/search"
                 className="hidden md:flex items-center hover:text-[#8b5e3c] transition-colors"
               >
-                <FaSearch size={23} />
+                <FiSearch size={23} />
               </Link>
 
               <Link
                 to="/login"
                 className="hidden md:flex items-center hover:text-[#8b5e3c] transition-colors"
               >
-                <FaUser size={23} />
+                <FiUser size={23} />
               </Link>
 
               <Link
                 to="/wishlist"
                 className="hidden md:flex items-center hover:text-[#8b5e3c] transition-colors"
               >
-                <FaHeart size={23} />
+                <FiHeart size={23} />
               </Link>
 
               <Link
@@ -232,7 +230,7 @@ const Navbar = () => {
                 className="hidden md:flex items-center hover:text-[#8b5e3c] transition-colors"
               >
                 <div className="relative">
-                  <FaShoppingCart size={25} />
+                  <FiShoppingCart size={25} />
                   {totalItems > 0 && (
                     <span className="absolute -top-2 -right-2 bg-[#c98a5e] text-white text-xs font-bold px-1.5 rounded-full">
                       {totalItems}
@@ -391,21 +389,21 @@ const Navbar = () => {
                     to="/search"
                     className="flex items-center hover:text-[#8b5e3c] transition-colors"
                   >
-                    <FaSearch size={22} />
+                    <FiSearch size={22} />
                   </Link>
 
                   <Link
                     to="/login"
                     className="flex items-center hover:text-[#8b5e3c] transition-colors"
                   >
-                    <FaUser size={22} />
+                    <FiUser size={22} />
                   </Link>
 
                   <Link
                     to="/wishlist"
                     className="flex items-center hover:text-[#8b5e3c] transition-colors"
                   >
-                    <FaHeart size={22} />
+                    <FiHeart size={22} />
                   </Link>
 
                   <Link
@@ -413,7 +411,7 @@ const Navbar = () => {
                     className="flex items-center hover:text-[#8b5e3c] transition-colors"
                   >
                     <div className="relative">
-                      <FaShoppingCart size={25} />
+                      <FiShoppingCart size={25} />
                       {totalItems > 0 && (
                         <span className="absolute -top-2 -right-2 bg-[#c98a5e] text-white text-xs font-bold px-1.5 rounded-full">
                           {totalItems}
