@@ -23,7 +23,10 @@ import banarasiProducts from "../assets/product/BanarasiProduct";
 // Styles
 import "./BanarasiSarees.css";
 
-const BanarasiSarees = () => {
+const BanarasiSarees = ({
+  initialProducts = banarasiProducts,
+  pageTitle = "Banarasi Sarees Collection",
+}) => {
   const { addToCart } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const navigate = useNavigate();
@@ -31,7 +34,7 @@ const BanarasiSarees = () => {
 
   // Filter states
   const [priceRange, setPriceRange] = useState([0, 25000]);
-  const [filteredProducts, setFilteredProducts] = useState(banarasiProducts);
+  const [filteredProducts, setFilteredProducts] = useState(initialProducts);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
@@ -43,15 +46,13 @@ const BanarasiSarees = () => {
 
   // Extract all categories and tags for filters
   const categories = [
-    ...new Set(banarasiProducts.map((product) => product.category)),
+    ...new Set(initialProducts.map((product) => product.category)),
   ];
-  const tags = [
-    ...new Set(banarasiProducts.flatMap((product) => product.tags)),
-  ];
+  const tags = [...new Set(initialProducts.flatMap((product) => product.tags))];
 
   // Apply filters
   useEffect(() => {
-    let result = banarasiProducts;
+    let result = initialProducts;
 
     // Price filter
     result = result.filter(
@@ -86,7 +87,13 @@ const BanarasiSarees = () => {
     }
 
     setFilteredProducts(result);
-  }, [priceRange, selectedCategories, selectedTags, searchQuery]);
+  }, [
+    initialProducts,
+    priceRange,
+    selectedCategories,
+    selectedTags,
+    searchQuery,
+  ]);
 
   const handlePriceChange = (e, index) => {
     const newPriceRange = [...priceRange];
@@ -130,7 +137,7 @@ const BanarasiSarees = () => {
       {/* Header */}
       <div className="container mx-auto px-4 text-center">
         <h2 className="text-3xl md:text-5xl font-playfair font-bold text-black mb-4 tracking-wide">
-          Banarasi Sarees Collection
+          {pageTitle}
         </h2>
         <p className="font-cardo text-neutral-800 max-w-2xl mx-auto mb-8 text-lg">
           Exquisite handcrafted traditional Banarasi silks with intricate

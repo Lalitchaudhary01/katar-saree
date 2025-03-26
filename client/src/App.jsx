@@ -1,3 +1,4 @@
+import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -7,6 +8,8 @@ import {
 import { Toaster } from "react-hot-toast";
 import { AnimatePresence, motion } from "framer-motion";
 import "./App.css";
+
+// Import all components
 import Craftsmanship from "./components/Craftsmanship";
 import FeaturedCollections from "./components/FeaturedCollections";
 import Footer from "./components/Footer";
@@ -15,7 +18,6 @@ import Navbar, { WhatsAppButton } from "./components/Navbar";
 import NewArrivals from "./components/NewArrivals";
 import OurHeritage from "./components/OurHeritage";
 import Cart from "./components/Cart";
-import { CartProvider } from "./context/CartContext";
 import Checkout from "./components/Checkout";
 import CollectionDetails from "./components/CollectionDetails";
 import SilkSarees from "./pages/SilkSaree";
@@ -27,19 +29,20 @@ import PrivacyPolicy from "./components/policies/PrivacyPolicy";
 import ReturnPolicy from "./components/policies/ReturnPolicy";
 import ShippingPolicy from "./components/policies/ShippingPolicy";
 import TermsConditions from "./components/policies/TermsConditions";
-import TrendingSection from "./components/TrendingSection";
-import { WishlistProvider } from "./context/WishlistContext";
 import Wishlist from "./headers/Wishlist";
 import AuthPage from "./headers/AuthPage";
 import Testimonials from "./components/Testimonials";
-// import ServiceHighlights from "./components/ServiceHighlights";
-import { CurrencyProvider } from "./context/currencyContext";
 import Blog from "./components/Blog";
 import BlogPostDetails from "./components/BlogPostDetails";
 import VideoCallSection from "./components/VideoCallSection";
-import Packaging from "./components/Packaging";
-import Layout from "./context/Layout"; // Import Layout component - adjust the path as needed
 import SearchPage from "./components/SearchPage";
+import Menu from "./pages/Menu";
+
+// Context Providers
+import { CartProvider } from "./context/CartContext";
+import { WishlistProvider } from "./context/WishlistContext";
+import { CurrencyProvider } from "./context/currencyContext";
+import Layout from "./context/Layout";
 
 // Page transition variants
 const pageVariants = {
@@ -75,23 +78,23 @@ function AppContent() {
 
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
+          {/* Home Route */}
           <Route
             path="/"
             element={
               <PageWrapper>
                 <Home />
-
                 <FeaturedCollections />
-                {/* <ServiceHighlights /> */}
                 <NewArrivals />
                 <VideoCallSection />
                 <Testimonials />
                 <Blog />
-                {/* <Packaging /> */}
                 <WhatsAppButton />
               </PageWrapper>
             }
           />
+
+          {/* Main Routes */}
           <Route
             path="/cart"
             element={
@@ -124,6 +127,8 @@ function AppContent() {
               </PageWrapper>
             }
           />
+
+          {/* Saree Routes */}
           <Route
             path="/sarees/silk"
             element={
@@ -148,6 +153,8 @@ function AppContent() {
               </PageWrapper>
             }
           />
+
+          {/* Collection Routes */}
           <Route
             path="/collection"
             element={
@@ -164,6 +171,8 @@ function AppContent() {
               </PageWrapper>
             }
           />
+
+          {/* Information Routes */}
           <Route
             path="/about"
             element={
@@ -180,6 +189,24 @@ function AppContent() {
               </PageWrapper>
             }
           />
+          <Route
+            path="/about/heritage"
+            element={
+              <PageWrapper>
+                <OurHeritage />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/about/craft"
+            element={
+              <PageWrapper>
+                <Craftsmanship />
+              </PageWrapper>
+            }
+          />
+
+          {/* Policy Routes */}
           <Route
             path="/privacy-policy"
             element={
@@ -212,22 +239,8 @@ function AppContent() {
               </PageWrapper>
             }
           />
-          <Route
-            path="/about/heritage"
-            element={
-              <PageWrapper>
-                <OurHeritage />
-              </PageWrapper>
-            }
-          />
-          <Route
-            path="/about/craft"
-            element={
-              <PageWrapper>
-                <Craftsmanship />
-              </PageWrapper>
-            }
-          />
+
+          {/* User Routes */}
           <Route
             path="/wishlist"
             element={
@@ -244,6 +257,8 @@ function AppContent() {
               </PageWrapper>
             }
           />
+
+          {/* Search and Blog Routes */}
           <Route
             path="/search"
             element={
@@ -260,10 +275,20 @@ function AppContent() {
               </PageWrapper>
             }
           />
+
+          {/* Dynamic Menu Routes */}
+          <Route path="/trending/:routeCategory" element={<Menu />} />
+          <Route path="/featured/:routeCategory" element={<Menu />} />
+          <Route path="/collections/:routeCategory" element={<Menu />} />
+          <Route path="/clothing/:routeCategory" element={<Menu />} />
+          <Route path="/weaves/:routeCategory" element={<Menu />} />
+          <Route path="/techniques/:routeCategory" element={<Menu />} />
+          <Route path="/fabrics/:routeCategory" element={<Menu />} />
         </Routes>
       </AnimatePresence>
 
-      {location.pathname.startsWith("/collection/") ? null : <Footer />}
+      {/* Conditional Footer Rendering */}
+      {!location.pathname.startsWith("/collection/") && <Footer />}
     </>
   );
 }
