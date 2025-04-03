@@ -251,7 +251,7 @@ const Navbar = () => {
             className={`w-full bg-white border-t border-b border-gray-200 px-2 md:px-6 
             ${
               scrolled
-                ? "fixed top-0 left-0 shadow-md md:z-50 transition-all duration-300 py-2"
+                ? "fixed top-0 left-0 shadow-md md:z-50 transition-all duration-300 py-4" // Increased padding here from py-2 to py-4
                 : "pt-2 pb-8 md:py-10"
             }`}
           >
@@ -311,7 +311,7 @@ const Navbar = () => {
                     alt="KATAN"
                     className={`transition-all duration-300 object-contain ${
                       scrolled
-                        ? "h-12 w-auto" // Smaller logo when scrolled
+                        ? "h-14 w-auto" // Increased height here from h-10 to h-14
                         : "h-16 w-auto md:h-23 md:w-39"
                     }`}
                   />
@@ -438,7 +438,7 @@ const Navbar = () => {
           </div>
 
           {/* Add a spacer div when navbar is fixed to prevent content jump */}
-          {scrolled && <div className="h-20 md:h-24"></div>}
+          {scrolled && <div className="h-24 md:h-28"></div>}
         </div>
       </div>
     </>
