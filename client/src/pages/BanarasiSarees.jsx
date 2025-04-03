@@ -1,369 +1,561 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
 import {
+  FaSearch,
+  FaTimesCircle,
   FaEye,
-  FaShoppingCart,
   FaHeart,
   FaRegHeart,
-  FaFilter,
 } from "react-icons/fa";
-
-// Context Hooks
-import { useCart } from "../context/CartContext";
-import { useWishlist } from "../context/WishlistContext";
 import { useCurrency } from "../context/currencyContext";
-
-// Components
+import { useWishlist } from "../context/WishlistContext";
+import { motion, AnimatePresence } from "framer-motion";
+// Import QuickViewModal component
 import QuickViewModal from "../reusable/QuickView";
+// Import your collections data
+import collections from "../assets/product/CollectionData"; // Update this path to match your file structure
 
-// Product Data
-import banarasiProducts from "../assets/product/BanarasiProduct";
-
-// Styles
-import "./BanarasiSarees.css";
-
-const BanarasiSarees = ({
-  initialProducts = banarasiProducts,
-  pageTitle = "Banarasi Sarees Collection",
-}) => {
-  const { addToCart } = useCart();
-  const { isInWishlist, toggleWishlist } = useWishlist();
-  const navigate = useNavigate();
-  const { selectedCurrency, convertPrice, formatPrice } = useCurrency();
-
-  // Filter states
-  const [priceRange, setPriceRange] = useState([0, 25000]);
-  const [filteredProducts, setFilteredProducts] = useState(initialProducts);
+const SearchPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [showFilters, setShowFilters] = useState(true);
-
-  // Quick View states
+  const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [filterCategory, setFilterCategory] = useState("all");
+  const [currentIndexes, setCurrentIndexes] = useState({});
+  const [hoveredIndex, setHoveredIndex] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
+  const [imageLoading, setImageLoading] = useState({});
 
-  // Extract all categories and tags for filters
-  const categories = [
-    ...new Set(initialProducts.map((product) => product.category)),
-  ];
-  const tags = [...new Set(initialProducts.flatMap((product) => product.tags))];
+  const hoverTimers = React.useRef({});
+  const { selectedCurrency, convertPrice, formatPrice } = useCurrency();
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  const navigate = useNavigate();
 
-  // Apply filters
+  // Initialize current indexes for image hover effect
   useEffect(() => {
-    let result = initialProducts;
-
-    // Price filter
-    result = result.filter(
-      (product) =>
-        product.discountPrice >= priceRange[0] &&
-        product.discountPrice <= priceRange[1]
-    );
-
-    // Category filter
-    if (selectedCategories.length > 0) {
-      result = result.filter((product) =>
-        selectedCategories.includes(product.category)
+    if (searchResults.length > 0) {
+      setCurrentIndexes(
+        searchResults.reduce((acc, _, index) => ({ ...acc, [index]: 0 }), {})
       );
     }
+  }, [searchResults]);
 
-    // Tag filter
-    if (selectedTags.length > 0) {
-      result = result.filter((product) =>
-        product.tags.some((tag) => selectedTags.includes(tag))
+  // Cleanup hover timers
+  useEffect(() => {
+    return () => {
+      Object.values(hoverTimers.current).forEach((timer) =>
+        clearTimeout(timer)
       );
+    };
+  }, []);
+
+  // Filter products when search query or category filter changes
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setSearchResults([]);
+      return;
     }
 
-    // Search query
-    if (searchQuery) {
+    setLoading(true);
+
+    // Simulate a brief loading time for better UX
+    setTimeout(() => {
       const query = searchQuery.toLowerCase();
-      result = result.filter(
-        (product) =>
-          product.title.toLowerCase().includes(query) ||
-          product.desc.toLowerCase().includes(query) ||
-          product.material.toLowerCase().includes(query)
-      );
+      const filtered = collections.filter((product) => {
+        // Search by title
+        const titleMatch = product.title.toLowerCase().includes(query);
+
+        // Search by description
+        const descMatch =
+          product.desc && product.desc.toLowerCase().includes(query);
+
+        // Search by fabric (in details)
+        const fabricMatch =
+          product.details &&
+          product.details.fabric &&
+          product.details.fabric.toLowerCase().includes(query);
+
+        // Search in other details
+        const detailsMatch =
+          product.details &&
+          Object.values(product.details).some(
+            (value) =>
+              typeof value === "string" && value.toLowerCase().includes(query)
+          );
+
+        // Category filter
+        const productCategory = mapProductCategory(product);
+        const matchesCategory =
+          filterCategory === "all" || productCategory === filterCategory;
+
+        return (
+          (titleMatch || descMatch || fabricMatch || detailsMatch) &&
+          matchesCategory
+        );
+      });
+
+      setSearchResults(filtered);
+      setLoading(false);
+    }, 300);
+  }, [searchQuery, filterCategory]);
+
+  // Handle image load
+  const handleImageLoad = (index) => {
+    setImageLoading((prev) => ({ ...prev, [index]: false }));
+  };
+
+  // Handle mouse enter for image hover effect
+  const handleMouseEnter = (index) => {
+    if (searchResults[index]?.images?.length > 1) {
+      hoverTimers.current[index] = setTimeout(() => {
+        setCurrentIndexes((prevIndexes) => ({
+          ...prevIndexes,
+          [index]:
+            (prevIndexes[index] + 1) % searchResults[index].images.length,
+        }));
+      }, 800);
     }
-
-    setFilteredProducts(result);
-  }, [
-    initialProducts,
-    priceRange,
-    selectedCategories,
-    selectedTags,
-    searchQuery,
-  ]);
-
-  const handlePriceChange = (e, index) => {
-    const newPriceRange = [...priceRange];
-    newPriceRange[index] = parseInt(e.target.value);
-    setPriceRange(newPriceRange);
+    setHoveredIndex(index);
   };
 
-  const toggleCategory = (category) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category]
-    );
+  // Handle mouse leave
+  const handleMouseLeave = (index) => {
+    if (hoverTimers.current[index]) {
+      clearTimeout(hoverTimers.current[index]);
+    }
+    setHoveredIndex(null);
   };
 
-  const toggleTag = (tag) => {
-    setSelectedTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-    );
+  // Handle wishlist toggle
+  const handleWishlistToggle = (e, product, index) => {
+    e.stopPropagation(); // Stop event propagation
+    const wishlistItem = {
+      id: product.id || `product-${index}`,
+      title: product.title,
+      image: product.images[currentIndexes[index] || 0],
+      images: product.images,
+      originalPrice: product.originalPrice,
+      discountPrice: product.discountPrice,
+      colors: product.colors,
+      discount: product.discount,
+      desc: product.desc,
+      currencyCode: selectedCurrency.code,
+      currencySymbol: selectedCurrency.symbol,
+    };
+    toggleWishlist(wishlistItem);
   };
 
-  const clearFilters = () => {
-    setPriceRange([0, 25000]);
-    setSelectedCategories([]);
-    setSelectedTags([]);
+  // Helper function to map your product data to categories
+  const mapProductCategory = (product) => {
+    // Add logic to determine category based on your product structure
+    if (product.title?.toLowerCase().includes("silk")) return "sarees";
+    if (product.title?.toLowerCase().includes("saree")) return "sarees";
+    if (product.details?.fabric?.toLowerCase().includes("silk"))
+      return "sarees";
+    if (product.details?.fabric?.toLowerCase().includes("georgette"))
+      return "fabric";
+    if (product.details?.fabric?.toLowerCase().includes("khadi"))
+      return "fabric";
+
+    return "accessories"; // Default category
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const clearSearch = () => {
     setSearchQuery("");
+    setSearchResults([]);
   };
 
+  // Open QuickView modal
   const openQuickView = (product) => {
     setSelectedProduct(product);
     setIsQuickViewOpen(true);
   };
 
+  // Close QuickView modal
   const closeQuickView = () => {
-    setSelectedProduct(null);
     setIsQuickViewOpen(false);
+    setSelectedProduct(null);
   };
 
-  return (
-    <section className="py-16 md:py-24 bg-[#FDFBF7] relative">
-      {/* Header */}
-      <div className="container mx-auto px-4 text-center">
-        <h2 className="text-3xl md:text-5xl font-playfair font-bold text-black mb-4 tracking-wide">
-          {pageTitle}
-        </h2>
-        <p className="font-cardo text-neutral-800 max-w-2xl mx-auto mb-8 text-lg">
-          Exquisite handcrafted traditional Banarasi silks with intricate
-          designs passed down through generations.
-        </p>
-        <div className="w-32 h-0.5 bg-black mx-auto"></div>
-      </div>
+  const categories = [
+    { value: "all", label: "All Categories" },
+    { value: "sarees", label: "Sarees" },
+    { value: "fabric", label: "Fabrics" },
+    { value: "clothing", label: "Clothing" },
+    { value: "accessories", label: "Accessories" },
+  ];
 
-      {/* Search and Filter Header */}
-      <div className="container mx-auto px-4 mt-12">
-        <div className="bg-white shadow-md rounded-lg p-4 flex flex-col md:flex-row items-center justify-between">
-          <div className="w-full md:w-2/3 mb-4 md:mb-0">
-            <input
-              type="text"
-              placeholder="Search for sarees..."
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg font-cardo focus:outline-none focus:ring-2 focus:ring-black"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-          <div className="flex gap-4">
-            <button
-              className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg font-cardo"
-              onClick={() => setShowFilters(!showFilters)}
+  return (
+    <section className="py-16 md:py-24 bg-[#f9f7f5]">
+      <style>
+        {`
+          @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap');
+          
+          .font-cormorant {
+            font-family: 'Cormorant Garamond', serif;
+          }
+          
+          .font-montserrat {
+            font-family: 'Montserrat', sans-serif;
+          }
+
+          .luxury-card {
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+          }
+          
+          .luxury-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+          }
+          
+          .luxury-image {
+            transition: transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+          }
+          
+          .luxury-card:hover .luxury-image {
+            transform: scale(1.08);
+          }
+          
+          .luxury-overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+          }
+          
+          .luxury-card:hover .luxury-overlay {
+            opacity: 1;
+          }
+          
+          .price-tag {
+            position: relative;
+            display: inline-block;
+          }
+          
+          .price-tag:after {
+            content: '';
+            position: absolute;
+            height: 1px;
+            width: 100%;
+            background-color: #000000;
+            bottom: -3px;
+            left: 0;
+          }
+          
+          .elegant-badge {
+            background: linear-gradient(135deg, #1a1a1a 0%, #323232 100%);
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-weight: 500;
+          }
+          
+          .wishlist-btn {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            opacity: 0.9;
+          }
+          
+          .wishlist-btn:hover {
+            transform: scale(1.15);
+            opacity: 1;
+          }
+          
+          .quick-view-btn {
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+          }
+          
+          .quick-view-btn:hover {
+            background: rgba(255, 255, 255, 1);
+            letter-spacing: 1.5px;
+          }
+          
+          .image-skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+          }
+          
+          @keyframes shimmer {
+            0% {
+              background-position: 200% 0;
+            }
+            100% {
+              background-position: -200% 0;
+            }
+          }
+          
+          .thumbnail {
+            transition: all 0.3s ease;
+            opacity: 0.7;
+          }
+          
+          .thumbnail:hover, .thumbnail.active {
+            opacity: 1;
+            transform: translateY(-2px);
+          }
+        `}
+      </style>
+
+      <div className="container mx-auto px-4 lg:px-8 text-center">
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-cormorant font-semibold text-[#1a1a1a] mb-4 tracking-wider">
+          Search Products
+        </h1>
+
+        <p className="font-montserrat text-neutral-600 max-w-2xl mx-auto mb-8 text-sm md:text-base tracking-wide leading-relaxed">
+          Discover our exquisite collection of luxury pieces, each meticulously
+          crafted for elegance and style.
+        </p>
+
+        <div className="w-24 h-px bg-[#1a1a1a] mx-auto mb-12"></div>
+
+        {/* Luxury Search Bar */}
+        <div className="max-w-3xl mx-auto mb-12">
+          <div className="relative flex shadow-md rounded-lg overflow-hidden">
+            <div className="relative flex-grow">
+              <input
+                type="text"
+                placeholder="Search for products by title, fabric..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="w-full p-4 pl-12 border-0 focus:outline-none focus:ring-0 font-montserrat text-sm"
+              />
+              <div className="absolute left-4 top-4 text-[#1a1a1a]">
+                <FaSearch size={20} />
+              </div>
+              {searchQuery && (
+                <button
+                  onClick={clearSearch}
+                  className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
+                >
+                  <FaTimesCircle size={20} />
+                </button>
+              )}
+            </div>
+
+            <select
+              value={filterCategory}
+              onChange={(e) => setFilterCategory(e.target.value)}
+              className="p-4 border-0 border-l border-gray-200 bg-white focus:outline-none focus:ring-0 font-montserrat text-sm"
             >
-              <FaFilter /> {showFilters ? "Hide Filters" : "Show Filters"}
-            </button>
-            <button
-              className="border border-black text-black px-4 py-2 rounded-lg font-cardo hover:bg-black hover:text-white transition-colors"
-              onClick={clearFilters}
-            >
-              Reset Filters
-            </button>
+              {categories.map((category) => (
+                <option key={category.value} value={category.value}>
+                  {category.label}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
-      </div>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 mt-8">
-        <div className="flex flex-col md:flex-row gap-8">
-          {/* Filters Sidebar */}
-          {showFilters && (
-            <div className="w-full md:w-1/4 lg:w-1/5">
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="font-playfair text-xl font-bold mb-6 pb-3 border-b">
-                  Filters
+        {/* Initial State - No Search Yet */}
+        {!searchQuery && !loading && (
+          <div className="text-center py-16">
+            <div className="text-6xl mb-6">🔍</div>
+            <h2 className="text-2xl font-cormorant font-medium mb-3">
+              Explore Our Collection
+            </h2>
+            <p className="font-montserrat text-gray-600 max-w-lg mx-auto mb-8 text-sm">
+              Enter a search term above to find products by title, fabric type
+              or description.
+            </p>
+            <div className="flex flex-wrap justify-center gap-3">
+              <p className="font-montserrat text-gray-600 w-full mb-2 text-sm">
+                Popular search categories:
+              </p>
+              {categories.slice(1).map((category) => (
+                <button
+                  key={category.value}
+                  onClick={() => {
+                    setFilterCategory(category.value);
+                    // Set a generic search term to trigger search with this category
+                    setSearchQuery("silk");
+                  }}
+                  className="px-4 py-2 bg-white border border-gray-300 rounded-sm hover:bg-gray-100 transition-colors font-montserrat text-xs tracking-wider uppercase"
+                >
+                  {category.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Loading State */}
+        {loading && (
+          <div className="text-center py-16">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#8b5e3c] mx-auto"></div>
+            <p className="mt-4 text-gray-600 font-montserrat">
+              Searching products...
+            </p>
+          </div>
+        )}
+
+        {/* Search Results */}
+        {!loading && searchQuery && (
+          <div className="mb-12">
+            <h2 className="text-xl font-cormorant font-medium mb-8 text-center">
+              {searchResults.length > 0
+                ? `Found ${searchResults.length} results for "${searchQuery}"`
+                : `No results found for "${searchQuery}"`}
+            </h2>
+
+            {searchResults.length === 0 && searchQuery && !loading && (
+              <div className="text-center py-16 bg-white rounded-lg shadow-sm max-w-2xl mx-auto">
+                <div className="text-5xl mb-4">🔍</div>
+                <h3 className="text-lg font-cormorant font-medium mb-2">
+                  No matching products found
                 </h3>
-
-                {/* Price Filter */}
-                <div className="mb-8">
-                  <h4 className="font-playfair font-semibold mb-4">
-                    Price Range
-                  </h4>
-                  <div className="flex justify-between mb-2">
-                    <span className="font-cardo">
-                      ₹{priceRange[0].toLocaleString()}
-                    </span>
-                    <span className="font-cardo">
-                      ₹{priceRange[1].toLocaleString()}
-                    </span>
-                  </div>
-                  <input
-                    type="range"
-                    min="0"
-                    max="25000"
-                    step="500"
-                    value={priceRange[0]}
-                    onChange={(e) => handlePriceChange(e, 0)}
-                    className="mb-3"
-                  />
-                  <input
-                    type="range"
-                    min="0"
-                    max="25000"
-                    step="500"
-                    value={priceRange[1]}
-                    onChange={(e) => handlePriceChange(e, 1)}
-                  />
-                </div>
-
-                {/* Category Filter */}
-                <div className="mb-8">
-                  <h4 className="font-playfair font-semibold mb-4">Material</h4>
-                  {categories.map((category) => (
-                    <label
-                      key={category}
-                      className="custom-checkbox block mb-2"
+                <p className="font-montserrat text-gray-600 mb-6 text-sm">
+                  Try different keywords or browse our categories
+                </p>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {categories.slice(1).map((category) => (
+                    <button
+                      key={category.value}
+                      onClick={() => {
+                        setFilterCategory(category.value);
+                        setSearchQuery("silk"); // Set a common term to find products
+                      }}
+                      className="px-4 py-2 bg-white border border-gray-300 rounded-sm hover:bg-gray-100 transition-colors font-montserrat text-xs tracking-wider uppercase"
                     >
-                      <input
-                        type="checkbox"
-                        checked={selectedCategories.includes(category)}
-                        onChange={() => toggleCategory(category)}
-                      />
-                      <span className="checkmark"></span>
-                      <span className="font-cardo">{category}</span>
-                    </label>
+                      {category.label}
+                    </button>
                   ))}
                 </div>
-
-                {/* Tags Filter */}
-                <div className="mb-4">
-                  <h4 className="font-playfair font-semibold mb-4">Occasion</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {tags.map((tag) => (
-                      <button
-                        key={tag}
-                        className={`px-3 py-1 rounded-full font-cardo text-sm ${
-                          selectedTags.includes(tag)
-                            ? "bg-black text-white"
-                            : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-                        } transition-colors`}
-                        onClick={() => toggleTag(tag)}
-                      >
-                        {tag}
-                      </button>
-                    ))}
-                  </div>
-                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* Products Grid */}
-          <div
-            className={`w-full ${showFilters ? "md:w-3/4 lg:w-4/5" : "w-full"}`}
-          >
-            {filteredProducts.length === 0 ? (
-              <div className="bg-white rounded-lg shadow-md p-10 text-center">
-                <h3 className="font-playfair text-xl font-bold mb-4">
-                  No Products Found
-                </h3>
-                <p className="font-cardo text-gray-600">
-                  Try adjusting your filters or search criteria.
-                </p>
-                <button
-                  className="mt-6 bg-black text-white px-6 py-2 rounded-lg font-cardo"
-                  onClick={clearFilters}
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8 px-4 lg:px-12">
+              {searchResults.map((product, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="luxury-card bg-white rounded-lg overflow-hidden shadow-md group"
+                  onMouseEnter={() => handleMouseEnter(index)}
+                  onMouseLeave={() => handleMouseLeave(index)}
                 >
-                  Clear All Filters
-                </button>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {filteredProducts.map((product) => (
                   <div
-                    key={product.id}
-                    className="group overflow-hidden bg-white flex flex-col justify-between cursor-pointer card-hover rounded-lg shadow-md"
+                    className="relative overflow-hidden cursor-pointer"
+                    style={{ aspectRatio: "3/4" }}
+                    onClick={() => navigate(`/product/${product.id}`)}
                   >
-                    {/* Image Section */}
-                    <div className="relative overflow-hidden group">
-                      <div className="overflow-hidden">
-                        <img
-                          src={product.images[0]}
-                          alt={product.title}
-                          onClick={() => navigate(`/collection/${product.id}`)}
-                          className="w-full h-[300px] sm:h-[360px] object-cover image-zoom"
-                        />
-                      </div>
+                    {/* Image loading skeleton */}
+                    {imageLoading[index] !== false && (
+                      <div className="absolute inset-0 image-skeleton"></div>
+                    )}
 
-                      {/* Quick View Button and Wishlist Icon */}
-                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/40 to-transparent h-24 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            openQuickView(product);
-                          }}
-                          className="px-6 py-2.5 bg-white/90 backdrop-blur-sm text-black rounded-full font-cardo tracking-wide text-sm flex items-center gap-2 hover:bg-white transition-all duration-300 shadow-lg"
-                        >
-                          <FaEye className="text-black" /> Quick View
-                        </button>
-                      </div>
+                    <img
+                      src={product.images[currentIndexes[index] || 0]}
+                      alt={product.title}
+                      className="w-full h-full object-cover luxury-image"
+                      onLoad={() => handleImageLoad(index)}
+                    />
 
-                      {/* Wishlist Button */}
+                    {/* Overlay gradient */}
+                    <div className="luxury-overlay absolute inset-0 flex flex-col justify-end p-4 pointer-events-none">
+                      {/* Quick view button */}
                       <button
                         onClick={(e) => {
-                          e.stopPropagation();
-                          toggleWishlist(product);
+                          e.stopPropagation(); // Stop navigation when clicking button
+                          openQuickView(product);
                         }}
-                        className={`absolute top-4 left-4 bg-white h-10 w-10 rounded-full flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 wishlist-btn ${
-                          isInWishlist(product.id) ? "active" : ""
-                        }`}
+                        className="quick-view-btn mx-auto mb-4 px-4 py-2 rounded-sm flex items-center gap-2 shadow-lg pointer-events-auto"
                       >
-                        <FaHeart
-                          className={`text-xl ${
-                            isInWishlist(product.id)
-                              ? "text-red-500"
-                              : "text-gray-500"
-                          }`}
-                        />
+                        <FaEye className="text-[#1a1a1a] text-xs" />
+                        <span className="font-montserrat text-[#1a1a1a]">
+                          QUICK VIEW
+                        </span>
                       </button>
+                    </div>
 
-                      {/* Discount Badge */}
-                      <div className="absolute top-4 right-4">
-                        <div className="discount-badge text-white font-medium text-sm px-3 py-1 rounded-full shadow-md">
+                    {/* Wishlist Button */}
+                    <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-auto">
+                      <button
+                        onClick={(e) => handleWishlistToggle(e, product, index)}
+                        className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md wishlist-btn hover:scale-110 transition-transform"
+                      >
+                        {isInWishlist(product.id || `product-${index}`) ? (
+                          <FaHeart className="text-red-500" />
+                        ) : (
+                          <FaRegHeart className="text-gray-800" />
+                        )}
+                      </button>
+                    </div>
+
+                    {/* Discount Badge */}
+                    {product.discount && (
+                      <div className="absolute top-3 left-3 pointer-events-none">
+                        <div className="elegant-badge text-white text-xs px-2.5 py-1 rounded-sm shadow-md">
                           {product.discount}
                         </div>
                       </div>
+                    )}
+                  </div>
+
+                  <div
+                    className="p-4 flex flex-col items-center bg-white"
+                    onClick={() => navigate(`/product/${product.id}`)}
+                  >
+                    <h3 className="text-sm md:text-base font-cormorant text-[#1a1a1a] font-semibold mb-2 tracking-wide">
+                      {product.title}
+                    </h3>
+
+                    <div className="flex items-center justify-center gap-3">
+                      {product.originalPrice && (
+                        <p className="text-gray-500 line-through text-xs font-montserrat">
+                          {selectedCurrency?.symbol || "₹"}
+                          {formatPrice
+                            ? formatPrice(convertPrice(product.originalPrice))
+                            : product.originalPrice}
+                        </p>
+                      )}
+                      <p className="text-[#1a1a1a] font-montserrat text-sm md:text-base price-tag">
+                        {selectedCurrency?.symbol || "₹"}
+                        {formatPrice
+                          ? formatPrice(
+                              convertPrice(
+                                product.discountPrice || product.originalPrice
+                              )
+                            )
+                          : product.discountPrice || product.originalPrice}
+                      </p>
                     </div>
 
-                    {/* Product Details with Currency Conversion */}
-                    <div className="p-5 flex flex-col bg-white">
-                      <h3 className="text-xl text-black font-playfair font-semibold mb-2">
-                        {product.title}
-                      </h3>
-                      <div className="flex items-center justify-center gap-3">
-                        {product.originalPrice && (
-                          <p className="text-gray-500 line-through text-sm font-cardo">
-                            {selectedCurrency.symbol}
-                            {formatPrice(convertPrice(product.originalPrice))}
-                          </p>
+                    {/* Color swatches preview */}
+                    {product.colors && product.colors.length > 0 && (
+                      <div className="flex justify-center gap-1.5 mt-3">
+                        {product.colors.slice(0, 4).map((color, idx) => (
+                          <div
+                            key={idx}
+                            className="w-3 h-3 rounded-full border border-gray-200"
+                            style={{ backgroundColor: color }}
+                          ></div>
+                        ))}
+                        {product.colors.length > 4 && (
+                          <div className="text-xs text-gray-500 font-montserrat">
+                            +{product.colors.length - 4}
+                          </div>
                         )}
-                        <p className="text-black font-cardo font-bold text-lg price-tag">
-                          {selectedCurrency.symbol}
-                          {formatPrice(convertPrice(product.discountPrice))}
-                        </p>
                       </div>
-                    </div>
+                    )}
                   </div>
-                ))}
-              </div>
-            )}
+                </motion.div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
-      {/* Quick View Modal */}
+      {/* Use the QuickViewModal component */}
       <QuickViewModal
         selectedProduct={selectedProduct}
         isOpen={isQuickViewOpen}
@@ -373,4 +565,4 @@ const BanarasiSarees = ({
   );
 };
 
-export default BanarasiSarees;
+export default SearchPage;

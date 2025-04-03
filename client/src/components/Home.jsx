@@ -38,34 +38,36 @@ const Home = () => {
   }, [isMobile]);
 
   return (
-    <div className="relative w-full min-h-screen overflow-hidden">
-      {isMobile ? (
-        // Mobile view - single static image
-        <div className="absolute inset-0 w-full h-full">
-          <img
-            src={img4}
-            alt="Mobile Banner"
-            className="w-full h-full object-contain md:object-cover"
-          />
-        </div>
-      ) : (
-        // Desktop view - slideshow
-        desktopImages.map((image, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
-              index === currentIndex ? "opacity-100" : "opacity-0"
-            }`}
-          >
+    <>
+      <div className="relative w-full min-h-screen overflow-hidden">
+        {isMobile ? (
+          // Mobile view - single static image
+          <div className="absolute inset-0 w-full h-full">
             <img
-              src={image}
-              alt={`Slideshow ${index + 1}`}
+              src={img4}
+              alt="Mobile Banner"
               className="w-full h-full object-contain md:object-cover"
             />
           </div>
-        ))
-      )}
-    </div>
+        ) : (
+          // Desktop view - slideshow
+          desktopImages.map((image, index) => (
+            <div
+              key={index}
+              className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
+                index === currentIndex ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              <img
+                src={image}
+                alt={`Slideshow ${index + 1}`}
+                className="w-full h-full object-contain md:object-cover"
+              />
+            </div>
+          ))
+        )}
+      </div>
+    </>
   );
 };
 
