@@ -248,11 +248,11 @@ const Navbar = () => {
           )}
 
           <div
-            className={`w-full bg-white border-t border-b border-gray-200 pt-2 pb-8 md:py-10 px-2 md:px-6 
+            className={`w-full bg-white border-t border-b border-gray-200 px-2 md:px-6 
             ${
               scrolled
-                ? "fixed top-0 left-0 shadow-md md:z-50 transition-all duration-300"
-                : ""
+                ? "fixed top-0 left-0 shadow-md md:z-50 transition-all duration-300 py-2"
+                : "pt-2 pb-8 md:py-10"
             }`}
           >
             <div className="relative flex justify-between items-center px-20">
@@ -309,7 +309,11 @@ const Navbar = () => {
                   <img
                     src="/katan.png"
                     alt="KATAN"
-                    className="h-16 w-auto md:h-23 md:w-39 object-contain"
+                    className={`transition-all duration-300 object-contain ${
+                      scrolled
+                        ? "h-12 w-auto" // Smaller logo when scrolled
+                        : "h-16 w-auto md:h-23 md:w-39"
+                    }`}
                   />
                 </Link>
               </div>
@@ -397,21 +401,21 @@ const Navbar = () => {
                       to="/search"
                       className="flex items-center hover:text-[#8b5e3c] transition-colors"
                     >
-                      <FiSearch size={22} />
+                      <FiSearch size={20} />
                     </Link>
 
                     <Link
                       to="/login"
                       className="flex items-center hover:text-[#8b5e3c] transition-colors"
                     >
-                      <FiUser size={22} />
+                      <FiUser size={20} />
                     </Link>
 
                     <Link
                       to="/wishlist"
                       className="flex items-center hover:text-[#8b5e3c] transition-colors"
                     >
-                      <FiHeart size={22} />
+                      <FiHeart size={20} />
                     </Link>
 
                     <Link
@@ -419,7 +423,7 @@ const Navbar = () => {
                       className="flex items-center hover:text-[#8b5e3c] transition-colors"
                     >
                       <div className="relative">
-                        <FiShoppingCart size={25} />
+                        <FiShoppingCart size={22} />
                         {totalItems > 0 && (
                           <span className="absolute -top-2 -right-2 bg-[#c98a5e] text-white text-xs font-bold px-1.5 rounded-full">
                             {totalItems}
@@ -434,7 +438,7 @@ const Navbar = () => {
           </div>
 
           {/* Add a spacer div when navbar is fixed to prevent content jump */}
-          {scrolled && <div className="h-28 md:h-32"></div>}
+          {scrolled && <div className="h-20 md:h-24"></div>}
         </div>
       </div>
     </>

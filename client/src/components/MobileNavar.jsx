@@ -184,7 +184,6 @@ const MobileNavbar = ({
               </div>
             </div>
           </div>
-
           {/* Navigation Categories with luxury styling */}
           <div className="px-5 space-y-1">
             {/* SHOP */}

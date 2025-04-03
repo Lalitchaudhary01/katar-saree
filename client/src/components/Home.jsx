@@ -2,32 +2,69 @@ import { useState, useEffect } from "react";
 import img1 from "../assets/Artboard-1-1.jpg";
 import img2 from "../assets/Artboard-2-2.jpg";
 import img3 from "../assets/Artboard-3.jpg";
+import img4 from "../assets/mob.jpg";
 
-const images = [img1, img2, img3];
+const desktopImages = [img1, img2, img3];
 
 const Home = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
+  // Check if device is mobile
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 5000); // 5 seconds per image
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
 
-    return () => clearInterval(interval);
+    // Check on initial load
+    checkMobile();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", checkMobile);
+
+    // Clean up event listener
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  // Set up slideshow timer for desktop
+  useEffect(() => {
+    if (!isMobile) {
+      const interval = setInterval(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % desktopImages.length);
+      }, 5000); // 5 seconds per image
+
+      return () => clearInterval(interval);
+    }
+  }, [isMobile]);
+
   return (
-    <div className="relative w-full min-h-screen overflow-hidden pt-16 md:pt-0">
-      {images.map((image, index) => (
-        <img
-          key={index}
-          src={image}
-          alt="Slideshow"
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-            index === currentIndex ? "opacity-100" : "opacity-0"
-          }`}
-        />
-      ))}
+    <div className="relative w-full min-h-screen overflow-hidden">
+      {isMobile ? (
+        // Mobile view - single static image
+        <div className="absolute inset-0 w-full h-full">
+          <img
+            src={img4}
+            alt="Mobile Banner"
+            className="w-full h-full object-contain md:object-cover"
+          />
+        </div>
+      ) : (
+        // Desktop view - slideshow
+        desktopImages.map((image, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
+              index === currentIndex ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <img
+              src={image}
+              alt={`Slideshow ${index + 1}`}
+              className="w-full h-full object-contain md:object-cover"
+            />
+          </div>
+        ))
+      )}
     </div>
   );
 };
