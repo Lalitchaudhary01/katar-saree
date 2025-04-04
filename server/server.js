@@ -3,6 +3,8 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
+const cartRoutes = require("./routes/cartRoutes");
+const wishlistRoutes = require("./routes/wishlistRoutes");
 
 const app = express();
 
@@ -15,6 +17,8 @@ connectDB();
 
 // Routes
 app.use("/api/users", userRoutes);
+app.use("/api/cart", cartRoutes);
+app.use("/api/wishlist", wishlistRoutes);
 
 // Test Route
 app.get("/", (req, res) => {

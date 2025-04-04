@@ -1,3 +1,4 @@
+// authSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -5,6 +6,8 @@ const initialState = {
     ? JSON.parse(localStorage.getItem("userInfo"))
     : null,
   token: localStorage.getItem("token") || null,
+  status: "idle",
+  error: null,
 };
 
 const authSlice = createSlice({
@@ -22,11 +25,20 @@ const authSlice = createSlice({
       state.token = null;
       localStorage.removeItem("userInfo");
       localStorage.removeItem("token");
-      localStorage.removeItem("cart");
-      localStorage.removeItem("wishlist");
+    },
+    setLoading: (state, action) => {
+      state.status = action.payload;
+    },
+    setError: (state, action) => {
+      state.error = action.payload;
+    },
+    clearError: (state) => {
+      state.error = null;
     },
   },
 });
 
-export const { setCredentials, logout } = authSlice.actions;
+export const { setCredentials, logout, setLoading, setError, clearError } =
+  authSlice.actions;
+
 export default authSlice.reducer;

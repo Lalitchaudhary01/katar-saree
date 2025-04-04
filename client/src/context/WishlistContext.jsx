@@ -18,18 +18,6 @@ export const WishlistProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem("wishlist", JSON.stringify(wishlistItems));
   }, [wishlistItems]);
-  // In both context files, add this to clear data on logout:
-  useEffect(() => {
-    const handleStorageChange = (e) => {
-      if (e.key === "userInfo" && e.oldValue && !e.newValue) {
-        // User logged out
-        setCart([]);
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
-  }, []);
 
   // Check if an item is in the wishlist
   const isInWishlist = (id) => {
