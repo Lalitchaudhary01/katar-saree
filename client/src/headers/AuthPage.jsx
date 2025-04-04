@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import axios from "axios";
 
 // Main component that handles switching between login and signup
 const AuthPage = () => {
@@ -31,21 +33,53 @@ const AuthPage = () => {
 
 // Login form component
 const LoginForm = ({ setIsLogin }) => {
-  const [email, setEmail] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would add your login logic
-    console.log("Logging in with email:", email);
-    // On successful login, navigate to home
-    navigate("/");
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/users/login",
+        formData
+      );
+
+      // Save user data and token to localStorage
+      localStorage.setItem("userInfo", JSON.stringify(response.data.user));
+      localStorage.setItem("token", response.data.token);
+
+      // Show success message
+      toast.success("Login successful!");
+
+      // Navigate to home page
+      navigate("/");
+    } catch (error) {
+      toast.error(
+        error.response?.data?.error || "Login failed. Please try again."
+      );
+      console.error("Login error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div>
       <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-        <div className="rounded-md shadow-sm -space-y-px">
+        <div className="rounded-md shadow-sm space-y-4">
           <div>
             <label htmlFor="email-address" className="sr-only">
               Email address
@@ -58,8 +92,24 @@ const LoginForm = ({ setIsLogin }) => {
               required
               className="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-amber-500 focus:border-amber-500 focus:z-10 sm:text-sm"
               placeholder="Email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="password" className="sr-only">
+              Password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              required
+              className="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-amber-500 focus:border-amber-500 focus:z-10 sm:text-sm"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
             />
           </div>
         </div>
@@ -67,9 +117,10 @@ const LoginForm = ({ setIsLogin }) => {
         <div>
           <button
             type="submit"
-            className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500"
+            disabled={loading}
+            className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 disabled:opacity-50"
           >
-            Sign in
+            {loading ? "Signing in..." : "Sign in"}
           </button>
         </div>
       </form>
@@ -91,16 +142,48 @@ const LoginForm = ({ setIsLogin }) => {
 
 // Signup form component
 const SignupForm = ({ setIsLogin }) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would add your registration logic
-    console.log("Registering with name:", name, "and email:", email);
-    // After successful registration, navigate to home or login
-    navigate("/");
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/users/register",
+        formData
+      );
+
+      // Save user data and token to localStorage
+      localStorage.setItem("userInfo", JSON.stringify(response.data.user));
+      localStorage.setItem("token", response.data.token);
+
+      // Show success message
+      toast.success("Registration successful!");
+
+      // Navigate to home page
+      navigate("/");
+    } catch (error) {
+      toast.error(
+        error.response?.data?.error || "Registration failed. Please try again."
+      );
+      console.error("Registration error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -119,8 +202,8 @@ const SignupForm = ({ setIsLogin }) => {
               required
               className="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-amber-500 focus:border-amber-500 focus:z-10 sm:text-sm"
               placeholder="Full name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={formData.name}
+              onChange={handleChange}
             />
           </div>
           <div>
@@ -135,8 +218,24 @@ const SignupForm = ({ setIsLogin }) => {
               required
               className="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-amber-500 focus:border-amber-500 focus:z-10 sm:text-sm"
               placeholder="Email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="password" className="sr-only">
+              Password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="new-password"
+              required
+              className="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-amber-500 focus:border-amber-500 focus:z-10 sm:text-sm"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
             />
           </div>
         </div>
@@ -144,9 +243,10 @@ const SignupForm = ({ setIsLogin }) => {
         <div>
           <button
             type="submit"
-            className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500"
+            disabled={loading}
+            className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 disabled:opacity-50"
           >
-            Register
+            {loading ? "Registering..." : "Register"}
           </button>
         </div>
       </form>

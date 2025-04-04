@@ -1,171 +1,122 @@
-const User = require("../models/user.js");
-const Testimonial = require("../models/testimonial.js");
+const User = require("../models/user");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
-// Signup Controller
-const signup = async (req, res) => {
-  const { name, email } = req.body;
+// Helper function to create token
+const createToken = (_id) => {
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET is not defined in environment variables");
+  }
+  return jwt.sign({ _id }, process.env.JWT_SECRET, { expiresIn: "3d" });
+};
+
+// Register a new user
+const registerUser = async (req, res) => {
+  const { name, email, password } = req.body;
+
   try {
-    let user = await User.findOne({ email });
-    if (user) return res.status(400).json({ message: "User already exists" });
+    // Check if all required fields are provided
+    if (!email || !name || !password) {
+      return res
+        .status(400)
+        .json({ error: "Email, name, and password are required" });
+    }
 
-    user = new User({ name, email });
-    await user.save();
-    res.status(201).json({ message: "User created successfully" });
+    // Check if user already exists
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res
+        .status(400)
+        .json({ error: "User with this email already exists" });
+    }
+
+    // Create new user
+    const user = await User.create({ name, email, password });
+
+    // Create token
+    const token = createToken(user._id);
+
+    res.status(201).json({
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+      token,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Server Error" });
+    console.error("Register Error:", error);
+    res.status(500).json({ error: "Server error during registration" });
   }
 };
 
-// Login Controller (Session-based)
-const login = async (req, res) => {
-  const { email } = req.body;
-  try {
-    if (!email) return res.status(400).json({ message: "Email is required" });
+// Login user
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
 
+  try {
+    // Check if email and password are provided
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email and password are required" });
+    }
+
+    // Find user by email
     const user = await User.findOne({ email });
 
     if (!user) {
-      console.log("❌ Login failed: User not found for email:", email);
-      return res.status(400).json({ message: "Invalid email" });
+      return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    req.session.user = user; // Store user in session
-    console.log("✅ User logged in:", user);
-    res.status(200).json({ message: "Login successful", user });
-  } catch (error) {
-    console.error("❌ Server Error in login:", error.message);
-    res.status(500).json({ message: "Server Error" });
-  }
-};
+    // Check if password matches
+    const isMatch = await user.matchPassword(password);
 
-// Logout Controller
-const logout = (req, res) => {
-  req.session.destroy((err) => {
-    if (err) return res.status(500).json({ message: "Logout failed" });
-
-    res.status(200).json({ message: "Logout successful" });
-  });
-};
-
-// Get all testimonials
-const getAllTestimonials = async (req, res) => {
-  try {
-    const testimonials = await Testimonial.find().sort({ createdAt: -1 });
-    res.status(200).json(testimonials);
-  } catch (error) {
-    console.error("❌ Error fetching testimonials:", error.message);
-    res.status(500).json({ message: "Server Error" });
-  }
-};
-
-// Get testimonial by ID
-const getTestimonialById = async (req, res) => {
-  try {
-    const testimonial = await Testimonial.findById(req.params.id);
-    if (!testimonial) {
-      return res.status(404).json({ message: "Testimonial not found" });
+    if (!isMatch) {
+      return res.status(401).json({ error: "Invalid credentials" });
     }
-    res.status(200).json(testimonial);
-  } catch (error) {
-    console.error("❌ Error fetching testimonial:", error.message);
-    res.status(500).json({ message: "Server Error" });
-  }
-};
 
-// Create new testimonial
-const createTestimonial = async (req, res) => {
-  const { name, position, text, rating } = req.body;
+    // Create token
+    const token = createToken(user._id);
 
-  try {
-    // Optional: Check if user is logged in
-    const userId = req.session.user ? req.session.user._id : null;
-
-    const newTestimonial = new Testimonial({
-      name,
-      position,
-      text,
-      rating,
-      userId,
+    res.status(200).json({
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+      token,
     });
-
-    const savedTestimonial = await newTestimonial.save();
-    res.status(201).json(savedTestimonial);
   } catch (error) {
-    console.error("❌ Error creating testimonial:", error.message);
-    res.status(500).json({ message: "Server Error" });
+    console.error("Login Error:", error);
+    res.status(500).json({ error: "Server error during login" });
   }
 };
 
-// Update testimonial
-const updateTestimonial = async (req, res) => {
-  const { name, position, text, rating } = req.body;
-
-  try {
-    const testimonial = await Testimonial.findById(req.params.id);
-
-    if (!testimonial) {
-      return res.status(404).json({ message: "Testimonial not found" });
-    }
-
-    // Optional: Check if the user is the owner of the testimonial
-    if (
-      req.session.user &&
-      testimonial.userId &&
-      testimonial.userId.toString() !== req.session.user._id.toString()
-    ) {
-      return res
-        .status(403)
-        .json({ message: "Not authorized to update this testimonial" });
-    }
-
-    const updatedTestimonial = await Testimonial.findByIdAndUpdate(
-      req.params.id,
-      { name, position, text, rating },
-      { new: true }
-    );
-
-    res.status(200).json(updatedTestimonial);
-  } catch (error) {
-    console.error("❌ Error updating testimonial:", error.message);
-    res.status(500).json({ message: "Server Error" });
-  }
+// Logout user (client-side - just an example)
+const logoutUser = async (req, res) => {
+  // Typically logout is handled client-side by removing the token
+  // This is just a placeholder to complete the functionality
+  res.status(200).json({ message: "Logout successful" });
 };
 
-// Delete testimonial
-const deleteTestimonial = async (req, res) => {
+// Get current user profile
+const getUserProfile = async (req, res) => {
   try {
-    const testimonial = await Testimonial.findById(req.params.id);
+    const user = await User.findById(req.user._id).select("-password");
 
-    if (!testimonial) {
-      return res.status(404).json({ message: "Testimonial not found" });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
     }
 
-    // Optional: Check if the user is the owner of the testimonial
-    if (
-      req.session.user &&
-      testimonial.userId &&
-      testimonial.userId.toString() !== req.session.user._id.toString()
-    ) {
-      return res
-        .status(403)
-        .json({ message: "Not authorized to delete this testimonial" });
-    }
-
-    await Testimonial.findByIdAndDelete(req.params.id);
-    res.status(200).json({ message: "Testimonial deleted successfully" });
+    res.status(200).json(user);
   } catch (error) {
-    console.error("❌ Error deleting testimonial:", error.message);
-    res.status(500).json({ message: "Server Error" });
+    console.error("Get Profile Error:", error);
+    res.status(500).json({ error: "Server error fetching user profile" });
   }
 };
 
 module.exports = {
-  signup,
-  login,
-  logout,
-  getAllTestimonials,
-  getTestimonialById,
-  createTestimonial,
-  updateTestimonial,
-  deleteTestimonial,
+  registerUser,
+  loginUser,
+  logoutUser,
+  getUserProfile,
 };

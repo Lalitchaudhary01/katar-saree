@@ -1,26 +1,19 @@
 const express = require("express");
 const router = express.Router();
 const {
-  signup,
-  login,
-  logout,
-  getAllTestimonials,
-  getTestimonialById,
-  createTestimonial,
-  updateTestimonial,
-  deleteTestimonial,
+  registerUser,
+  loginUser,
+  logoutUser,
+  getUserProfile,
 } = require("../controllers/userController");
+const { protect } = require("../middleware/authMiddleware");
 
-// Auth routes
-router.post("/signup", signup);
-router.post("/login", login);
-router.post("/logout", logout);
+// Public routes
+router.post("/register", registerUser);
+router.post("/login", loginUser);
+router.post("/logout", logoutUser);
 
-// Testimonial routes
-router.get("/testimonials", getAllTestimonials);
-router.get("/testimonials/:id", getTestimonialById);
-router.post("/testimonials", createTestimonial);
-router.put("/testimonials/:id", updateTestimonial);
-router.delete("/testimonials/:id", deleteTestimonial);
+// Protected routes
+router.get("/profile", protect, getUserProfile);
 
 module.exports = router;

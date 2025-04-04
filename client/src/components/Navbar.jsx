@@ -1,7 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaSearch, FaEnvelope, FaPhone, FaTruck } from "react-icons/fa";
-import { FiSearch, FiUser, FiHeart, FiShoppingCart } from "react-icons/fi";
+import {
+  FiSearch,
+  FiUser,
+  FiHeart,
+  FiShoppingCart,
+  FiLogOut,
+} from "react-icons/fi";
 import { SlArrowDown } from "react-icons/sl";
 import { FaWhatsapp } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
@@ -12,6 +18,7 @@ import {
   collectionsData,
   fabricData,
 } from "../assets/product/navbarData";
+import { toast } from "react-hot-toast";
 
 // WhatsApp button component
 export const WhatsAppButton = () => {
@@ -36,8 +43,14 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const currencyRef = useRef(null);
+  const userMenuRef = useRef(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState(null);
+
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
+
   const {
     selectedCurrency,
     currencies,
@@ -45,6 +58,15 @@ const Navbar = () => {
     handleCurrencyClick,
     handleCurrencySelect,
   } = useCurrency();
+
+  // Check if user is logged in on component mount
+  useEffect(() => {
+    const userInfo = localStorage.getItem("userInfo");
+    if (userInfo) {
+      setIsLoggedIn(true);
+      setUserData(JSON.parse(userInfo));
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -68,13 +90,25 @@ const Navbar = () => {
           handleCurrencyClick();
         }
       }
+
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        if (showUserMenu) {
+          setShowUserMenu(false);
+        }
+      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [currencyRef, showCurrency, handleCurrencyClick]);
+  }, [
+    currencyRef,
+    userMenuRef,
+    showCurrency,
+    showUserMenu,
+    handleCurrencyClick,
+  ]);
 
   const handleLogoClick = () => {
     if (window.location.pathname === "/") {
@@ -83,6 +117,31 @@ const Navbar = () => {
         behavior: "smooth",
       });
     }
+  };
+
+  const handleUserIconClick = () => {
+    if (isLoggedIn) {
+      setShowUserMenu(!showUserMenu);
+    } else {
+      navigate("/login");
+    }
+  };
+
+  const handleLogout = () => {
+    // Clear user data from localStorage
+    localStorage.removeItem("userInfo");
+    localStorage.removeItem("token");
+
+    // Update state
+    setIsLoggedIn(false);
+    setUserData(null);
+    setShowUserMenu(false);
+
+    // Show success message
+    toast.success("Logged out successfully!");
+
+    // Navigate to home page
+    navigate("/");
   };
 
   const DropdownMenu = ({ children, align = "left" }) => (
@@ -122,6 +181,25 @@ const Navbar = () => {
     </div>
   );
 
+  // Custom User Menu Component
+  const UserMenu = () => (
+    <div className="absolute top-full mt-2 right-0 bg-white shadow-md p-3 z-50 w-48 rounded-md">
+      {userData && (
+        <div className="px-2 py-2 border-b border-gray-200">
+          <p className="font-medium text-gray-900">{userData.name}</p>
+          <p className="text-sm text-gray-600 truncate">{userData.email}</p>
+        </div>
+      )}
+      <button
+        onClick={handleLogout}
+        className="flex items-center w-full text-left px-2 py-2 hover:bg-[#f9f5f0] text-[#5d4037] transition-colors"
+      >
+        <FiLogOut className="mr-2" />
+        Logout
+      </button>
+    </div>
+  );
+
   return (
     <>
       <div className="bg-[#f0f0f0] text-black py-2 text-center text-sm font-medium flex justify-center items-center">
@@ -145,6 +223,9 @@ const Navbar = () => {
             currencyRef={currencyRef}
             mobileMenuOpen={mobileMenuOpen}
             toggleMobileMenu={toggleMobileMenu}
+            isLoggedIn={isLoggedIn}
+            handleLogout={handleLogout}
+            userData={userData}
           />
         </div>
 
@@ -216,12 +297,19 @@ const Navbar = () => {
                   <FiSearch size={23} />
                 </Link>
 
-                <Link
-                  to="/login"
-                  className="hidden md:flex items-center hover:text-[#8b5e3c] transition-colors"
+                <div
+                  className="hidden md:flex items-center relative"
+                  ref={userMenuRef}
                 >
-                  <FiUser size={23} />
-                </Link>
+                  <button
+                    onClick={handleUserIconClick}
+                    className="flex items-center hover:text-[#8b5e3c] transition-colors"
+                  >
+                    <FiUser size={23} />
+                    {isLoggedIn && <span className="ml-1">▼</span>}
+                  </button>
+                  {isLoggedIn && showUserMenu && <UserMenu />}
+                </div>
 
                 <Link
                   to="/wishlist"
@@ -251,7 +339,7 @@ const Navbar = () => {
             className={`w-full bg-white border-t border-b border-gray-200 px-2 md:px-6 
             ${
               scrolled
-                ? "fixed top-0 left-0 shadow-md md:z-50 transition-all duration-300 py-4" // Increased padding here from py-2 to py-4
+                ? "fixed top-0 left-0 shadow-md md:z-50 transition-all duration-300 py-4"
                 : "pt-2 pb-8 md:py-10"
             }`}
           >
@@ -310,9 +398,7 @@ const Navbar = () => {
                     src="/katan.png"
                     alt="KATAN"
                     className={`transition-all duration-300 object-contain ${
-                      scrolled
-                        ? "h-14 w-auto" // Increased height here from h-10 to h-14
-                        : "h-16 w-auto md:h-23 md:w-39"
+                      scrolled ? "h-14 w-auto" : "h-16 w-auto md:h-23 md:w-39"
                     }`}
                   />
                 </Link>
@@ -404,12 +490,19 @@ const Navbar = () => {
                       <FiSearch size={20} />
                     </Link>
 
-                    <Link
-                      to="/login"
-                      className="flex items-center hover:text-[#8b5e3c] transition-colors"
+                    <div
+                      className="flex items-center relative"
+                      ref={userMenuRef}
                     >
-                      <FiUser size={20} />
-                    </Link>
+                      <button
+                        onClick={handleUserIconClick}
+                        className="flex items-center hover:text-[#8b5e3c] transition-colors"
+                      >
+                        <FiUser size={20} />
+                        {isLoggedIn && <span className="ml-1 text-xs">▼</span>}
+                      </button>
+                      {isLoggedIn && showUserMenu && <UserMenu />}
+                    </div>
 
                     <Link
                       to="/wishlist"
