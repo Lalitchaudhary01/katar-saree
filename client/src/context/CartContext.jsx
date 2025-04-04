@@ -15,6 +15,18 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
+  // In both context files, add this to clear data on logout:
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === "userInfo" && e.oldValue && !e.newValue) {
+        // User logged out
+        setCart([]);
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   // Add item to cart
   const addToCart = (item) => {

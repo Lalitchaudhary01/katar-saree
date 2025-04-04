@@ -23,6 +23,18 @@ export const WishlistProvider = ({ children }) => {
   const isInWishlist = (id) => {
     return wishlistItems.some((item) => item.id === id);
   };
+  // In both context files, add this to clear data on logout:
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === "userInfo" && e.oldValue && !e.newValue) {
+        // User logged out
+        setCart([]);
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   // Add item to wishlist
   const addToWishlist = (item) => {

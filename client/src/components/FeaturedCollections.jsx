@@ -14,8 +14,8 @@ import { useWishlist } from "../context/WishlistContext";
 import { useCurrency } from "../context/currencyContext";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import QuickViewModal from "../reusable/QuickView";
-// Import the CSS file
 import "../styles/FeaturedCollections.css";
 
 const FeaturedCollections = () => {
@@ -35,6 +35,7 @@ const FeaturedCollections = () => {
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { selectedCurrency, convertPrice, formatPrice } = useCurrency();
   const navigate = useNavigate();
+  const { userInfo } = useSelector((state) => state.auth);
 
   // Check if user is on mobile
   useEffect(() => {
@@ -84,6 +85,13 @@ const FeaturedCollections = () => {
 
   const handleWishlistToggle = (e, collection, index) => {
     e.stopPropagation(); // Stop event propagation
+
+    // Check if user is logged in
+    if (!userInfo) {
+      navigate("/login", { state: { from: window.location.pathname } });
+      return;
+    }
+
     const wishlistItem = {
       id: collection.id || `collection-${index}`,
       title: collection.title,
@@ -97,7 +105,15 @@ const FeaturedCollections = () => {
       currencyCode: selectedCurrency.code,
       currencySymbol: selectedCurrency.symbol,
     };
+
+    const isCurrentlyInWishlist = isInWishlist(wishlistItem.id);
     toggleWishlist(wishlistItem);
+
+    if (isCurrentlyInWishlist) {
+      toast.success(`${collection.title} removed from wishlist`);
+    } else {
+      toast.success(`${collection.title} added to wishlist`);
+    }
   };
 
   // Function to handle next card on mobile
@@ -190,10 +206,7 @@ const FeaturedCollections = () => {
                   <div
                     className="relative overflow-hidden cursor-pointer"
                     style={{ aspectRatio: "3/4" }}
-                    onClick={() => {
-                      console.log("Navigating to:", `/collection/${index}`);
-                      navigate(`/collection/${index}`);
-                    }}
+                    onClick={() => navigate(`/collection/${collection.id}`)}
                   >
                     {/* Image loading skeleton */}
                     {imageLoading[index] !== false && (
@@ -255,10 +268,7 @@ const FeaturedCollections = () => {
 
                   <div
                     className="p-4 flex flex-col items-center bg-white"
-                    onClick={() => {
-                      console.log("Navigating to:", `/collection/${index}`);
-                      navigate(`/collection/${index}`);
-                    }}
+                    onClick={() => navigate(`/collection/${collection.id}`)}
                   >
                     <h3 className="text-sm md:text-base font-cormorant text-[#1a1a1a] font-semibold mb-2 tracking-wide">
                       {collection.title}
@@ -317,7 +327,7 @@ const FeaturedCollections = () => {
         )}
       </div>
 
-      {/* Use the QuickViewModal component here */}
+      {/* Quick View Modal */}
       <QuickViewModal
         selectedProduct={selectedProduct}
         isOpen={isModalOpen}
