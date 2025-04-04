@@ -13,10 +13,9 @@ import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
 import { useCurrency } from "../context/currencyContext";
 import { toast } from "react-hot-toast";
+import { useSelector } from "react-redux";
 import newArrivals from "../assets/product/NewArrival";
-// Import the QuickViewModal component
 import QuickViewModal from "../reusable/QuickView";
-// Import the styles
 import "../styles/NewArrivals.css";
 
 const NewArrivals = () => {
@@ -28,18 +27,18 @@ const NewArrivals = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [visibleCardIndex, setVisibleCardIndex] = useState(0);
   const [imageLoading, setImageLoading] = useState({});
-
-  // New state for desktop swiper
   const [currentPage, setCurrentPage] = useState(0);
+
   const itemsPerPage = 4;
   const totalPages = Math.ceil(newArrivals.length / itemsPerPage);
-
   const hoverTimers = useRef({});
   const carouselRef = useRef(null);
+
   const { addToCart } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { selectedCurrency, convertPrice, formatPrice } = useCurrency();
   const navigate = useNavigate();
+  const { userInfo } = useSelector((state) => state.auth);
 
   // Check if user is on mobile
   useEffect(() => {
@@ -81,7 +80,13 @@ const NewArrivals = () => {
   };
 
   const handleWishlistToggle = (e, product, index) => {
-    e.stopPropagation(); // Stop event propagation
+    e.stopPropagation();
+
+    if (!userInfo) {
+      navigate("/login", { state: { from: window.location.pathname } });
+      return;
+    }
+
     const wishlistItem = {
       id: product.id || `product-${index}`,
       title: product.title,
@@ -95,10 +100,18 @@ const NewArrivals = () => {
       currencyCode: selectedCurrency.code,
       currencySymbol: selectedCurrency.symbol,
     };
+
+    const isCurrentlyInWishlist = isInWishlist(wishlistItem.id);
     toggleWishlist(wishlistItem);
+
+    if (isCurrentlyInWishlist) {
+      toast.success(`${product.title} removed from wishlist`);
+    } else {
+      toast.success(`${product.title} added to wishlist`);
+    }
   };
 
-  // Function to handle next card on mobile
+  // Mobile navigation functions
   const handleNextCard = () => {
     const maxIndex = newArrivals.length - 2;
     setVisibleCardIndex((prevIndex) =>
@@ -106,7 +119,6 @@ const NewArrivals = () => {
     );
   };
 
-  // Function to handle previous card on mobile
   const handlePrevCard = () => {
     const maxIndex = newArrivals.length - 2;
     setVisibleCardIndex((prevIndex) =>
@@ -114,7 +126,7 @@ const NewArrivals = () => {
     );
   };
 
-  // Functions for desktop swiper navigation
+  // Desktop swiper navigation
   const goToNextPage = () => {
     setCurrentPage((prev) => (prev === totalPages - 1 ? 0 : prev + 1));
   };
@@ -123,14 +135,12 @@ const NewArrivals = () => {
     setCurrentPage((prev) => (prev === 0 ? totalPages - 1 : prev - 1));
   };
 
-  // Get current items to display based on pagination
   const getCurrentItems = () => {
     const start = currentPage * itemsPerPage;
     const end = start + itemsPerPage;
     return newArrivals.slice(start, end);
   };
 
-  // Handle modal close
   const handleCloseModal = () => {
     setSelectedProduct(null);
   };
@@ -150,9 +160,8 @@ const NewArrivals = () => {
         <div className="w-24 h-px bg-[#1a1a1a] mx-auto mb-16"></div>
       </div>
 
-      {/* Product grid with navigation */}
       <div className="relative" ref={carouselRef}>
-        {/* Mobile Navigation Arrows - Positioned at the sides */}
+        {/* Mobile Navigation */}
         {isMobile && (
           <>
             <button
@@ -162,7 +171,6 @@ const NewArrivals = () => {
             >
               <FaChevronLeft className="text-[#1a1a1a]" />
             </button>
-
             <button
               className="nav-arrow next"
               onClick={handleNextCard}
@@ -173,10 +181,9 @@ const NewArrivals = () => {
           </>
         )}
 
-        {/* Desktop Navigation and Product Display */}
+        {/* Desktop View */}
         {!isMobile && (
           <div className="swiper-container">
-            {/* Desktop Navigation Arrows - Positioned at sides */}
             <button
               className="desktop-nav-arrow prev"
               onClick={goToPrevPage}
@@ -215,14 +222,12 @@ const NewArrivals = () => {
                       onMouseEnter={() => handleMouseEnter(globalIndex)}
                       onMouseLeave={() => handleMouseLeave(globalIndex)}
                     >
+                      {/* Product image and details */}
                       <div
                         className="relative overflow-hidden cursor-pointer"
                         style={{ aspectRatio: "3/4" }}
-                        onClick={() => {
-                          navigate(`/collection/${product.id}`);
-                        }}
+                        onClick={() => navigate(`/collection/${product.id}`)}
                       >
-                        {/* Image loading skeleton */}
                         {imageLoading[globalIndex] !== false && (
                           <div className="absolute inset-0 image-skeleton"></div>
                         )}
@@ -234,9 +239,7 @@ const NewArrivals = () => {
                           onLoad={() => handleImageLoad(globalIndex)}
                         />
 
-                        {/* Overlay gradient */}
                         <div className="luxury-overlay absolute inset-0 flex flex-col justify-end p-4 pointer-events-none">
-                          {/* Quick view button */}
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
@@ -251,12 +254,12 @@ const NewArrivals = () => {
                           </button>
                         </div>
 
-                        {/* Wishlist Button */}
+                        {/* Wishlist Button with auth check */}
                         <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-auto">
                           <button
-                            onClick={(e) => {
-                              handleWishlistToggle(e, product, globalIndex);
-                            }}
+                            onClick={(e) =>
+                              handleWishlistToggle(e, product, globalIndex)
+                            }
                             className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md wishlist-btn hover:scale-110 transition-transform"
                           >
                             {isInWishlist(
@@ -269,7 +272,6 @@ const NewArrivals = () => {
                           </button>
                         </div>
 
-                        {/* New Badge */}
                         <div className="absolute top-3 left-3 pointer-events-none">
                           <div className="elegant-badge text-white text-xs px-2.5 py-1 rounded-sm shadow-md">
                             NEW
@@ -279,9 +281,7 @@ const NewArrivals = () => {
 
                       <div
                         className="p-4 flex flex-col items-center bg-white"
-                        onClick={() => {
-                          navigate(`/collection/${product.id}`);
-                        }}
+                        onClick={() => navigate(`/collection/${product.id}`)}
                       >
                         <h3 className="text-sm md:text-base font-cormorant text-[#1a1a1a] font-semibold mb-2 tracking-wide">
                           {product.title}
@@ -300,7 +300,6 @@ const NewArrivals = () => {
                           </p>
                         </div>
 
-                        {/* Color swatches preview */}
                         {product.colors && product.colors.length > 0 && (
                           <div className="flex justify-center gap-1.5 mt-3">
                             {product.colors.slice(0, 4).map((color, idx) => (
@@ -326,7 +325,7 @@ const NewArrivals = () => {
           </div>
         )}
 
-        {/* Mobile Product Display */}
+        {/* Mobile View */}
         {isMobile && (
           <div className="grid grid-cols-2 gap-4 px-4 mb-8">
             {newArrivals
@@ -342,14 +341,12 @@ const NewArrivals = () => {
                     transition={{ duration: 0.5 }}
                     className="luxury-card bg-white rounded-lg overflow-hidden shadow-md group"
                   >
+                    {/* Mobile product card content */}
                     <div
                       className="relative overflow-hidden cursor-pointer"
                       style={{ aspectRatio: "3/4" }}
-                      onClick={() => {
-                        navigate(`/collection/${product.id}`);
-                      }}
+                      onClick={() => navigate(`/collection/${product.id}`)}
                     >
-                      {/* Image loading skeleton */}
                       {imageLoading[globalIndex] !== false && (
                         <div className="absolute inset-0 image-skeleton"></div>
                       )}
@@ -361,7 +358,6 @@ const NewArrivals = () => {
                         onLoad={() => handleImageLoad(globalIndex)}
                       />
 
-                      {/* Overlay and other elements same as desktop */}
                       <div className="luxury-overlay absolute inset-0 flex flex-col justify-end p-4 pointer-events-none">
                         <button
                           onClick={(e) => {
@@ -377,12 +373,12 @@ const NewArrivals = () => {
                         </button>
                       </div>
 
-                      {/* Wishlist Button */}
+                      {/* Wishlist Button with auth check */}
                       <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-auto">
                         <button
-                          onClick={(e) => {
-                            handleWishlistToggle(e, product, globalIndex);
-                          }}
+                          onClick={(e) =>
+                            handleWishlistToggle(e, product, globalIndex)
+                          }
                           className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md wishlist-btn hover:scale-110 transition-transform"
                         >
                           {isInWishlist(
@@ -395,7 +391,6 @@ const NewArrivals = () => {
                         </button>
                       </div>
 
-                      {/* New Badge */}
                       <div className="absolute top-3 left-3 pointer-events-none">
                         <div className="elegant-badge text-white text-xs px-2.5 py-1 rounded-sm shadow-md">
                           NEW
@@ -405,9 +400,7 @@ const NewArrivals = () => {
 
                     <div
                       className="p-4 flex flex-col items-center bg-white"
-                      onClick={() => {
-                        navigate(`/collection/${product.id}`);
-                      }}
+                      onClick={() => navigate(`/collection/${product.id}`)}
                     >
                       <h3 className="text-sm md:text-base font-cormorant text-[#1a1a1a] font-semibold mb-2 tracking-wide">
                         {product.title}
@@ -426,7 +419,6 @@ const NewArrivals = () => {
                         </p>
                       </div>
 
-                      {/* Color swatches preview */}
                       {product.colors && product.colors.length > 0 && (
                         <div className="flex justify-center gap-1.5 mt-3">
                           {product.colors.slice(0, 4).map((color, idx) => (
@@ -451,7 +443,7 @@ const NewArrivals = () => {
         )}
       </div>
 
-      {/* Pagination Dots for Desktop */}
+      {/* Pagination for Desktop */}
       {!isMobile && totalPages > 1 && (
         <div className="pagination-indicator mb-12">
           {Array.from({ length: totalPages }, (_, i) => (
@@ -466,7 +458,6 @@ const NewArrivals = () => {
         </div>
       )}
 
-      {/* Use the QuickViewModal component */}
       <QuickViewModal
         selectedProduct={selectedProduct}
         isOpen={selectedProduct !== null}

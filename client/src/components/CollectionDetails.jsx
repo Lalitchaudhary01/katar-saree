@@ -12,6 +12,7 @@ import {
 } from "react-icons/fa";
 import { MdSecurity } from "react-icons/md";
 import { toast } from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 // Context Imports
 import { useCart } from "../context/CartContext";
@@ -34,6 +35,7 @@ const CollectionDetails = () => {
   const { addToCart } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { selectedCurrency, convertPrice, formatPrice } = useCurrency();
+  const { userInfo } = useSelector((state) => state.auth);
 
   // Product Collection Logic
   const productId = isNaN(Number(id)) ? id : Number(id);
@@ -107,6 +109,11 @@ const CollectionDetails = () => {
 
   // Handlers
   const handleWishlistToggle = () => {
+    if (!userInfo) {
+      navigate("/login", { state: { from: `/collection/${id}` } });
+      return;
+    }
+
     const wishlistItem = {
       id: collection.id,
       title: collection.title,
@@ -118,13 +125,9 @@ const CollectionDetails = () => {
       colors: collection.colors,
     };
 
-    // Check if the item is already in the wishlist
     const isCurrentlyInWishlist = isInWishlist(collection.id);
-
-    // Toggle the wishlist
     toggleWishlist(wishlistItem);
 
-    // Show appropriate toast message
     if (isCurrentlyInWishlist) {
       toast.success(`${collection.title} removed from your wishlist!`);
     } else {
@@ -133,6 +136,11 @@ const CollectionDetails = () => {
   };
 
   const handleAddToCart = () => {
+    if (!userInfo) {
+      navigate("/login", { state: { from: `/collection/${id}` } });
+      return;
+    }
+
     if (!selectedColor) {
       toast.error("Please select a color before adding to cart!");
       return;
@@ -159,10 +167,16 @@ const CollectionDetails = () => {
   };
 
   const handleBuyNow = () => {
+    if (!userInfo) {
+      navigate("/login", { state: { from: `/collection/${id}` } });
+      return;
+    }
+
     if (!selectedColor) {
       toast.error("Please select a color before proceeding to purchase!");
       return;
     }
+
     navigate("/checkout", {
       state: {
         image: mainImage,

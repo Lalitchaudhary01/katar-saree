@@ -19,6 +19,8 @@ import {
   fabricData,
 } from "../assets/product/navbarData";
 import { toast } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../Redux/authSlice";
 
 // WhatsApp button component
 export const WhatsAppButton = () => {
@@ -46,8 +48,10 @@ const Navbar = () => {
   const userMenuRef = useRef(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userData, setUserData] = useState(null);
+
+  // Redux state for authentication
+  const { userInfo } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
 
@@ -58,15 +62,6 @@ const Navbar = () => {
     handleCurrencyClick,
     handleCurrencySelect,
   } = useCurrency();
-
-  // Check if user is logged in on component mount
-  useEffect(() => {
-    const userInfo = localStorage.getItem("userInfo");
-    if (userInfo) {
-      setIsLoggedIn(true);
-      setUserData(JSON.parse(userInfo));
-    }
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -120,7 +115,7 @@ const Navbar = () => {
   };
 
   const handleUserIconClick = () => {
-    if (isLoggedIn) {
+    if (userInfo) {
       setShowUserMenu(!showUserMenu);
     } else {
       navigate("/login");
@@ -128,19 +123,9 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    // Clear user data from localStorage
-    localStorage.removeItem("userInfo");
-    localStorage.removeItem("token");
-
-    // Update state
-    setIsLoggedIn(false);
-    setUserData(null);
+    dispatch(logout());
     setShowUserMenu(false);
-
-    // Show success message
     toast.success("Logged out successfully!");
-
-    // Navigate to home page
     navigate("/");
   };
 
@@ -184,10 +169,10 @@ const Navbar = () => {
   // Custom User Menu Component
   const UserMenu = () => (
     <div className="absolute top-full mt-2 right-0 bg-white shadow-md p-3 z-50 w-48 rounded-md">
-      {userData && (
+      {userInfo && (
         <div className="px-2 py-2 border-b border-gray-200">
-          <p className="font-medium text-gray-900">{userData.name}</p>
-          <p className="text-sm text-gray-600 truncate">{userData.email}</p>
+          <p className="font-medium text-gray-900">{userInfo.name}</p>
+          <p className="text-sm text-gray-600 truncate">{userInfo.email}</p>
         </div>
       )}
       <button
@@ -223,9 +208,9 @@ const Navbar = () => {
             currencyRef={currencyRef}
             mobileMenuOpen={mobileMenuOpen}
             toggleMobileMenu={toggleMobileMenu}
-            isLoggedIn={isLoggedIn}
+            isLoggedIn={!!userInfo}
             handleLogout={handleLogout}
-            userData={userData}
+            userData={userInfo}
           />
         </div>
 
@@ -306,9 +291,9 @@ const Navbar = () => {
                     className="flex items-center hover:text-[#8b5e3c] transition-colors"
                   >
                     <FiUser size={23} />
-                    {isLoggedIn && <span className="ml-1">▼</span>}
+                    {userInfo && <span className="ml-1">▼</span>}
                   </button>
-                  {isLoggedIn && showUserMenu && <UserMenu />}
+                  {userInfo && showUserMenu && <UserMenu />}
                 </div>
 
                 <Link
@@ -499,9 +484,9 @@ const Navbar = () => {
                         className="flex items-center hover:text-[#8b5e3c] transition-colors"
                       >
                         <FiUser size={20} />
-                        {isLoggedIn && <span className="ml-1 text-xs">▼</span>}
+                        {userInfo && <span className="ml-1 text-xs">▼</span>}
                       </button>
-                      {isLoggedIn && showUserMenu && <UserMenu />}
+                      {userInfo && showUserMenu && <UserMenu />}
                     </div>
 
                     <Link

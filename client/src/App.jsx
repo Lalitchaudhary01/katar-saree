@@ -8,6 +8,8 @@ import {
 import { Toaster } from "react-hot-toast";
 import { AnimatePresence, motion } from "framer-motion";
 import "./App.css";
+import { Provider } from "react-redux";
+import { store } from "./Redux/Store";
 
 // Import all components
 import Craftsmanship from "./components/Craftsmanship";
@@ -37,6 +39,7 @@ import BlogPostDetails from "./components/BlogPostDetails";
 import VideoCallSection from "./components/VideoCallSection";
 import SearchPage from "./components/SearchPage";
 import Menu from "./pages/Menu";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 // Context Providers
 import { CartProvider } from "./context/CartContext";
@@ -44,7 +47,6 @@ import { WishlistProvider } from "./context/WishlistContext";
 import { CurrencyProvider } from "./context/currencyContext";
 import Layout from "./context/Layout";
 
-// Page transition variants
 const pageVariants = {
   initial: { opacity: 0, y: 50 },
   animate: { opacity: 1, y: 0 },
@@ -53,7 +55,6 @@ const pageVariants = {
 
 const transition = { duration: 0.4, ease: "easeInOut" };
 
-// Wrapper component for animations
 const PageWrapper = ({ children }) => {
   return (
     <motion.div
@@ -68,12 +69,10 @@ const PageWrapper = ({ children }) => {
   );
 };
 
-// ScrollToTop Component
 const ScrollToTop = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    // Scroll to the top of the page on route change
     window.scrollTo(0, 0);
   }, [pathname]);
 
@@ -87,13 +86,10 @@ function AppContent() {
     <>
       <Navbar />
       <Toaster position="top-right" reverseOrder={false} />
-
-      {/* Add ScrollToTop here */}
       <ScrollToTop />
 
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
-          {/* Home Route */}
           <Route
             path="/"
             element={
@@ -109,15 +105,39 @@ function AppContent() {
             }
           />
 
-          {/* Main Routes */}
           <Route
             path="/cart"
             element={
-              <PageWrapper>
-                <Cart />
-              </PageWrapper>
+              <ProtectedRoute>
+                <PageWrapper>
+                  <Cart />
+                </PageWrapper>
+              </ProtectedRoute>
             }
           />
+          <Route
+            path="/wishlist"
+            element={
+              <ProtectedRoute>
+                <PageWrapper>
+                  <Wishlist />
+                </PageWrapper>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute>
+                <PageWrapper>
+                  <Checkout />
+                </PageWrapper>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Main Routes */}
+
           <Route
             path="/blog"
             element={
@@ -126,14 +146,7 @@ function AppContent() {
               </PageWrapper>
             }
           />
-          <Route
-            path="/checkout"
-            element={
-              <PageWrapper>
-                <Checkout />
-              </PageWrapper>
-            }
-          />
+
           <Route
             path="/collection/:id"
             element={
@@ -256,14 +269,7 @@ function AppContent() {
           />
 
           {/* User Routes */}
-          <Route
-            path="/wishlist"
-            element={
-              <PageWrapper>
-                <Wishlist />
-              </PageWrapper>
-            }
-          />
+
           <Route
             path="/login"
             element={
@@ -310,17 +316,19 @@ function AppContent() {
 
 function App() {
   return (
-    <Layout>
-      <CartProvider>
-        <WishlistProvider>
-          <CurrencyProvider>
-            <Router>
-              <AppContent />
-            </Router>
-          </CurrencyProvider>
-        </WishlistProvider>
-      </CartProvider>
-    </Layout>
+    <Provider store={store}>
+      <Layout>
+        <CartProvider>
+          <WishlistProvider>
+            <CurrencyProvider>
+              <Router>
+                <AppContent />
+              </Router>
+            </CurrencyProvider>
+          </WishlistProvider>
+        </CartProvider>
+      </Layout>
+    </Provider>
   );
 }
 

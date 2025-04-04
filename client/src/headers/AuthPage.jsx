@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../Redux/authSlice";
 
-// Main component that handles switching between login and signup
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -13,7 +16,7 @@ const AuthPage = () => {
         <div className="text-center">
           <img
             className="mx-auto h-16 w-auto"
-            src="/katan.png" // Replace with your actual logo path
+            src="/katan.png"
             alt="Katan Banaras"
           />
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
@@ -22,23 +25,23 @@ const AuthPage = () => {
         </div>
 
         {isLogin ? (
-          <LoginForm setIsLogin={setIsLogin} />
+          <LoginForm setIsLogin={setIsLogin} from={from} />
         ) : (
-          <SignupForm setIsLogin={setIsLogin} />
+          <SignupForm setIsLogin={setIsLogin} from={from} />
         )}
       </div>
     </div>
   );
 };
 
-// Login form component
-const LoginForm = ({ setIsLogin }) => {
+const LoginForm = ({ setIsLogin, from }) => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setFormData({
@@ -57,15 +60,15 @@ const LoginForm = ({ setIsLogin }) => {
         formData
       );
 
-      // Save user data and token to localStorage
-      localStorage.setItem("userInfo", JSON.stringify(response.data.user));
-      localStorage.setItem("token", response.data.token);
+      dispatch(
+        setCredentials({
+          user: response.data.user,
+          token: response.data.token,
+        })
+      );
 
-      // Show success message
       toast.success("Login successful!");
-
-      // Navigate to home page
-      navigate("/");
+      navigate(from, { replace: true });
     } catch (error) {
       toast.error(
         error.response?.data?.error || "Login failed. Please try again."
@@ -140,8 +143,7 @@ const LoginForm = ({ setIsLogin }) => {
   );
 };
 
-// Signup form component
-const SignupForm = ({ setIsLogin }) => {
+const SignupForm = ({ setIsLogin, from }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -149,6 +151,7 @@ const SignupForm = ({ setIsLogin }) => {
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setFormData({
@@ -167,15 +170,15 @@ const SignupForm = ({ setIsLogin }) => {
         formData
       );
 
-      // Save user data and token to localStorage
-      localStorage.setItem("userInfo", JSON.stringify(response.data.user));
-      localStorage.setItem("token", response.data.token);
+      dispatch(
+        setCredentials({
+          user: response.data.user,
+          token: response.data.token,
+        })
+      );
 
-      // Show success message
       toast.success("Registration successful!");
-
-      // Navigate to home page
-      navigate("/");
+      navigate(from, { replace: true });
     } catch (error) {
       toast.error(
         error.response?.data?.error || "Registration failed. Please try again."
@@ -232,8 +235,9 @@ const SignupForm = ({ setIsLogin }) => {
               type="password"
               autoComplete="new-password"
               required
+              minLength="6"
               className="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-amber-500 focus:border-amber-500 focus:z-10 sm:text-sm"
-              placeholder="Password"
+              placeholder="Password (min 6 characters)"
               value={formData.password}
               onChange={handleChange}
             />
