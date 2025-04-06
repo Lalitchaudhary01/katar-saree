@@ -6,7 +6,6 @@ const orderSchema = new mongoose.Schema({
     {
       title: String,
       price: Number,
-      size: String,
       color: String,
       image: String,
     },

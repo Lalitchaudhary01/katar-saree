@@ -135,7 +135,7 @@ const CollectionDetails = () => {
     }
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!userInfo) {
       navigate("/login", { state: { from: `/collection/${id}` } });
       return;
@@ -148,22 +148,23 @@ const CollectionDetails = () => {
 
     const cartItem = {
       id: collection.id,
-      title: collection.title,
-      image: mainImage,
+      name: collection.title, // Changed from title to name
       price: collection.discountPrice,
+      image: mainImage,
       color: selectedColor,
       quantity: quantity,
-      stock: collection.stock || 10,
-      details: {
-        color: collection.details?.color || selectedColor,
-        technique: collection.details?.technique || "",
-        fabric: collection.details?.fabric || collection.material || "",
-        speciality: collection.details?.speciality || collection.desc || "",
-      },
+      // Include any other required fields
     };
 
-    addToCart(cartItem);
-    toast.success(`${collection.title} added to your cart!`);
+    try {
+      const success = await addToCart(cartItem);
+      if (success) {
+        toast.success(`${collection.title} added to your cart!`);
+      }
+    } catch (error) {
+      toast.error("Failed to add item to cart");
+      console.error("Add to cart error:", error);
+    }
   };
 
   const handleBuyNow = () => {

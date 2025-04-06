@@ -2,36 +2,82 @@ import React from "react";
 import { useCart } from "../context/CartContext";
 import { useCurrency } from "../context/currencyContext";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { Trash2, ShoppingBag, Plus, Minus } from "lucide-react";
 
 const Cart = () => {
-  const { cart, removeFromCart, updateQuantity } = useCart();
+  const {
+    cart = [],
+    loading,
+    error,
+    removeFromCart,
+    updateQuantity,
+    getCartTotal,
+    getCartItemCount,
+    fetchCart,
+  } = useCart();
+
   const navigate = useNavigate();
   const { selectedCurrency, convertPrice, formatPrice } = useCurrency();
+  const { userInfo } = useSelector((state) => state.auth);
 
-  const totalItems = cart.reduce(
-    (total, item) => total + (item.quantity || 1),
-    0
-  );
-  const totalAmount = cart.reduce(
-    (total, item) => total + convertPrice(item.price) * (item.quantity || 1),
-    0
-  );
+  const totalItems = getCartItemCount();
+  const totalAmount = getCartTotal();
 
   const handleCheckout = () => {
+    if (!userInfo) {
+      navigate("/auth", { state: { from: "/cart" } });
+      return;
+    }
     navigate("/checkout", { state: { totalAmount } });
   };
 
-  const handleIncreaseQuantity = (itemId) => {
-    const item = cart.find((item) => item.id === itemId);
-    if (item) updateQuantity(itemId, (item.quantity || 1) + 1);
+  const handleIncreaseQuantity = (productId, color) => {
+    const item = cart.find(
+      (item) => item.productId === productId && item.color === color
+    );
+    if (item) updateQuantity(productId, color, (item.quantity || 1) + 1);
   };
 
-  const handleDecreaseQuantity = (itemId) => {
-    const item = cart.find((item) => item.id === itemId);
-    if (item && (item.quantity || 1) > 1)
-      updateQuantity(itemId, (item.quantity || 1) - 1);
+  const handleDecreaseQuantity = (productId, color) => {
+    const item = cart.find(
+      (item) => item.productId === productId && item.color === color
+    );
+    if (item) {
+      const newQuantity = (item.quantity || 1) - 1;
+      if (newQuantity > 0) {
+        updateQuantity(productId, color, newQuantity);
+      } else {
+        removeFromCart(productId, color);
+      }
+    }
   };
+
+  const handleRetry = () => {
+    fetchCart();
+  };
+
+  if (loading && cart.length === 0) {
+    return (
+      <div className="w-full max-w-6xl mx-auto p-10 text-center">
+        <div className="animate-pulse">Loading your cart...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="w-full max-w-6xl mx-auto p-10 text-center">
+        <div className="text-red-500 mb-4">{error}</div>
+        <button
+          onClick={handleRetry}
+          className="bg-black text-white px-4 py-2 hover:bg-gray-800"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-6xl mx-auto p-4 sm:p-6 md:p-10 bg-white rounded-none shadow-xl font-[Garamond]">
@@ -48,13 +94,15 @@ const Cart = () => {
         <div className="text-center py-10 md:py-20 flex flex-col items-center">
           <ShoppingBag size={60} className="text-gray-300 mb-4 md:mb-6" />
           <p className="text-xl md:text-2xl font-[Garamond] mb-6 md:mb-10 text-black px-4">
-            Your collection awaits your exquisite taste
+            {userInfo
+              ? "Your collection awaits your exquisite taste"
+              : "Please sign in to view your cart"}
           </p>
           <a
-            href="/"
+            href={userInfo ? "/" : "/auth"}
             className="mt-4 md:mt-6 bg-black text-white px-8 sm:px-12 md:px-16 py-3 md:py-4 hover:bg-gray-900 transition-all duration-300 tracking-widest text-xs sm:text-sm font-[Garamond]"
           >
-            EXPLORE OUR COLLECTION
+            {userInfo ? "EXPLORE OUR COLLECTION" : "SIGN IN"}
           </a>
         </div>
       ) : (
@@ -62,31 +110,29 @@ const Cart = () => {
           <ul className="divide-y divide-gray-200">
             {cart.map((item, index) => (
               <li
-                key={index}
+                key={`${item.productId}-${item.color}-${index}`}
                 className="flex flex-col sm:flex-row items-start sm:items-center justify-between py-6 sm:py-8 md:py-12 space-y-4 sm:space-y-0"
               >
                 <div className="relative mx-auto sm:mx-0">
                   <img
-                    src={item.image}
+                    src={item.image || "/placeholder-product.jpg"}
                     alt={item.name}
                     className="w-32 h-40 sm:w-36 sm:h-48 md:w-40 md:h-52 object-cover border border-gray-100"
+                    onError={(e) => {
+                      e.target.src = "/placeholder-product.jpg";
+                    }}
                   />
                   <div className="absolute inset-0 border border-gray-200 opacity-30"></div>
                 </div>
                 <div className="flex-1 w-full sm:ml-6 md:ml-12">
                   <h2 className="text-lg sm:text-xl font-[Garamond] text-black tracking-wide">
-                    {item.title}
+                    {item.name || "Unnamed Product"}
                   </h2>
                   <p className="text-lg sm:text-xl font-[Garamond] mt-1 sm:mt-2 text-black">
                     {selectedCurrency.symbol}
-                    {formatPrice(convertPrice(item.price))}
+                    {formatPrice(convertPrice(item.price || 0))}
                   </p>
                   <div className="flex mt-3 md:mt-6 text-black text-xs sm:text-sm space-x-4 sm:space-x-10">
-                    {item.size && (
-                      <p className="font-[Garamond]">
-                        Size: <span className="text-black">{item.size}</span>
-                      </p>
-                    )}
                     {item.color && (
                       <p className="font-[Garamond]">
                         Color: <span className="text-black">{item.color}</span>
@@ -99,7 +145,9 @@ const Cart = () => {
                     </p>
                     <div className="flex items-center border border-gray-300">
                       <button
-                        onClick={() => handleDecreaseQuantity(item.id)}
+                        onClick={() =>
+                          handleDecreaseQuantity(item.productId, item.color)
+                        }
                         className="px-2 sm:px-3 py-1 border-r border-gray-300 hover:bg-gray-50"
                         disabled={(item.quantity || 1) <= 1}
                       >
@@ -116,16 +164,19 @@ const Cart = () => {
                         {item.quantity || 1}
                       </span>
                       <button
-                        onClick={() => handleIncreaseQuantity(item.id)}
+                        onClick={() =>
+                          handleIncreaseQuantity(item.productId, item.color)
+                        }
                         className="px-2 sm:px-3 py-1 border-l border-gray-300 hover:bg-gray-50"
                       >
                         <Plus size={14} className="text-black" />
                       </button>
                     </div>
                     <button
-                      onClick={() => removeFromCart(item.id)}
+                      onClick={() => removeFromCart(item.productId, item.color)}
                       className="ml-auto p-2 sm:p-3 hover:text-gray-500 transition-all duration-300"
                       aria-label="Remove item"
+                      disabled={loading}
                     >
                       <Trash2 size={18} className="text-black" />
                     </button>
@@ -135,7 +186,7 @@ const Cart = () => {
                     <span className="text-black font-medium">
                       {selectedCurrency.symbol}
                       {formatPrice(
-                        convertPrice(item.price * (item.quantity || 1))
+                        convertPrice((item.price || 0) * (item.quantity || 1))
                       )}
                     </span>
                   </p>
@@ -176,8 +227,9 @@ const Cart = () => {
               <button
                 onClick={handleCheckout}
                 className="bg-black text-white w-full px-4 py-3 sm:py-4 hover:bg-gray-900 transition-all duration-300 tracking-widest text-xs sm:text-sm font-[Garamond]"
+                disabled={loading || cart.length === 0}
               >
-                COMPLETE YOUR PURCHASE
+                {loading ? "PROCESSING..." : "COMPLETE YOUR PURCHASE"}
               </button>
             </div>
             <p className="text-center text-xs text-black mt-6 sm:mt-10 font-[Garamond] tracking-wider px-4">

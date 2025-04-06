@@ -1,22 +1,21 @@
 const express = require("express");
+const router = express.Router();
 const {
   getCart,
   addToCart,
+  updateCartItem,
   removeFromCart,
   clearCart,
 } = require("../controllers/cartController");
-const router = express.Router();
+const { protect } = require("../middleware/authMiddleware");
 
-// GET /api/cart/:userId
-router.get("/:userId", getCart);
+// All cart routes are protected
+router.use(protect);
 
-// POST /api/cart
-router.post("/", addToCart);
-
-// DELETE /api/cart (remove single item)
-router.delete("/", removeFromCart);
-
-// DELETE /api/cart/clear/:userId (clear entire cart)
-router.delete("/clear/:userId", clearCart);
+router.get("/", getCart);
+router.post("/add", addToCart);
+router.put("/update", updateCartItem);
+router.delete("/remove", removeFromCart);
+router.delete("/clear", clearCart);
 
 module.exports = router;

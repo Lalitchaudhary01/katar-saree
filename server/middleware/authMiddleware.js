@@ -4,6 +4,7 @@ const User = require("../models/user");
 const protect = async (req, res, next) => {
   let token;
 
+  // Check for token in Authorization header
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
@@ -12,30 +13,73 @@ const protect = async (req, res, next) => {
       // Get token from header
       token = req.headers.authorization.split(" ")[1];
 
+      // Verify environment variable
       if (!process.env.JWT_SECRET) {
-        throw new Error("JWT_SECRET is not defined in environment variables");
+        console.error("JWT_SECRET is not defined");
+        return res.status(500).json({ error: "Server configuration error" });
       }
 
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      // Get user from the token
+      // Get user from the token without password
       req.user = await User.findById(decoded._id).select("-password");
 
       if (!req.user) {
-        throw new Error("User not found");
+        console.error("User not found for token");
+        return res.status(401).json({ error: "User not found" });
       }
 
-      next();
+      // Attach additional user info if needed
+      req.user._id = req.user._id.toString(); // Ensure _id is string
+
+      // Proceed to next middleware
+      return next();
     } catch (error) {
-      console.error("Auth Error:", error);
-      res.status(401).json({ error: "Not authorized, token failed" });
+      console.error("Authentication error:", error);
+
+      // Handle different error types specifically
+      if (error.name === "TokenExpiredError") {
+        return res
+          .status(401)
+          .json({ error: "Token expired, please login again" });
+      }
+      if (error.name === "JsonWebTokenError") {
+        return res.status(401).json({ error: "Invalid token" });
+      }
+
+      return res.status(401).json({ error: "Not authorized" });
     }
   }
 
-  if (!token) {
-    res.status(401).json({ error: "Not authorized, no token" });
+  // Also check for token in cookies (if using cookies)
+  if (req.cookies?.token) {
+    token = req.cookies.token;
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = await User.findById(decoded._id).select("-password");
+      return next();
+    } catch (error) {
+      console.error("Cookie token error:", error);
+      // Continue to return the no token error below
+    }
   }
+
+  // If no token found
+  return res.status(401).json({
+    error: "Not authorized, no token provided",
+    solution: "Please login to access this resource",
+  });
 };
 
-module.exports = { protect };
+// Optional admin check middleware
+const admin = (req, res, next) => {
+  if (req.user && req.user.isAdmin) {
+    return next();
+  }
+  return res.status(403).json({
+    error: "Not authorized as admin",
+  });
+};
+
+module.exports = { protect, admin };
