@@ -33,7 +33,7 @@ const CollectionDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const { isInWishlist, toggleWishlist } = useWishlist();
+  const { isInWishlist, toggleWishlistItem } = useWishlist(); // Changed from toggleWishlist to toggleWishlistItem
   const { selectedCurrency, convertPrice, formatPrice } = useCurrency();
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -116,17 +116,22 @@ const CollectionDetails = () => {
 
     const wishlistItem = {
       id: collection.id,
+      productId: collection.id, // Added to match context expectation
       title: collection.title,
       image: mainImage,
       discountPrice: collection.discountPrice,
       originalPrice: collection.originalPrice,
+      discount: calculateDiscountPercentage(), // Added to match context
+      colors: collection.colors,
+      desc: collection.desc, // Added to match context
+      currencyCode: selectedCurrency.code, // Added to match context
+      currencySymbol: selectedCurrency.symbol, // Added to match context
       stock: collection.stock,
       specialty: collection.specialty,
-      colors: collection.colors,
     };
 
     const isCurrentlyInWishlist = isInWishlist(collection.id);
-    toggleWishlist(wishlistItem);
+    toggleWishlistItem(wishlistItem); // Changed from toggleWishlist to toggleWishlistItem to match context
 
     if (isCurrentlyInWishlist) {
       toast.success(`${collection.title} removed from your wishlist!`);

@@ -2,16 +2,20 @@ import React, { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaShoppingCart, FaHeart, FaRegHeart } from "react-icons/fa";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 // Context Hooks
 import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
 import { useCurrency } from "../context/currencyContext";
 
-const QuickViewModal = ({ selectedProduct, isOpen, onClose }) => {
+const QuickView = ({ selectedProduct, isOpen, onClose }) => {
   const { addToCart } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { selectedCurrency, convertPrice, formatPrice } = useCurrency();
+  const navigate = useNavigate();
+  const { userInfo } = useSelector((state) => state.auth);
 
   const [mainImage, setMainImage] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
@@ -27,6 +31,13 @@ const QuickViewModal = ({ selectedProduct, isOpen, onClose }) => {
   if (!isOpen || !selectedProduct) return null;
 
   const handleAddToCart = () => {
+    if (!userInfo) {
+      // Redirect to login if user is not logged in
+      onClose();
+      navigate("/login", { state: { from: window.location.pathname } });
+      return;
+    }
+
     if (!selectedColor) {
       toast.error("Please select a color before adding to cart!");
       return;
@@ -34,7 +45,7 @@ const QuickViewModal = ({ selectedProduct, isOpen, onClose }) => {
 
     addToCart({
       id: selectedProduct.id,
-      title: selectedProduct.title,
+      name: selectedProduct.title,
       image: mainImage,
       price: selectedProduct.discountPrice,
       color: selectedColor,
@@ -43,6 +54,38 @@ const QuickViewModal = ({ selectedProduct, isOpen, onClose }) => {
 
     toast.success(`${selectedProduct.title} added to cart!`);
     onClose();
+  };
+
+  const handleWishlistToggle = () => {
+    if (!userInfo) {
+      // Redirect to login if user is not logged in
+      onClose();
+      navigate("/login", { state: { from: window.location.pathname } });
+      return;
+    }
+
+    const wishlistItem = {
+      id: selectedProduct.id,
+      title: selectedProduct.title,
+      image: mainImage,
+      images: selectedProduct.images,
+      originalPrice: selectedProduct.originalPrice,
+      discountPrice: selectedProduct.discountPrice,
+      colors: selectedProduct.colors,
+      discount: selectedProduct.discount,
+      desc: selectedProduct.desc,
+      currencyCode: selectedCurrency.code,
+      currencySymbol: selectedCurrency.symbol,
+    };
+
+    const isCurrentlyInWishlist = isInWishlist(wishlistItem.id);
+    toggleWishlist(wishlistItem);
+
+    if (isCurrentlyInWishlist) {
+      toast.success(`${selectedProduct.title} removed from wishlist`);
+    } else {
+      toast.success(`${selectedProduct.title} added to wishlist`);
+    }
   };
 
   return (
@@ -162,7 +205,7 @@ const QuickViewModal = ({ selectedProduct, isOpen, onClose }) => {
 
                 <div className="mt-auto flex gap-2">
                   <button
-                    onClick={() => toggleWishlist(selectedProduct)}
+                    onClick={handleWishlistToggle}
                     className="w-10 h-10 flex-shrink-0 border border-gray-200 rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors"
                   >
                     {isInWishlist(selectedProduct.id) ? (
@@ -195,4 +238,4 @@ const QuickViewModal = ({ selectedProduct, isOpen, onClose }) => {
   );
 };
 
-export default QuickViewModal;
+export default QuickView;

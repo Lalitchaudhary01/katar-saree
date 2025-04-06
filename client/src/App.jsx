@@ -22,8 +22,6 @@ import OurHeritage from "./components/OurHeritage";
 import Cart from "./components/Cart";
 import Checkout from "./components/Checkout";
 import CollectionDetails from "./components/CollectionDetails";
-import SilkSarees from "./pages/SilkSaree";
-import CottonSarees from "./pages/CottonSarees";
 import BanarasiSarees from "./pages/BanarasiSarees";
 import About from "./components/About";
 import Contact from "./components/Contact";
@@ -157,22 +155,7 @@ function AppContent() {
           />
 
           {/* Saree Routes */}
-          <Route
-            path="/sarees/silk"
-            element={
-              <PageWrapper>
-                <SilkSarees />
-              </PageWrapper>
-            }
-          />
-          <Route
-            path="/sarees/cotton"
-            element={
-              <PageWrapper>
-                <CottonSarees />
-              </PageWrapper>
-            }
-          />
+
           <Route
             path="/featured/silk"
             element={

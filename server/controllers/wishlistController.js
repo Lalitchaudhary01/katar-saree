@@ -1,45 +1,88 @@
 const Wishlist = require("../models/Wishlist");
 
-// Get wishlist
+// Get user's wishlist
 exports.getWishlist = async (req, res) => {
   try {
-    const wishlist = await Wishlist.findOne({ userId: req.params.userId });
-    res.json(wishlist?.items || []);
-  } catch (err) {
-    res.status(500).json({ error: "Server error" });
+    const wishlist = await Wishlist.findOne({ userId: req.user._id });
+    res.status(200).json(wishlist?.items || []);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch wishlist" });
   }
 };
 
 // Add to wishlist
 exports.addToWishlist = async (req, res) => {
-  const { userId, productId, name, price, image } = req.body;
   try {
-    let wishlist = await Wishlist.findOne({ userId });
-    if (!wishlist) wishlist = new Wishlist({ userId, items: [] });
+    const {
+      productId,
+      title,
+      image,
+      originalPrice,
+      discountPrice,
+      discount,
+      colors,
+      desc,
+      currencyCode,
+      currencySymbol,
+    } = req.body;
 
-    if (!wishlist.items.some((item) => item.productId === productId)) {
-      wishlist.items.push({ productId, name, price, image });
+    let wishlist = await Wishlist.findOne({ userId: req.user._id });
+    if (!wishlist) {
+      wishlist = new Wishlist({ userId: req.user._id, items: [] });
+    }
+
+    // Check if item already exists
+    const existingItem = wishlist.items.find(
+      (item) => item.productId === productId
+    );
+
+    if (!existingItem) {
+      wishlist.items.push({
+        productId,
+        title,
+        image,
+        originalPrice,
+        discountPrice,
+        discount,
+        colors,
+        desc,
+        currencyCode,
+        currencySymbol,
+      });
       await wishlist.save();
     }
-    res.json(wishlist.items);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to update wishlist" });
+
+    res.status(200).json(wishlist.items);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to add to wishlist" });
   }
 };
 
 // Remove from wishlist
 exports.removeFromWishlist = async (req, res) => {
-  const { userId, productId } = req.body;
   try {
-    const wishlist = await Wishlist.findOne({ userId });
+    const { productId } = req.body;
+    const wishlist = await Wishlist.findOne({ userId: req.user._id });
+
     if (wishlist) {
       wishlist.items = wishlist.items.filter(
         (item) => item.productId !== productId
       );
       await wishlist.save();
     }
-    res.json(wishlist?.items || []);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to remove item" });
+
+    res.status(200).json(wishlist?.items || []);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to remove from wishlist" });
+  }
+};
+
+// Clear wishlist
+exports.clearWishlist = async (req, res) => {
+  try {
+    await Wishlist.findOneAndDelete({ userId: req.user._id });
+    res.status(200).json([]);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to clear wishlist" });
   }
 };

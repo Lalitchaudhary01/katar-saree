@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useWishlist } from "../context/WishlistContext";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
@@ -16,51 +16,46 @@ import {
 } from "react-icons/fa";
 
 const Wishlist = () => {
-  const { wishlistItems, removeFromWishlist } = useWishlist();
+  const { wishlist, removeFromWishlist, loading } = useWishlist();
   const { addToCart } = useCart();
   const navigate = useNavigate();
   const { selectedCurrency, convertPrice, formatPrice } = useCurrency();
   const [hoveredItem, setHoveredItem] = useState(null);
   const [selectedColors, setSelectedColors] = useState({});
 
-  // Get unique items based on product ID
-  const uniqueWishlistItems = [
-    ...new Map(wishlistItems.map((item) => [item.id, item])).values(),
-  ];
-
-  const handleColorSelect = (itemId, color) => {
-    setSelectedColors({
-      ...selectedColors,
-      [itemId]: color,
-    });
-    toast.success(`Color selected!`);
+  const handleColorSelect = (productId, color) => {
+    setSelectedColors({ ...selectedColors, [productId]: color });
+    toast.success("Color selected!");
   };
 
   const handleAddToCart = (item) => {
-    // Check if color is selected for this item
-    if (item.colors && item.colors.length > 0 && !selectedColors[item.id]) {
+    if (item.colors?.length > 0 && !selectedColors[item.productId]) {
       toast.error("Please select a color first");
       return;
     }
 
     const cartItem = {
-      id: item.id,
-      title: item.title,
-      image: item.image || item.images[0],
+      id: item.productId,
+      name: item.title,
+      image: item.image,
       price: item.discountPrice,
-      color: selectedColors[item.id] || (item.colors ? item.colors[0] : null),
+      color: selectedColors[item.productId] || item.colors?.[0],
       quantity: 1,
-      stock: item.stock,
-      specialty: item.specialty,
     };
 
     addToCart(cartItem);
-    toast.success(`${item.title} added to your cart!`);
+    toast.success(`${item.title} added to cart!`);
   };
 
-  // Add a dedicated function to handle viewing product details
-  const handleViewProduct = (itemId) => {
-    navigate(`/collection/${itemId}`);
+  const handleViewProduct = (productId) => {
+    navigate(`/collection/${productId}`);
+  };
+
+  const handleShareProduct = (productId) => {
+    navigator.clipboard.writeText(
+      window.location.origin + `/collection/${productId}`
+    );
+    toast.success("Link copied to clipboard!");
   };
 
   const containerVariants = {
@@ -77,6 +72,10 @@ const Wishlist = () => {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
   };
+
+  if (loading && wishlist.length === 0) {
+    return <div className="text-center py-20">Loading wishlist...</div>;
+  }
 
   return (
     <div className="bg-white py-12 min-h-screen">
@@ -105,8 +104,14 @@ const Wishlist = () => {
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
           }
           
-          .gold-accent {
-            background: linear-gradient(135deg, #D4AF37 0%, #F9F295 50%, #D4AF37 100%);
+          .fancy-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.5), transparent);
+            margin: 1rem 0;
+          }
+          
+          .card-shadow {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
           }
           
           .btn-hover {
@@ -139,16 +144,6 @@ const Wishlist = () => {
           .color-swatch.selected {
             transform: scale(1.2);
             border: 2px solid #000;
-          }
-          
-          .fancy-divider {
-            height: 1px;
-            background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.5), transparent);
-            margin: 1rem 0;
-          }
-          
-          .card-shadow {
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
           }
           
           .color-tooltip {
@@ -186,13 +181,12 @@ const Wishlist = () => {
           </h1>
           <div className="ml-4 relative">
             <span className="ml-1 px-3 py-1 bg-black text-white font-medium rounded-full text-sm shadow-sm">
-              {uniqueWishlistItems.length}{" "}
-              {uniqueWishlistItems.length === 1 ? "Item" : "Items"}
+              {wishlist.length} {wishlist.length === 1 ? "Item" : "Items"}
             </span>
           </div>
         </div>
 
-        {uniqueWishlistItems.length === 0 ? (
+        {wishlist.length === 0 ? (
           <div className="bg-white rounded-xl shadow-sm p-16 text-center border border-gray-100 card-shadow">
             <div className="w-24 h-24 bg-[#FDF5E6] rounded-full flex items-center justify-center mx-auto mb-8 shadow-sm">
               <FaHeart className="text-[#D4AF37] text-3xl" />
@@ -228,9 +222,9 @@ const Wishlist = () => {
               initial="hidden"
               animate="visible"
             >
-              {uniqueWishlistItems.map((item, index) => (
+              {wishlist.map((item, index) => (
                 <motion.div
-                  key={item.id}
+                  key={item.productId}
                   className="bg-white rounded-lg shadow-sm overflow-hidden item-hover border border-gray-50 card-shadow"
                   variants={itemVariants}
                   onMouseEnter={() => setHoveredItem(index)}
@@ -239,10 +233,10 @@ const Wishlist = () => {
                   <div className="relative">
                     <div className="overflow-hidden aspect-[3/4]">
                       <img
-                        src={item.image || (item.images && item.images[0])}
+                        src={item.image}
                         alt={item.title}
                         className="w-full h-full object-cover transition-transform duration-700 hover:scale-110 cursor-pointer"
-                        onClick={() => handleViewProduct(item.id)}
+                        onClick={() => handleViewProduct(item.productId)}
                       />
                     </div>
 
@@ -254,7 +248,7 @@ const Wishlist = () => {
                     >
                       <div className="flex justify-between items-center">
                         <motion.button
-                          onClick={() => handleViewProduct(item.id)}
+                          onClick={() => handleViewProduct(item.productId)}
                           className="bg-white/90 backdrop-blur-sm text-black p-2 rounded-full shadow-md cursor-pointer"
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
@@ -268,13 +262,7 @@ const Wishlist = () => {
                             className="bg-white/90 backdrop-blur-sm text-black p-2 rounded-full shadow-md"
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
-                            onClick={() => {
-                              navigator.clipboard.writeText(
-                                window.location.origin +
-                                  `/collection/${item.id}`
-                              );
-                              toast.success("Link copied to clipboard!");
-                            }}
+                            onClick={() => handleShareProduct(item.productId)}
                           >
                             <FaShareAlt className="text-lg" />
                           </motion.button>
@@ -283,7 +271,7 @@ const Wishlist = () => {
                             className="bg-white/90 backdrop-blur-sm text-red-500 p-2 rounded-full shadow-md"
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
-                            onClick={() => removeFromWishlist(item.id)}
+                            onClick={() => removeFromWishlist(item.productId)}
                           >
                             <FaTrash className="text-lg" />
                           </motion.button>
@@ -304,7 +292,7 @@ const Wishlist = () => {
                   <div className="p-5 border-t border-gray-100">
                     <h3
                       className="font-playfair font-semibold text-xl text-gray-900 hover:text-[#D4AF37] transition-colors cursor-pointer mb-1"
-                      onClick={() => handleViewProduct(item.id)}
+                      onClick={() => handleViewProduct(item.productId)}
                     >
                       {item.title}
                     </h3>
@@ -332,6 +320,16 @@ const Wishlist = () => {
                           </span>
                         )}
                       </div>
+
+                      {/* Heart icon for toggling wishlist */}
+                      {/* <motion.button
+                        onClick={() => removeFromWishlist(item.productId)}
+                        className="w-10 h-10 rounded-full flex items-center justify-center bg-red-500 text-white shadow-md"
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                      >
+                        <FaHeart className="text-white" />
+                      </motion.button> */}
                     </div>
 
                     {/* Color selection */}
@@ -345,14 +343,16 @@ const Wishlist = () => {
                             <div
                               key={idx}
                               className={`relative w-6 h-6 rounded-full shadow-sm color-swatch ${
-                                selectedColors[item.id] === color
+                                selectedColors[item.productId] === color
                                   ? "selected"
                                   : ""
                               }`}
                               style={{ backgroundColor: color }}
-                              onClick={() => handleColorSelect(item.id, color)}
+                              onClick={() =>
+                                handleColorSelect(item.productId, color)
+                              }
                             >
-                              {selectedColors[item.id] === color && (
+                              {selectedColors[item.productId] === color && (
                                 <div className="absolute inset-0 flex items-center justify-center text-white">
                                   <FaCheck size={10} />
                                 </div>
@@ -371,21 +371,21 @@ const Wishlist = () => {
                       className={`w-full py-3 rounded-md font-cardo text-base flex items-center justify-center gap-2 btn-hover ${
                         item.colors &&
                         item.colors.length > 0 &&
-                        !selectedColors[item.id]
+                        !selectedColors[item.productId]
                           ? "bg-gray-300 text-gray-600 cursor-not-allowed"
                           : "bg-black text-white hover:bg-gray-900"
                       }`}
                       whileHover={
                         item.colors &&
                         item.colors.length > 0 &&
-                        !selectedColors[item.id]
+                        !selectedColors[item.productId]
                           ? {}
                           : { scale: 1.02 }
                       }
                       whileTap={
                         item.colors &&
                         item.colors.length > 0 &&
-                        !selectedColors[item.id]
+                        !selectedColors[item.productId]
                           ? {}
                           : { scale: 0.98 }
                       }
@@ -393,7 +393,7 @@ const Wishlist = () => {
                       <FaShoppingCart className="text-sm" />
                       {item.colors &&
                       item.colors.length > 0 &&
-                      !selectedColors[item.id]
+                      !selectedColors[item.productId]
                         ? "Select a Color"
                         : "Add to Cart"}
                     </motion.button>
@@ -402,7 +402,7 @@ const Wishlist = () => {
               ))}
             </motion.div>
 
-            {uniqueWishlistItems.length > 0 && (
+            {wishlist.length > 0 && (
               <div className="mt-12 flex justify-center">
                 <motion.button
                   onClick={() => navigate("/collection")}
