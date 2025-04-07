@@ -37,13 +37,17 @@ export const collectionsData = [
   {
     title: "Weaving and Patterns",
     items: [
-      { name: "Kadhwa Bootis", link: "/weaves/kadhwa-bootis" },
-      { name: "Kadwa Buri", link: "/weaves/kadwa-buri" },
-      { name: "Kadhwa Strips", link: "/weaves/kadhwa-strips" },
+      { name: "Kadhwa/Booti-boota", link: "/weaves/kadhwa-bootis" },
+      // { name: "Kadwa", link: "/weaves/kadwa-buri" },
+      { name: "Kora Kadhwa Strips", link: "/weaves/kora-kadhwa-strips" },
       { name: "Jaal Cutwork", link: "/weaves/jaal-cutwork" },
       { name: "Jamawar", link: "/weaves/jamawar" },
-      { name: "Banarasi Bandhej", link: "/weaves/banarasi-bandhej" },
-      { name: "Minakari Bandhej", link: "/weaves/minakari-bandhej" },
+      {
+        name: "Khaddi Georgette bandhani(Bandhej)",
+        link: "/weaves/khaddi-georgette",
+      }, //Khaddi georgette
+      { name: "Banarasi Bandhani(bandhej)", link: "/weaves/banarasi-bandhani" },
+      { name: "Minakari Bandhani", link: "/weaves/minakari-bandhani" },
       { name: "Tasal Banarasi", link: "/weaves/tasal" },
     ],
   },
