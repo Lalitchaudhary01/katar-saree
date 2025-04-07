@@ -283,7 +283,7 @@ const Wishlist = () => {
                     {item.discount && (
                       <div className="absolute top-4 left-4">
                         <div className="bg-black text-white font-medium px-3 py-1 rounded-full text-sm shadow-md">
-                          {item.discount}
+                          {item.discount}% OFF
                         </div>
                       </div>
                     )}

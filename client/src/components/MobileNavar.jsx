@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FaSearch, FaEnvelope, FaPhone } from "react-icons/fa";
-import { FiSearch, FiUser, FiHeart, FiShoppingCart } from "react-icons/fi";
+import { FiSearch, FiUser, FiHeart, FiShoppingCart, FiLogOut } from "react-icons/fi";
 import { useCart } from "../context/CartContext";
 import { useCurrency } from "../context/currencyContext";
 
@@ -13,9 +13,14 @@ const MobileNavbar = ({
   selectedCurrency,
   currencies,
   handleCurrencySelect,
+  isLoggedIn,
+  handleLogout,
+  userData,
+  handleViewProfile
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const navigate = useNavigate();
 
   // Effect to detect scrolling for changing header appearance
   useEffect(() => {
@@ -34,6 +39,17 @@ const MobileNavbar = ({
   }, []);
 
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
+
+  const handleUserClick = () => {
+    if (isLoggedIn) {
+      // User is already logged in, don't navigate
+      toggleMobileMenu();
+    } else {
+      // Navigate to login page
+      navigate("/login");
+      setMobileMenuOpen(false);
+    }
+  };
 
   return (
     <>
@@ -169,6 +185,42 @@ const MobileNavbar = ({
           </button>
         </div>
 
+        {/* User Profile Section (Only shown when logged in) */}
+        {isLoggedIn && userData && (
+          <div className="p-5 border-b border-gray-100 bg-[#f9f5f0]">
+            <div className="flex items-center">
+              <div className="w-12 h-12 rounded-full bg-[#e3d5c6] flex items-center justify-center text-2xl font-bold text-[#8b5e3c]">
+                {userData.name ? userData.name.charAt(0).toUpperCase() : "U"}
+              </div>
+              <div className="ml-3">
+                <h3 className="font-medium text-black">{userData.name}</h3>
+                <p className="text-sm text-gray-600 truncate">{userData.email}</p>
+              </div>
+            </div>
+            <div className="mt-4 flex space-x-2">
+              <button
+                onClick={() => {
+                  handleViewProfile();
+                  setMobileMenuOpen(false);
+                }}
+                className="flex-1 bg-white text-black border border-gray-200 py-2 px-4 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors"
+              >
+                My Profile
+              </button>
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setMobileMenuOpen(false);
+                }}
+                className="flex items-center justify-center bg-black text-white py-2 px-4 rounded-md text-sm font-medium hover:bg-[#333] transition-colors"
+              >
+                <FiLogOut size={14} className="mr-1.5" />
+                Logout
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Scrollable menu content */}
         <div className="flex-1 overflow-y-auto custom-scrollbar">
           {/* Search Bar with premium styling */}
@@ -184,6 +236,7 @@ const MobileNavbar = ({
               </div>
             </div>
           </div>
+          
           {/* Navigation Categories with luxury styling */}
           <div className="px-5 space-y-1">
             {/* SHOP */}
@@ -394,16 +447,17 @@ const MobileNavbar = ({
 
             {/* Icons with labels */}
             <div className="flex justify-between py-5">
-              <Link
-                to="/login"
-                className="flex flex-col items-center text-black hover:text-[#8b5e3c] transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
+              <div
+                onClick={handleUserClick}
+                className="flex flex-col items-center text-black hover:text-[#8b5e3c] transition-colors cursor-pointer"
               >
                 <div className="w-10 h-10 rounded-full bg-[#f5f0e8] flex items-center justify-center mb-1">
                   <FiUser size={15} />
                 </div>
-                <span className="text-xs mt-1 font-medium">Account</span>
-              </Link>
+                <span className="text-xs mt-1 font-medium">
+                  {isLoggedIn ? "Profile" : "Account"}
+                </span>
+              </div>
               <Link
                 to="/wishlist"
                 className="flex flex-col items-center text-black hover:text-[#8b5e3c] transition-colors"
@@ -416,7 +470,7 @@ const MobileNavbar = ({
               </Link>
               <Link
                 to="/cart"
-                className="flex flex-col items-center text-black  transition-colors"
+                className="flex flex-col items-center text-black transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <div className="w-10 h-10 rounded-full bg-[#f5f0e8] flex items-center justify-center mb-1 relative">
@@ -433,16 +487,39 @@ const MobileNavbar = ({
           </div>
         </div>
 
-        {/* Footer with Cart Button */}
+        {/* Footer with action buttons */}
         <div className="p-5 border-t border-gray-100">
-          <Link
-            to="/cart"
-            className="flex items-center justify-center bg-black text-white py-3 px-4 rounded-md w-full hover:bg-[#7a4d2f] transition-all duration-300 font-medium shadow-md"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <FiShoppingCart size={16} className="mr-2" />
-            View Cart
-          </Link>
+          {isLoggedIn ? (
+            <div className="flex space-x-3">
+              <button
+                onClick={() => {
+                  handleViewProfile();
+                  setMobileMenuOpen(false);
+                }}
+                className="flex-1 flex items-center justify-center py-3 px-4 rounded-md bg-[#f5f0e8] text-black hover:bg-[#e8dfcf] transition-all duration-300 font-medium"
+              >
+                <FiUser size={16} className="mr-2" />
+                My Profile
+              </button>
+              <Link
+                to="/cart"
+                className="flex-1 flex items-center justify-center bg-black text-white py-3 px-4 rounded-md hover:bg-[#7a4d2f] transition-all duration-300 font-medium shadow-md"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <FiShoppingCart size={16} className="mr-2" />
+                View Cart
+              </Link>
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              className="flex items-center justify-center bg-black text-white py-3 px-4 rounded-md w-full hover:bg-[#7a4d2f] transition-all duration-300 font-medium shadow-md"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <FiUser size={16} className="mr-2" />
+              Login / Register
+            </Link>
+          )}
         </div>
       </div>
 

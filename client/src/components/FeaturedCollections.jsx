@@ -32,7 +32,7 @@ const FeaturedCollections = () => {
 
   const hoverTimers = useRef({});
   const carouselRef = useRef(null);
-  const { isInWishlist, toggleWishlist } = useWishlist();
+  const { isInWishlist, toggleWishlistItem } = useWishlist();
   const { selectedCurrency, convertPrice, formatPrice } = useCurrency();
   const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.auth);
@@ -107,7 +107,7 @@ const FeaturedCollections = () => {
     };
 
     const isCurrentlyInWishlist = isInWishlist(wishlistItem.id);
-    toggleWishlist(wishlistItem);
+    toggleWishlistItem(wishlistItem);
 
     if (isCurrentlyInWishlist) {
       toast.success(`${collection.title} removed from wishlist`);

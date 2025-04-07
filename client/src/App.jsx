@@ -44,6 +44,7 @@ import { CartProvider } from "./context/CartContext";
 import { WishlistProvider } from "./context/WishlistContext";
 import { CurrencyProvider } from "./context/currencyContext";
 import Layout from "./context/Layout";
+import UserProfile from "./headers/UserProfile";
 
 const pageVariants = {
   initial: { opacity: 0, y: 50 },
@@ -276,6 +277,14 @@ function AppContent() {
             element={
               <PageWrapper>
                 <BlogPostDetails />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <PageWrapper>
+                <UserProfile />
               </PageWrapper>
             }
           />

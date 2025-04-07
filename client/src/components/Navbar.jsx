@@ -129,6 +129,12 @@ const Navbar = () => {
     navigate("/");
   };
 
+  const handleViewProfile = () => {
+    // Navigate to profile page instead of showing modal
+    navigate("/profile");
+    setShowUserMenu(false);
+  };
+
   const DropdownMenu = ({ children, align = "left" }) => (
     <div
       className={`absolute hidden group-hover:block top-full 
@@ -176,6 +182,13 @@ const Navbar = () => {
         </div>
       )}
       <button
+        onClick={handleViewProfile}
+        className="flex items-center w-full text-left px-2 py-2 hover:bg-[#f9f5f0] text-[#5d4037] transition-colors"
+      >
+        <FiUser className="mr-2" />
+        View Profile
+      </button>
+      <button
         onClick={handleLogout}
         className="flex items-center w-full text-left px-2 py-2 hover:bg-[#f9f5f0] text-[#5d4037] transition-colors"
       >
@@ -211,6 +224,7 @@ const Navbar = () => {
             isLoggedIn={!!userInfo}
             handleLogout={handleLogout}
             userData={userInfo}
+            handleViewProfile={handleViewProfile}
           />
         </div>
 
