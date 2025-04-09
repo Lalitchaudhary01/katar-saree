@@ -37,7 +37,7 @@ export const collectionsData = [
   {
     title: "Weaving and Patterns",
     items: [
-      { name: "Kadhwa/Booti-boota", link: "/weaves/kadhwa-bootis" },
+      { name: "Kadhwa Booti-boota", link: "/weaves/kadhwa-bootis" },
       // { name: "Kadwa", link: "/weaves/kadwa-buri" },
       { name: "Kora Kadhwa Strips", link: "/weaves/kora-kadhwa-strips" },
       { name: "Jaal Cutwork", link: "/weaves/jaal-cutwork" },
