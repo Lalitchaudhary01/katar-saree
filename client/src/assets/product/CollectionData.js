@@ -1,51 +1,65 @@
+import bandhani3 from "./images/Pure bandhani saree in Vibrant lime green (3).jpg";
+import bandhani4 from "./images/Pure bandhani saree in Vibrant lime green (4).jpg";
+import bandhani5 from "./images/Pure bandhani saree in Vibrant lime green (5).jpg";
+import bandhani6 from "./images/Pure bandhani saree in Vibrant lime green (6).jpg";
+import bandhani1 from "./images/Pure bandhani saree in Vibrant lime green (1).jpg";
+import bandhani2 from "./images/Pure bandhani saree in Vibrant lime green (2).jpg";
+import jangla1 from "./images/katan-jangla-banarasi (1).jpg";
+import jangla2 from "./images/katan-jangla-banarasi (2).jpg";
+import jangla3 from "./images/katan-jangla-banarasi (3).jpg";
+import jangla4 from "./images/katan-jangla-banarasi (4).jpg";
+import jangla5 from "./images/katan-jangla-banarasi (5).jpg";
+
 const collections = [
   {
     id: 0,
-    title: "Bottle Green Katan Kadhwa Silk",
-    images: [
-      "/images/yellow1.webp",
-      "/images/yellow2.webp",
-      "/images/yellow3.webp",
-      "/images/yellow4.webp",
-      "/images/yellow.jpg",
-    ],
-    desc: "Fully handwoven with tested zari, guaranteed for 100 years. A legacy from one of the oldest Banarasi silk manufacturers since 1956.",
-    originalPrice: 19999,
+    title: "Pure Bandhani Saree in Vibrant Lime Green and Deep Bottle Green",
+    images: [bandhani1, bandhani2, bandhani3, bandhani4, bandhani5, bandhani6],
+    desc: "Every single thread is handwoven. It takes 3 to 4 weeks to craft one of these masterpieces. A reflection of timeless tradition and unmatched artistry.",
+    originalPrice: 22999,
     discountPrice: 15999,
-    discount: "20% OFF",
+    discount: "30% OFF",
     sizes: ["S", "M", "L", "XL"],
-    colors: ["Green", "Gold", "Maroon"],
+    colors: ["Lime Green", "Bottle Green"],
     stock: 10,
     details: {
-      color: "A beautiful shade of Bottle Green",
-      technique: "Traditional Kadhwa weaving technique",
-      fabric: "Pure Katan Silk",
-      speciality:
-        "Intricate handwoven motifs with luxurious zari work. A timeless masterpiece.",
+      color: "Vibrant lime green and deep bottle green",
+      technique: "Tie-and-Dye Bandhani with traditional craftsmanship",
+      fabric: "Available in Silk, Cotton, Georgette, and Chiffon",
+      speciality: `
+        1. Tie-and-Dye Technique: Bandhani involves tying small portions of fabric with thread and dyeing them to create unique patterns.
+        2. Vibrant Colors: Bright shades like red, yellow, green, and blue with striking contrasts.
+        3. Intricate Patterns: Features dots, waves, floral motifs, and regionally significant designs.
+        4. Handcrafted Artistry: Hand-done by skilled artisans, making each saree one-of-a-kind.
+        5. Cultural Symbolism: Worn during festivals, weddings, and religious occasions.
+        6. Variety of Fabrics: Suitable for all preferences and events.
+      `,
     },
   },
+
   {
     id: 1,
-    title: "Maroon/Wine Handloom Saree",
-    images: [
-      "",
-      "/images/maroon2.jpg",
-      "/images/maroon3.jpg",
-      "/images/maroon5.jpg",
-    ],
-    desc: "Very premium and lightweight fabric with a rich Pallu, beautiful border design, and Sona Rupa boutique work in gold and silver.",
-    originalPrice: 15999,
-    discountPrice: 12999,
-    discount: "19% OFF",
+    title: "Katan Jangla Banarasi Saree in Royal Purple",
+    images: [jangla1, jangla2, jangla3, jangla4, jangla5],
+    desc: "This is a stunning Katan Jangla Banarasi saree in a rich royal purple shade, featuring all-over Sona Roopa zari floral weaving, a signature of the Jangla style. Handcrafted with pure Katan silk, this saree radiates elegance and timeless charm.",
+    originalPrice: 24999,
+    discountPrice: 17999,
+    discount: "28% OFF",
     sizes: ["S", "M", "L", "XL"],
-    colors: ["Maroon", "Wine", "Purple"],
-    stock: 10,
+    colors: ["Royal Purple", "Gold"],
+    stock: 8,
     details: {
-      color: "Deep and elegant Maroon/Wine shade",
-      technique: "Handloom weaving with Sona Rupa gold and silver work",
-      fabric: "Lightweight premium silk",
-      speciality:
-        "Rich pallu and exquisite border design, ideal for grand occasions.",
+      color: "Royal Purple",
+      technique: "Jangla style weaving with Sona Roopa Zari",
+      fabric: "Pure Katan Silk – 100% Silk Mark Certified",
+      speciality: `
+        1. Signature Jangla Weave: All-over intricate floral designs with rich zari work.
+        2. Pure Katan Silk: Luxurious shine and texture that speaks royalty.
+        3. Regal Zari Border & Pallu: Heavy Sona Roopa zari adding a grand traditional essence.
+        4. 100% Handwoven: Takes 3–4 weeks to weave a single piece with absolute precision.
+        5. Silk Mark Certified: Guaranteed purity and authenticity of silk.
+        6. Versatile Appeal: Perfect for weddings, festivals, or timeless collection additions.
+      `,
     },
   },
   {
