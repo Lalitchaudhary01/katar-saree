@@ -200,7 +200,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="bg-[#f0f0f0] text-black py-2 text-center text-sm font-medium flex justify-center items-center">
+      <div className="bg-[#4b1e1e] text-[#caa766] py-2 text-center text-sm font-medium flex justify-center items-center">
         <FaTruck className="mr-2" size={20} />
         Free Shipping on Orders Above ₹25,000 | Flat 10% Off on First Order
       </div>
