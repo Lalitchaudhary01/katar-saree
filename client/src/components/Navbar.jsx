@@ -263,7 +263,6 @@ const Navbar = () => {
                     onClick={handleCurrencyClick}
                   >
                     <span className="flex items-center uppercase text-lg tracking-wide font-semibold">
-                      <span className="text-1xl">{selectedCurrency.code}</span>
                       <span className="ml-1 text-1xl">
                         {selectedCurrency.symbol} ▼
                       </span>
