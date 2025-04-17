@@ -42,7 +42,7 @@ const VideoCallSection = () => {
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
-              <div className="absolute top-4 left-4 bg-black bg-opacity-40 backdrop-blur-sm px-4 py-2 rounded-sm border-l-2 border-amber-500">
+              <div className="absolute top-4 left-4 bg-[#4b1e1e] bg-opacity-40 backdrop-blur-sm px-4 py-2 rounded-sm border-l-2 border-amber-500">
                 <span className="text-xs font-medium uppercase tracking-widest text-amber-100">
                   Premium Collection
                 </span>
@@ -68,9 +68,9 @@ const VideoCallSection = () => {
               <div className="transform transition-all duration-700 delay-300 translate-y-0 opacity-100">
                 <h2 className="font-serif text-3xl mb-2 text-stone-900 relative">
                   <span className="relative z-10">Personalized Shopping</span>
-                  <span className="absolute -bottom-2 left-0 w-12 h-1 bg-black transform transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute -bottom-2 left-0 w-12 h-1 bg-[#4b1e1e] transform transition-all duration-300 group-hover:w-full"></span>
                 </h2>
-                <div className="w-16 h-1 bg-black mb-6 transform transition-all duration-500 hover:w-32"></div>
+                <div className="w-16 h-1 bg-[#4b1e1e] mb-6 transform transition-all duration-500 hover:w-32"></div>
 
                 <p className="text-stone-700 mb-8 leading-relaxed">
                   Experience the pinnacle of luxury shopping with our
@@ -82,10 +82,10 @@ const VideoCallSection = () => {
 
                 <div className="flex flex-col sm:flex-row items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
                   <div className="flex items-center mr-6 group">
-                    <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center mr-3 transition-all duration-300 group-hover:bg-amber-500 group-hover:text-white shadow-sm">
+                    <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center mr-3 transition-all duration-300 group-hover:bg-[#4b1e1e] group-hover:text-white shadow-sm">
                       <Calendar
                         size={18}
-                        className="text-stone-700 group-hover:text-white transition-colors duration-300"
+                        className="text-[#4b1e1e] group-hover:text-white transition-colors duration-300"
                       />
                     </div>
                     <span className="text-sm  transition-colors duration-300">
@@ -93,10 +93,10 @@ const VideoCallSection = () => {
                     </span>
                   </div>
                   <div className="flex items-center group">
-                    <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center mr-3 transition-all duration-300 group-hover:bg-amber-500 group-hover:text-white shadow-sm">
+                    <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center mr-3 transition-all duration-300 group-hover:bg-[#4b1e1e] group-hover:text-white shadow-sm">
                       <Phone
                         size={18}
-                        className="text-stone-700 group-hover:text-white transition-colors duration-300"
+                        className="text-[#4b1e1e] group-hover:text-white transition-colors duration-300"
                       />
                     </div>
                     <span className="text-sm group-hover:text-black-800 transition-colors duration-300">
@@ -107,10 +107,10 @@ const VideoCallSection = () => {
 
                 <div className="flex items-center mb-8">
                   <div className="flex items-center mr-6 group">
-                    <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center mr-3 transition-all duration-300 group-hover:bg-amber-500 group-hover:text-white shadow-sm">
+                    <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center mr-3 transition-all duration-300 group-hover:bg-[#4b1e1e] group-hover:text-white shadow-sm">
                       <ShoppingBag
                         size={18}
-                        className="text-stone-700 group-hover:text-white transition-colors duration-300"
+                        className="text-[#4b1e1e] group-hover:text-white transition-colors duration-300"
                       />
                     </div>
                     <span className="text-sm group-hover:text-black-800 transition-colors duration-300">
@@ -118,10 +118,10 @@ const VideoCallSection = () => {
                     </span>
                   </div>
                   <div className="flex items-center group">
-                    <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center mr-3 transition-all duration-300 group-hover:bg-amber-500 group-hover:text-white shadow-sm">
+                    <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center mr-3 transition-all duration-300 group-hover:bg-[#4b1e1e] group-hover:text-white shadow-sm">
                       <Clock
                         size={18}
-                        className="text-stone-700 group-hover:text-white transition-colors duration-300"
+                        className="text-[#4b1e1e] group-hover:text-white transition-colors duration-300"
                       />
                     </div>
                     <span className="text-sm group-hover:text-black-800 transition-colors duration-300">
@@ -132,7 +132,7 @@ const VideoCallSection = () => {
 
                 <button
                   onClick={() => setShowAppointmentForm(true)}
-                  className="bg-black text-white flex items-center justify-center px-8 py-3 rounded-sm transition duration-300 uppercase tracking-wider text-sm transform hover:scale-105 shadow-md hover:shadow-lg"
+                  className="bg-[#4b1e1e] text-white flex items-center justify-center px-8 py-3 rounded-sm transition duration-300 uppercase tracking-wider text-sm transform hover:scale-105 shadow-md hover:shadow-lg"
                 >
                   <Calendar size={16} className="mr-2" />
                   Book Your Appointment

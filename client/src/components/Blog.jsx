@@ -224,7 +224,7 @@ const Blog = () => {
       {/* View All Posts Button */}
       <div className="container mx-auto px-4 mt-12 text-center">
         <motion.button
-          className="bg-white border-2 border-black text-black font-cardo px-8 py-3 rounded-md hover:bg-black hover:text-white transition-colors shadow-md tracking-wide"
+          className="bg-[#4b1e1e] border-2 border-black text-black font-cardo px-8 py-3 rounded-md hover:bg-black hover:text-white transition-colors shadow-md tracking-wide"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={() => navigate("/blog")}

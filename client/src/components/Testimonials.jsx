@@ -219,7 +219,7 @@ const Testimonials = () => {
         {/* Add Review Button */}
         <div className="mt-8">
           <motion.button
-            className="bg-black text-white px-8 py-3 rounded-md hover:bg-gray-900 transition-all font-cardo text-lg shadow-md mx-auto"
+            className="bg-[#4b1e1e] text-white px-8 py-3 rounded-md hover:bg-gray-900 transition-all font-cardo text-lg shadow-md mx-auto"
             onClick={() => setShowForm(!showForm)}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

@@ -318,7 +318,7 @@ const FeaturedCollections = () => {
         {!showAll && !isMobile && collections.length > 4 && (
           <motion.button
             onClick={() => setShowAll(true)}
-            className="explore-btn font-montserrat bg-[#1a1a1a] text-white px-8 py-3 text-sm tracking-widest uppercase hover:bg-[#2a2a2a] transition-all shadow-lg inline-flex items-center gap-2"
+            className="explore-btn font-montserrat bg-[#4b1e1e] text-white px-8 py-3 text-sm tracking-widest uppercase hover:bg-[#2a2a2a] transition-all shadow-lg inline-flex items-center gap-2"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
           >

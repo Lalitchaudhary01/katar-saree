@@ -180,7 +180,7 @@ const RecommendedProducts = ({ products }) => {
               <motion.button
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
-                className="w-full py-3 bg-black text-white flex items-center justify-center space-x-2 text-sm uppercase tracking-wider font-medium rounded-full"
+                className="w-full py-3 bg-[#4b1e1e] text-white flex items-center justify-center space-x-2 text-sm uppercase tracking-wider font-medium rounded-full"
                 onClick={() => navigate(`/collection/${item.id}`)}
               >
                 <FaShoppingBag size={14} />

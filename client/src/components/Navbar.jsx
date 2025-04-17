@@ -148,7 +148,7 @@ const Navbar = () => {
 
   const DropdownCategory = ({ title, items }) => (
     <div>
-      <h3 className="font-cardo text-[#5d4037] text-lg border-b border-gray-200 pb-2 mb-3">
+      <h3 className="font-cardo text-black text-lg border-b border-gray-200 pb-2 mb-3">
         {title}
       </h3>
       <ul>
@@ -161,7 +161,7 @@ const Navbar = () => {
             <li key={index} className="mb-2">
               <Link
                 to={item.link}
-                className="text-[#6d4c41] hover:text-[#8b5e3c] font-cardo text-sm transition-colors duration-200"
+                className="text-black hover:text-[#4b1e1e] font-cardo text-sm transition-colors duration-200"
               >
                 {formattedName}
               </Link>
@@ -183,14 +183,14 @@ const Navbar = () => {
       )}
       <button
         onClick={handleViewProfile}
-        className="flex items-center w-full text-left px-2 py-2 hover:bg-[#f9f5f0] text-[#5d4037] transition-colors"
+        className="flex items-center w-full text-left px-2 py-2 hover:bg-[#f9f5f0] text-[#4b1e1e] transition-colors"
       >
         <FiUser className="mr-2" />
         View Profile
       </button>
       <button
         onClick={handleLogout}
-        className="flex items-center w-full text-left px-2 py-2 hover:bg-[#f9f5f0] text-[#5d4037] transition-colors"
+        className="flex items-center w-full text-left px-2 py-2 hover:bg-[#f9f5f0] text-[#4b1e1e] transition-colors"
       >
         <FiLogOut className="mr-2" />
         Logout
@@ -274,7 +274,7 @@ const Navbar = () => {
                       {currencies.map((currency) => (
                         <button
                           key={currency.code}
-                          className="block w-full text-left px-2 py-2 hover:bg-[#f9f5f0] text-[#5d4037] transition-colors text-lg font-medium"
+                          className="block w-full text-left px-2 py-2 hover:bg-[#f9f5f0] text-[#4b1e1e] transition-colors text-lg font-medium"
                           onClick={() => handleCurrencySelect(currency)}
                         >
                           <span className="text-xl">{currency.symbol}</span> -
@@ -290,7 +290,7 @@ const Navbar = () => {
 
                 <Link
                   to="/search"
-                  className="hidden md:flex items-center hover:text-[#8b5e3c] transition-colors"
+                  className="hidden md:flex items-center hover:text-[#4b1e1e] transition-colors"
                 >
                   <FiSearch size={23} />
                 </Link>
@@ -301,7 +301,7 @@ const Navbar = () => {
                 >
                   <button
                     onClick={handleUserIconClick}
-                    className="flex items-center hover:text-[#8b5e3c] transition-colors"
+                    className="flex items-center hover:text-[#4b1e1e] transition-colors"
                   >
                     <FiUser size={23} />
                     {userInfo && <span className="ml-1">▼</span>}
@@ -311,19 +311,19 @@ const Navbar = () => {
 
                 <Link
                   to="/wishlist"
-                  className="hidden md:flex items-center hover:text-[#8b5e3c] transition-colors"
+                  className="hidden md:flex items-center hover:text-[#4b1e1e] transition-colors"
                 >
                   <FiHeart size={23} />
                 </Link>
 
                 <Link
                   to="/cart"
-                  className="hidden md:flex items-center hover:text-[#8b5e3c] transition-colors"
+                  className="hidden md:flex items-center hover:text-[#4b1e1e] transition-colors"
                 >
                   <div className="relative">
                     <FiShoppingCart size={25} />
                     {totalItems > 0 && (
-                      <span className="absolute -top-2 -right-2 bg-[#c98a5e] text-white text-xs font-bold px-1.5 rounded-full">
+                      <span className="absolute -top-2 -right-2 bg-[#4b1e1e] text-white text-xs font-bold px-1.5 rounded-full">
                         {totalItems}
                       </span>
                     )}
@@ -346,7 +346,7 @@ const Navbar = () => {
                 <div className="relative group">
                   <Link
                     to="/"
-                    className="hover:text-[#8b5e3c] flex items-center transition-colors"
+                    className="hover:text-[#4b1e1e] flex items-center transition-colors"
                   >
                     SHOP{" "}
                     <span className="ml-1 transition-transform duration-300 group-hover:rotate-180">
@@ -367,7 +367,7 @@ const Navbar = () => {
                 <div className="relative group">
                   <Link
                     to="/collections"
-                    className="hover:text-[#8b5e3c] flex items-center transition-colors"
+                    className="hover:text-[#4b1e1e] flex items-center transition-colors"
                   >
                     COLLECTIONS{" "}
                     <span className="ml-1 transition-transform duration-300 group-hover:rotate-180">
@@ -408,7 +408,7 @@ const Navbar = () => {
                     <div className="relative group">
                       <Link
                         to="/fabrics"
-                        className="hover:text-[#8b5e3c] flex items-center transition-colors"
+                        className="hover:text-[#4b1e1e] flex items-center transition-colors"
                       >
                         FABRIC{" "}
                         <span className="ml-1 transition-transform duration-300 group-hover:rotate-180">
@@ -431,7 +431,7 @@ const Navbar = () => {
                     <div className="relative group">
                       <Link
                         to="/about"
-                        className="hover:text-[#8b5e3c] flex items-center transition-colors"
+                        className="hover:text-[#4b1e1e] flex items-center transition-colors"
                       >
                         ABOUT US{" "}
                         <span className="ml-1 transition-transform duration-300 group-hover:rotate-180">
@@ -458,7 +458,7 @@ const Navbar = () => {
                       ref={currencyRef}
                     >
                       <button
-                        className="flex items-center hover:text-[#8b5e3c] transition-colors"
+                        className="flex items-center hover:text-[#4b1e1e] transition-colors"
                         onClick={handleCurrencyClick}
                       >
                         <span className="flex text-1xl items-center text-base">
@@ -472,7 +472,7 @@ const Navbar = () => {
                           {currencies.map((currency) => (
                             <button
                               key={currency.code}
-                              className="block w-full text-left px-2 py-1.5 hover:bg-[#f9f5f0] text-[#5d4037] transition-colors"
+                              className="block w-full text-left px-2 py-1.5 hover:bg-[#f9f5f0] text-[#4b1e1e] transition-colors"
                               onClick={() => handleCurrencySelect(currency)}
                             >
                               {currency.symbol} - {currency.code}
@@ -483,7 +483,7 @@ const Navbar = () => {
                     </div>
                     <Link
                       to="/search"
-                      className="flex items-center hover:text-[#8b5e3c] transition-colors"
+                      className="flex items-center hover:text-[#4b1e1e] transition-colors"
                     >
                       <FiSearch size={20} />
                     </Link>
@@ -494,7 +494,7 @@ const Navbar = () => {
                     >
                       <button
                         onClick={handleUserIconClick}
-                        className="flex items-center hover:text-[#8b5e3c] transition-colors"
+                        className="flex items-center hover:text-[#4b1e1e] transition-colors"
                       >
                         <FiUser size={20} />
                         {userInfo && <span className="ml-1 text-xs">▼</span>}
@@ -504,19 +504,19 @@ const Navbar = () => {
 
                     <Link
                       to="/wishlist"
-                      className="flex items-center hover:text-[#8b5e3c] transition-colors"
+                      className="flex items-center hover:text-[#4b1e1e] transition-colors"
                     >
                       <FiHeart size={20} />
                     </Link>
 
                     <Link
                       to="/cart"
-                      className="flex items-center hover:text-[#8b5e3c] transition-colors"
+                      className="flex items-center hover:text-[#4b1e1e] transition-colors"
                     >
                       <div className="relative">
                         <FiShoppingCart size={22} />
                         {totalItems > 0 && (
-                          <span className="absolute -top-2 -right-2 bg-[#c98a5e] text-white text-xs font-bold px-1.5 rounded-full">
+                          <span className="absolute -top-2 -right-2 bg-[#4f2525] text-white text-xs font-bold px-1.5 rounded-full">
                             {totalItems}
                           </span>
                         )}
