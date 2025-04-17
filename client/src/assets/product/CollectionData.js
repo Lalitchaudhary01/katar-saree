@@ -3,8 +3,8 @@ const collections = [
     id: 0,
     title: "Pure Bandhani Saree in Vibrant Lime Green and Deep Bottle Green",
     images: [
-      "/images/Pure_bandhani_saree_lime_green_1.jpg",
-      "/images/Pure_bandhani_saree_lime_green_2.jpg",
+      "/images/Pure_bandhani_saree_lime_green_1.JPG",
+      "/images/Pure_bandhani_saree_lime_green_2.JPG",
       "/images/Pure_bandhani_saree_lime_green_3.jpg",
       "/images/Pure_bandhani_saree_lime_green_4.jpg",
       "/images/Pure_bandhani_saree_lime_green_5.jpg",

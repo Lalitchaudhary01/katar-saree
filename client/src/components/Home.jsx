@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import img1 from "../assets/Artboard-1-1.jpg";
-import img2 from "../assets/Artboard-2-2.jpg";
-import img3 from "../assets/Artboard-3.jpg";
+import img1 from "../assets/Artboard1.jpg";
+import img2 from "../assets/Artboard2.jpg";
+import img3 from "../assets/Artboard3.jpg";
 import img4 from "../assets/1.png";
 
 const desktopImages = [img1, img2, img3];

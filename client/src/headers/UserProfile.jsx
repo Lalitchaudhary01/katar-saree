@@ -24,14 +24,6 @@ const UserProfile = ({ onClose }) => {
     const fetchUserProfile = async () => {
       try {
         // You can replace this with your actual API call
-        // const response = await fetch('/api/user/profile', {
-        //   headers: {
-        //     Authorization: `Bearer ${userInfo.token}`,
-        //   },
-        // });
-        // const data = await response.json();
-
-        // For now, we'll just use the data from Redux
         setProfileData({
           name: userInfo?.name || "",
           email: userInfo?.email || "",
@@ -61,25 +53,6 @@ const UserProfile = ({ onClose }) => {
     setLoading(true);
 
     try {
-      // Implement your API call to update user profile
-      // const response = await fetch('/api/user/profile/update', {
-      //   method: 'PUT',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     Authorization: `Bearer ${userInfo.token}`,
-      //   },
-      //   body: JSON.stringify(profileData),
-      // });
-
-      // const data = await response.json();
-
-      // if (response.ok) {
-      //   toast.success('Profile updated successfully');
-      // } else {
-      //   toast.error(data.message || 'Update failed');
-      // }
-
-      // Mock success for now
       toast.success("Profile updated successfully");
       setIsEditing(false);
     } catch (error) {
@@ -98,153 +71,161 @@ const UserProfile = ({ onClose }) => {
 
   if (!userInfo) {
     return (
-      <div className="bg-white shadow-md rounded-md p-6 max-w-md w-full">
-        <p className="text-center text-gray-700">
-          Please log in to view your profile
-        </p>
-        <button
-          onClick={() => navigate("/login")}
-          className="w-full mt-4 bg-[#8b5e3c] text-white py-2 rounded hover:bg-[#6d4c41] transition-colors"
-        >
-          Login
-        </button>
+      <div className="flex justify-center items-center min-h-screen bg-white">
+        <div className="bg-white shadow-xl rounded-lg p-8 max-w-md w-full mx-auto border border-gray-100">
+          <p className="text-center text-gray-700 font-light text-lg mb-6">
+            Please log in to view your profile
+          </p>
+          <button
+            onClick={() => navigate("/login")}
+            className="w-full mt-4 bg-black text-white py-3 rounded-md hover:bg-gray-800 transition-colors uppercase tracking-widest font-light text-sm"
+          >
+            Login
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-white shadow-md rounded-md p-6 max-w-md w-full font-cardo">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-[#5d4037] flex items-center">
-          <FiUser className="mr-2" /> My Profile
-        </h2>
-        {onClose && (
-          <button
-            onClick={onClose}
-            className="text-[#5d4037] hover:text-[#8b5e3c]"
-          >
-            <FiArrowLeft size={20} />
-          </button>
-        )}
-      </div>
-
-      <form onSubmit={handleSubmit}>
-        <div className="space-y-4">
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-[#5d4037] font-medium mb-1"
-            >
-              Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={profileData.name}
-              onChange={handleChange}
-              disabled={!isEditing}
-              className={`w-full px-3 py-2 border ${
-                isEditing ? "border-[#c98a5e]" : "border-gray-300 bg-gray-50"
-              } rounded-md focus:outline-none focus:ring-1 focus:ring-[#8b5e3c]`}
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-[#5d4037] font-medium mb-1"
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={profileData.email}
-              onChange={handleChange}
-              disabled={!isEditing}
-              className={`w-full px-3 py-2 border ${
-                isEditing ? "border-[#c98a5e]" : "border-gray-300 bg-gray-50"
-              } rounded-md focus:outline-none focus:ring-1 focus:ring-[#8b5e3c]`}
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="phone"
-              className="block text-[#5d4037] font-medium mb-1"
-            >
-              Phone Number
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={profileData.phone}
-              onChange={handleChange}
-              disabled={!isEditing}
-              className={`w-full px-3 py-2 border ${
-                isEditing ? "border-[#c98a5e]" : "border-gray-300 bg-gray-50"
-              } rounded-md focus:outline-none focus:ring-1 focus:ring-[#8b5e3c]`}
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="address"
-              className="block text-[#5d4037] font-medium mb-1"
-            >
-              Address
-            </label>
-            <textarea
-              id="address"
-              name="address"
-              value={profileData.address}
-              onChange={handleChange}
-              disabled={!isEditing}
-              rows="3"
-              className={`w-full px-3 py-2 border ${
-                isEditing ? "border-[#c98a5e]" : "border-gray-300 bg-gray-50"
-              } rounded-md focus:outline-none focus:ring-1 focus:ring-[#8b5e3c]`}
-            />
-          </div>
-        </div>
-
-        <div className="mt-6 flex flex-col space-y-3">
-          {isEditing ? (
+    <div className="flex justify-center items-center min-h-screen bg-white">
+      <div className="bg-white shadow-xl rounded-lg p-10 max-w-md w-full mx-auto border border-gray-100">
+        <div className="flex justify-between items-center mb-8 border-b border-gray-100 pb-4">
+          <h2 className="text-2xl text-black flex items-center tracking-wider font-light">
+            <FiUser className="mr-2" /> PROFILE
+          </h2>
+          {onClose && (
             <button
-              type="submit"
-              disabled={loading}
-              className="w-full flex justify-center items-center bg-[#8b5e3c] text-white py-2 rounded hover:bg-[#6d4c41] transition-colors"
+              onClick={onClose}
+              className="text-black hover:text-gray-600 transition-colors"
             >
-              {loading ? (
-                "Saving..."
-              ) : (
-                <>
-                  <FiSave className="mr-2" /> Save Changes
-                </>
-              )}
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => setIsEditing(true)}
-              className="w-full flex justify-center items-center bg-[#c98a5e] text-white py-2 rounded hover:bg-[#8b5e3c] transition-colors"
-            >
-              <FiEdit2 className="mr-2" /> Edit Profile
+              <FiArrowLeft size={20} />
             </button>
           )}
-
-          <button
-            type="button"
-            onClick={handleLogout}
-            className="w-full flex justify-center items-center bg-gray-200 text-[#5d4037] py-2 rounded hover:bg-gray-300 transition-colors"
-          >
-            <FiLogOut className="mr-2" /> Logout
-          </button>
         </div>
-      </form>
+
+        <form onSubmit={handleSubmit} className="flex flex-col items-center">
+          <div className="space-y-6 w-full">
+            <div>
+              <label
+                htmlFor="name"
+                className="block text-black mb-2 uppercase text-xs tracking-widest font-medium"
+              >
+                Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={profileData.name}
+                onChange={handleChange}
+                disabled={!isEditing}
+                className={`w-full px-4 py-3 border-b ${
+                  isEditing ? "border-black" : "border-gray-200"
+                } focus:outline-none bg-white text-black`}
+                placeholder="Your Name"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-black mb-2 uppercase text-xs tracking-widest font-medium"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={profileData.email}
+                onChange={handleChange}
+                disabled={!isEditing}
+                className={`w-full px-4 py-3 border-b ${
+                  isEditing ? "border-black" : "border-gray-200"
+                } focus:outline-none bg-white text-black`}
+                placeholder="Your Email"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="phone"
+                className="block text-black mb-2 uppercase text-xs tracking-widest font-medium"
+              >
+                Phone
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                value={profileData.phone}
+                onChange={handleChange}
+                disabled={!isEditing}
+                className={`w-full px-4 py-3 border-b ${
+                  isEditing ? "border-black" : "border-gray-200"
+                } focus:outline-none bg-white text-black`}
+                placeholder="Your Phone Number"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="address"
+                className="block text-black mb-2 uppercase text-xs tracking-widest font-medium"
+              >
+                Address
+              </label>
+              <textarea
+                id="address"
+                name="address"
+                value={profileData.address}
+                onChange={handleChange}
+                disabled={!isEditing}
+                rows="3"
+                className={`w-full px-4 py-3 border-b ${
+                  isEditing ? "border-black" : "border-gray-200"
+                } focus:outline-none bg-white text-black resize-none`}
+                placeholder="Your Address"
+              />
+            </div>
+          </div>
+
+          <div className="mt-10 w-full space-y-4">
+            {isEditing ? (
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full flex justify-center items-center bg-black text-white py-3 rounded-md hover:bg-gray-800 transition-all duration-300 uppercase tracking-widest font-light"
+              >
+                {loading ? (
+                  "Saving..."
+                ) : (
+                  <>
+                    <FiSave className="mr-2" /> SAVE CHANGES
+                  </>
+                )}
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setIsEditing(true)}
+                className="w-full flex justify-center items-center bg-black text-white py-3 rounded-md hover:bg-gray-800 transition-all duration-300 uppercase tracking-widest font-light"
+              >
+                <FiEdit2 className="mr-2" /> EDIT PROFILE
+              </button>
+            )}
+
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="w-full flex justify-center items-center bg-white text-black py-3 rounded-md border border-black hover:bg-gray-50 transition-all duration-300 uppercase tracking-widest font-light"
+            >
+              <FiLogOut className="mr-2" /> LOGOUT
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
