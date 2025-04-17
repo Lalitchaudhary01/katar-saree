@@ -1,7 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaSearch, FaEnvelope, FaPhone } from "react-icons/fa";
-import { FiSearch, FiUser, FiHeart, FiShoppingCart, FiLogOut } from "react-icons/fi";
+import {
+  FiSearch,
+  FiUser,
+  FiHeart,
+  FiShoppingCart,
+  FiLogOut,
+} from "react-icons/fi";
 import { useCart } from "../context/CartContext";
 import { useCurrency } from "../context/currencyContext";
 
@@ -16,7 +22,7 @@ const MobileNavbar = ({
   isLoggedIn,
   handleLogout,
   userData,
-  handleViewProfile
+  handleViewProfile,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -131,7 +137,7 @@ const MobileNavbar = ({
             <div className="relative">
               <FiShoppingCart size={20} />
               {totalItems > 0 && (
-                <span className="absolute -top-2 -right-2 bg-[#8b5e3c] text-white text-xs font-medium px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+                <span className="absolute -top-2 -right-2 bg-[#4b1e1e] text-white text-xs font-medium px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
                   {totalItems}
                 </span>
               )}
@@ -165,7 +171,7 @@ const MobileNavbar = ({
           </Link>
           <button
             onClick={toggleMobileMenu}
-            className="text-black hover:text-[#8b5e3c] transition-all duration-300"
+            className="text-black hover:text-[#4b1e1e] transition-all duration-300"
             aria-label="Close menu"
           >
             <svg
@@ -189,12 +195,14 @@ const MobileNavbar = ({
         {isLoggedIn && userData && (
           <div className="p-5 border-b border-gray-100 bg-[#f9f5f0]">
             <div className="flex items-center">
-              <div className="w-12 h-12 rounded-full bg-[#e3d5c6] flex items-center justify-center text-2xl font-bold text-[#8b5e3c]">
+              <div className="w-12 h-12 rounded-full bg-[#e3d5c6] flex items-center justify-center text-2xl font-bold text-[#4b1e1e]">
                 {userData.name ? userData.name.charAt(0).toUpperCase() : "U"}
               </div>
               <div className="ml-3">
                 <h3 className="font-medium text-black">{userData.name}</h3>
-                <p className="text-sm text-gray-600 truncate">{userData.email}</p>
+                <p className="text-sm text-gray-600 truncate">
+                  {userData.email}
+                </p>
               </div>
             </div>
             <div className="mt-4 flex space-x-2">
@@ -212,7 +220,7 @@ const MobileNavbar = ({
                   handleLogout();
                   setMobileMenuOpen(false);
                 }}
-                className="flex items-center justify-center bg-black text-white py-2 px-4 rounded-md text-sm font-medium hover:bg-[#333] transition-colors"
+                className="flex items-center justify-center bg-[#4b1e1e] text-white py-2 px-4 rounded-md text-sm font-medium hover:bg-[#333] transition-colors"
               >
                 <FiLogOut size={14} className="mr-1.5" />
                 Logout
@@ -236,14 +244,14 @@ const MobileNavbar = ({
               </div>
             </div>
           </div>
-          
+
           {/* Navigation Categories with luxury styling */}
           <div className="px-5 space-y-1">
             {/* SHOP */}
             <div className="py-3 border-b border-gray-100">
               <Link
                 to="/"
-                className="block text-black uppercase tracking-wider text-base font-semibold hover:text-[#8b5e3c] transition-colors mb-2"
+                className="block text-black uppercase tracking-wider text-base font-semibold hover:text-[#4b1e1e] transition-colors mb-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 SHOP
@@ -261,7 +269,7 @@ const MobileNavbar = ({
                             <li key={index}>
                               <Link
                                 to={item.link}
-                                className="text-gray-600 text-sm block hover:text-[#8b5e3c] transition-colors py-1"
+                                className="text-gray-600 text-sm block hover:text-[#4b1e1e] transition-colors py-1"
                                 onClick={() => setMobileMenuOpen(false)}
                               >
                                 {item.name.charAt(0).toUpperCase() +
@@ -280,7 +288,7 @@ const MobileNavbar = ({
             <div className="py-3 border-b border-gray-100">
               <Link
                 to="/collections"
-                className="block text-black uppercase tracking-wider text-base font-semibold hover:text-[#8b5e3c] transition-colors mb-2"
+                className="block text-black uppercase tracking-wider text-base font-semibold hover:text-[#4b1e1e] transition-colors mb-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 COLLECTIONS
@@ -296,7 +304,7 @@ const MobileNavbar = ({
                         <li key={index}>
                           <Link
                             to={item.link}
-                            className="text-gray-600 text-sm block hover:text-[#8b5e3c] transition-colors py-1"
+                            className="text-gray-600 text-sm block hover:text-[#4b1e1e] transition-colors py-1"
                             onClick={() => setMobileMenuOpen(false)}
                           >
                             {item.name.charAt(0).toUpperCase() +
@@ -314,7 +322,7 @@ const MobileNavbar = ({
             <div className="py-3 border-b border-gray-100">
               <Link
                 to="/fabrics"
-                className="block text-black uppercase tracking-wider text-base font-semibold hover:text-[#8b5e3c] transition-colors mb-2"
+                className="block text-black uppercase tracking-wider text-base font-semibold hover:text-[#4b1e1e] transition-colors mb-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 FABRIC
@@ -332,7 +340,7 @@ const MobileNavbar = ({
                             <li key={index}>
                               <Link
                                 to={item.link}
-                                className="text-gray-600 text-sm block hover:text-[#8b5e3c] transition-colors py-1"
+                                className="text-gray-600 text-sm block hover:text-[#4b1e1e] transition-colors py-1"
                                 onClick={() => setMobileMenuOpen(false)}
                               >
                                 {item.name.charAt(0).toUpperCase() +
@@ -351,7 +359,7 @@ const MobileNavbar = ({
             <div className="py-3 border-b border-gray-100">
               <Link
                 to="/about"
-                className="block text-black uppercase tracking-wider text-base font-semibold hover:text-[#8b5e3c] transition-colors mb-2"
+                className="block text-black uppercase tracking-wider text-base font-semibold hover:text-[#4b1e1e] transition-colors mb-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 ABOUT US
@@ -361,7 +369,7 @@ const MobileNavbar = ({
                   <li>
                     <Link
                       to="/about/story"
-                      className="text-gray-600 text-sm block hover:text-[#8b5e3c] transition-colors py-1"
+                      className="text-gray-600 text-sm block hover:text-[#4b1e1e] transition-colors py-1"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       Our Story
@@ -370,7 +378,7 @@ const MobileNavbar = ({
                   <li>
                     <Link
                       to="/about/heritage"
-                      className="text-gray-600 text-sm block hover:text-[#8b5e3c] transition-colors py-1"
+                      className="text-gray-600 text-sm block hover:text-[#4b1e1e] transition-colors py-1"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       Heritage
@@ -379,7 +387,7 @@ const MobileNavbar = ({
                   <li>
                     <Link
                       to="/about/craft"
-                      className="text-gray-600 text-sm block hover:text-[#8b5e3c] transition-colors py-1"
+                      className="text-gray-600 text-sm block hover:text-[#4b1e1e] transition-colors py-1"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       Craftsmanship
@@ -400,7 +408,7 @@ const MobileNavbar = ({
                     key={currency.code}
                     className={`px-3 py-1.5 text-xs rounded transition-all duration-300 ${
                       selectedCurrency.code === currency.code
-                        ? "bg-black text-white shadow-md"
+                        ? "bg-[#4b1e1e] text-white shadow-md"
                         : "bg-gray-50 text-gray-700 hover:bg-gray-100"
                     }`}
                     onClick={() => {
@@ -437,7 +445,7 @@ const MobileNavbar = ({
                   </div>
                   <a
                     href="tel:+917860783350"
-                    className="text-sm hover:text-[#8b5e3c] transition-colors"
+                    className="text-sm hover:text-[#4b1e1e] transition-colors"
                   >
                     +91 7860783350
                   </a>
@@ -449,7 +457,7 @@ const MobileNavbar = ({
             <div className="flex justify-between py-5">
               <div
                 onClick={handleUserClick}
-                className="flex flex-col items-center text-black hover:text-[#8b5e3c] transition-colors cursor-pointer"
+                className="flex flex-col items-center text-black hover:text-[#4b1e1e] transition-colors cursor-pointer"
               >
                 <div className="w-10 h-10 rounded-full bg-[#f5f0e8] flex items-center justify-center mb-1">
                   <FiUser size={15} />
@@ -460,7 +468,7 @@ const MobileNavbar = ({
               </div>
               <Link
                 to="/wishlist"
-                className="flex flex-col items-center text-black hover:text-[#8b5e3c] transition-colors"
+                className="flex flex-col items-center text-black hover:text-[#4b1e1e] transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <div className="w-10 h-10 rounded-full bg-[#f5f0e8] flex items-center justify-center mb-1">
@@ -476,7 +484,7 @@ const MobileNavbar = ({
                 <div className="w-10 h-10 rounded-full bg-[#f5f0e8] flex items-center justify-center mb-1 relative">
                   <FiShoppingCart size={15} />
                   {totalItems > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-[#8b5e3c] text-white text-xs font-medium w-5 h-5 flex items-center justify-center rounded-full">
+                    <span className="absolute -top-1 -right-1 bg-[#4b1e1e] text-white text-xs font-medium w-5 h-5 flex items-center justify-center rounded-full">
                       {totalItems}
                     </span>
                   )}
@@ -503,7 +511,7 @@ const MobileNavbar = ({
               </button>
               <Link
                 to="/cart"
-                className="flex-1 flex items-center justify-center bg-black text-white py-3 px-4 rounded-md hover:bg-[#7a4d2f] transition-all duration-300 font-medium shadow-md"
+                className="flex-1 flex items-center justify-center bg-[#4b1e1e] text-white py-3 px-4 rounded-md hover:bg-[#7a4d2f] transition-all duration-300 font-medium shadow-md"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <FiShoppingCart size={16} className="mr-2" />
