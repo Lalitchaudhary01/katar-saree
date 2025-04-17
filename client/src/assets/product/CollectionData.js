@@ -1,14 +1,14 @@
-import bandhani3 from "./images/Pure_bandhani_saree_lime_green_(3).jpg";
-import bandhani4 from "./images/Pure_bandhani_saree_lime_green_(4).jpg";
-import bandhani5 from "./images/Pure_bandhani_saree_lime_green_(5).jpg";
-import bandhani6 from "./images/Pure_bandhani_saree_lime_green_(6).jpg";
-import bandhani1 from "./images/Pure_bandhani_saree_lime_green_(1).jpg";
-import bandhani2 from "./images/Pure_bandhani_saree_lime_green_(2).jpg";
-import jangla1 from "./images/katan-jangla-banarasi-(1).jpg";
-import jangla2 from "./images/katan-jangla-banarasi-(2).jpg";
-import jangla3 from "./images/katan-jangla-banarasi-(3).jpg";
-import jangla4 from "./images/katan-jangla-banarasi-(4).jpg";
-import jangla5 from "./images/katan-jangla-banarasi-(5).jpg";
+import bandhani3 from "./images/Pure_bandhani_saree_lime_green_3.jpg";
+import bandhani4 from "./images/Pure_bandhani_saree_lime_green_4.jpg";
+import bandhani5 from "./images/Pure_bandhani_saree_lime_green_5.jpg";
+import bandhani6 from "./images/Pure_bandhani_saree_lime_green_6.jpg";
+import bandhani1 from "./images/Pure_bandhani_saree_lime_green_1.jpg";
+import bandhani2 from "./images/Pure_bandhani_saree_lime_green_2.jpg";
+import jangla1 from "./images/katan-jangla-banarasi-1.jpg";
+import jangla2 from "./images/katan-jangla-banarasi-2.jpg";
+import jangla3 from "./images/katan-jangla-banarasi-3.jpg";
+import jangla4 from "./images/katan-jangla-banarasi-4.jpg";
+import jangla5 from "./images/katan-jangla-banarasi-5.jpg";
 
 const collections = [
   {
