@@ -5,7 +5,7 @@ const OurHeritage = () => {
     <section id="our-heritage" className="py-16 md:py-24 bg-white font-serif">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center mb-16">
-          <h2 className="font-serif text-3xl md:text-4xl text-secondary mb-4 text-[#8B6A37]">
+          <h2 className="font-serif text-3xl md:text-4xl text-secondary mb-4 text-[#4b1e1e]">
             Our Heritage
           </h2>
           <p className="font-serif text-neutral-600">
@@ -36,7 +36,7 @@ const OurHeritage = () => {
           </div>
 
           <div className="animate__animated animate__fadeInRight">
-            <h3 className="font-serif text-2xl md:text-3xl text-secondary mb-6 text-[#8B6A37]">
+            <h3 className="font-serif text-2xl md:text-3xl text-secondary mb-6 text-[#4b1e1e]">
               A Legacy of Artistry
             </h3>
             <p className="font-serif text-neutral-600 mb-6 leading-relaxed">
@@ -63,7 +63,7 @@ const OurHeritage = () => {
               piece an heirloom for generations to come.
             </p>
 
-            <div className="mb-10 grid grid-cols-2 gap-4 text-[#bd7e1f]">
+            <div className="mb-10 grid grid-cols-2 gap-4 text-[#4b1e1e]">
               <FeatureItem
                 icon="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"
                 title="Handcrafted Excellence"
@@ -79,7 +79,7 @@ const OurHeritage = () => {
             <div className="flex space-x-4">
               <a
                 href="#our-story"
-                className="inline-block bg-[#8B6A37] text-white font-serif px-6 py-2 rounded-sm hover:bg-opacity-90 transition-all duration-300 text-sm tracking-wider"
+                className="inline-block bg-[#4b1e1e] text-white font-serif px-6 py-2 rounded-sm hover:bg-opacity-90 transition-all duration-300 text-sm tracking-wider"
               >
                 Our Story
               </a>
@@ -96,7 +96,7 @@ const OurHeritage = () => {
         <div className="mt-24 bg-accent bg-opacity-5 p-6 md:p-12 relative">
           <div className="absolute top-0 left-0 w-full h-full pattern-bg opacity-5"></div>
           <div className="relative z-10">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-[#8B6A37]">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-[#4b1e1e]">
               <FeatureCard
                 icon="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
                 title="Master Craftsmanship"
@@ -117,12 +117,12 @@ const OurHeritage = () => {
         </div>
 
         <div className="mt-24 text-center">
-          <h3 className="font-serif text-2xl md:text-3xl text-[#8B6A37] mb-8">
+          <h3 className="font-serif text-2xl md:text-3xl text-[#4b1e1e] mb-8">
             Our Timeline
           </h3>
           <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
             <div className="text-left">
-              <h4 className="text-[#8B6A37] font-semibold text-lg font-serif">
+              <h4 className="text-[#4b1e1e] font-semibold text-lg font-serif">
                 Establishment
               </h4>
               <p className="text-gray-700 font-serif">
@@ -134,7 +134,7 @@ const OurHeritage = () => {
             <div></div> {/* Empty div for alignment */}
             <div></div> {/* Empty div for alignment */}
             <div className="text-right">
-              <h4 className="text-[#8B6A37] font-semibold text-lg font-serif">
+              <h4 className="text-[#4b1e1e] font-semibold text-lg font-serif">
                 Growth & Legacy
               </h4>
               <p className="text-gray-700 font-serif">
@@ -144,7 +144,7 @@ const OurHeritage = () => {
               </p>
             </div>
             <div className="text-left">
-              <h4 className="text-[#8B6A37] font-semibold text-lg font-serif">
+              <h4 className="text-[#4b1e1e] font-semibold text-lg font-serif">
                 Global Reach
               </h4>
               <p className="text-gray-700 font-serif">
@@ -156,7 +156,7 @@ const OurHeritage = () => {
             <div></div> {/* Empty div for alignment */}
             <div></div> {/* Empty div for alignment */}
             <div className="text-right">
-              <h4 className="text-[#8B6A37] font-semibold text-lg font-serif">
+              <h4 className="text-[#4b1e1e] font-semibold text-lg font-serif">
                 A New Era
               </h4>
               <p className="text-gray-700 font-serif">

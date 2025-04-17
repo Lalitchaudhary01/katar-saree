@@ -200,7 +200,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="bg-[#4b1e1e] text-[#caa766] py-2 text-center text-sm font-medium flex justify-center items-center">
+      <div className="bg-[#4b1e1e] text-white py-2 text-center text-sm font-medium flex justify-center items-center">
         <FaTruck className="mr-2" size={20} />
         Free Shipping on Orders Above ₹25,000 | Flat 10% Off on First Order
       </div>
@@ -259,7 +259,7 @@ const Navbar = () => {
                   ref={currencyRef}
                 >
                   <button
-                    className="flex items-center hover:text-[#8b5e3c] transition-colors"
+                    className="flex items-center hover:text-[#4b1e1e] transition-colors"
                     onClick={handleCurrencyClick}
                   >
                     <span className="flex items-center uppercase text-lg tracking-wide font-semibold">

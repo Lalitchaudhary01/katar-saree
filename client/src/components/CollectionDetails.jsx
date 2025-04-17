@@ -484,7 +484,7 @@ const CollectionDetails = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleAddToCart}
-                className="flex-1 bg-black text-white py-4 rounded-full flex items-center justify-center space-x-2"
+                className="flex-1 bg-[#4b1e1e] text-white py-4 rounded-full flex items-center justify-center space-x-2"
               >
                 <FaShoppingCart />
                 <span>Add to Cart</span>
