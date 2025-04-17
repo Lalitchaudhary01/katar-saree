@@ -1,20 +1,15 @@
-import bandhani3 from "./images/Pure_bandhani_saree_lime_green_3.jpg";
-import bandhani4 from "./images/Pure_bandhani_saree_lime_green_4.jpg";
-import bandhani5 from "./images/Pure_bandhani_saree_lime_green_5.jpg";
-import bandhani6 from "./images/Pure_bandhani_saree_lime_green_6.jpg";
-import bandhani1 from "./images/Pure_bandhani_saree_lime_green_1.jpg";
-import bandhani2 from "./images/Pure_bandhani_saree_lime_green_2.jpg";
-import jangla1 from "./images/katan-jangla-banarasi-1.jpg";
-import jangla2 from "./images/katan-jangla-banarasi-2.jpg";
-import jangla3 from "./images/katan-jangla-banarasi-3.jpg";
-import jangla4 from "./images/katan-jangla-banarasi-4.jpg";
-import jangla5 from "./images/katan-jangla-banarasi-5.jpg";
-
 const collections = [
   {
     id: 0,
     title: "Pure Bandhani Saree in Vibrant Lime Green and Deep Bottle Green",
-    images: [bandhani1, bandhani2, bandhani3, bandhani4, bandhani5, bandhani6],
+    images: [
+      "/images/Pure_bandhani_saree_lime_green_1.jpg",
+      "/images/Pure_bandhani_saree_lime_green_2.jpg",
+      "/images/Pure_bandhani_saree_lime_green_3.jpg",
+      "/images/Pure_bandhani_saree_lime_green_4.jpg",
+      "/images/Pure_bandhani_saree_lime_green_5.jpg",
+      "/images/Pure_bandhani_saree_lime_green_6.jpg",
+    ],
     desc: "Every single thread is handwoven. It takes 3 to 4 weeks to craft one of these masterpieces. A reflection of timeless tradition and unmatched artistry.",
     originalPrice: 22999,
     discountPrice: 15999,
@@ -36,12 +31,17 @@ const collections = [
       `,
     },
   },
-
   {
     id: 1,
     title: "Katan Jangla Banarasi Saree in Royal Purple",
-    images: [jangla1, jangla2, jangla3, jangla4, jangla5],
-    desc: "This is a stunning Katan Jangla Banarasi saree in a rich royal purple shade, featuring all-over Sona Roopa zari floral weaving, a signature of the Jangla style. Handcrafted with pure Katan silk, this saree radiates elegance and timeless charm.",
+    images: [
+      "/images/katan-jangla-banarasi-1.jpg",
+      "/images/katan-jangla-banarasi-2.jpg",
+      "/images/katan-jangla-banarasi-3.jpg",
+      "/images/katan-jangla-banarasi-4.jpg",
+      "/images/katan-jangla-banarasi-5.jpg",
+    ],
+    desc: "This is a stunning Katan Jangla Banarasi saree in a rich royal purple shade, featuring all-over Sona Roopa zari floral weaving...",
     originalPrice: 24999,
     discountPrice: 17999,
     discount: "28% OFF",
