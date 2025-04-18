@@ -3,11 +3,12 @@ const collections = [
     id: 0,
     title: "Pure Bandhani Saree in Vibrant Lime Green and Deep Bottle Green",
     images: [
-      "/images/Pure_bandhani_saree_lime_green_1.JPG",
-      "/images/Pure_bandhani_saree_lime_green_2.JPG",
       "/images/Pure_bandhani_saree_lime_green_3.jpg",
       "/images/Pure_bandhani_saree_lime_green_4.jpg",
       "/images/Pure_bandhani_saree_lime_green_5.jpg",
+      "/images/Pure_bandhani_saree_lime_green_1.JPG",
+      "/images/Pure_bandhani_saree_lime_green_2.JPG",
+
       "/images/Pure_bandhani_saree_lime_green_6.jpg",
     ],
     desc: "Every single thread is handwoven. It takes 3 to 4 weeks to craft one of these masterpieces. A reflection of timeless tradition and unmatched artistry.",
@@ -64,51 +65,76 @@ const collections = [
   },
   {
     id: 2,
-    title: "Pure Cora Silk",
+    title: "Moonga Silk Pure Banarasi Handloom Saree in Gold",
     images: [
-      "/images/blue1.jpg",
-      "/images/blue2.jpg",
-      "/images/blue3.jpg",
-      "/images/blue4.jpg",
+      "/images/gold3.jpg",
+      "/images/gold4.jpg",
+      "/images/gold5.jpg",
+      "/images/gold6.jpg",
+      "/images/gold8.jpg",
+      "/images/gold7.jpg",
+      "/images/gold1.jpg",
+      "/images/gold2.jpg",
     ],
-    desc: "Navy blue tested silk with silver zari, fully handmade for a luxurious touch.",
-    originalPrice: 11999,
-    discountPrice: 9999,
-    discount: "17% OFF",
+    desc: "This exquisite Moonga silk Banarasi handloom saree in a rich gold hue is woven using 100% pure tested gold zari. A true masterpiece crafted over 2–3 weeks by skilled artisans.",
+    originalPrice: 15499,
+    discountPrice: 13499,
+    discount: "13% OFF",
     sizes: ["S", "M", "L", "XL"],
-    colors: ["Navy Blue", "Teal Blue"],
+    colors: ["Gold"],
     stock: 10,
     details: {
-      color: "Elegant Navy Blue",
-      technique: "Classic Banarasi handwoven artistry with silver zari",
-      fabric: "Pure Kora silk net",
-      speciality: "A lightweight and wispy drape with intricate detailing.",
+      color: "Gold",
+      technique:
+        "Traditional Banarasi handloom weaving with 100% pure gold zari",
+      fabric: "Pure Moonga Silk – 100% Silk Mark Certified",
+      speciality: `
+        1. Authentic Pure Moonga Silk: Rich texture and natural sheen, lab tested and certified.
+        2. 100% Handwoven: Every thread is crafted by hand, taking 2–3 weeks to complete.
+        3. Pure Tested Gold Zari: Backed by a 100-year zari life guarantee, unmatched in the market.
+        4. Free Shipping: Across India, and international on orders above ₹20,000.
+        5. Brand Legacy: Katan Banaras – A trusted Banarasi silk brand since 1956.
+        6. Certified Quality: Every saree is Silk Mark certified and thoroughly lab tested.
+      `,
     },
   },
+
   {
     id: 3,
-    title: "Pure Khadi Georget Bandhani",
+    title: "Khaddi Georgette Banarasi Bandhani Handloom Saree in Gray",
     images: [
-      "/images/mashru1.jpg",
-      "/images/mashru2.jpg",
-      "/images/mashru3.jpg",
-      "/images/mashru4.jpg",
+      "/images/Khaddi_Georgette_pure_banarasi_bandhani_(bandhej_Gary3.jpg",
+      "/images/Khaddi_Georgette_pure_banarasi_bandhani_(bandhej_Gary4.jpg",
+      "/images/Khaddi_Georgette_pure_banarasi_bandhani_(bandhej_Gary5.jpg",
+      "/images/Khaddi_Georgette_pure_banarasi_bandhani_(bandhej_Gary1.jpg",
+      "/images/Khaddi_Georgette_pure_banarasi_bandhani_(bandhej_Gary2.jpg",
+
+      "/images/Khaddi_Georgette_pure_banarasi_bandhani_(bandhej_Gary6.jpg",
     ],
-    desc: "A lightweight and breathable saree, easy to carry, perfect for summers.",
-    originalPrice: 9999,
-    discountPrice: 8999,
-    discount: "10% OFF",
+    desc: "An elegant Khaddi Georgette Banarasi handloom saree in a soothing gray tone featuring intricate Bandhani (Bandhej) work with Minakari accents and 100% pure tested zari. Handwoven to perfection over 3–4 weeks.",
+    originalPrice: 19999,
+    discountPrice: 15999,
+    discount: "20% OFF",
     sizes: ["S", "M", "L", "XL"],
-    colors: ["Red", "Pink", "Yellow"],
-    stock: 10,
+    colors: ["Gray"],
+    stock: 6,
     details: {
-      color: "Vibrant Red and Pink hues",
-      technique: "Traditional Bandhani hand tie-dyeing",
-      fabric: "Pure Khadi Georgette",
-      speciality:
-        "Soft and breathable, perfect for daily wear and festive occasions.",
+      color: "Gray",
+      technique:
+        "Traditional Bandhani with Minakari and Banarasi handloom weaving",
+      fabric: "Pure Khaddi Georgette Silk – 100% Silk Mark Certified",
+      speciality: `
+        1. Unique Bandhani (Bandhej) Art: Crafted with intricate tie-dye technique.
+        2. Pure Tested Zari with Minakari: Enhanced beauty with colorful detailing.
+        3. 100% Handwoven: Takes 3–4 weeks to handcraft each masterpiece.
+        4. 100-Year Zari Guarantee: A claim unmatched in the market, showcasing authenticity.
+        5. Free Shipping: Pan-India, and international on orders above ₹20,000.
+        6. Legacy of Trust: From Katan Banaras – crafting pure Banarasi silk sarees since 1956.
+        7. Certified Purity: Silk Mark and lab-tested assurance on every piece.
+      `,
     },
   },
+
   {
     id: 4,
     title: "Banarasi Handloom Saree",
