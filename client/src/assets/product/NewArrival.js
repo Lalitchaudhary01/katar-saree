@@ -73,55 +73,133 @@ const newArrivals = [
 
   {
     id: 11,
-    title: "Classic Red Banarasi Silk",
-    images: ["/images/IMG-20250222-WA0002_5000x.jpg", "/images/red2.jpg"],
-    desc: "An elegant red Banarasi silk saree with golden zari motifs, perfect for weddings and festivals.",
-    originalPrice: 22999,
-    discountPrice: 19999, // ₹19,999
-    discount: "13% OFF",
+    title: "Katan Kora Booti Sona Rupa Banarasi Silk Saree in Red",
+    images: [
+      "https://ik.imagekit.io/yg3bo4zvy/images/red%20(1).jpg",
+      "https://ik.imagekit.io/yg3bo4zvy/images/red%20(2).jpg",
+      "https://ik.imagekit.io/yg3bo4zvy/images/red%20(3).jpg",
+      "https://ik.imagekit.io/yg3bo4zvy/images/red%20(4).jpg",
+      "https://ik.imagekit.io/yg3bo4zvy/images/red%20(5).jpg",
+    ],
+    desc: "A rich Katan Kora Booti Banarasi silk saree in vibrant red with traditional Kadhwa weave. Handcrafted with pure tested Sona Rupa zari, this masterpiece takes 3–4 weeks to complete.",
+    originalPrice: 24999,
+    discountPrice: 22999,
+    discount: "10% OFF on First Purchase",
     sizes: ["S", "M", "L", "XL"],
-    colors: ["Red", "Gold"],
+    colors: ["Red"],
     stock: 6,
+    details: {
+      color: "Red",
+      technique: "Kadhwa weaving with pure tested Sona Rupa Zari",
+      fabric: "Pure Katan Kora Silk – 100% Silk Mark Certified",
+      speciality: `
+        1. 100% Handwoven: Every single thread is handcrafted with love and takes 3–4 weeks to finish.
+        2. Made with Pure Tested Zari: Authentic Sona Rupa (Gold & Silver) Zari.
+        3. Kadhwa Technique: No cutwork – traditional handloom technique for intricate bootis.
+        4. Zari Life Guarantee: We give 100 years of assurance on our zari life – no one else claims this.
+        5. First Time Buyer Offer: Extra 10% discount on your first purchase.
+        6. Free Shipping: Across India, and international shipping on orders above ₹20,000.
+        7. Silk Mark Certified: All sarees lab tested and certified for purity.
+        8. Trusted Since 1956: Katan Banaras – one of the oldest & most reliable Banarasi silk saree brands.
+      `,
+    },
   },
+
   {
     id: 12,
-    title: "Sapphire Blue Satin Georgette",
+    title: "Moonga Silk Pure Banarasi Handloom Saree in Strawberry (Light)",
     images: [
-      "/images/sapphire1.jpg",
-      "/images/sapphire2.jpg",
-      "/images/sapphire3.jpg",
+      "https://ik.imagekit.io/yg3bo4zvy/images/Strawberry%20(light%20(6).jpg",
+      "https://ik.imagekit.io/yg3bo4zvy/images/Strawberry%20(light%20(5).jpg",
+      "https://ik.imagekit.io/yg3bo4zvy/images/Strawberry%20(light%20(4).jpg",
+      "https://ik.imagekit.io/yg3bo4zvy/images/Strawberry%20(light%20(7).jpg",
+      "https://ik.imagekit.io/yg3bo4zvy/images/Strawberry%20(light%20(3).jpg",
+      "https://ik.imagekit.io/yg3bo4zvy/images/Strawberry%20(light%20(2).jpg",
+      "https://ik.imagekit.io/yg3bo4zvy/images/Strawberry%20(light%20(1).jpg",
     ],
-    desc: "A luxurious satin georgette saree in sapphire blue, enhanced with crystal embellishments.",
-    originalPrice: 14999,
-    discountPrice: 12999, // ₹12,999
-    discount: "13% OFF",
+    desc: "Graceful Moonga silk Banarasi handloom saree in soft strawberry (light) shade, handwoven with 100% pure gold tested zari. A timeless piece that takes 2–3 weeks to complete.",
+    originalPrice: 15499,
+    discountPrice: 13499,
+    discount: "13% OFF + 10% on First Purchase",
     sizes: ["S", "M", "L", "XL"],
-    colors: ["Sapphire Blue", "Silver"],
-    stock: 12,
+    colors: ["Strawberry (Light)"],
+    stock: 8,
+    details: {
+      color: "Strawberry (Light)",
+      technique: "Traditional Banarasi Handloom with Pure Tested Gold Zari",
+      fabric: "Pure Moonga Silk – 100% Silk Mark Certified",
+      speciality: `
+        1. 100% Handwoven: Every thread is intricately woven by skilled artisans over 2–3 weeks.
+        2. Pure Gold Zari: Lab-tested zari ensures richness and shine.
+        3. Silk Mark Certified: Authenticity and purity guaranteed.
+        4. Zari Life Guarantee: 100 years of assurance on zari – unmatched in the market.
+        5. Free Shipping: Across India and internationally on orders above ₹20,000.
+        6. Trusted Brand Since 1956: Katan Banaras – heritage you can trust.
+      `,
+    },
   },
+
   {
     id: 13,
-    title: "Ivory White Chikankari Saree",
-    images: ["/images/white1.jpg", "/images/white2.jpg"],
-    desc: "Pure white Lucknowi Chikankari saree with fine hand embroidery, making it a timeless masterpiece.",
-    originalPrice: 17999,
-    discountPrice: 14999, // ₹14,999
-    discount: "17% OFF",
+    title: "Moonga Silk Pure Banarasi Handloom Saree in Strawberry (Dark)",
+    images: [
+      "https://ik.imagekit.io/yg3bo4zvy/images/Strawberry%20(dark%20(3).JPG",
+      "https://ik.imagekit.io/yg3bo4zvy/images/Strawberry%20(dark%20(2).JPG",
+      "https://ik.imagekit.io/yg3bo4zvy/images/Strawberry%20(dark%20(1).JPG",
+      "https://ik.imagekit.io/yg3bo4zvy/images/Strawberry%20(dark%20(4).JPG",
+    ],
+    desc: "Elegant Moonga silk Banarasi handloom saree in rich strawberry (dark) shade. Crafted with pure tested gold zari, this masterpiece takes 2–3 weeks to complete.",
+    originalPrice: 15499,
+    discountPrice: 13499,
+    discount: "13% OFF + 10% on First Purchase",
     sizes: ["S", "M", "L", "XL"],
-    colors: ["White", "Beige"],
-    stock: 7,
+    colors: ["Strawberry (Dark)"],
+    stock: 8,
+    details: {
+      color: "Strawberry (Dark)",
+      technique: "Traditional Banarasi Handloom with Pure Tested Gold Zari",
+      fabric: "Pure Moonga Silk – 100% Silk Mark Certified",
+      speciality: `
+        1. Handcrafted Excellence: 2–3 weeks of detailed, expert weaving.
+        2. 100% Pure Gold Zari: Verified and lab-tested for premium quality.
+        3. Lifetime Zari Assurance: 100-year guarantee – a promise only we deliver.
+        4. Silk Mark Certified: Every saree is lab tested and certified for purity.
+        5. Free Shipping: Pan India and international orders over ₹20,000.
+        6. Katan Banaras Legacy: Manufacturing since 1956 – a name you can rely on.
+      `,
+    },
   },
+
   {
     id: 14,
-    title: "Blush Pink Soft Silk Saree",
-    images: ["/images/blush1.jpg", "/images/blush2.jpg", "/images/blush3.jpg"],
-    desc: "A delicate blush pink soft silk saree with silver zari work, ideal for an elegant evening look.",
-    originalPrice: 19999,
-    discountPrice: 16999, // ₹16,999
-    discount: "15% OFF",
+    title: "Pure Banarasi Jamawar Handloom Silk Saree in Sigrin",
+    images: [
+      "https://ik.imagekit.io/yg3bo4zvy/images/jamawar-sigrin1.jpg",
+      "https://ik.imagekit.io/yg3bo4zvy/images/jamawar-sigrin2.jpg",
+      "https://ik.imagekit.io/yg3bo4zvy/images/jamawar-sigrin3.jpg",
+      "https://ik.imagekit.io/yg3bo4zvy/images/jamawar-sigrin4.jpg",
+      "https://ik.imagekit.io/yg3bo4zvy/images/jamawar-sigrin5.jpg",
+    ],
+    desc: "Exquisite Pure Banarasi Jamawar handloom silk saree in a royal Sigrin shade, featuring ultra-clean finish with no zari work. Every thread is handwoven with perfection, taking 3–4 weeks to craft.",
+    originalPrice: 38999,
+    discountPrice: 29999,
+    discount: "23% OFF + 10% Extra on First Purchase",
     sizes: ["S", "M", "L", "XL"],
-    colors: ["Blush Pink", "Silver"],
-    stock: 9,
+    colors: ["Sigrin"],
+    stock: 6,
+    details: {
+      color: "Sigrin",
+      technique: "Jamawar Handloom Weaving (Zari-free for clean finish)",
+      fabric: "Pure Silk – 100% Silk Mark Certified",
+      speciality: `
+        1. Zari-Free Elegance: No zari work for a clean, smooth backside – rare and regal.
+        2. Pure Handloom Art: Each piece takes 3–4 weeks to weave by hand.
+        3. 100% Silk Mark Certified: Purity and quality guaranteed through lab testing.
+        4. Unique Craftsmanship: One of a kind Banarasi piece – no machine work involved.
+        5. Free Shipping: Pan India + international orders over ₹20,000.
+        6. Trusted Since 1956: Katan Banaras – legacy of excellence in handloom sarees.
+      `,
+    },
   },
   {
     id: 15,
