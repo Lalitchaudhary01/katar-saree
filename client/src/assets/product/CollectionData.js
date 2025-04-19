@@ -31,39 +31,69 @@ const collections = [
       `,
     },
   },
+  // {
+  //   id: 1,
+  //   title: "Katan Jangla Banarasi Saree in Royal Purple",
+  //   images: [
+  //     "https://ik.imagekit.io/yg3bo4zvy/images/katan-jangla-banarasi-1.jpg",
+  //     "https://ik.imagekit.io/yg3bo4zvy/images/katan-jangla-banarasi-2.jpg",
+  //     "https://ik.imagekit.io/yg3bo4zvy/images/katan-jangla-banarasi-3.jpg",
+  //     "https://ik.imagekit.io/yg3bo4zvy/images/katan-jangla-banarasi-4.jpg",
+  //     "https://ik.imagekit.io/yg3bo4zvy/images/katan-jangla-banarasi-5.jpg",
+  //     "https://ik.imagekit.io/yg3bo4zvy/images/katan-jangla-banarasi-6.jpg",
+  //     "https://ik.imagekit.io/yg3bo4zvy/images/katan-jangla-banarasi-7.jpg",
+  //   ],
+  //   desc: "This is a stunning Katan Jangla Banarasi saree in a rich royal purple shade, featuring all-over Sona Roopa zari floral weaving...",
+  //   originalPrice: 24999,
+  //   discountPrice: 17999,
+  //   discount: "28% OFF",
+  //   sizes: ["S", "M", "L", "XL"],
+  //   colors: ["Royal Purple", "Gold"],
+  //   stock: 8,
+  //   details: {
+  //     color: "Royal Purple",
+  //     technique: "Jangla style weaving with Sona Roopa Zari",
+  //     fabric: "Pure Katan Silk – 100% Silk Mark Certified",
+  //     speciality: `
+  //       1. Signature Jangla Weave: All-over intricate floral designs with rich zari work.
+  //       2. Pure Katan Silk: Luxurious shine and texture that speaks royalty.
+  //       3. Regal Zari Border & Pallu: Heavy Sona Roopa zari adding a grand traditional essence.
+  //       4. 100% Handwoven: Takes 3–4 weeks to weave a single piece with absolute precision.
+  //       5. Silk Mark Certified: Guaranteed purity and authenticity of silk.
+  //       6. Versatile Appeal: Perfect for weddings, festivals, or timeless collection additions.
+  //     `,
+  //   },
+  // },
   {
     id: 1,
-    title: "Katan Jangla Banarasi Saree in Royal Purple",
+    title: "Moonga Silk Pure Banarasi Handloom Saree in Strawberry (Dark)",
     images: [
-      "https://ik.imagekit.io/yg3bo4zvy/images/katan-jangla-banarasi-1.jpg",
-      "https://ik.imagekit.io/yg3bo4zvy/images/katan-jangla-banarasi-2.jpg",
-      "https://ik.imagekit.io/yg3bo4zvy/images/katan-jangla-banarasi-3.jpg",
-      "https://ik.imagekit.io/yg3bo4zvy/images/katan-jangla-banarasi-4.jpg",
-      "https://ik.imagekit.io/yg3bo4zvy/images/katan-jangla-banarasi-5.jpg",
-      "https://ik.imagekit.io/yg3bo4zvy/images/katan-jangla-banarasi-6.jpg",
-      "https://ik.imagekit.io/yg3bo4zvy/images/katan-jangla-banarasi-7.jpg",
+      "https://ik.imagekit.io/yg3bo4zvy/bg/baby%20pink%20saree%201.jpg",
+      "https://ik.imagekit.io/yg3bo4zvy/bg/baby%20pink%20saree%202.jpg",
+      "https://ik.imagekit.io/yg3bo4zvy/bg/baby%20pink%20saree%203.jpg",
     ],
-    desc: "This is a stunning Katan Jangla Banarasi saree in a rich royal purple shade, featuring all-over Sona Roopa zari floral weaving...",
-    originalPrice: 24999,
-    discountPrice: 17999,
-    discount: "28% OFF",
+    desc: "Elegant Moonga silk Banarasi handloom saree in rich strawberry (dark) shade. Crafted with pure tested gold zari, this masterpiece takes 2–3 weeks to complete.",
+    originalPrice: 15499,
+    discountPrice: 13499,
+    discount: "13% OFF + 10% on First Purchase",
     sizes: ["S", "M", "L", "XL"],
-    colors: ["Royal Purple", "Gold"],
+    colors: ["Strawberry (Dark)"],
     stock: 8,
     details: {
-      color: "Royal Purple",
-      technique: "Jangla style weaving with Sona Roopa Zari",
-      fabric: "Pure Katan Silk – 100% Silk Mark Certified",
+      color: "Strawberry (Dark)",
+      technique: "Traditional Banarasi Handloom with Pure Tested Gold Zari",
+      fabric: "Pure Moonga Silk – 100% Silk Mark Certified",
       speciality: `
-        1. Signature Jangla Weave: All-over intricate floral designs with rich zari work.
-        2. Pure Katan Silk: Luxurious shine and texture that speaks royalty.
-        3. Regal Zari Border & Pallu: Heavy Sona Roopa zari adding a grand traditional essence.
-        4. 100% Handwoven: Takes 3–4 weeks to weave a single piece with absolute precision.
-        5. Silk Mark Certified: Guaranteed purity and authenticity of silk.
-        6. Versatile Appeal: Perfect for weddings, festivals, or timeless collection additions.
+        1. Handcrafted Excellence: 2–3 weeks of detailed, expert weaving.
+        2. 100% Pure Gold Zari: Verified and lab-tested for premium quality.
+        3. Lifetime Zari Assurance: 100-year guarantee – a promise only we deliver.
+        4. Silk Mark Certified: Every saree is lab tested and certified for purity.
+        5. Free Shipping: Pan India and international orders over ₹20,000.
+        6. Katan Banaras Legacy: Manufacturing since 1956 – a name you can rely on.
       `,
     },
   },
+
   {
     id: 2,
     title: "Moonga Silk Pure Banarasi Handloom Saree in Gold",
