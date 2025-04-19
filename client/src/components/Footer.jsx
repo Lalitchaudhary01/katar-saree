@@ -157,27 +157,27 @@ const Footer = () => {
         <div className="border-t border-primary border-opacity-20 pt-6 pb-4">
           <div className="flex flex-wrap justify-center gap-3 md:gap-6">
             <PaymentMethodIcon
-              src="https://source.unsplash.com/random/120x40/?visa,logo"
+              src="https://1000logos.net/wp-content/uploads/2021/11/VISA-logo.png"
               alt="Visa"
             />
             <PaymentMethodIcon
-              src="https://source.unsplash.com/random/120x40/?mastercard,logo"
+              src="https://www.mastercard.co.in/content/dam/public/mastercardcom/in/en/logos/mc-logo-52.svg"
               alt="Mastercard"
             />
-            <PaymentMethodIcon
+            {/* <PaymentMethodIcon
               src="https://source.unsplash.com/random/120x40/?americanexpress,logo"
               alt="American Express"
-            />
+            /> */}
             <PaymentMethodIcon
-              src="https://source.unsplash.com/random/120x40/?paypal,logo"
+              src="https://ik.imagekit.io/yg3bo4zvy/paypal2.svg"
               alt="PayPal"
             />
             <PaymentMethodIcon
-              src="https://source.unsplash.com/random/120x40/?rupay,logo"
+              src="https://ik.imagekit.io/yg3bo4zvy/rupay2.svg"
               alt="RuPay"
             />
             <PaymentMethodIcon
-              src="https://source.unsplash.com/random/120x40/?upi,logo"
+              src="https://ik.imagekit.io/yg3bo4zvy/upi1.png"
               alt="UPI"
             />
           </div>
