@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
-import img1 from "../assets/Artboard1.jpg";
-import img2 from "../assets/Artboard2.jpg";
-import img3 from "../assets/Artboard3.jpg";
-import img4 from "../assets/1.png";
 
-const desktopImages = [img1, img2, img3];
+// ImageKit URLs instead of local imports
+const desktopImages = [
+  "https://ik.imagekit.io/yg3bo4zvy/logo/Artboard1.jpg",
+  "https://ik.imagekit.io/yg3bo4zvy/logo/Artboard2.jpg",
+  "https://ik.imagekit.io/yg3bo4zvy/logo/Artboard3.jpg",
+];
+
+const mobileImage = "https://ik.imagekit.io/yg3bo4zvy/logo/1.png";
 
 const Home = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -43,7 +46,7 @@ const Home = () => {
         // Mobile view - single static image with no gaps
         <div className="absolute inset-0 w-full h-full flex items-center justify-center">
           <img
-            src={img4}
+            src={mobileImage}
             alt="Mobile Banner"
             className="w-full h-full object-cover"
           />
