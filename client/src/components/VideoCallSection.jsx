@@ -37,7 +37,7 @@ const VideoCallSection = () => {
             {/* Left side - Image with overlay */}
             <div className="w-full md:w-2/5 h-64 md:h-auto relative overflow-hidden group">
               <img
-                src="/api/placeholder/800/1200"
+                src="https://ik.imagekit.io/yg3bo4zvy/vc1.png?updatedAt=1745060031684"
                 alt="Luxury shopping collection"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
