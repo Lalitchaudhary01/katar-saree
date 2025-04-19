@@ -1,36 +1,67 @@
 const collections = [
   {
     id: 0,
-    title: "Pure Bandhani Saree in Vibrant Lime Green and Deep Bottle Green",
+    title: "Katan Kora Booti Sona Rupa Banarasi Silk Saree in Red",
     images: [
-      "https://ik.imagekit.io/yg3bo4zvy/images/Pure_bandhani_saree_lime_green_3.jpg",
-      "https://ik.imagekit.io/yg3bo4zvy/images/Pure_bandhani_saree_lime_green_4.jpg",
-      "https://ik.imagekit.io/yg3bo4zvy/images/Pure_bandhani_saree_lime_green_5.jpg",
-      "https://ik.imagekit.io/yg3bo4zvy/images/Pure_bandhani_saree_lime_green_6.jpg",
-      "https://ik.imagekit.io/yg3bo4zvy/images/Pure_bandhani_saree_lime_green_2.jpg",
-      "https://ik.imagekit.io/yg3bo4zvy/images/Pure_bandhani_saree_lime_green_1.jpg",
+      "https://ik.imagekit.io/yg3bo4zvy/bg/red%20saree%201.jpg",
+      "https://ik.imagekit.io/yg3bo4zvy/bg/red%20saree%202.jpg",
+      "https://ik.imagekit.io/yg3bo4zvy/bg/red%20saree%203.jpg",
     ],
-    desc: "Every single thread is handwoven. It takes 3 to 4 weeks to craft one of these masterpieces. A reflection of timeless tradition and unmatched artistry.",
-    originalPrice: 22999,
-    discountPrice: 15999,
-    discount: "30% OFF",
+    desc: "A rich Katan Kora Booti Banarasi silk saree in vibrant red with traditional Kadhwa weave. Handcrafted with pure tested Sona Rupa zari, this masterpiece takes 3–4 weeks to complete.",
+    originalPrice: 24999,
+    discountPrice: 22999,
+    discount: "10% OFF on First Purchase",
     sizes: ["S", "M", "L", "XL"],
-    colors: ["Lime Green", "Bottle Green"],
-    stock: 10,
+    colors: ["Red"],
+    stock: 6,
     details: {
-      color: "Vibrant lime green and deep bottle green",
-      technique: "Tie-and-Dye Bandhani with traditional craftsmanship",
-      fabric: "Available in Silk, Cotton, Georgette, and Chiffon",
+      color: "Red",
+      technique: "Kadhwa weaving with pure tested Sona Rupa Zari",
+      fabric: "Pure Katan Kora Silk – 100% Silk Mark Certified",
       speciality: `
-        1. Tie-and-Dye Technique: Bandhani involves tying small portions of fabric with thread and dyeing them to create unique patterns.
-        2. Vibrant Colors: Bright shades like red, yellow, green, and blue with striking contrasts.
-        3. Intricate Patterns: Features dots, waves, floral motifs, and regionally significant designs.
-        4. Handcrafted Artistry: Hand-done by skilled artisans, making each saree one-of-a-kind.
-        5. Cultural Symbolism: Worn during festivals, weddings, and religious occasions.
-        6. Variety of Fabrics: Suitable for all preferences and events.
+        1. 100% Handwoven: Every single thread is handcrafted with love and takes 3–4 weeks to finish.
+        2. Made with Pure Tested Zari: Authentic Sona Rupa (Gold & Silver) Zari.
+        3. Kadhwa Technique: No cutwork – traditional handloom technique for intricate bootis.
+        4. Zari Life Guarantee: We give 100 years of assurance on our zari life – no one else claims this.
+        5. First Time Buyer Offer: Extra 10% discount on your first purchase.
+        6. Free Shipping: Across India, and international shipping on orders above ₹20,000.
+        7. Silk Mark Certified: All sarees lab tested and certified for purity.
+        8. Trusted Since 1956: Katan Banaras – one of the oldest & most reliable Banarasi silk saree brands.
       `,
     },
   },
+  // {
+  //   id: 0,
+  //   title: "Pure Bandhani Saree in Vibrant Lime Green and Deep Bottle Green",
+  //   images: [
+  //     "https://ik.imagekit.io/yg3bo4zvy/images/Pure_bandhani_saree_lime_green_3.jpg",
+  //     "https://ik.imagekit.io/yg3bo4zvy/images/Pure_bandhani_saree_lime_green_4.jpg",
+  //     "https://ik.imagekit.io/yg3bo4zvy/images/Pure_bandhani_saree_lime_green_5.jpg",
+  //     "https://ik.imagekit.io/yg3bo4zvy/images/Pure_bandhani_saree_lime_green_6.jpg",
+  //     "https://ik.imagekit.io/yg3bo4zvy/images/Pure_bandhani_saree_lime_green_2.jpg",
+  //     "https://ik.imagekit.io/yg3bo4zvy/images/Pure_bandhani_saree_lime_green_1.jpg",
+  //   ],
+  //   desc: "Every single thread is handwoven. It takes 3 to 4 weeks to craft one of these masterpieces. A reflection of timeless tradition and unmatched artistry.",
+  //   originalPrice: 22999,
+  //   discountPrice: 15999,
+  //   discount: "30% OFF",
+  //   sizes: ["S", "M", "L", "XL"],
+  //   colors: ["Lime Green", "Bottle Green"],
+  //   stock: 10,
+  //   details: {
+  //     color: "Vibrant lime green and deep bottle green",
+  //     technique: "Tie-and-Dye Bandhani with traditional craftsmanship",
+  //     fabric: "Available in Silk, Cotton, Georgette, and Chiffon",
+  //     speciality: `
+  //       1. Tie-and-Dye Technique: Bandhani involves tying small portions of fabric with thread and dyeing them to create unique patterns.
+  //       2. Vibrant Colors: Bright shades like red, yellow, green, and blue with striking contrasts.
+  //       3. Intricate Patterns: Features dots, waves, floral motifs, and regionally significant designs.
+  //       4. Handcrafted Artistry: Hand-done by skilled artisans, making each saree one-of-a-kind.
+  //       5. Cultural Symbolism: Worn during festivals, weddings, and religious occasions.
+  //       6. Variety of Fabrics: Suitable for all preferences and events.
+  //     `,
+  //   },
+  // },
   // {
   //   id: 1,
   //   title: "Katan Jangla Banarasi Saree in Royal Purple",
