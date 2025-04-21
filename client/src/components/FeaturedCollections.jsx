@@ -30,6 +30,10 @@ const FeaturedCollections = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [imageLoading, setImageLoading] = useState({});
 
+  // Touch swipe variables
+  const touchStartX = useRef(null);
+  const touchEndX = useRef(null);
+
   const hoverTimers = useRef({});
   const carouselRef = useRef(null);
   const { isInWishlist, toggleWishlistItem } = useWishlist();
@@ -132,6 +136,36 @@ const FeaturedCollections = () => {
     );
   };
 
+  // Touch handlers for swipe functionality
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+
+    const swipeDistance = touchStartX.current - touchEndX.current;
+    const minSwipeDistance = 50; // Minimum distance to be considered a swipe
+
+    if (Math.abs(swipeDistance) > minSwipeDistance) {
+      if (swipeDistance > 0) {
+        // Swiped left (next)
+        handleNextCard();
+      } else {
+        // Swiped right (prev)
+        handlePrevCard();
+      }
+    }
+
+    // Reset touch coordinates
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
+
   // Function to open modal with the selected product
   const openQuickViewModal = (collection) => {
     setSelectedProduct(collection);
@@ -160,7 +194,13 @@ const FeaturedCollections = () => {
       </div>
 
       {/* Collection grid with mobile navigation */}
-      <div className="relative" ref={carouselRef}>
+      <div
+        className="relative"
+        ref={carouselRef}
+        onTouchStart={isMobile ? handleTouchStart : null}
+        onTouchMove={isMobile ? handleTouchMove : null}
+        onTouchEnd={isMobile ? handleTouchEnd : null}
+      >
         {/* Mobile Navigation Arrows */}
         {isMobile && (
           <>
@@ -256,10 +296,6 @@ const FeaturedCollections = () => {
                       </button>
                     </div>
 
-                    {/* Discount Badge */}
-                    {/* Discount Badge */}
-                    {/* Discount Badge */}
-                    {/* Discount Badge */}
                     {/* Discount Badge */}
                     {collection.discount && (
                       <div className="absolute top-3 left-1 md:top-3 sm:top-16 xs:top-16 pointer-events-none">
