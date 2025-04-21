@@ -29,6 +29,10 @@ const NewArrivals = () => {
   const [imageLoading, setImageLoading] = useState({});
   const [currentPage, setCurrentPage] = useState(0);
 
+  // Touch swipe variables
+  const touchStartX = useRef(null);
+  const touchEndX = useRef(null);
+
   const itemsPerPage = 4;
   const totalPages = Math.ceil(newArrivals.length / itemsPerPage);
   const hoverTimers = useRef({});
@@ -126,6 +130,44 @@ const NewArrivals = () => {
     );
   };
 
+  // Touch handlers for swipe functionality
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+
+    const swipeDistance = touchStartX.current - touchEndX.current;
+    const minSwipeDistance = 50; // Minimum distance to be considered a swipe
+
+    if (Math.abs(swipeDistance) > minSwipeDistance) {
+      if (swipeDistance > 0) {
+        // Swiped left - go to next
+        if (isMobile) {
+          handleNextCard();
+        } else {
+          goToNextPage();
+        }
+      } else {
+        // Swiped right - go to previous
+        if (isMobile) {
+          handlePrevCard();
+        } else {
+          goToPrevPage();
+        }
+      }
+    }
+
+    // Reset touch coordinates
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
+
   // Desktop swiper navigation
   const goToNextPage = () => {
     setCurrentPage((prev) => (prev === totalPages - 1 ? 0 : prev + 1));
@@ -160,7 +202,13 @@ const NewArrivals = () => {
         <div className="w-24 h-px bg-[#1a1a1a] mx-auto mb-16"></div>
       </div>
 
-      <div className="relative" ref={carouselRef}>
+      <div
+        className="relative"
+        ref={carouselRef}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         {/* Mobile Navigation */}
         {isMobile && (
           <>
