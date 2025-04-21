@@ -257,9 +257,13 @@ const FeaturedCollections = () => {
                     </div>
 
                     {/* Discount Badge */}
+                    {/* Discount Badge */}
+                    {/* Discount Badge */}
+                    {/* Discount Badge */}
+                    {/* Discount Badge */}
                     {collection.discount && (
-                      <div className="absolute top-3 left-3 pointer-events-none">
-                        <div className="elegant-badge text-white text-xs px-2.5 py-1 rounded-sm shadow-md">
+                      <div className="absolute top-3 left-1 md:top-3 sm:top-16 xs:top-16 pointer-events-none">
+                        <div className="elegant-badge text-white text-xs px-1.5 py-0.5 rounded-sm shadow-md">
                           {collection.discount}
                         </div>
                       </div>
