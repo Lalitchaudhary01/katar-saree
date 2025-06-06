@@ -24,6 +24,7 @@ import collections from "../assets/product/CollectionData";
 import newArrivals from "../assets/product/NewArrival";
 import silkSarees from "../assets/product/SilkSaree";
 import banarasiProducts from "../assets/product/BanarasiProduct";
+import KoraKadhwaStrips from "../assets/product/KoraKadhwaStrips";
 
 // Component Imports
 import RecommendedProducts from "./RecommendedProducts";
@@ -33,7 +34,7 @@ const CollectionDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const { isInWishlist, toggleWishlistItem } = useWishlist(); // Changed from toggleWishlist to toggleWishlistItem
+  const { isInWishlist, toggleWishlistItem } = useWishlist();
   const { selectedCurrency, convertPrice, formatPrice } = useCurrency();
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -43,7 +44,8 @@ const CollectionDetails = () => {
     collections.find((item) => item.id === productId) ||
     newArrivals.find((item) => item.id === productId) ||
     silkSarees.find((item) => item.id === productId) ||
-    banarasiProducts.find((item) => item.id === productId);
+    banarasiProducts.find((item) => item.id === productId) ||
+    KoraKadhwaStrips.find((item) => item.id === productId);
 
   // State Management
   const [selectedColor, setSelectedColor] = useState(null);
@@ -51,7 +53,7 @@ const CollectionDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [imageZoom, setImageZoom] = useState({
     isZoomed: false,
-    position: { x: 0, y: 0 },
+    position: { x: 50, y: 50 },
   });
 
   // Utility Functions
@@ -81,16 +83,18 @@ const CollectionDetails = () => {
 
   const processedColors = collection?.colors?.map(processColor) || [];
 
-  // Image Zoom Handler
+  // Fixed Image Zoom Handler
   const handleImageZoom = (e) => {
     const rect = e.target.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
 
-    // Toggle zoom on double click
     setImageZoom((prev) => ({
       isZoomed: !prev.isZoomed,
-      position: { x, y },
+      position: {
+        x: Math.max(0, Math.min(100, x)),
+        y: Math.max(0, Math.min(100, y)),
+      },
     }));
   };
 
@@ -102,10 +106,18 @@ const CollectionDetails = () => {
 
       setImageZoom((prev) => ({
         ...prev,
-        position: { x, y },
+        position: {
+          x: Math.max(0, Math.min(100, x)),
+          y: Math.max(0, Math.min(100, y)),
+        },
       }));
     }
   };
+
+  // Reset zoom when main image changes
+  useEffect(() => {
+    setImageZoom({ isZoomed: false, position: { x: 50, y: 50 } });
+  }, [mainImage]);
 
   // Handlers
   const handleWishlistToggle = () => {
@@ -116,22 +128,22 @@ const CollectionDetails = () => {
 
     const wishlistItem = {
       id: collection.id,
-      productId: collection.id, // Added to match context expectation
+      productId: collection.id,
       title: collection.title,
       image: mainImage,
       discountPrice: collection.discountPrice,
       originalPrice: collection.originalPrice,
-      discount: calculateDiscountPercentage(), // Added to match context
+      discount: calculateDiscountPercentage(),
       colors: collection.colors,
-      desc: collection.desc, // Added to match context
-      currencyCode: selectedCurrency.code, // Added to match context
-      currencySymbol: selectedCurrency.symbol, // Added to match context
+      desc: collection.desc,
+      currencyCode: selectedCurrency.code,
+      currencySymbol: selectedCurrency.symbol,
       stock: collection.stock,
       specialty: collection.specialty,
     };
 
     const isCurrentlyInWishlist = isInWishlist(collection.id);
-    toggleWishlistItem(wishlistItem); // Changed from toggleWishlist to toggleWishlistItem to match context
+    toggleWishlistItem(wishlistItem);
 
     if (isCurrentlyInWishlist) {
       toast.success(`${collection.title} removed from your wishlist!`);
@@ -153,12 +165,11 @@ const CollectionDetails = () => {
 
     const cartItem = {
       id: collection.id,
-      name: collection.title, // Changed from title to name
+      name: collection.title,
       price: collection.discountPrice,
       image: mainImage,
       color: selectedColor,
       quantity: quantity,
-      // Include any other required fields
     };
 
     try {
@@ -303,7 +314,10 @@ const CollectionDetails = () => {
           {/* Image Gallery */}
           <div className="relative">
             <AnimatePresence>
-              <motion.div className="relative overflow-hidden" key={mainImage}>
+              <motion.div
+                className="relative overflow-hidden rounded-2xl"
+                key={mainImage}
+              >
                 <motion.img
                   src={mainImage}
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -312,17 +326,28 @@ const CollectionDetails = () => {
                   transition={{ duration: 0.3 }}
                   onDoubleClick={handleImageZoom}
                   onMouseMove={handleMouseMove}
-                  className={`w-full h-[600px] object-cover rounded-2xl transition-transform duration-300 
-                ${imageZoom.isZoomed ? "cursor-zoom-out" : "cursor-zoom-in"}`}
+                  className={`w-full h-[600px] object-cover transition-all duration-500 ease-in-out select-none
+                    ${
+                      imageZoom.isZoomed
+                        ? "cursor-zoom-out scale-150"
+                        : "cursor-zoom-in"
+                    }`}
                   style={
                     imageZoom.isZoomed
                       ? {
-                          transform: `scale(2)`,
                           transformOrigin: `${imageZoom.position.x}% ${imageZoom.position.y}%`,
                         }
                       : {}
                   }
+                  draggable={false}
                 />
+
+                {/* Zoom Indicator */}
+                {imageZoom.isZoomed && (
+                  <div className="absolute top-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm">
+                    Double-click to zoom out
+                  </div>
+                )}
               </motion.div>
             </AnimatePresence>
 
@@ -335,8 +360,12 @@ const CollectionDetails = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setMainImage(img)}
-                  className={`w-24 h-24 object-cover rounded-lg cursor-pointer 
-                    ${mainImage === img ? "ring-2 ring-black" : "opacity-70"}`}
+                  className={`w-24 h-24 object-cover rounded-lg cursor-pointer transition-all 
+                    ${
+                      mainImage === img
+                        ? "ring-2 ring-black opacity-100"
+                        : "opacity-70 hover:opacity-90"
+                    }`}
                 />
               ))}
             </div>

@@ -18,7 +18,7 @@ import { useCurrency } from "../context/currencyContext";
 import QuickViewModal from "../reusable/QuickView";
 
 // Product Data
-import banarasiProducts from "../assets/product/BanarasiProduct";
+// import banarasiProducts from "../assets/product/BanarasiProduct";
 
 // Styles
 import "./BanarasiSarees.css";

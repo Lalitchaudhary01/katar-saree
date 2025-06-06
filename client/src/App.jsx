@@ -45,6 +45,7 @@ import { WishlistProvider } from "./context/WishlistContext";
 import { CurrencyProvider } from "./context/currencyContext";
 import Layout from "./context/Layout";
 import UserProfile from "./headers/UserProfile";
+import KoraKadhwaStrips from "./pages/KoraKadhwaStrips";
 
 const pageVariants = {
   initial: { opacity: 0, y: 50 },
@@ -297,6 +298,10 @@ function AppContent() {
           <Route path="/weaves/:routeCategory" element={<Menu />} />
           <Route path="/techniques/:routeCategory" element={<Menu />} />
           <Route path="/fabrics/:routeCategory" element={<Menu />} />
+          <Route
+            path="/weaves/kora-kadhwa-strips"
+            element={<KoraKadhwaStrips />}
+          />
         </Routes>
       </AnimatePresence>
 
