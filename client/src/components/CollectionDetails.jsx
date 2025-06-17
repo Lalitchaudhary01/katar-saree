@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   FaShoppingCart,
-  FaHeart,
-  FaShare,
   FaStar,
   FaChevronRight,
   FaTruck,
@@ -29,6 +27,7 @@ import KoraKadhwaStrips from "../assets/product/KoraKadhwaStrips";
 // Component Imports
 import RecommendedProducts from "./RecommendedProducts";
 import ProductDetailsTabs from "./ProductDetailsTabs";
+import ProductImageGallery from "./ProductImageGallery";
 
 const CollectionDetails = () => {
   const { id } = useParams();
@@ -47,16 +46,10 @@ const CollectionDetails = () => {
     banarasiProducts.find((item) => item.id === productId) ||
     KoraKadhwaStrips.find((item) => item.id === productId);
 
-  // UPDATED STATE MANAGEMENT
+  // State Management
   const [selectedColorVariant, setSelectedColorVariant] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
-  const [mainImage, setMainImage] = useState(null);
-  const [currentImages, setCurrentImages] = useState([]);
   const [quantity, setQuantity] = useState(1);
-  const [imageZoom, setImageZoom] = useState({
-    isZoomed: false,
-    position: { x: 50, y: 50 },
-  });
 
   // Color Processing Function
   const processColor = (color) => {
@@ -85,12 +78,11 @@ const CollectionDetails = () => {
     return color.startsWith("#") ? colorMap[color] || color : color;
   };
 
-  // Get Color Data (with backward compatibility)
+  // Get Color Data
   const getColorData = () => {
     if (collection?.colorVariants) {
       return collection.colorVariants;
     } else if (collection?.colors) {
-      // Backward compatibility - convert old format
       return collection.colors.map((color, index) => ({
         color: color,
         colorName: processColor(color),
@@ -101,23 +93,15 @@ const CollectionDetails = () => {
     return [];
   };
 
-  // Initialize default color and images
+  // Initialize default color
   useEffect(() => {
     if (collection) {
       if (collection.colorVariants && collection.colorVariants.length > 0) {
-        // Set first color variant as default
         const defaultVariant = collection.colorVariants[0];
         setSelectedColorVariant(defaultVariant);
         setSelectedColor(defaultVariant.colorName);
-        setCurrentImages(defaultVariant.images);
-        setMainImage(defaultVariant.images[0]);
-      } else {
-        // Fallback to old structure
-        setCurrentImages(collection.images || []);
-        setMainImage(collection.images?.[0]);
-        if (collection.colors && collection.colors.length > 0) {
-          setSelectedColor(processColor(collection.colors[0]));
-        }
+      } else if (collection.colors && collection.colors.length > 0) {
+        setSelectedColor(processColor(collection.colors[0]));
       }
     }
   }, [collection]);
@@ -126,55 +110,8 @@ const CollectionDetails = () => {
   const handleColorSelection = (colorVariant) => {
     setSelectedColorVariant(colorVariant);
     setSelectedColor(colorVariant.colorName);
-
-    // Update images based on selected color
-    if (colorVariant && colorVariant.images) {
-      setCurrentImages(colorVariant.images);
-      setMainImage(colorVariant.images[0]);
-    }
-
-    // Reset zoom when color changes
-    setImageZoom({ isZoomed: false, position: { x: 50, y: 50 } });
-
-    // Optional: Show success message
     toast.success(`Color changed to ${colorVariant.colorName}`);
   };
-
-  // Image Zoom Handlers
-  const handleImageZoom = (e) => {
-    const rect = e.target.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-
-    setImageZoom((prev) => ({
-      isZoomed: !prev.isZoomed,
-      position: {
-        x: Math.max(0, Math.min(100, x)),
-        y: Math.max(0, Math.min(100, y)),
-      },
-    }));
-  };
-
-  const handleMouseMove = (e) => {
-    if (imageZoom.isZoomed) {
-      const rect = e.target.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      const y = ((e.clientY - rect.top) / rect.height) * 100;
-
-      setImageZoom((prev) => ({
-        ...prev,
-        position: {
-          x: Math.max(0, Math.min(100, x)),
-          y: Math.max(0, Math.min(100, y)),
-        },
-      }));
-    }
-  };
-
-  // Reset zoom when main image changes
-  useEffect(() => {
-    setImageZoom({ isZoomed: false, position: { x: 50, y: 50 } });
-  }, [mainImage]);
 
   // Wishlist Handler
   const handleWishlistToggle = () => {
@@ -187,7 +124,7 @@ const CollectionDetails = () => {
       id: collection.id,
       productId: collection.id,
       title: collection.title,
-      image: mainImage,
+      image: selectedColorVariant?.images?.[0] || collection.images?.[0],
       discountPrice: collection.discountPrice,
       originalPrice: collection.originalPrice,
       discount: calculateDiscountPercentage(),
@@ -226,7 +163,7 @@ const CollectionDetails = () => {
       id: collection.id,
       name: collection.title,
       price: collection.discountPrice,
-      image: mainImage,
+      image: selectedColorVariant?.images?.[0] || collection.images?.[0],
       color: selectedColor,
       quantity: quantity,
     };
@@ -256,7 +193,7 @@ const CollectionDetails = () => {
 
     navigate("/checkout", {
       state: {
-        image: mainImage,
+        image: selectedColorVariant?.images?.[0] || collection.images?.[0],
         title: collection.title,
         quantity,
         color: selectedColor,
@@ -374,102 +311,13 @@ const CollectionDetails = () => {
           className="bg-white rounded-3xl shadow-2xl overflow-hidden grid md:grid-cols-2 gap-12 p-8"
         >
           {/* IMAGE GALLERY SECTION */}
-          <div className="relative">
-            <AnimatePresence mode="wait">
-              <motion.div
-                className="relative overflow-hidden rounded-2xl"
-                key={mainImage}
-              >
-                <motion.img
-                  src={mainImage}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.4, ease: "easeInOut" }}
-                  onDoubleClick={handleImageZoom}
-                  onMouseMove={handleMouseMove}
-                  className={`w-full h-[600px] object-cover transition-all duration-500 ease-in-out select-none
-                    ${
-                      imageZoom.isZoomed
-                        ? "cursor-zoom-out scale-150"
-                        : "cursor-zoom-in"
-                    }`}
-                  style={
-                    imageZoom.isZoomed
-                      ? {
-                          transformOrigin: `${imageZoom.position.x}% ${imageZoom.position.y}%`,
-                        }
-                      : {}
-                  }
-                  draggable={false}
-                />
-
-                {/* Color indicator overlay */}
-                {selectedColor && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="absolute bottom-4 left-4 bg-black bg-opacity-80 text-white px-4 py-2 rounded-full text-sm font-medium"
-                  >
-                    {selectedColor}
-                  </motion.div>
-                )}
-
-                {/* Zoom indicator */}
-                {imageZoom.isZoomed && (
-                  <div className="absolute top-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm">
-                    Double-click to zoom out
-                  </div>
-                )}
-              </motion.div>
-            </AnimatePresence>
-
-            {/* THUMBNAIL GALLERY */}
-            <div className="flex space-x-4 mt-6 overflow-x-auto pb-2">
-              {currentImages.slice(0, 6).map((img, index) => (
-                <motion.img
-                  key={`${selectedColor}-${index}`}
-                  src={img}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setMainImage(img)}
-                  className={`flex-shrink-0 w-20 h-20 object-cover rounded-lg cursor-pointer transition-all border-2
-                    ${
-                      mainImage === img
-                        ? "ring-2 ring-black ring-offset-2 border-black opacity-100"
-                        : "border-gray-200 opacity-70 hover:opacity-90 hover:border-gray-400"
-                    }`}
-                />
-              ))}
-            </div>
-
-            {/* Wishlist and Share Buttons */}
-            <div className="absolute top-4 right-4 flex space-x-3">
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={handleWishlistToggle}
-                className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                  isInWishlist(collection.id)
-                    ? "bg-red-500 text-white"
-                    : "bg-white text-gray-700"
-                } shadow-md`}
-              >
-                <FaHeart
-                  className={
-                    isInWishlist(collection.id) ? "text-white" : "text-gray-400"
-                  }
-                />
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="w-10 h-10 rounded-full bg-white text-gray-700 shadow-md flex items-center justify-center"
-              >
-                <FaShare className="text-gray-400" />
-              </motion.button>
-            </div>
-          </div>
+          <ProductImageGallery
+            collection={collection}
+            selectedColorVariant={selectedColorVariant}
+            selectedColor={selectedColor}
+            isInWishlist={isInWishlist(collection.id)}
+            onWishlistToggle={handleWishlistToggle}
+          />
 
           {/* PRODUCT DETAILS SECTION */}
           <div className="space-y-6">
