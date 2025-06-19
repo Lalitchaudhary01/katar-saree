@@ -43,6 +43,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { CartProvider } from "./context/CartContext";
 import { WishlistProvider } from "./context/WishlistContext";
 import { CurrencyProvider } from "./context/currencyContext";
+import { AuthProvider } from "./context/authContext";
 import Layout from "./context/Layout";
 import UserProfile from "./headers/UserProfile";
 import KoraKadhwaStrips from "./pages/KoraKadhwaStrips";
@@ -137,7 +138,6 @@ function AppContent() {
           />
 
           {/* Main Routes */}
-
           <Route
             path="/blog"
             element={
@@ -157,7 +157,6 @@ function AppContent() {
           />
 
           {/* Saree Routes */}
-
           <Route
             path="/featured/silk"
             element={
@@ -254,7 +253,6 @@ function AppContent() {
           />
 
           {/* User Routes */}
-
           <Route
             path="/login"
             element={
@@ -313,19 +311,21 @@ function AppContent() {
 
 function App() {
   return (
-    <Provider store={store}>
-      <Layout>
-        <CartProvider>
-          <WishlistProvider>
-            <CurrencyProvider>
-              <Router>
-                <AppContent />
-              </Router>
-            </CurrencyProvider>
-          </WishlistProvider>
-        </CartProvider>
-      </Layout>
-    </Provider>
+    <Router>
+      <Provider store={store}>
+        <AuthProvider>
+          <CartProvider>
+            <WishlistProvider>
+              <CurrencyProvider>
+                <Layout>
+                  <AppContent />
+                </Layout>
+              </CurrencyProvider>
+            </WishlistProvider>
+          </CartProvider>
+        </AuthProvider>
+      </Provider>
+    </Router>
   );
 }
 

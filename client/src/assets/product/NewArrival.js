@@ -13,7 +13,7 @@ const newArrivals = [
     ],
     desc: "A majestic Katan Kora Booti Banarasi silk saree in a striking black shade, featuring traditional Kadhwa technique and rich Sona Rupa (gold & silver) zari. It takes 3–4 weeks to handcraft each luxurious piece.",
     originalPrice: 24999,
-    discountPrice: 22999,
+    discountPrice: 1,
     discount: "8% OFF + Extra 10% on First Purchase",
     sizes: ["S", "M", "L", "XL"],
     colors: ["Black"],

@@ -1,11 +1,14 @@
-import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 import { useCurrency } from "../context/currencyContext";
+import { useAuth } from "../context/authContext";
 
 const Checkout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { selectedCurrency, convertPrice, formatPrice } = useCurrency();
+  const { token, isAuthenticated } = useAuth();
   const {
     cart = [],
     totalAmount,
@@ -27,7 +30,12 @@ const Checkout = () => {
     paymentMethod: "razorpay",
   });
 
-  const [step, setStep] = useState(1); // 1 for checkout, 2 for address, 3 for payment confirmation
+  const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const API_BASE_URL =
+    import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -40,175 +48,226 @@ const Checkout = () => {
   const handleSubmitAddress = (e) => {
     e.preventDefault();
     setStep(3);
+    setError(null);
   };
 
-  // Function to convert price based on the item's original currency and the currently selected currency
   const getItemPrice = (item) => {
-    // If the item has a stored price, use that, otherwise use the provided amount
     const itemPrice = item.price || amount;
-
-    // If the item already has the current currency, no conversion needed
-    if (item.currency === selectedCurrency.code) {
-      return formatPrice(itemPrice);
-    }
-
-    // Convert price from item's currency (assumed INR if not specified) to selected currency
-    return formatPrice(convertPrice(itemPrice));
+    return formatPrice(
+      item.currency === selectedCurrency.code
+        ? itemPrice
+        : convertPrice(itemPrice)
+    );
   };
 
-  // Function to get the correct currency symbol for an item
-  const getItemCurrencySymbol = () => {
-    // Always use the currently selected currency symbol
-    return selectedCurrency.symbol;
-  };
+  const getItemCurrencySymbol = () => selectedCurrency.symbol;
 
-  // Calculate the total in the selected currency
   const calculateTotal = () => {
-    if (cart && cart.length > 0) {
-      // If we have a cart with multiple items
+    if (cart?.length > 0) {
       return formatPrice(
         cart.reduce((total, item) => {
           const itemPrice = item.price || 0;
-          // Convert each item's price if needed
-          const convertedPrice = convertPrice(itemPrice);
+          const convertedPrice =
+            item.currency === selectedCurrency.code
+              ? itemPrice
+              : convertPrice(itemPrice);
           return total + convertedPrice * (item.quantity || 1);
         }, 0)
       );
-    } else {
-      // Single item case
-      return formatPrice(convertPrice(amount));
     }
+    return formatPrice(convertPrice(amount));
   };
 
-  const handlePayment = () => {
-    // Calculate final amount (in paise for RazorPay)
-    // For Razorpay, we need to convert everything to INR
-    let finalAmountInINR;
+  const handlePayment = async () => {
+    setLoading(true);
+    setError(null);
 
-    if (cart && cart.length > 0) {
-      // Calculate the sum of all items in INR
-      finalAmountInINR = cart.reduce((total, item) => {
-        // First get the price in the selected currency
-        const itemPriceInSelectedCurrency = item.price || 0;
-        // If selected currency is INR, no conversion needed
-        if (selectedCurrency.code === "INR") {
-          return total + itemPriceInSelectedCurrency * (item.quantity || 1);
-        }
-        // If selected currency is not INR, convert back to INR for Razorpay
-        // We need to divide by the conversion rate to go back to INR
-        const conversionRateToINR = 1 / convertPrice(1, "INR");
-        return (
-          total +
-          itemPriceInSelectedCurrency *
-            conversionRateToINR *
-            (item.quantity || 1)
-        );
-      }, 0);
-    } else {
-      // Single item case
-      if (selectedCurrency.code === "INR") {
-        finalAmountInINR = amount;
-      } else {
-        // Convert back to INR for Razorpay
-        const conversionRateToINR = 1 / convertPrice(1, "INR");
-        finalAmountInINR = amount * conversionRateToINR;
+    try {
+      // 1. Validate form data
+      const requiredFields = ["name", "email", "phone", "address"];
+      const missingFields = requiredFields.filter((field) => !formData[field]);
+      if (missingFields.length > 0) {
+        throw new Error(`Missing required fields: ${missingFields.join(", ")}`);
       }
-    }
 
-    // Convert to paise for Razorpay (smallest currency unit)
-    const finalAmount = (finalAmountInINR * 100).toFixed(0);
+      // 2. Calculate amount with complete validation
+      const calculateTotalAmount = () => {
+        try {
+          // Handle cart items
+          if (cart?.length > 0) {
+            return cart.reduce((total, item) => {
+              const price = parseFloat(item?.price) || 0;
+              const quantity = parseInt(item?.quantity) || 1;
 
-    const options = {
-      key: "YOUR_RAZORPAY_KEY_ID", // Replace with your actual Razorpay key
-      amount: finalAmount,
-      currency: "INR", // Razorpay might require INR
-      name: "Your Store Name",
-      description: "Payment for your order",
-      handler: function (response) {
-        // Handle successful payment
-        alert(
-          "Payment Successful! Payment ID: " + response.razorpay_payment_id
+              if (isNaN(price) || isNaN(quantity)) {
+                console.error("Invalid price or quantity:", {
+                  price,
+                  quantity,
+                });
+                return total;
+              }
+
+              return total + price * quantity;
+            }, 0);
+          }
+
+          // Handle single product
+          const singleAmount = parseFloat(amount || totalAmount || 0);
+          return isNaN(singleAmount) ? 0 : singleAmount;
+        } catch (err) {
+          console.error("Amount calculation error:", err);
+          return 0;
+        }
+      };
+
+      // 3. Get base amount
+      let baseAmount = calculateTotalAmount();
+      console.log("Base amount:", baseAmount); // Debug log
+
+      // 4. Convert currency if needed
+      if (selectedCurrency?.code !== "INR") {
+        baseAmount = convertPrice(baseAmount, "INR") || 0;
+        console.log("Converted amount:", baseAmount); // Debug log
+      }
+
+      // 5. Final validation
+      const finalAmount = parseFloat(baseAmount.toFixed(2));
+      if (isNaN(finalAmount) || finalAmount <= 0) {
+        throw new Error(
+          `Invalid order amount (${finalAmount}). Please check your cart items.`
         );
-        navigate("/order-confirmation", {
-          state: {
-            orderId: response.razorpay_payment_id,
-            items:
-              cart.length > 0
-                ? cart
-                : [{ image, title, quantity, color, amount }],
-            amount: calculateTotal(),
-            currency: selectedCurrency,
-            address: formData,
-          },
-        });
-      },
-      prefill: {
-        name: formData.name,
-        email: formData.email,
-        contact: formData.phone,
-      },
-      theme: {
-        color: "#000000", // Black color theme for Razorpay
-      },
-    };
+      }
 
-    const razorpayInstance = new window.Razorpay(options);
-    razorpayInstance.open();
+      // 6. Create Razorpay order
+      const { data } = await axios.post(
+        `${API_BASE_URL}/orders/create-razorpay-order`,
+        {
+          amount: finalAmount,
+          currency: "INR",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      // 7. Proceed with Razorpay payment
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        amount: data.order.amount,
+        currency: data.order.currency,
+        order_id: data.order.id,
+        name: "Your Store Name",
+        description: "Order Payment",
+        handler: async (response) => {
+          // Payment verification logic
+        },
+        prefill: {
+          name: formData.name,
+          email: formData.email,
+          contact: formData.phone,
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (err) {
+      console.error("Full payment error:", {
+        error: err,
+        formData,
+        cart,
+        amount,
+        totalAmount,
+        selectedCurrency,
+      });
+
+      setError(
+        err.response?.data?.message ||
+          err.message ||
+          "Payment processing failed"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Get total amount in current currency for display
   const displayTotal = totalAmount
     ? formatPrice(convertPrice(totalAmount))
     : amount
     ? formatPrice(convertPrice(amount))
     : "0";
 
+  // Add login prompt if not authenticated
+  if (step === 3 && !isAuthenticated) {
+    return (
+      <div className="bg-gray-50 min-h-screen py-8">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div className="px-6 py-4 bg-black text-white">
+              <h2 className="text-xl font-semibold">Authentication Required</h2>
+            </div>
+            <div className="p-6 text-center">
+              <p className="mb-4">
+                You need to login to complete your purchase
+              </p>
+              <button
+                onClick={() =>
+                  navigate("/login", { state: { from: location } })
+                }
+                className="bg-black text-white px-6 py-2 rounded-md hover:bg-gray-800 transition"
+              >
+                Login
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-gray-50 min-h-screen py-8">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto px-4">
+        {/* Error Message */}
+        {error && (
+          <div className="mb-4 p-4 bg-red-100 text-red-700 rounded-lg">
+            {error}
+          </div>
+        )}
+
         {/* Checkout Progress Bar */}
-        <div className="mb-8 px-4">
+        <div className="mb-8">
           <div className="flex justify-between items-center">
-            <div className="flex flex-col items-center">
+            {[1, 2, 3].map((stepNumber) => (
               <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                  step >= 1 ? "bg-black text-white" : "bg-gray-200"
-                }`}
+                key={stepNumber}
+                className="flex flex-col items-center flex-1"
               >
-                1
+                <div
+                  className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                    step >= stepNumber ? "bg-black text-white" : "bg-gray-200"
+                  }`}
+                >
+                  {stepNumber}
+                </div>
+                <span className="text-sm mt-1 font-medium">
+                  {stepNumber === 1
+                    ? "Cart"
+                    : stepNumber === 2
+                    ? "Address"
+                    : "Payment"}
+                </span>
+                {stepNumber < 3 && (
+                  <div
+                    className={`h-1 flex-1 mx-2 ${
+                      step > stepNumber ? "bg-black" : "bg-gray-200"
+                    }`}
+                  ></div>
+                )}
               </div>
-              <span className="text-sm mt-1 font-medium">Cart</span>
-            </div>
-            <div
-              className={`h-1 flex-1 mx-2 ${
-                step >= 2 ? "bg-black" : "bg-gray-200"
-              }`}
-            ></div>
-            <div className="flex flex-col items-center">
-              <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                  step >= 2 ? "bg-black text-white" : "bg-gray-200"
-                }`}
-              >
-                2
-              </div>
-              <span className="text-sm mt-1 font-medium">Address</span>
-            </div>
-            <div
-              className={`h-1 flex-1 mx-2 ${
-                step >= 3 ? "bg-black" : "bg-gray-200"
-              }`}
-            ></div>
-            <div className="flex flex-col items-center">
-              <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                  step >= 3 ? "bg-black text-white" : "bg-gray-200"
-                }`}
-              >
-                3
-              </div>
-              <span className="text-sm mt-1 font-medium">Payment</span>
-            </div>
+            ))}
           </div>
         </div>
 
@@ -226,7 +285,6 @@ const Checkout = () => {
           <div className="p-6">
             {step === 1 && (
               <>
-                {/* Show cart items or single product */}
                 {cart.length > 0 ? (
                   <div className="space-y-4 mb-6">
                     {cart.map((item, index) => (
@@ -294,7 +352,6 @@ const Checkout = () => {
                   </div>
                 ) : null}
 
-                {/* Total Amount & Continue to Address Button */}
                 <div className="mt-6 pt-4 border-t border-gray-100">
                   <div className="flex justify-between items-center text-lg font-semibold mb-4">
                     <span>Subtotal:</span>
@@ -325,248 +382,253 @@ const Checkout = () => {
             )}
 
             {step === 2 && (
-              <>
-                <form onSubmit={handleSubmitAddress} className="space-y-5">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Full Name
-                      </label>
-                      <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-black transition"
-                        placeholder="John Doe"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Email
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-black transition"
-                        placeholder="your@email.com"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Phone Number
-                      </label>
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-black transition"
-                        placeholder="98765 43210"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Pincode
-                      </label>
-                      <input
-                        type="text"
-                        name="pincode"
-                        value={formData.pincode}
-                        onChange={handleInputChange}
-                        className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-black transition"
-                        placeholder="400001"
-                        required
-                      />
-                    </div>
+              <form onSubmit={handleSubmitAddress} className="space-y-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Full Name *
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-black transition"
+                      placeholder="John Doe"
+                      required
+                    />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Complete Address
+                      Email *
                     </label>
-                    <textarea
-                      name="address"
-                      value={formData.address}
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
                       onChange={handleInputChange}
                       className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-black transition"
-                      rows="3"
-                      placeholder="Flat no., Building name, Street, Locality"
+                      placeholder="your@email.com"
                       required
-                    ></textarea>
+                    />
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        City
-                      </label>
-                      <input
-                        type="text"
-                        name="city"
-                        value={formData.city}
-                        onChange={handleInputChange}
-                        className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-black transition"
-                        placeholder="Mumbai"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        State
-                      </label>
-                      <input
-                        type="text"
-                        name="state"
-                        value={formData.state}
-                        onChange={handleInputChange}
-                        className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-black transition"
-                        placeholder="Maharashtra"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="pt-2 mt-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Payment Method
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Phone Number *
                     </label>
-                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                      <label className="flex items-center cursor-pointer">
-                        <input
-                          type="radio"
-                          name="paymentMethod"
-                          value="razorpay"
-                          checked={formData.paymentMethod === "razorpay"}
-                          onChange={handleInputChange}
-                          className="w-5 h-5 text-black"
-                        />
-                        <div className="ml-3">
-                          <span className="font-medium text-gray-800">
-                            RazorPay
-                          </span>
-                          <p className="text-sm text-gray-500 mt-1">
-                            Pay securely with credit/debit card, UPI or net
-                            banking
-                          </p>
-                        </div>
-                      </label>
-                    </div>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-black transition"
+                      placeholder="98765 43210"
+                      required
+                    />
                   </div>
 
-                  <div className="mt-8 space-y-3">
-                    <button
-                      type="submit"
-                      className="w-full bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition duration-300 font-medium"
-                    >
-                      Continue to Payment
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setStep(1)}
-                      className="w-full bg-white text-gray-800 px-6 py-3 rounded-md border border-gray-300 hover:bg-gray-50 transition duration-300"
-                    >
-                      Back to Cart
-                    </button>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Pincode *
+                    </label>
+                    <input
+                      type="text"
+                      name="pincode"
+                      value={formData.pincode}
+                      onChange={handleInputChange}
+                      className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-black transition"
+                      placeholder="400001"
+                      required
+                    />
                   </div>
-                </form>
-              </>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Complete Address *
+                  </label>
+                  <textarea
+                    name="address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-black transition"
+                    rows="3"
+                    placeholder="Flat no., Building name, Street, Locality"
+                    required
+                  ></textarea>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      City *
+                    </label>
+                    <input
+                      type="text"
+                      name="city"
+                      value={formData.city}
+                      onChange={handleInputChange}
+                      className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-black transition"
+                      placeholder="Mumbai"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      State *
+                    </label>
+                    <input
+                      type="text"
+                      name="state"
+                      value={formData.state}
+                      onChange={handleInputChange}
+                      className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-black transition"
+                      placeholder="Maharashtra"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="pt-2 mt-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Payment Method
+                  </label>
+                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <label className="flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name="paymentMethod"
+                        value="razorpay"
+                        checked={formData.paymentMethod === "razorpay"}
+                        onChange={handleInputChange}
+                        className="w-5 h-5 text-black"
+                      />
+                      <div className="ml-3">
+                        <span className="font-medium text-gray-800">
+                          RazorPay
+                        </span>
+                        <p className="text-sm text-gray-500 mt-1">
+                          Pay securely with credit/debit card, UPI or net
+                          banking
+                        </p>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <div className="mt-8 space-y-3">
+                  <button
+                    type="submit"
+                    className="w-full bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition duration-300 font-medium"
+                  >
+                    Continue to Payment
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setStep(1)}
+                    className="w-full bg-white text-gray-800 px-6 py-3 rounded-md border border-gray-300 hover:bg-gray-50 transition duration-300"
+                  >
+                    Back to Cart
+                  </button>
+                </div>
+              </form>
             )}
 
             {step === 3 && (
-              <>
-                <div className="space-y-6">
-                  <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                    <h3 className="font-medium text-gray-800 mb-3">
-                      Shipping Address
-                    </h3>
-                    <div className="text-gray-600">
-                      <p className="font-medium">{formData.name}</p>
-                      <p>{formData.address}</p>
-                      <p>
-                        {formData.city}, {formData.state} - {formData.pincode}
-                      </p>
-                      <p className="mt-1">Phone: {formData.phone}</p>
-                      <p>Email: {formData.email}</p>
-                    </div>
-                  </div>
-
-                  <div className="rounded-lg border border-gray-200">
-                    <div className="p-4 border-b border-gray-200">
-                      <h3 className="font-medium text-gray-800">
-                        Order Summary
-                      </h3>
-                    </div>
-                    <div className="p-4">
-                      {/* Item list summary */}
-                      <div className="space-y-2 mb-4">
-                        {cart.length > 0 ? (
-                          cart.map((item, index) => (
-                            <div
-                              key={index}
-                              className="flex justify-between text-sm"
-                            >
-                              <span className="text-gray-600">
-                                {item.title} × {item.quantity || 1}
-                              </span>
-                              <span className="font-medium">{item.price}</span>
-                            </div>
-                          ))
-                        ) : (
-                          <div className="flex justify-between text-sm">
-                            <span className="text-gray-600">
-                              {title} × {quantity || 1}
-                            </span>
-                            <span className="font-medium">{amount}</span>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Price breakdown */}
-                      <div className="pt-3 space-y-2 border-t border-gray-100">
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">Subtotal</span>
-                          <span>{totalAmount || amount}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">Shipping</span>
-                          <span className="text-green-600">Free</span>
-                        </div>
-                        <div className="flex justify-between pt-2 text-lg font-bold border-t border-gray-100 mt-2">
-                          <span>Total</span>
-                          <span className="text-black">
-                            {totalAmount || amount}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-6 space-y-3">
-                    <button
-                      onClick={handlePayment}
-                      className="w-full bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition duration-300 font-medium flex items-center justify-center"
-                    >
-                      <span>Pay {totalAmount || amount}</span>
-                    </button>
-                    <button
-                      onClick={() => setStep(2)}
-                      className="w-full bg-white text-gray-800 px-6 py-3 rounded-md border border-gray-300 hover:bg-gray-50 transition duration-300"
-                    >
-                      Edit Details
-                    </button>
+              <div className="space-y-6">
+                <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                  <h3 className="font-medium text-gray-800 mb-3">
+                    Shipping Address
+                  </h3>
+                  <div className="text-gray-600">
+                    <p className="font-medium">{formData.name}</p>
+                    <p>{formData.address}</p>
+                    <p>
+                      {formData.city}, {formData.state} - {formData.pincode}
+                    </p>
+                    <p className="mt-1">Phone: {formData.phone}</p>
+                    <p>Email: {formData.email}</p>
                   </div>
                 </div>
-              </>
+
+                <div className="rounded-lg border border-gray-200">
+                  <div className="p-4 border-b border-gray-200">
+                    <h3 className="font-medium text-gray-800">Order Summary</h3>
+                  </div>
+                  <div className="p-4">
+                    <div className="space-y-2 mb-4">
+                      {cart.length > 0 ? (
+                        cart.map((item, index) => (
+                          <div
+                            key={index}
+                            className="flex justify-between text-sm"
+                          >
+                            <span className="text-gray-600">
+                              {item.title} × {item.quantity || 1}
+                            </span>
+                            <span className="font-medium">
+                              {getItemCurrencySymbol()}
+                              {getItemPrice(item)}
+                            </span>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">
+                            {title} × {quantity || 1}
+                          </span>
+                          <span className="font-medium">
+                            {getItemCurrencySymbol()}
+                            {formatPrice(convertPrice(amount))}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="pt-3 space-y-2 border-t border-gray-100">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Subtotal</span>
+                        <span>
+                          {getItemCurrencySymbol()}
+                          {displayTotal}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Shipping</span>
+                        <span className="text-green-600">Free</span>
+                      </div>
+                      <div className="flex justify-between pt-2 text-lg font-bold border-t border-gray-100 mt-2">
+                        <span>Total</span>
+                        <span className="text-black">
+                          {getItemCurrencySymbol()}
+                          {displayTotal}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 space-y-3">
+                  <button
+                    onClick={handlePayment}
+                    disabled={loading}
+                    className={`w-full bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition duration-300 font-medium flex items-center justify-center ${
+                      loading ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                  >
+                    {loading ? "Processing..." : `Pay ${displayTotal}`}
+                  </button>
+                  <button
+                    onClick={() => setStep(2)}
+                    className="w-full bg-white text-gray-800 px-6 py-3 rounded-md border border-gray-300 hover:bg-gray-50 transition duration-300"
+                  >
+                    Edit Details
+                  </button>
+                </div>
+              </div>
             )}
           </div>
         </div>
@@ -575,18 +637,26 @@ const Checkout = () => {
         <div className="mt-8 text-center">
           <p className="text-gray-500 mb-3 text-sm">We accept</p>
           <div className="flex justify-center space-x-4">
-            <div className="bg-white p-2 rounded-md shadow-sm">
-              <div className="w-12 h-6 bg-gray-200 rounded"></div>
-            </div>
-            <div className="bg-white p-2 rounded-md shadow-sm">
-              <div className="w-12 h-6 bg-gray-200 rounded"></div>
-            </div>
-            <div className="bg-white p-2 rounded-md shadow-sm">
-              <div className="w-12 h-6 bg-gray-200 rounded"></div>
-            </div>
-            <div className="bg-white p-2 rounded-md shadow-sm">
-              <div className="w-12 h-6 bg-gray-200 rounded"></div>
-            </div>
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png"
+              alt="Visa"
+              className="h-8 object-contain"
+            />
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Mastercard_2019_logo.svg/1200px-Mastercard_2019_logo.svg.png"
+              alt="Mastercard"
+              className="h-8 object-contain"
+            />
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/RuPay.svg/1200px-RuPay.svg.png"
+              alt="RuPay"
+              className="h-8 object-contain"
+            />
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/UPI-Logo-vector.svg/1200px-UPI-Logo-vector.svg.png"
+              alt="UPI"
+              className="h-8 object-contain"
+            />
           </div>
           <p className="mt-4 text-xs text-gray-500">
             Secure payment processing | 100% Purchase Protection

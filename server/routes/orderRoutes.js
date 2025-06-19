@@ -1,16 +1,30 @@
 const express = require("express");
+const router = express.Router();
+const { protect, admin } = require("../middleware/authMiddleware");
 const {
-  placeOrder,
+  createRazorpayOrder,
+  verifyAndPlaceOrder,
   getAllOrders,
   getOrderById,
   updateOrderStatus,
+  deleteOrder,
 } = require("../controllers/orderController");
 
-const router = express.Router();
+// Payment routes
+router.post("/create-razorpay-order", protect, createRazorpayOrder);
+router.post("/verify-payment", protect, verifyAndPlaceOrder);
 
-router.post("/place-order", placeOrder); // ✅ Order place karna
-router.get("/admin/orders", getAllOrders); // ✅ Admin all orders dekhe
-router.get("/:id", getOrderById); // ✅ Ek order ki details
-router.put("/:id/status", updateOrderStatus); // ✅ Order status update
+// Order management routes
+router.get("/", protect, admin, getAllOrders);
+router.get("/my-orders", protect, (req, res) => {
+  // Redirect to user-specific orders
+  res.redirect(`/api/orders/user/${req.user._id}`);
+});
+router.get("/user/:userId", protect, async (req, res) => {
+  // Implementation for getting user's orders
+});
+router.get("/:id", protect, getOrderById);
+router.put("/:id/status", protect, admin, updateOrderStatus);
+router.delete("/:id", protect, admin, deleteOrder);
 
 module.exports = router;
