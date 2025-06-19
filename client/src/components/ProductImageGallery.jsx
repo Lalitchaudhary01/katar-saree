@@ -81,7 +81,8 @@ const ProductImageGallery = ({
     <div className="relative">
       <AnimatePresence mode="wait">
         <motion.div
-          className="relative overflow-hidden rounded-2xl"
+          className="relative overflow-hidden rounded-2xl bg-gray-50"
+          style={{ height: "600px" }}
           key={mainImage}
         >
           <motion.img
@@ -92,18 +93,21 @@ const ProductImageGallery = ({
             transition={{ duration: 0.4, ease: "easeInOut" }}
             onDoubleClick={handleImageZoom}
             onMouseMove={handleMouseMove}
-            className={`w-full h-[600px] object-cover transition-all duration-500 ease-in-out select-none
+            className={`w-full h-full transition-all duration-500 ease-in-out select-none
               ${
                 imageZoom.isZoomed
-                  ? "cursor-zoom-out scale-150"
-                  : "cursor-zoom-in"
+                  ? "cursor-zoom-out scale-150 object-cover"
+                  : "cursor-zoom-in object-cover"
               }`}
             style={
               imageZoom.isZoomed
                 ? {
                     transformOrigin: `${imageZoom.position.x}% ${imageZoom.position.y}%`,
+                    objectPosition: "center",
                   }
-                : {}
+                : {
+                    objectPosition: "center top",
+                  }
             }
             draggable={false}
           />
@@ -113,7 +117,7 @@ const ProductImageGallery = ({
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="absolute bottom-4 left-4 bg-black bg-opacity-80 text-white px-4 py-2 rounded-full text-sm font-medium"
+              className="absolute bottom-4 left-4 bg-black bg-opacity-80 text-white px-4 py-2 rounded-full text-sm font-medium z-10"
             >
               {selectedColor}
             </motion.div>
@@ -121,7 +125,7 @@ const ProductImageGallery = ({
 
           {/* Zoom indicator */}
           {imageZoom.isZoomed && (
-            <div className="absolute top-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm">
+            <div className="absolute top-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm z-10">
               Double-click to zoom out
             </div>
           )}
@@ -148,7 +152,7 @@ const ProductImageGallery = ({
       </div>
 
       {/* Wishlist and Share Buttons */}
-      <div className="absolute top-4 right-4 flex space-x-3">
+      <div className="absolute top-4 right-4 flex space-x-3 z-20">
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
