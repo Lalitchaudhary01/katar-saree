@@ -276,7 +276,7 @@ const CollectionDetails = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-16 font-[Garamond]">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 md:py-16 font-[Garamond]">
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -286,7 +286,7 @@ const CollectionDetails = () => {
         {/* Breadcrumb Navigation */}
         <motion.div
           variants={itemVariants}
-          className="text-sm text-gray-600 mb-8 flex items-center"
+          className="text-sm text-gray-600 mb-6 md:mb-8 flex items-center"
         >
           <span
             className="cursor-pointer hover:text-black transition"
@@ -302,229 +302,464 @@ const CollectionDetails = () => {
             Collections
           </span>
           <FaChevronRight className="mx-2 text-xs" />
-          <span className="font-semibold">{collection.title}</span>
+          <span className="font-semibold truncate">{collection.title}</span>
         </motion.div>
 
-        {/* Main Product Container */}
+        {/* Main Product Container - FIXED FOR MOBILE */}
         <motion.div
           variants={itemVariants}
-          className="bg-white rounded-3xl shadow-2xl overflow-hidden grid md:grid-cols-2 gap-12 p-8"
+          className="bg-white rounded-2xl md:rounded-3xl shadow-xl md:shadow-2xl overflow-hidden"
         >
-          {/* IMAGE GALLERY SECTION */}
-          <ProductImageGallery
-            collection={collection}
-            selectedColorVariant={selectedColorVariant}
-            selectedColor={selectedColor}
-            isInWishlist={isInWishlist(collection.id)}
-            onWishlistToggle={handleWishlistToggle}
-          />
+          {/* Mobile Layout */}
+          <div className="block md:hidden">
+            {/* Mobile Image Section */}
+            <div className="p-4 border-b border-gray-200">
+              <ProductImageGallery
+                collection={collection}
+                selectedColorVariant={selectedColorVariant}
+                selectedColor={selectedColor}
+                isInWishlist={isInWishlist(collection.id)}
+                onWishlistToggle={handleWishlistToggle}
+              />
+            </div>
 
-          {/* PRODUCT DETAILS SECTION */}
-          <div className="space-y-6">
-            {/* Product Title */}
-            <motion.h1
-              variants={itemVariants}
-              className="text-4xl font-light text-gray-900 tracking-wide"
-            >
-              {collection.title}
-            </motion.h1>
+            {/* Mobile Product Details Section */}
+            <div className="p-4 space-y-4">
+              {/* Product Title */}
+              <motion.h1
+                variants={itemVariants}
+                className="text-2xl font-light text-gray-900 tracking-wide"
+              >
+                {collection.title}
+              </motion.h1>
 
-            {/* Rating Section */}
-            <motion.div
-              variants={itemVariants}
-              className="flex items-center space-x-4"
-            >
-              <div className="flex text-amber-500">
-                {[...Array(5)].map((_, i) => (
-                  <FaStar
-                    key={i}
-                    className={i < 4 ? "text-amber-500" : "text-gray-300"}
-                  />
-                ))}
-              </div>
-              <span className="text-gray-600">(126 reviews)</span>
-            </motion.div>
-
-            {/* Product Description */}
-            <motion.p
-              variants={itemVariants}
-              className="text-gray-700 leading-relaxed"
-            >
-              {collection.desc}
-            </motion.p>
-
-            {/* Price Section */}
-            <motion.div
-              variants={itemVariants}
-              className="flex items-baseline space-x-4"
-            >
-              <span className="text-3xl font-light text-black">
-                {selectedCurrency.symbol}
-                {formatPrice(convertPrice(collection.discountPrice))}
-              </span>
-              {collection.originalPrice > collection.discountPrice && (
-                <>
-                  <span className="text-xl text-gray-500 line-through">
-                    {selectedCurrency.symbol}
-                    {formatPrice(convertPrice(collection.originalPrice))}
-                  </span>
-                  <span className="text-green-600 font-medium">
-                    {calculateDiscountPercentage()}% OFF
-                  </span>
-                </>
-              )}
-            </motion.div>
-
-            {/* COLOR SELECTION */}
-            <motion.div variants={itemVariants} className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="font-semibold text-gray-800 text-lg">
-                  Select Color
-                </span>
-                <span className="text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
-                  {selectedColor || "Choose a color"}
-                </span>
-              </div>
-
-              <div className="flex space-x-3 flex-wrap gap-2">
-                {getColorData().map((colorData, index) => (
-                  <motion.button
-                    key={`${colorData.color}-${index}`}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    onClick={() => handleColorSelection(colorData)}
-                    className={`relative w-14 h-14 rounded-full border-3 transition-all duration-300 group
-                      ${
-                        selectedColor === colorData.colorName
-                          ? "ring-3 ring-black ring-offset-3 border-white shadow-lg"
-                          : "border-gray-300 hover:border-gray-500 shadow-md hover:shadow-lg"
+              {/* Rating Section */}
+              <motion.div
+                variants={itemVariants}
+                className="flex items-center space-x-3"
+              >
+                <div className="flex text-amber-500">
+                  {[...Array(5)].map((_, i) => (
+                    <FaStar
+                      key={i}
+                      className={`text-sm ${
+                        i < 4 ? "text-amber-500" : "text-gray-300"
                       }`}
-                    style={{
-                      backgroundColor: colorData.color,
-                      boxShadow:
-                        selectedColor === colorData.colorName
-                          ? `0 0 0 2px white, 0 0 0 4px ${colorData.color}40`
-                          : "none",
-                    }}
-                  >
-                    {/* Selection checkmark */}
-                    {selectedColor === colorData.colorName && (
-                      <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className="absolute inset-0 rounded-full flex items-center justify-center"
-                      >
-                        <svg
-                          className="w-6 h-6 text-white drop-shadow-lg"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </motion.div>
-                    )}
+                    />
+                  ))}
+                </div>
+                <span className="text-gray-600 text-sm">(126 reviews)</span>
+              </motion.div>
 
-                    {/* Hover tooltip */}
-                    <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
-                      {colorData.colorName}
-                    </div>
-                  </motion.button>
-                ))}
-              </div>
-
-              {/* Selected color info */}
-              {selectedColorVariant && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  className="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg"
-                >
-                  <strong>{selectedColorVariant.colorName}</strong> variant
-                  selected
-                  {selectedColorVariant.colorCode && (
-                    <span className="ml-2 text-xs bg-gray-200 px-2 py-1 rounded">
-                      {selectedColorVariant.colorCode}
+              {/* Price Section */}
+              <motion.div
+                variants={itemVariants}
+                className="flex items-baseline space-x-3"
+              >
+                <span className="text-2xl font-light text-black">
+                  {selectedCurrency.symbol}
+                  {formatPrice(convertPrice(collection.discountPrice))}
+                </span>
+                {collection.originalPrice > collection.discountPrice && (
+                  <>
+                    <span className="text-lg text-gray-500 line-through">
+                      {selectedCurrency.symbol}
+                      {formatPrice(convertPrice(collection.originalPrice))}
                     </span>
-                  )}
-                </motion.div>
-              )}
-            </motion.div>
+                    <span className="text-green-600 font-medium text-sm">
+                      {calculateDiscountPercentage()}% OFF
+                    </span>
+                  </>
+                )}
+              </motion.div>
 
-            {/* Quantity Control */}
-            <motion.div
-              variants={itemVariants}
-              className="flex items-center space-x-6"
-            >
-              <span className="font-medium text-gray-800">Quantity</span>
-              <div className="flex items-center border rounded-full">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-l-full transition"
-                >
-                  -
-                </button>
-                <span className="px-6 py-2 font-medium">{quantity}</span>
-                <button
-                  onClick={() =>
-                    setQuantity(Math.min(collection.stock, quantity + 1))
-                  }
-                  className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-r-full transition"
-                >
-                  +
-                </button>
-              </div>
-              <span className="text-sm text-gray-500">
-                ({collection.stock} available)
-              </span>
-            </motion.div>
-
-            {/* Action Buttons */}
-            <motion.div variants={itemVariants} className="flex space-x-4">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={handleAddToCart}
-                className="flex-1 bg-[#4b1e1e] text-white py-4 rounded-full flex items-center justify-center space-x-2 font-medium hover:bg-[#3a1717] transition"
+              {/* Product Description */}
+              <motion.p
+                variants={itemVariants}
+                className="text-gray-700 leading-relaxed text-sm"
               >
-                <FaShoppingCart />
-                <span>Add to Cart</span>
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={handleBuyNow}
-                className="flex-1 bg-white border-2 border-black text-black py-4 rounded-full flex items-center justify-center space-x-2 font-medium hover:bg-gray-50 transition"
-              >
-                <span>Buy Now</span>
-              </motion.button>
-            </motion.div>
+                {collection.desc}
+              </motion.p>
 
-            {/* Additional Product Information */}
-            <motion.div
-              variants={itemVariants}
-              className="mt-6 space-y-3 bg-gray-50 p-6 rounded-xl"
-            >
-              <div className="flex items-center space-x-3">
-                <FaTruck className="text-blue-500 text-lg" />
-                <span className="text-gray-700">
-                  Free shipping on orders over ₹1000
+              {/* COLOR SELECTION */}
+              <motion.div variants={itemVariants} className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-gray-800">
+                    Select Color
+                  </span>
+                  <span className="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded-full">
+                    {selectedColor || "Choose a color"}
+                  </span>
+                </div>
+
+                <div className="flex space-x-2 flex-wrap gap-2">
+                  {getColorData().map((colorData, index) => (
+                    <motion.button
+                      key={`${colorData.color}-${index}`}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={() => handleColorSelection(colorData)}
+                      className={`relative w-10 h-10 rounded-full border-2 transition-all duration-300 group
+                        ${
+                          selectedColor === colorData.colorName
+                            ? "ring-2 ring-black ring-offset-2 border-white shadow-lg"
+                            : "border-gray-300 hover:border-gray-500 shadow-md hover:shadow-lg"
+                        }`}
+                      style={{
+                        backgroundColor: colorData.color,
+                        boxShadow:
+                          selectedColor === colorData.colorName
+                            ? `0 0 0 2px white, 0 0 0 4px ${colorData.color}40`
+                            : "none",
+                      }}
+                    >
+                      {/* Selection checkmark */}
+                      {selectedColor === colorData.colorName && (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          className="absolute inset-0 rounded-full flex items-center justify-center"
+                        >
+                          <svg
+                            className="w-4 h-4 text-white drop-shadow-lg"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </motion.div>
+                      )}
+
+                      {/* Hover tooltip */}
+                      <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                        {colorData.colorName}
+                      </div>
+                    </motion.button>
+                  ))}
+                </div>
+
+                {/* Selected color info */}
+                {selectedColorVariant && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    className="text-xs text-gray-600 bg-gray-50 p-2 rounded-lg"
+                  >
+                    <strong>{selectedColorVariant.colorName}</strong> variant
+                    selected
+                    {selectedColorVariant.colorCode && (
+                      <span className="ml-2 text-xs bg-gray-200 px-2 py-1 rounded">
+                        {selectedColorVariant.colorCode}
+                      </span>
+                    )}
+                  </motion.div>
+                )}
+              </motion.div>
+
+              {/* Quantity Control */}
+              <motion.div
+                variants={itemVariants}
+                className="flex items-center space-x-4"
+              >
+                <span className="font-medium text-gray-800 text-sm">
+                  Quantity
                 </span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <FaUndo className="text-blue-500 text-lg" />
-                <span className="text-gray-700">
-                  Easy 30 days return policy
+                <div className="flex items-center border rounded-full">
+                  <button
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="px-3 py-1 text-gray-600 hover:bg-gray-100 rounded-l-full transition text-sm"
+                  >
+                    -
+                  </button>
+                  <span className="px-4 py-1 font-medium text-sm">
+                    {quantity}
+                  </span>
+                  <button
+                    onClick={() =>
+                      setQuantity(Math.min(collection.stock, quantity + 1))
+                    }
+                    className="px-3 py-1 text-gray-600 hover:bg-gray-100 rounded-r-full transition text-sm"
+                  >
+                    +
+                  </button>
+                </div>
+                <span className="text-xs text-gray-500">
+                  ({collection.stock} available)
                 </span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <MdSecurity className="text-blue-500 text-lg" />
-                <span className="text-gray-700">Secure payment guaranteed</span>
-              </div>
-            </motion.div>
+              </motion.div>
+
+              {/* Action Buttons */}
+              <motion.div variants={itemVariants} className="flex space-x-3">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={handleAddToCart}
+                  className="flex-1 bg-[#4b1e1e] text-white py-3 rounded-full flex items-center justify-center space-x-2 font-medium hover:bg-[#3a1717] transition text-sm"
+                >
+                  <FaShoppingCart className="text-sm" />
+                  <span>Add to Cart</span>
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={handleBuyNow}
+                  className="flex-1 bg-white border-2 border-black text-black py-3 rounded-full flex items-center justify-center space-x-2 font-medium hover:bg-gray-50 transition text-sm"
+                >
+                  <span>Buy Now</span>
+                </motion.button>
+              </motion.div>
+
+              {/* Additional Product Information */}
+              <motion.div
+                variants={itemVariants}
+                className="mt-4 space-y-2 bg-gray-50 p-4 rounded-xl"
+              >
+                <div className="flex items-center space-x-2">
+                  <FaTruck className="text-blue-500 text-sm" />
+                  <span className="text-gray-700 text-xs">
+                    Free shipping on orders over ₹1000
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <FaUndo className="text-blue-500 text-sm" />
+                  <span className="text-gray-700 text-xs">
+                    Easy 30 days return policy
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <MdSecurity className="text-blue-500 text-sm" />
+                  <span className="text-gray-700 text-xs">
+                    Secure payment guaranteed
+                  </span>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Desktop Layout */}
+          <div className="hidden md:grid md:grid-cols-2 gap-12 p-8">
+            {/* IMAGE GALLERY SECTION */}
+            <ProductImageGallery
+              collection={collection}
+              selectedColorVariant={selectedColorVariant}
+              selectedColor={selectedColor}
+              isInWishlist={isInWishlist(collection.id)}
+              onWishlistToggle={handleWishlistToggle}
+            />
+
+            {/* PRODUCT DETAILS SECTION */}
+            <div className="space-y-6">
+              {/* Product Title */}
+              <motion.h1
+                variants={itemVariants}
+                className="text-4xl font-light text-gray-900 tracking-wide"
+              >
+                {collection.title}
+              </motion.h1>
+
+              {/* Rating Section */}
+              <motion.div
+                variants={itemVariants}
+                className="flex items-center space-x-4"
+              >
+                <div className="flex text-amber-500">
+                  {[...Array(5)].map((_, i) => (
+                    <FaStar
+                      key={i}
+                      className={i < 4 ? "text-amber-500" : "text-gray-300"}
+                    />
+                  ))}
+                </div>
+                <span className="text-gray-600">(126 reviews)</span>
+              </motion.div>
+
+              {/* Product Description */}
+              <motion.p
+                variants={itemVariants}
+                className="text-gray-700 leading-relaxed"
+              >
+                {collection.desc}
+              </motion.p>
+
+              {/* Price Section */}
+              <motion.div
+                variants={itemVariants}
+                className="flex items-baseline space-x-4"
+              >
+                <span className="text-3xl font-light text-black">
+                  {selectedCurrency.symbol}
+                  {formatPrice(convertPrice(collection.discountPrice))}
+                </span>
+                {collection.originalPrice > collection.discountPrice && (
+                  <>
+                    <span className="text-xl text-gray-500 line-through">
+                      {selectedCurrency.symbol}
+                      {formatPrice(convertPrice(collection.originalPrice))}
+                    </span>
+                    <span className="text-green-600 font-medium">
+                      {calculateDiscountPercentage()}% OFF
+                    </span>
+                  </>
+                )}
+              </motion.div>
+
+              {/* COLOR SELECTION */}
+              <motion.div variants={itemVariants} className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-gray-800 text-lg">
+                    Select Color
+                  </span>
+                  <span className="text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
+                    {selectedColor || "Choose a color"}
+                  </span>
+                </div>
+
+                <div className="flex space-x-3 flex-wrap gap-2">
+                  {getColorData().map((colorData, index) => (
+                    <motion.button
+                      key={`${colorData.color}-${index}`}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={() => handleColorSelection(colorData)}
+                      className={`relative w-14 h-14 rounded-full border-3 transition-all duration-300 group
+                        ${
+                          selectedColor === colorData.colorName
+                            ? "ring-3 ring-black ring-offset-3 border-white shadow-lg"
+                            : "border-gray-300 hover:border-gray-500 shadow-md hover:shadow-lg"
+                        }`}
+                      style={{
+                        backgroundColor: colorData.color,
+                        boxShadow:
+                          selectedColor === colorData.colorName
+                            ? `0 0 0 2px white, 0 0 0 4px ${colorData.color}40`
+                            : "none",
+                      }}
+                    >
+                      {/* Selection checkmark */}
+                      {selectedColor === colorData.colorName && (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          className="absolute inset-0 rounded-full flex items-center justify-center"
+                        >
+                          <svg
+                            className="w-6 h-6 text-white drop-shadow-lg"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </motion.div>
+                      )}
+
+                      {/* Hover tooltip */}
+                      <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                        {colorData.colorName}
+                      </div>
+                    </motion.button>
+                  ))}
+                </div>
+
+                {/* Selected color info */}
+                {selectedColorVariant && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    className="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg"
+                  >
+                    <strong>{selectedColorVariant.colorName}</strong> variant
+                    selected
+                    {selectedColorVariant.colorCode && (
+                      <span className="ml-2 text-xs bg-gray-200 px-2 py-1 rounded">
+                        {selectedColorVariant.colorCode}
+                      </span>
+                    )}
+                  </motion.div>
+                )}
+              </motion.div>
+
+              {/* Quantity Control */}
+              <motion.div
+                variants={itemVariants}
+                className="flex items-center space-x-6"
+              >
+                <span className="font-medium text-gray-800">Quantity</span>
+                <div className="flex items-center border rounded-full">
+                  <button
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-l-full transition"
+                  >
+                    -
+                  </button>
+                  <span className="px-6 py-2 font-medium">{quantity}</span>
+                  <button
+                    onClick={() =>
+                      setQuantity(Math.min(collection.stock, quantity + 1))
+                    }
+                    className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-r-full transition"
+                  >
+                    +
+                  </button>
+                </div>
+                <span className="text-sm text-gray-500">
+                  ({collection.stock} available)
+                </span>
+              </motion.div>
+
+              {/* Action Buttons */}
+              <motion.div variants={itemVariants} className="flex space-x-4">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={handleAddToCart}
+                  className="flex-1 bg-[#4b1e1e] text-white py-4 rounded-full flex items-center justify-center space-x-2 font-medium hover:bg-[#3a1717] transition"
+                >
+                  <FaShoppingCart />
+                  <span>Add to Cart</span>
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={handleBuyNow}
+                  className="flex-1 bg-white border-2 border-black text-black py-4 rounded-full flex items-center justify-center space-x-2 font-medium hover:bg-gray-50 transition"
+                >
+                  <span>Buy Now</span>
+                </motion.button>
+              </motion.div>
+
+              {/* Additional Product Information */}
+              <motion.div
+                variants={itemVariants}
+                className="mt-6 space-y-3 bg-gray-50 p-6 rounded-xl"
+              >
+                <div className="flex items-center space-x-3">
+                  <FaTruck className="text-blue-500 text-lg" />
+                  <span className="text-gray-700">
+                    Free shipping on orders over ₹1000
+                  </span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <FaUndo className="text-blue-500 text-lg" />
+                  <span className="text-gray-700">
+                    Easy 30 days return policy
+                  </span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <MdSecurity className="text-blue-500 text-lg" />
+                  <span className="text-gray-700">
+                    Secure payment guaranteed
+                  </span>
+                </div>
+              </motion.div>
+            </div>
           </div>
         </motion.div>
 

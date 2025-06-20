@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaHeart, FaShare } from "react-icons/fa";
+import {
+  FaHeart,
+  FaShare,
+  FaChevronLeft,
+  FaChevronRight,
+} from "react-icons/fa";
 import { toast } from "react-hot-toast";
 
 const ProductImageGallery = ({
@@ -12,6 +17,7 @@ const ProductImageGallery = ({
 }) => {
   const [mainImage, setMainImage] = useState(null);
   const [currentImages, setCurrentImages] = useState([]);
+  const [currentThumbnailIndex, setCurrentThumbnailIndex] = useState(0);
   const [imageZoom, setImageZoom] = useState({
     isZoomed: false,
     position: { x: 50, y: 50 },
@@ -22,9 +28,11 @@ const ProductImageGallery = ({
     if (selectedColorVariant && selectedColorVariant.images) {
       setCurrentImages(selectedColorVariant.images);
       setMainImage(selectedColorVariant.images[0]);
+      setCurrentThumbnailIndex(0);
     } else if (collection?.images) {
       setCurrentImages(collection.images);
       setMainImage(collection.images[0]);
+      setCurrentThumbnailIndex(0);
     }
   }, [selectedColorVariant, collection]);
 
@@ -74,6 +82,39 @@ const ProductImageGallery = ({
     } else {
       navigator.clipboard.writeText(window.location.href);
       toast.success("Link copied to clipboard!");
+    }
+  };
+
+  // Thumbnail navigation functions
+  const getVisibleThumbnails = () => {
+    const isMobile = window.innerWidth < 768;
+    const thumbnailsPerPage = isMobile ? 4 : 6;
+    const startIndex = currentThumbnailIndex;
+    const endIndex = Math.min(
+      startIndex + thumbnailsPerPage,
+      currentImages.length
+    );
+    return currentImages.slice(startIndex, endIndex);
+  };
+
+  const canScrollLeft = currentThumbnailIndex > 0;
+  const canScrollRight = () => {
+    const isMobile = window.innerWidth < 768;
+    const thumbnailsPerPage = isMobile ? 4 : 6;
+    return currentThumbnailIndex + thumbnailsPerPage < currentImages.length;
+  };
+
+  const scrollThumbnails = (direction) => {
+    const isMobile = window.innerWidth < 768;
+    const step = isMobile ? 2 : 3;
+
+    if (direction === "left" && canScrollLeft) {
+      setCurrentThumbnailIndex(Math.max(0, currentThumbnailIndex - step));
+    } else if (direction === "right" && canScrollRight()) {
+      const maxIndex = Math.max(0, currentImages.length - (isMobile ? 4 : 6));
+      setCurrentThumbnailIndex(
+        Math.min(maxIndex, currentThumbnailIndex + step)
+      );
     }
   };
 
@@ -132,23 +173,75 @@ const ProductImageGallery = ({
         </motion.div>
       </AnimatePresence>
 
-      {/* THUMBNAIL GALLERY */}
-      <div className="flex space-x-4 mt-6 overflow-x-auto pb-2">
-        {currentImages.slice(0, 6).map((img, index) => (
-          <motion.img
-            key={`${selectedColor}-${index}`}
-            src={img}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setMainImage(img)}
-            className={`flex-shrink-0 w-20 h-20 object-cover rounded-lg cursor-pointer transition-all border-2
-              ${
-                mainImage === img
-                  ? "ring-2 ring-black ring-offset-2 border-black opacity-100"
-                  : "border-gray-200 opacity-70 hover:opacity-90 hover:border-gray-400"
-              }`}
-          />
-        ))}
+      {/* IMPROVED THUMBNAIL GALLERY */}
+      <div className="mt-6">
+        <div className="relative">
+          {/* Thumbnail container */}
+          <div className="flex items-center">
+            {/* Left scroll button */}
+            {canScrollLeft && (
+              <button
+                onClick={() => scrollThumbnails("left")}
+                className="absolute left-0 z-10 w-8 h-8 bg-white shadow-md rounded-full flex items-center justify-center text-gray-600 hover:text-black transition-colors -ml-4"
+              >
+                <FaChevronLeft className="text-sm" />
+              </button>
+            )}
+
+            {/* Thumbnails */}
+            <div className="flex space-x-3 overflow-hidden mx-4 md:mx-0">
+              <div className="flex space-x-3 transition-transform duration-300">
+                {getVisibleThumbnails().map((img, index) => {
+                  const actualIndex = currentThumbnailIndex + index;
+                  return (
+                    <motion.img
+                      key={`${selectedColor}-${actualIndex}`}
+                      src={img}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => setMainImage(img)}
+                      className={`flex-shrink-0 w-16 h-16 md:w-20 md:h-20 object-cover rounded-lg cursor-pointer transition-all border-2
+                        ${
+                          mainImage === img
+                            ? "ring-2 ring-black ring-offset-2 border-black opacity-100"
+                            : "border-gray-200 opacity-70 hover:opacity-90 hover:border-gray-400"
+                        }`}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Right scroll button */}
+            {canScrollRight() && (
+              <button
+                onClick={() => scrollThumbnails("right")}
+                className="absolute right-0 z-10 w-8 h-8 bg-white shadow-md rounded-full flex items-center justify-center text-gray-600 hover:text-black transition-colors -mr-4"
+              >
+                <FaChevronRight className="text-sm" />
+              </button>
+            )}
+          </div>
+
+          {/* Thumbnail indicator dots (mobile only) */}
+          {window.innerWidth < 768 && currentImages.length > 4 && (
+            <div className="flex justify-center mt-3 space-x-1">
+              {Array.from({
+                length: Math.ceil(currentImages.length / 4),
+              }).map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentThumbnailIndex(index * 4)}
+                  className={`w-2 h-2 rounded-full transition-colors ${
+                    Math.floor(currentThumbnailIndex / 4) === index
+                      ? "bg-black"
+                      : "bg-gray-300"
+                  }`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Wishlist and Share Buttons */}
