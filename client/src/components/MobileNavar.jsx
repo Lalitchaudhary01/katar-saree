@@ -1,6 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaSearch, FaEnvelope, FaPhone } from "react-icons/fa";
+import {
+  FaSearch,
+  FaEnvelope,
+  FaPhone,
+  FaChevronDown,
+  FaChevronUp,
+} from "react-icons/fa";
 import {
   FiSearch,
   FiUser,
@@ -26,46 +32,86 @@ const MobileNavbar = ({
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [openCategory, setOpenCategory] = useState(null);
   const navigate = useNavigate();
 
-  // Effect to detect scrolling for changing header appearance
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 20);
     };
-
     window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
 
+  const toggleCategory = (category) => {
+    setOpenCategory(openCategory === category ? null : category);
+  };
+
   const handleUserClick = () => {
     if (isLoggedIn) {
-      // User is already logged in, don't navigate
       toggleMobileMenu();
     } else {
-      // Navigate to login page
       navigate("/login");
       setMobileMenuOpen(false);
     }
   };
 
+  const renderAccordionMenu = (title, data) => {
+    return (
+      <div className="border-b border-gray-100">
+        <button
+          onClick={() => toggleCategory(title)}
+          className="w-full flex justify-between items-center py-3 text-left uppercase tracking-wider text-base font-semibold hover:text-[#4b1e1e] transition-colors"
+        >
+          {title}
+          {openCategory === title ? (
+            <FaChevronUp size={14} />
+          ) : (
+            <FaChevronDown size={14} />
+          )}
+        </button>
+
+        {openCategory === title && (
+          <div className="ml-2 space-y-3 pb-3">
+            {data.map((category, idx) => (
+              <div key={idx} className="mb-3">
+                {category.title && (
+                  <h3 className="font-cardo text-black text-sm font-medium tracking-wide mb-1.5">
+                    {category.title}
+                  </h3>
+                )}
+                <ul className="space-y-1.5">
+                  {category.items.map((item, index) => (
+                    <li key={index}>
+                      <Link
+                        to={item.link}
+                        className="text-gray-600 text-sm block hover:text-[#4b1e1e] transition-colors py-1"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {item.name.charAt(0).toUpperCase() +
+                          item.name.slice(1).toLowerCase()}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <>
-      {/* Fixed Header with Logo, Menu Button, Search and Cart */}
+      {/* Fixed Header */}
       <div
         className={`lg:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-5 py-3 
         ${scrolled ? "bg-white/95 backdrop-blur-md shadow-lg" : "bg-white"} 
         transition-all duration-300`}
       >
-        {/* Menu button with elegant styling */}
         <button
           className="text-black hover:text-[#8b5e3c] transition-all duration-300"
           onClick={toggleMobileMenu}
@@ -106,7 +152,6 @@ const MobileNavbar = ({
           )}
         </button>
 
-        {/* Centered logo with subtle animation */}
         <div className="flex-1 flex justify-center">
           <Link
             to="/"
@@ -120,7 +165,6 @@ const MobileNavbar = ({
           </Link>
         </div>
 
-        {/* Right side icons with luxury styling */}
         <div className="flex items-center space-x-5">
           <Link
             to="/search"
@@ -146,7 +190,7 @@ const MobileNavbar = ({
         </div>
       </div>
 
-      {/* Overlay for mobile menu */}
+      {/* Overlay */}
       <div
         className={`fixed inset-0 bg-black/30 backdrop-blur-sm z-40 transition-opacity duration-500 ${
           mobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -154,13 +198,12 @@ const MobileNavbar = ({
         onClick={toggleMobileMenu}
       ></div>
 
-      {/* Mobile Menu with luxury aesthetics */}
+      {/* Mobile Menu */}
       <div
         className={`fixed right-0 top-0 bottom-0 w-[85%] max-w-md bg-white z-50 shadow-2xl transform transition-transform duration-500 ease-in-out ${
           mobileMenuOpen ? "translate-x-0" : "translate-x-full"
         } lg:hidden overflow-hidden flex flex-col`}
       >
-        {/* Header with logo and close button */}
         <div className="flex justify-between items-center p-5 border-b border-gray-100">
           <Link to="/" onClick={() => setMobileMenuOpen(false)}>
             <img
@@ -191,7 +234,6 @@ const MobileNavbar = ({
           </button>
         </div>
 
-        {/* User Profile Section (Only shown when logged in) */}
         {isLoggedIn && userData && (
           <div className="p-5 border-b border-gray-100 bg-[#f9f5f0]">
             <div className="flex items-center">
@@ -229,9 +271,7 @@ const MobileNavbar = ({
           </div>
         )}
 
-        {/* Scrollable menu content */}
         <div className="flex-1 overflow-y-auto custom-scrollbar">
-          {/* Search Bar with premium styling */}
           <div className="px-5 py-4">
             <div className="relative">
               <input
@@ -245,159 +285,75 @@ const MobileNavbar = ({
             </div>
           </div>
 
-          {/* Navigation Categories with luxury styling */}
           <div className="px-5 space-y-1">
-            {/* SHOP */}
-            <div className="py-3 border-b border-gray-100">
-              <Link
-                to="/"
-                className="block text-black uppercase tracking-wider text-base font-semibold hover:text-[#4b1e1e] transition-colors mb-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                SHOP
-              </Link>
-              <div className="ml-2 space-y-3">
-                {shopData.map(
-                  (category, idx) =>
-                    category.title && (
-                      <div key={idx} className="mb-3">
-                        <h3 className="font-cardo text-black text-sm font-medium tracking-wide mb-1.5">
-                          {category.title}
-                        </h3>
-                        <ul className="space-y-1.5">
-                          {category.items.map((item, index) => (
-                            <li key={index}>
-                              <Link
-                                to={item.link}
-                                className="text-gray-600 text-sm block hover:text-[#4b1e1e] transition-colors py-1"
-                                onClick={() => setMobileMenuOpen(false)}
-                              >
-                                {item.name.charAt(0).toUpperCase() +
-                                  item.name.slice(1).toLowerCase()}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )
-                )}
-              </div>
-            </div>
+            {/* SHOP Accordion */}
+            {renderAccordionMenu("SHOP", shopData)}
 
-            {/* COLLECTIONS */}
-            <div className="py-3 border-b border-gray-100">
-              <Link
-                to="/collections"
-                className="block text-black uppercase tracking-wider text-base font-semibold hover:text-[#4b1e1e] transition-colors mb-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                COLLECTIONS
-              </Link>
-              <div className="ml-2 space-y-3">
-                {collectionsData.map((category, idx) => (
-                  <div key={idx} className="mb-3">
-                    <h3 className="font-cardo text-black text-sm font-medium tracking-wide mb-1.5">
-                      {category.title}
-                    </h3>
-                    <ul className="space-y-1.5">
-                      {category.items.map((item, index) => (
-                        <li key={index}>
-                          <Link
-                            to={item.link}
-                            className="text-gray-600 text-sm block hover:text-[#4b1e1e] transition-colors py-1"
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            {item.name.charAt(0).toUpperCase() +
-                              item.name.slice(1).toLowerCase()}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
+            {/* COLLECTIONS Accordion */}
+            {renderAccordionMenu("COLLECTIONS", collectionsData)}
 
-            {/* FABRIC */}
-            <div className="py-3 border-b border-gray-100">
-              <Link
-                to="/fabrics"
-                className="block text-black uppercase tracking-wider text-base font-semibold hover:text-[#4b1e1e] transition-colors mb-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                FABRIC
-              </Link>
-              <div className="ml-2 space-y-3">
-                {fabricData.map(
-                  (category, idx) =>
-                    category.title && (
-                      <div key={idx} className="mb-3">
-                        <h3 className="font-cardo text-black text-sm font-medium tracking-wide mb-1.5">
-                          {category.title}
-                        </h3>
-                        <ul className="space-y-1.5">
-                          {category.items.map((item, index) => (
-                            <li key={index}>
-                              <Link
-                                to={item.link}
-                                className="text-gray-600 text-sm block hover:text-[#4b1e1e] transition-colors py-1"
-                                onClick={() => setMobileMenuOpen(false)}
-                              >
-                                {item.name.charAt(0).toUpperCase() +
-                                  item.name.slice(1).toLowerCase()}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )
-                )}
-              </div>
-            </div>
+            {/* FABRIC Accordion */}
+            {renderAccordionMenu("FABRIC", fabricData)}
 
-            {/* ABOUT US */}
-            <div className="py-3 border-b border-gray-100">
-              <Link
-                to="/about"
-                className="block text-black uppercase tracking-wider text-base font-semibold hover:text-[#4b1e1e] transition-colors mb-2"
-                onClick={() => setMobileMenuOpen(false)}
+            {/* ABOUT US Accordion */}
+            <div className="border-b border-gray-100">
+              <button
+                onClick={() => toggleCategory("ABOUT US")}
+                className="w-full flex justify-between items-center py-3 text-left uppercase tracking-wider text-base font-semibold hover:text-[#4b1e1e] transition-colors"
               >
                 ABOUT US
-              </Link>
-              <div className="ml-2">
-                <ul className="space-y-1.5">
-                  <li>
-                    <Link
-                      to="/about/story"
-                      className="text-gray-600 text-sm block hover:text-[#4b1e1e] transition-colors py-1"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Our Story
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/about/heritage"
-                      className="text-gray-600 text-sm block hover:text-[#4b1e1e] transition-colors py-1"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Heritage
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/about/craft"
-                      className="text-gray-600 text-sm block hover:text-[#4b1e1e] transition-colors py-1"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Craftsmanship
-                    </Link>
-                  </li>
-                </ul>
-              </div>
+                {openCategory === "ABOUT US" ? (
+                  <FaChevronUp size={14} />
+                ) : (
+                  <FaChevronDown size={14} />
+                )}
+              </button>
+
+              {openCategory === "ABOUT US" && (
+                <div className="ml-2 pb-3">
+                  <ul className="space-y-1.5">
+                    <li>
+                      <Link
+                        to="/about/story"
+                        className="text-gray-600 text-sm block hover:text-[#4b1e1e] transition-colors py-1"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Our Story
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/about/heritage"
+                        className="text-gray-600 text-sm block hover:text-[#4b1e1e] transition-colors py-1"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Heritage
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/about/craft"
+                        className="text-gray-600 text-sm block hover:text-[#4b1e1e] transition-colors py-1"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Craftsmanship
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/about"
+                        className="text-gray-600 text-sm block hover:text-[#4b1e1e] transition-colors py-1"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        About Us
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              )}
             </div>
 
-            {/* Currency Selector with elegant styling */}
+            {/* Currency Selector */}
             <div className="py-3 border-b border-gray-100">
               <h3 className="font-cardo text-black text-sm font-medium tracking-wide mb-2">
                 Select Currency
@@ -422,7 +378,7 @@ const MobileNavbar = ({
               </div>
             </div>
 
-            {/* Contact Info with elegant styling */}
+            {/* Contact Info */}
             <div className="py-3 border-b border-gray-100">
               <h3 className="font-cardo text-black text-sm font-medium tracking-wide mb-2">
                 Contact Us
@@ -453,7 +409,7 @@ const MobileNavbar = ({
               </div>
             </div>
 
-            {/* Icons with labels */}
+            {/* Quick Links */}
             <div className="flex justify-between py-5">
               <div
                 onClick={handleUserClick}
@@ -495,7 +451,7 @@ const MobileNavbar = ({
           </div>
         </div>
 
-        {/* Footer with action buttons */}
+        {/* Footer Buttons */}
         <div className="p-5 border-t border-gray-100">
           {isLoggedIn ? (
             <div className="flex space-x-3">
@@ -531,21 +487,18 @@ const MobileNavbar = ({
         </div>
       </div>
 
-      {/* Add custom scrollbar style */}
+      {/* Custom scrollbar styles */}
       <style jsx global>{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 4px;
         }
-
         .custom-scrollbar::-webkit-scrollbar-track {
           background: #f1f1f1;
         }
-
         .custom-scrollbar::-webkit-scrollbar-thumb {
           background: #d4c3b0;
           border-radius: 4px;
         }
-
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background: #8b5e3c;
         }
