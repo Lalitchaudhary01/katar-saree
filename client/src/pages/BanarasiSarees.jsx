@@ -532,12 +532,12 @@ const BanarasiSarees = ({
                 className="group overflow-hidden bg-white flex flex-col cursor-pointer rounded-lg shadow-md hover:shadow-lg transition-shadow"
               >
                 {/* Image Section */}
-                <div className="relative overflow-hidden">
+                <div className="relative overflow-hidden aspect-[3/4]">
                   <img
                     src={product.images[0]}
                     alt={product.title}
                     onClick={() => navigate(`/collection/${product.id}`)}
-                    className="w-full h-48 md:h-64 lg:h-72 object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
                   />
 
                   {/* Mobile Quick Actions */}
