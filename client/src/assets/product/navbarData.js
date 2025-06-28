@@ -23,8 +23,7 @@ export const shopData = [
   //     { name: "Casual Collection", link: "/collections/casual" },
   //   ],
   // },
-  {
-    title: "Clothing",
+  title: "Sarees and Fabrics",
     items: [
       { name: "Sarees", link: "/clothing/sarees" },
       { name: "Suits", link: "/clothing/suits" },
@@ -35,7 +34,6 @@ export const shopData = [
       { name: "Kora Organza Silk", link: "/fabrics/kora-organza" },
       { name: "Handwoven Georgette", link: "/fabrics/handwoven-georgette" },
     ],
-  },
 ];
 
 export const collectionsData = [
