@@ -88,8 +88,10 @@ const MobileNavbar = ({
               <div key={idx} className="mb-3">
                 {category.title && (
                   <>
-                    {/* Check if this is the Saree category with expandable items */}
-                    {category.title === "Saree" && category.items.length > 3 ? (
+                    {/* Check if this is the Sarees category with expandable items */}
+                    {(category.title === "Saree" ||
+                      category.title === "Sarees") &&
+                    category.items.length > 3 ? (
                       <div>
                         <button
                           onClick={() =>
