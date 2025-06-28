@@ -33,6 +33,7 @@ const MobileNavbar = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openCategory, setOpenCategory] = useState(null);
+  const [expandedSubCategories, setExpandedSubCategories] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,6 +48,14 @@ const MobileNavbar = ({
 
   const toggleCategory = (category) => {
     setOpenCategory(openCategory === category ? null : category);
+  };
+
+  const toggleSubCategory = (categoryTitle, subCategoryTitle) => {
+    const key = `${categoryTitle}-${subCategoryTitle}`;
+    setExpandedSubCategories((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
   };
 
   const handleUserClick = () => {
@@ -78,24 +87,69 @@ const MobileNavbar = ({
             {data.map((category, idx) => (
               <div key={idx} className="mb-3">
                 {category.title && (
-                  <h3 className="font-cardo text-black text-sm font-medium tracking-wide mb-1.5">
-                    {category.title}
-                  </h3>
+                  <>
+                    {/* Check if this is the Saree category with expandable items */}
+                    {category.title === "Saree" && category.items.length > 3 ? (
+                      <div>
+                        <button
+                          onClick={() =>
+                            toggleSubCategory(title, category.title)
+                          }
+                          className="w-full flex justify-between items-center font-cardo text-black text-sm font-bold tracking-wide mb-1.5 hover:text-[#4b1e1e] transition-colors"
+                        >
+                          {category.title}
+                          {expandedSubCategories[
+                            `${title}-${category.title}`
+                          ] ? (
+                            <FaChevronUp size={12} />
+                          ) : (
+                            <FaChevronDown size={12} />
+                          )}
+                        </button>
+                        {/* Only show items when expanded */}
+                        {expandedSubCategories[
+                          `${title}-${category.title}`
+                        ] && (
+                          <ul className="space-y-1.5">
+                            {category.items.map((item, index) => (
+                              <li key={index}>
+                                <Link
+                                  to={item.link}
+                                  className="text-gray-600 text-sm block hover:text-[#4b1e1e] transition-colors py-1 ml-2"
+                                  onClick={() => setMobileMenuOpen(false)}
+                                >
+                                  {item.name.charAt(0).toUpperCase() +
+                                    item.name.slice(1).toLowerCase()}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    ) : (
+                      /* Regular category display for non-Saree categories */
+                      <>
+                        <h3 className="font-cardo text-black text-sm font-medium tracking-wide mb-1.5">
+                          {category.title}
+                        </h3>
+                        <ul className="space-y-1.5">
+                          {category.items.map((item, index) => (
+                            <li key={index}>
+                              <Link
+                                to={item.link}
+                                className="text-gray-600 text-sm block hover:text-[#4b1e1e] transition-colors py-1"
+                                onClick={() => setMobileMenuOpen(false)}
+                              >
+                                {item.name.charAt(0).toUpperCase() +
+                                  item.name.slice(1).toLowerCase()}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    )}
+                  </>
                 )}
-                <ul className="space-y-1.5">
-                  {category.items.map((item, index) => (
-                    <li key={index}>
-                      <Link
-                        to={item.link}
-                        className="text-gray-600 text-sm block hover:text-[#4b1e1e] transition-colors py-1"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        {item.name.charAt(0).toUpperCase() +
-                          item.name.slice(1).toLowerCase()}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
               </div>
             ))}
           </div>
