@@ -73,22 +73,22 @@ export const fabricData = [
       { name: " Jamawar Tanchui", link: "/fabrics/Jamawar-tanchui" },
     ],
   },
-  {
-    title: "Fabric Collections",
-    items: [
-      { name: "Wedding Fabrics", link: "/fabrics/wedding" },
-      { name: "Festival Fabrics", link: "/fabrics/festival" },
-      { name: "Everyday Elegance", link: "/fabrics/everyday" },
-      { name: "Premium Weaves", link: "/fabrics/premium" },
-    ],
-  },
-  {
-    title: "Fabric Care",
-    items: [
-      { name: "Silk Care Guide", link: "/fabrics/care-guide" },
-      { name: "Storage Tips", link: "/fabrics/storage" },
-      { name: "Dry Cleaning", link: "/fabrics/dry-cleaning" },
-      { name: "Rejuvenation Tips", link: "/fabrics/rejuvenation" },
-    ],
-  },
+  // {
+  //   title: "Fabric Collections",
+  //   items: [
+  //     { name: "Wedding Fabrics", link: "/fabrics/wedding" },
+  //     { name: "Festival Fabrics", link: "/fabrics/festival" },
+  //     { name: "Everyday Elegance", link: "/fabrics/everyday" },
+  //     { name: "Premium Weaves", link: "/fabrics/premium" },
+  //   ],
+  // },
+  // {
+  //   title: "Fabric Care",
+  //   items: [
+  //     { name: "Silk Care Guide", link: "/fabrics/care-guide" },
+  //     { name: "Storage Tips", link: "/fabrics/storage" },
+  //     { name: "Dry Cleaning", link: "/fabrics/dry-cleaning" },
+  //     { name: "Rejuvenation Tips", link: "/fabrics/rejuvenation" },
+  //   ],
+  // },
 ];
