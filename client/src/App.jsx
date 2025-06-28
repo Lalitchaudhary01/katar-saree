@@ -330,3 +330,18 @@ function App() {
 }
 
 export default App;
+
+// src/App.jsx
+
+// import React from "react";
+// import PaymentPending from "./reusable/PaymentPending";
+
+// function App() {
+//   return (
+//     <div className="App">
+//       <PaymentPending />
+//     </div>
+//   );
+// }
+
+// export default App; // 🛑 Yeh line must hai!

@@ -1,28 +1,28 @@
 export const shopData = [
-  {
-    title: "Fresh off the Looms",
-    items: [
-      { name: "Trending Sarees", link: "/trending/sarees" },
-      { name: "Trending Suits", link: "/trending/suits" },
-      { name: "Silk", link: "/featured/silk" },
-      { name: "Katan Icon", link: "/featured/katan-icon" },
-      { name: "Handwoven Fabrics", link: "/featured/handwoven" },
-      { name: "Katan Signature Class", link: "/featured/signature-class" },
-    ],
-  },
-  {
-    title: "Collections",
-    items: [
-      { name: "Gifts", link: "/collections/gifts" },
-      { name: "Best Sellers", link: "/collections/best-sellers" },
-      { name: "Back in Stock", link: "/collections/back-in-stock" },
-      { name: "Pre Order", link: "/collections/pre-order" },
-      { name: "Ready to Ship", link: "/collections/ready-to-ship" },
-      { name: "Heavy Silk", link: "/collections/heavy-silk" },
-      { name: "Bridal Collection", link: "/collections/bridal" },
-      { name: "Casual Collection", link: "/collections/casual" },
-    ],
-  },
+  // {
+  //   title: "Fresh off the Looms",
+  //   items: [
+  //     { name: "Trending Sarees", link: "/trending/sarees" },
+  //     { name: "Trending Suits", link: "/trending/suits" },
+  //     { name: "Silk", link: "/featured/silk" },
+  //     { name: "Katan Icon", link: "/featured/katan-icon" },
+  //     { name: "Handwoven Fabrics", link: "/featured/handwoven" },
+  //     { name: "Katan Signature Class", link: "/featured/signature-class" },
+  //   ],
+  // },
+  // {
+  //   title: "Collections",
+  //   items: [
+  //     { name: "Gifts", link: "/collections/gifts" },
+  //     { name: "Best Sellers", link: "/collections/best-sellers" },
+  //     { name: "Back in Stock", link: "/collections/back-in-stock" },
+  //     { name: "Pre Order", link: "/collections/pre-order" },
+  //     { name: "Ready to Ship", link: "/collections/ready-to-ship" },
+  //     { name: "Heavy Silk", link: "/collections/heavy-silk" },
+  //     { name: "Bridal Collection", link: "/collections/bridal" },
+  //     { name: "Casual Collection", link: "/collections/casual" },
+  //   ],
+  // },
   {
     title: "Clothing",
     items: [
@@ -70,7 +70,7 @@ export const fabricData = [
       { name: "Tissue Silk", link: "/fabrics/tissue" },
       { name: "Kora Organza Silk", link: "/fabrics/kora-organza" },
       { name: "Handwoven Georgette", link: "/fabrics/handwoven-georgette" },
-      { name: "Tanchui", link: "/fabrics/tanchui" },
+      { name: " Jamawar Tanchui", link: "/fabrics/Jamawar-tanchui" },
     ],
   },
   {
