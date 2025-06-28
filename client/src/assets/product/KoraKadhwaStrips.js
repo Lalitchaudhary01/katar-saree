@@ -202,6 +202,8 @@ const koraKadhwaStripsData = [
     title: "Pure Banarasi Katan Kora Kadhwa Sona Rupa Silk Saree - Black",
     desc: "Premium Banarasi saree made from 100% pure Katan Kora silk with intricate Kadhwa buti work in Sona Rupa zari. A masterpiece of handloom heritage, certified for authenticity and quality.",
     images: [
+      "https://ik.imagekit.io/yg3bo4zvy/images/black1.jpg?updatedAt=1745023407248",
+      "https://ik.imagekit.io/yg3bo4zvy/images/black4.jpg?updatedAt=1745023402119",
       "https://ik.imagekit.io/icrguob6c/katan/IMG_3082.HEIC?updatedAt=1749123175089",
       "https://ik.imagekit.io/icrguob6c/katan/IMG_3081.HEIC?updatedAt=1749123175134",
     ],
