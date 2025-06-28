@@ -293,7 +293,7 @@ const MobileNavbar = ({
             {renderAccordionMenu("COLLECTIONS", collectionsData)}
 
             {/* FABRIC Accordion */}
-            {renderAccordionMenu("FABRIC", fabricData)}
+            {/* {renderAccordionMenu("FABRIC", fabricData)} */}
 
             {/* ABOUT US Accordion */}
             <div className="border-b border-gray-100">

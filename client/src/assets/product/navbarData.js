@@ -29,6 +29,11 @@ export const shopData = [
       { name: "Sarees", link: "/clothing/sarees" },
       { name: "Suits", link: "/clothing/suits" },
       { name: "Dupattas", link: "/clothing/duputtas" },
+      { name: "Katan Silk", link: "/fabrics/katan" },
+      { name: "Satin Silk", link: "/fabrics/satin" },
+      { name: "Tissue Silk", link: "/fabrics/tissue" },
+      { name: "Kora Organza Silk", link: "/fabrics/kora-organza" },
+      { name: "Handwoven Georgette", link: "/fabrics/handwoven-georgette" },
     ],
   },
 ];
@@ -70,7 +75,7 @@ export const fabricData = [
       { name: "Tissue Silk", link: "/fabrics/tissue" },
       { name: "Kora Organza Silk", link: "/fabrics/kora-organza" },
       { name: "Handwoven Georgette", link: "/fabrics/handwoven-georgette" },
-      { name: " Jamawar Tanchui", link: "/fabrics/Jamawar-tanchui" },
+      // { name: " Jamawar Tanchui", link: "/fabrics/Jamawar-tanchui" },
     ],
   },
   // {

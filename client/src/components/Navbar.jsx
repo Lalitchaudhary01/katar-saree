@@ -405,7 +405,7 @@ const Navbar = () => {
               <div className="hidden md:flex space-x-8 text-black uppercase tracking-wide text-lg font-bold mr-34 ">
                 {!scrolled ? (
                   <>
-                    <div className="relative group">
+                    {/* <div className="relative group">
                       <Link
                         to="/fabrics"
                         className="hover:text-[#4b1e1e] flex items-center transition-colors"
@@ -426,7 +426,7 @@ const Navbar = () => {
                           ) : null
                         )}
                       </DropdownMenu>
-                    </div>
+                    </div> */}
 
                     <div className="relative group">
                       <Link
