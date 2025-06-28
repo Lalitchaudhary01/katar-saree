@@ -24,11 +24,16 @@ export const shopData = [
   //   ],
   // },
   {
-    title: "Sarees and Fabrics",
+    title: "Clothing",
     items: [
       { name: "Sarees", link: "/clothing/sarees" },
       { name: "Suits", link: "/clothing/suits" },
       { name: "Dupattas", link: "/clothing/duputtas" },
+    ],
+  },
+  {
+    title: "Saree",
+    items: [
       { name: "Katan Silk", link: "/fabrics/katan" },
       { name: "Kora Silk", link: "/fabrics/kora" },
       { name: "Satin Silk", link: "/fabrics/satin" },
