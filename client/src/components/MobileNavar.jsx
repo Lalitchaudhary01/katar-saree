@@ -108,51 +108,55 @@ const MobileNavbar = ({
     <>
       {/* Fixed Header */}
       <div
-        className={`lg:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-5 py-3 
+        className={`lg:hidden fixed top-0 left-0 right-0 z-40 grid grid-cols-3 items-center px-5 py-3 
         ${scrolled ? "bg-white/95 backdrop-blur-md shadow-lg" : "bg-white"} 
         transition-all duration-300`}
       >
-        <button
-          className="text-black hover:text-[#8b5e3c] transition-all duration-300"
-          onClick={toggleMobileMenu}
-          aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-        >
-          {mobileMenuOpen ? (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="22"
-              height="22"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="transition-transform duration-300 transform rotate-90"
-            >
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="22"
-              height="22"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <line x1="4" y1="12" x2="20" y2="12"></line>
-              <line x1="4" y1="6" x2="20" y2="6"></line>
-              <line x1="4" y1="18" x2="20" y2="18"></line>
-            </svg>
-          )}
-        </button>
+        {/* Left Side - Menu Button */}
+        <div className="flex justify-start">
+          <button
+            className="text-black hover:text-[#8b5e3c] transition-all duration-300"
+            onClick={toggleMobileMenu}
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+          >
+            {mobileMenuOpen ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="transition-transform duration-300 transform rotate-90"
+              >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="4" y1="12" x2="20" y2="12"></line>
+                <line x1="4" y1="6" x2="20" y2="6"></line>
+                <line x1="4" y1="18" x2="20" y2="18"></line>
+              </svg>
+            )}
+          </button>
+        </div>
 
-        <div className="flex-1 flex justify-center">
+        {/* Center - Logo */}
+        <div className="flex justify-center">
           <Link
             to="/"
             className="transform hover:scale-105 transition-transform duration-300"
@@ -165,7 +169,8 @@ const MobileNavbar = ({
           </Link>
         </div>
 
-        <div className="flex items-center space-x-5">
+        {/* Right Side - Icons */}
+        <div className="flex items-center justify-end space-x-5">
           <Link
             to="/search"
             className="text-black hover:text-[#8b5e3c] transition-all duration-300"
