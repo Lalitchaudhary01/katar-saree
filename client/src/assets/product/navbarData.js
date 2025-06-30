@@ -27,7 +27,7 @@ export const shopData = [
     title: "Clothing",
     items: [
       // { name: "Sarees", link: "/clothing/sarees" },
-      { name: "Moonga", link: "/clothing/moonga" },
+
       { name: "Suits", link: "/clothing/suits" },
       { name: "Dupattas", link: "/clothing/duputtas" },
     ],
@@ -45,7 +45,7 @@ export const shopData = [
       { name: "Raw Mango", link: "/fabrics/raw-mango" },
       { name: "Tasar Silk", link: "/fabrics/tasar" },
       { name: "Tissue Silk", link: "/fabrics/tissue" },
-      { name: "Mango Silk", link: "/fabrics/mango" },
+      { name: "Moonga", link: "/clothing/moonga" },
       { name: "Chiffon Silk", link: "/fabrics/chiffon" },
       { name: "Moonga Silk", link: "/fabrics/moonga" },
       { name: "Zardozi Silk Sarees", link: "/fabrics/zardozi" },
