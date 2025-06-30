@@ -28,6 +28,7 @@ import KoraKadhwaStrips from "../assets/product/KoraKadhwaStrips";
 import RecommendedProducts from "./RecommendedProducts";
 import ProductDetailsTabs from "./ProductDetailsTabs";
 import ProductImageGallery from "./ProductImageGallery";
+import moonga from "../assets/product/Moongo";
 
 const CollectionDetails = () => {
   const { id } = useParams();
@@ -44,7 +45,8 @@ const CollectionDetails = () => {
     newArrivals.find((item) => item.id === productId) ||
     silkSarees.find((item) => item.id === productId) ||
     banarasiProducts.find((item) => item.id === productId) ||
-    KoraKadhwaStrips.find((item) => item.id === productId);
+    KoraKadhwaStrips.find((item) => item.id === productId) ||
+    moonga.find((item) => item.id === productId);
 
   // State Management
   const [selectedColorVariant, setSelectedColorVariant] = useState(null);

@@ -24,6 +24,19 @@ const koraKadhwaStripsData = [
       "Handloom Certified",
       "HI Tag Certified",
     ],
+    details: {
+      color: "Aqua Blue",
+      technique: "Kadhwa weaving with Sona Rupa (Gold & Silver) Zari",
+      fabric: "Pure Katan Kora Silk – 100% Silk Mark Certified",
+      speciality: [
+        "Timeless Kadhwa Buti work – no cutwork, handwoven style.",
+        "Sona Rupa Zari – authentic gold & silver tested zari.",
+        "Crafted over 3–4 weeks by skilled Banarasi artisans.",
+        "Free shipping across India & international orders over ₹20,000.",
+        "First-time buyer offer: Get extra 10% OFF.",
+        "Trusted heritage – Katan Banaras since 1956.",
+      ],
+    },
   },
   {
     id: "bs01_dusty_rose_pink",

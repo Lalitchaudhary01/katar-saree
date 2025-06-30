@@ -27,6 +27,7 @@ export const shopData = [
     title: "Clothing",
     items: [
       // { name: "Sarees", link: "/clothing/sarees" },
+      { name: "Moonga", link: "/clothing/moonga" },
       { name: "Suits", link: "/clothing/suits" },
       { name: "Dupattas", link: "/clothing/duputtas" },
     ],
