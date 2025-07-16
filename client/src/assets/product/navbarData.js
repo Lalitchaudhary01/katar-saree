@@ -70,7 +70,7 @@ export const collectionsData = [
         link: "/weaves/khaddi-georgette",
       }, //Khaddi georgette
       { name: "Banarasi Bandhani(bandhej)", link: "/weaves/banarasi-bandhani" },
-      { name: "Minakari Bandhani", link: "/weaves/minakari-bandhani" },
+      { name: "Minakari Bandhani", link: "/clothing/katansilk" },
       { name: "Tasal Banarasi", link: "/weaves/tasal" },
     ],
   },
@@ -78,7 +78,7 @@ export const collectionsData = [
     title: "Rare Techniques",
     items: [
       { name: "The Most Rarest Weaving Technique", link: "/techniques/rare" },
-      { name: "Rankat", link: "/techniques/rankat" },
+      { name: "Rankat", link: "clothing/rangkat" },
       { name: "Bridal Sarees", link: "/techniques/bridal-sarees" },
     ],
   },

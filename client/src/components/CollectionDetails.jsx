@@ -32,6 +32,7 @@ import moonga from "../assets/product/Moongo";
 import rankatProducts from "../assets/product/Rankat";
 import janglaSonaProducts from "../assets/product/janglaSona";
 import katanSilkProducts from "../assets/product/silk";
+import tanchuiProducts from "../assets/product/Jamawar";
 
 const CollectionDetails = () => {
   const { id } = useParams();
@@ -52,6 +53,7 @@ const CollectionDetails = () => {
     rankatProducts.find((item) => item.id === productId) ||
     janglaSonaProducts.find((item) => item.id === productId) ||
     katanSilkProducts.find((item) => item.id === productId) ||
+    tanchuiProducts.find((item) => item.id === productId) ||
     moonga.find((item) => item.id === productId);
 
   // State Management
