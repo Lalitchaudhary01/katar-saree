@@ -51,6 +51,7 @@ import Moonga from "./pages/Moonga";
 import RankatSilk from "./pages/RankatSilk";
 import Raresttechniques from "./pages/Raresttechniques";
 import Katansilk from "./pages/Katansilk";
+import Jamawar from "./pages/Jamawar";
 
 const pageVariants = {
   initial: { opacity: 0, y: 50 },
@@ -308,6 +309,7 @@ function AppContent() {
           <Route path="/clothing/rangkat" element={<RankatSilk />} />
           <Route path="/techniques/rare" element={<Raresttechniques />} />
           <Route path="/clothing/katansilk" element={<Katansilk />} />
+          <Route path="/weaves/jamawar" element={<Jamawar />} />
 
           {/* Fallback Route */}
         </Routes>
