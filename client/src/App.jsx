@@ -48,8 +48,8 @@ import Layout from "./context/Layout";
 import UserProfile from "./headers/UserProfile";
 import KoraKadhwaStrips from "./pages/KoraKadhwaStrips";
 import Moonga from "./pages/Moonga";
-import Katansilk from "./pages/Katansilk";
 import RankatSilk from "./pages/RankatSilk";
+import Raresttechniques from "./pages/Raresttechniques";
 
 const pageVariants = {
   initial: { opacity: 0, y: 50 },
@@ -304,8 +304,8 @@ function AppContent() {
             element={<KoraKadhwaStrips />}
           />
           <Route path="/clothing/moonga" element={<Moonga />} />
-          <Route path="/clothing/katansilk" element={<Katansilk />} />
           <Route path="/clothing/rangkat" element={<RankatSilk />} />
+          <Route path="/techniques/rare" element={<Raresttechniques />} />
 
           {/* Fallback Route */}
         </Routes>
