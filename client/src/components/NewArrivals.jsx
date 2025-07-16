@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FaEye,
@@ -15,14 +14,14 @@ import { useWishlist } from "../context/WishlistContext";
 import { useCurrency } from "../context/currencyContext";
 import { toast } from "react-hot-toast";
 import { useSelector } from "react-redux";
+import newArrivals from "../assets/product/NewArrival";
 import QuickViewModal from "../reusable/QuickView";
 import "../styles/NewArrivals.css";
 
 const NewArrivals = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [currentIndexes, setCurrentIndexes] = useState({});
+  const [currentIndexes, setCurrentIndexes] = useState(
+    newArrivals.reduce((acc, _, index) => ({ ...acc, [index]: 0 }), {})
+  );
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -30,9 +29,12 @@ const NewArrivals = () => {
   const [imageLoading, setImageLoading] = useState({});
   const [currentPage, setCurrentPage] = useState(0);
 
+  // Touch swipe variables
   const touchStartX = useRef(null);
   const touchEndX = useRef(null);
+
   const itemsPerPage = 4;
+  const totalPages = Math.ceil(newArrivals.length / itemsPerPage);
   const hoverTimers = useRef({});
   const carouselRef = useRef(null);
 
@@ -41,30 +43,6 @@ const NewArrivals = () => {
   const { selectedCurrency, convertPrice, formatPrice } = useCurrency();
   const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.auth);
-
-  // Fetch products from backend
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/api/products");
-        setProducts(response.data);
-
-        // Initialize currentIndexes based on fetched data
-        const indexes = {};
-        response.data.forEach((_, index) => {
-          indexes[index] = 0;
-        });
-        setCurrentIndexes(indexes);
-      } catch (err) {
-        setError(err.message);
-        toast.error("Failed to load products");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
 
   // Check if user is on mobile
   useEffect(() => {
@@ -76,7 +54,6 @@ const NewArrivals = () => {
     return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
 
-  // Cleanup timers on unmount
   useEffect(() => {
     return () => {
       Object.values(hoverTimers.current).forEach((timer) =>
@@ -93,7 +70,7 @@ const NewArrivals = () => {
     hoverTimers.current[index] = setTimeout(() => {
       setCurrentIndexes((prevIndexes) => ({
         ...prevIndexes,
-        [index]: (prevIndexes[index] + 1) % products[index].images.length,
+        [index]: (prevIndexes[index] + 1) % newArrivals[index].images.length,
       }));
     }, 800);
     setHoveredIndex(index);
@@ -138,22 +115,22 @@ const NewArrivals = () => {
     }
   };
 
-  // Mobile navigation
+  // Mobile navigation functions
   const handleNextCard = () => {
-    const maxIndex = Math.max(0, products.length - 2);
+    const maxIndex = newArrivals.length - 2;
     setVisibleCardIndex((prevIndex) =>
       prevIndex >= maxIndex ? 0 : prevIndex + 2
     );
   };
 
   const handlePrevCard = () => {
-    const maxIndex = Math.max(0, products.length - 2);
+    const maxIndex = newArrivals.length - 2;
     setVisibleCardIndex((prevIndex) =>
       prevIndex <= 0 ? maxIndex : prevIndex - 2
     );
   };
 
-  // Touch handlers
+  // Touch handlers for swipe functionality
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
   };
@@ -166,23 +143,32 @@ const NewArrivals = () => {
     if (!touchStartX.current || !touchEndX.current) return;
 
     const swipeDistance = touchStartX.current - touchEndX.current;
-    const minSwipeDistance = 50;
+    const minSwipeDistance = 50; // Minimum distance to be considered a swipe
 
     if (Math.abs(swipeDistance) > minSwipeDistance) {
       if (swipeDistance > 0) {
-        if (isMobile) handleNextCard();
-        else goToNextPage();
+        // Swiped left - go to next
+        if (isMobile) {
+          handleNextCard();
+        } else {
+          goToNextPage();
+        }
       } else {
-        if (isMobile) handlePrevCard();
-        else goToPrevPage();
+        // Swiped right - go to previous
+        if (isMobile) {
+          handlePrevCard();
+        } else {
+          goToPrevPage();
+        }
       }
     }
 
+    // Reset touch coordinates
     touchStartX.current = null;
     touchEndX.current = null;
   };
 
-  // Desktop pagination
+  // Desktop swiper navigation
   const goToNextPage = () => {
     setCurrentPage((prev) => (prev === totalPages - 1 ? 0 : prev + 1));
   };
@@ -194,64 +180,12 @@ const NewArrivals = () => {
   const getCurrentItems = () => {
     const start = currentPage * itemsPerPage;
     const end = start + itemsPerPage;
-    return products.slice(start, end);
+    return newArrivals.slice(start, end);
   };
 
   const handleCloseModal = () => {
     setSelectedProduct(null);
   };
-
-  const totalPages = Math.ceil(products.length / itemsPerPage);
-
-  if (loading) {
-    return (
-      <section className="py-16 md:py-24 bg-[#f9f7f5]">
-        <div className="container mx-auto px-4 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-cormorant font-semibold text-[#1a1a1a] mb-4 tracking-wider">
-            New Arrivals
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8 px-4 lg:px-12 mb-8">
-            {[...Array(4)].map((_, i) => (
-              <div
-                key={i}
-                className="bg-white rounded-lg overflow-hidden shadow-md"
-              >
-                <div
-                  className="relative overflow-hidden"
-                  style={{ aspectRatio: "3/4" }}
-                >
-                  <div className="animate-pulse bg-gray-200 w-full h-full"></div>
-                </div>
-                <div className="p-4">
-                  <div className="animate-pulse bg-gray-200 h-4 w-3/4 mb-2"></div>
-                  <div className="animate-pulse bg-gray-200 h-4 w-1/2"></div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (error) {
-    return (
-      <section className="py-16 md:py-24 bg-[#f9f7f5]">
-        <div className="container mx-auto px-4 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-cormorant font-semibold text-[#1a1a1a] mb-4 tracking-wider">
-            New Arrivals
-          </h2>
-          <p className="text-red-500 font-montserrat">{error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="mt-4 px-4 py-2 bg-[#1a1a1a] text-white rounded hover:bg-opacity-90 transition"
-          >
-            Retry
-          </button>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section className="py-16 md:py-24 bg-[#f9f7f5]">
@@ -276,7 +210,7 @@ const NewArrivals = () => {
         onTouchEnd={handleTouchEnd}
       >
         {/* Mobile Navigation */}
-        {isMobile && products.length > 0 && (
+        {isMobile && (
           <>
             <button
               className="nav-arrow prev"
@@ -296,7 +230,7 @@ const NewArrivals = () => {
         )}
 
         {/* Desktop View */}
-        {!isMobile && products.length > 0 && (
+        {!isMobile && (
           <div className="swiper-container">
             <button
               className="desktop-nav-arrow prev"
@@ -328,7 +262,7 @@ const NewArrivals = () => {
 
                   return (
                     <motion.div
-                      key={product.id || globalIndex}
+                      key={globalIndex}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -336,6 +270,7 @@ const NewArrivals = () => {
                       onMouseEnter={() => handleMouseEnter(globalIndex)}
                       onMouseLeave={() => handleMouseLeave(globalIndex)}
                     >
+                      {/* Product image and details */}
                       <div
                         className="relative overflow-hidden cursor-pointer"
                         style={{ aspectRatio: "3/4" }}
@@ -367,6 +302,7 @@ const NewArrivals = () => {
                           </button>
                         </div>
 
+                        {/* Wishlist Button with auth check */}
                         <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-auto">
                           <button
                             onClick={(e) =>
@@ -438,21 +374,22 @@ const NewArrivals = () => {
         )}
 
         {/* Mobile View */}
-        {isMobile && products.length > 0 && (
+        {isMobile && (
           <div className="grid grid-cols-2 gap-4 px-4 mb-8">
-            {products
+            {newArrivals
               .slice(visibleCardIndex, visibleCardIndex + 2)
               .map((product, index) => {
                 const globalIndex = visibleCardIndex + index;
 
                 return (
                   <motion.div
-                    key={product.id || globalIndex}
+                    key={globalIndex}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                     className="luxury-card bg-white rounded-lg overflow-hidden shadow-md group"
                   >
+                    {/* Mobile product card content */}
                     <div
                       className="relative overflow-hidden cursor-pointer"
                       style={{ aspectRatio: "3/4" }}
@@ -484,6 +421,7 @@ const NewArrivals = () => {
                         </button>
                       </div>
 
+                      {/* Wishlist Button with auth check */}
                       <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-auto">
                         <button
                           onClick={(e) =>
@@ -565,12 +503,6 @@ const NewArrivals = () => {
               aria-label={`Page ${i + 1}`}
             />
           ))}
-        </div>
-      )}
-
-      {products.length === 0 && !loading && (
-        <div className="text-center py-12">
-          <p className="font-montserrat text-gray-600">No products available</p>
         </div>
       )}
 
