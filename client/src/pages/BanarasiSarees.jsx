@@ -191,6 +191,8 @@ const BanarasiSarees = ({
         <div className="flex items-center justify-between">
           <span className="font-cardo text-gray-600 text-sm">
             {filteredProducts.length} products found
+            {console.log(filteredProducts.length)}
+            
           </span>
           <div className="flex gap-2">
             <button

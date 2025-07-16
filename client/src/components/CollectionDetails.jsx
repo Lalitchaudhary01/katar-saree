@@ -29,6 +29,7 @@ import RecommendedProducts from "./RecommendedProducts";
 import ProductDetailsTabs from "./ProductDetailsTabs";
 import ProductImageGallery from "./ProductImageGallery";
 import moonga from "../assets/product/Moongo";
+import rankatProducts from "../assets/product/Rankat";
 
 const CollectionDetails = () => {
   const { id } = useParams();
@@ -46,6 +47,7 @@ const CollectionDetails = () => {
     silkSarees.find((item) => item.id === productId) ||
     banarasiProducts.find((item) => item.id === productId) ||
     KoraKadhwaStrips.find((item) => item.id === productId) ||
+    rankatProducts.find((item) => item.id === productId) ||
     moonga.find((item) => item.id === productId);
 
   // State Management

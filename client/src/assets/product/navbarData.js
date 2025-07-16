@@ -35,7 +35,7 @@ export const shopData = [
   {
     title: "Saree",
     items: [
-      { name: "Katan Silk", link: "/fabrics/katan" },
+      { name: "Katan Silk", link: "/clothing/katansilk" },
       { name: "Kora Silk", link: "/fabrics/kora" },
       { name: "Satin Silk", link: "/fabrics/satin" },
       {
@@ -49,7 +49,7 @@ export const shopData = [
       { name: "Chiffon Silk", link: "/fabrics/chiffon" },
       { name: "Moonga Silk", link: "/fabrics/moonga" },
       { name: "Zardozi Silk Sarees", link: "/fabrics/zardozi" },
-      { name: "RangKat Silk", link: "/fabrics/rangkat" },
+      { name: "RangKat Silk", link: "/clothing/rangkat" },
       { name: "Kora Organza Silk", link: "/fabrics/kora-organza" },
       { name: "Handwoven Georgette", link: "/fabrics/handwoven-georgette" },
     ],
