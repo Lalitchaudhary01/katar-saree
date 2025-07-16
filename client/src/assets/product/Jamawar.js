@@ -957,7 +957,7 @@ const tanchuiProducts = [
       "https://ik.imagekit.io/lalitdev/jamawar/Teal%20Green%20Pure%20Janawar%20Tanchui%20Silk%20Saree%20with%20Antique%20Zari%20Motifs%20(1).HEIC?updatedAt=1752677980456",
       "https://ik.imagekit.io/lalitdev/jamawar/Teal%20Green%20Pure%20Janawar%20Tanchui%20Silk%20Saree%20with%20Antique%20Zari%20Motifs%20(3).HEIC?updatedAt=1752677980456",
       "https://ik.imagekit.io/lalitdev/jamawar/Teal%20Green%20Pure%20Janawar%20Tanchui%20Silk%20Saree%20with%20Antique%20Zari%20Motifs%20(4).HEIC?updatedAt=1752677980456",
-      k,
+      ,
     ],
     colors: ["#006666", "#004d4d"],
     colorName: "Teal Green",
