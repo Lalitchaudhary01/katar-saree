@@ -48,7 +48,7 @@ import Layout from "./context/Layout";
 import UserProfile from "./headers/UserProfile";
 import KoraKadhwaStrips from "./pages/KoraKadhwaStrips";
 import Moonga from "./pages/Moonga";
-import RankatSilk from "./pages/RankatSilk";
+// import RankatSilk from "./pages/RankatSilk";
 import Raresttechniques from "./pages/Raresttechniques";
 import Katansilk from "./pages/Katansilk";
 import Jamawar from "./pages/Jamawar";
@@ -306,10 +306,10 @@ function AppContent() {
             element={<KoraKadhwaStrips />}
           />
           <Route path="/clothing/moonga" element={<Moonga />} />
-          <Route path="/clothing/rangkat" element={<RankatSilk />} />
+          {/* <Route path="/clothing/rangkat" element={<RankatSilk />} /> */}
           <Route path="/techniques/rare" element={<Raresttechniques />} />
           <Route path="/clothing/katansilk" element={<Katansilk />} />
-          <Route path="/weaves/jamawar" element={<Jamawar />} />
+          <Route path="/clothing/janawar-tanchui" element={<Jamawar />} />
 
           {/* Fallback Route */}
         </Routes>

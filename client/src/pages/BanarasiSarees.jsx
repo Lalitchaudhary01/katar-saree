@@ -37,7 +37,7 @@ const BanarasiSarees = ({
   const { selectedCurrency, convertPrice, formatPrice } = useCurrency();
 
   // Filter states
-  const [priceRange, setPriceRange] = useState([0, 25000]);
+  const [priceRange, setPriceRange] = useState([0, 50000]);
   const [filteredProducts, setFilteredProducts] = useState(initialProducts);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -134,7 +134,7 @@ const BanarasiSarees = ({
   };
 
   const clearFilters = () => {
-    setPriceRange([0, 25000]);
+    setPriceRange([0, 50000]);
     setSelectedCategories([]);
     setSelectedTags([]);
     setSearchQuery("");
@@ -154,7 +154,7 @@ const BanarasiSarees = ({
     let count = 0;
     if (selectedCategories.length > 0) count += selectedCategories.length;
     if (selectedTags.length > 0) count += selectedTags.length;
-    if (priceRange[0] !== 0 || priceRange[1] !== 25000) count += 1;
+    if (priceRange[0] !== 0 || priceRange[1] !== 50000) count += 1;
     return count;
   };
 
@@ -192,7 +192,6 @@ const BanarasiSarees = ({
           <span className="font-cardo text-gray-600 text-sm">
             {filteredProducts.length} products found
             {console.log(filteredProducts.length)}
-            
           </span>
           <div className="flex gap-2">
             <button
@@ -285,7 +284,7 @@ const BanarasiSarees = ({
                           <input
                             type="range"
                             min="0"
-                            max="25000"
+                            max="50000"
                             step="500"
                             value={priceRange[0]}
                             onChange={(e) => handlePriceChange(e, 0)}
@@ -294,7 +293,7 @@ const BanarasiSarees = ({
                           <input
                             type="range"
                             min="0"
-                            max="25000"
+                            max="50000"
                             step="500"
                             value={priceRange[1]}
                             onChange={(e) => handlePriceChange(e, 1)}
@@ -442,7 +441,7 @@ const BanarasiSarees = ({
                   <input
                     type="range"
                     min="0"
-                    max="25000"
+                    max="50000"
                     step="500"
                     value={priceRange[0]}
                     onChange={(e) => handlePriceChange(e, 0)}
@@ -451,7 +450,7 @@ const BanarasiSarees = ({
                   <input
                     type="range"
                     min="0"
-                    max="25000"
+                    max="50000"
                     step="500"
                     value={priceRange[1]}
                     onChange={(e) => handlePriceChange(e, 1)}

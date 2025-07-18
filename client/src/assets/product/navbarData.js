@@ -36,6 +36,7 @@ export const shopData = [
     title: "Saree",
     items: [
       { name: "Katan Silk", link: "/clothing/katansilk" },
+      { name: "Janawar tanchui", link: "/clothing/janawar-tanchui" },
       { name: "Kora Silk", link: "/fabrics/kora" },
       { name: "Satin Silk", link: "/fabrics/satin" },
       {
