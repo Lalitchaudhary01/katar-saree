@@ -12,6 +12,7 @@ const rankatProducts = [
       "https://ik.imagekit.io/lalitdev/ratansilk/Multicolor%20Rangkat%20Pure%20Katan%20Silk%20Banarasi%20Saree%20with%20Floral%20Zari%20Buta%20(4).jpg?updatedAt=1752663063807",
       "https://ik.imagekit.io/lalitdev/ratansilk/Multicolor%20Rangkat%20Pure%20Katan%20Silk%20Banarasi%20Saree%20with%20Floral%20Zari%20Buta%20(5).jpg?updatedAt=1752663063807",
       "https://ik.imagekit.io/lalitdev/ratansilk/Multicolor%20Rangkat%20Pure%20Katan%20Silk%20Banarasi%20Saree%20with%20Floral%20Zari%20Buta%20(6).jpg?updatedAt=1752663063807",
+      "https://ik.imagekit.io/lalitdev/certficate.jpg?updatedAt=1752858625603",
     ],
     colors: ["#D8202A", "#F28B30", "#F3D33F", "#F14F98", "#E4E8D4"],
     colorName: "Multicolor Rangkat with Red Base",

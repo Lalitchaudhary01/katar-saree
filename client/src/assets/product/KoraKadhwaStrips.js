@@ -8,6 +8,7 @@ const koraKadhwaStripsData = [
       "https://ik.imagekit.io/icrguob6c/katan/IMG_2039.HEIC?updatedAt=1749123185067",
       "https://ik.imagekit.io/icrguob6c/katan/IMG_2034.HEIC?updatedAt=1749123175369",
       "https://ik.imagekit.io/icrguob6c/katan/IMG_2041.HEIC?updatedAt=1749123179603",
+      "https://ik.imagekit.io/lalitdev/certficate.jpg?updatedAt=1752858625603",
     ],
     colors: ["#00BFFF"],
     colorName: "Aqua Blue",
@@ -47,6 +48,7 @@ const koraKadhwaStripsData = [
       "https://ik.imagekit.io/icrguob6c/katan/IMG_2123.HEIC?updatedAt=1749123181527",
       "https://ik.imagekit.io/icrguob6c/katan/IMG_2112.HEIC?updatedAt=1749123184942",
       "https://ik.imagekit.io/icrguob6c/katan/IMG_2114.HEIC?updatedAt=1749123184552",
+      "https://ik.imagekit.io/lalitdev/certficate.jpg?updatedAt=1752858625603",
     ],
     colors: ["#DC143C"],
     colorName: "Dusty Rose Pink",
@@ -72,6 +74,7 @@ const koraKadhwaStripsData = [
       "https://ik.imagekit.io/icrguob6c/katan/IMG_2142.HEIC?updatedAt=1749123184314",
       "https://ik.imagekit.io/icrguob6c/katan/IMG_2147.HEIC?updatedAt=1749123184292",
       "https://ik.imagekit.io/icrguob6c/katan/IMG_2133.HEIC?updatedAt=1749123181812",
+      "https://ik.imagekit.io/lalitdev/certficate.jpg?updatedAt=1752858625603",
     ],
     colors: ["#FFFFFE"],
     colorName: "Off White",
@@ -96,6 +99,7 @@ const koraKadhwaStripsData = [
     images: [
       "https://ik.imagekit.io/icrguob6c/katan/IMG_2095.HEIC?updatedAt=1749123174751",
       "https://ik.imagekit.io/icrguob6c/katan/IMG_2147.HEIC?updatedAt=1749123184292",
+      "https://ik.imagekit.io/lalitdev/certficate.jpg?updatedAt=1752858625603",
     ],
     colors: ["#C0C0C0"],
     colorName: "Silver",
@@ -120,6 +124,7 @@ const koraKadhwaStripsData = [
     images: [
       "https://ik.imagekit.io/icrguob6c/katan/IMG_2123.HEIC?updatedAt=1749123181527",
       "https://ik.imagekit.io/icrguob6c/katan/IMG_2114.HEIC?updatedAt=1749123184552",
+      "https://ik.imagekit.io/lalitdev/certficate.jpg?updatedAt=1752858625603",
     ],
     colors: ["#FFB6C1"],
     colorName: "Light Pink",
@@ -144,6 +149,7 @@ const koraKadhwaStripsData = [
     images: [
       "https://ik.imagekit.io/icrguob6c/katan/IMG_3659.HEIC?updatedAt=1749123175043",
       "https://ik.imagekit.io/icrguob6c/katan/IMG_3658.HEIC?updatedAt=1749123181645",
+      "https://ik.imagekit.io/lalitdev/certficate.jpg?updatedAt=1752858625603",
     ],
     colors: ["#0000FF"],
     colorName: "Cobalt Blue",
@@ -169,6 +175,7 @@ const koraKadhwaStripsData = [
     images: [
       "https://ik.imagekit.io/icrguob6c/katan/IMG_2066.HEIC?updatedAt=1749123179725",
       "https://ik.imagekit.io/icrguob6c/katan/IMG_2071.HEIC?updatedAt=1749123179818",
+      "https://ik.imagekit.io/lalitdev/certficate.jpg?updatedAt=1752858625603",
     ],
     colors: ["#FFFF00"],
     colorName: "Bright Yellow",
@@ -193,6 +200,7 @@ const koraKadhwaStripsData = [
     images: [
       "https://ik.imagekit.io/icrguob6c/katan/IMG_2034.HEIC?updatedAt=1749123175369",
       "https://ik.imagekit.io/icrguob6c/katan/IMG_2033.HEIC?updatedAt=1749123180165",
+      "https://ik.imagekit.io/lalitdev/certficate.jpg?updatedAt=1752858625603",
     ],
     colors: ["#ADD8E6"],
     colorName: "Light Blue",
@@ -219,6 +227,7 @@ const koraKadhwaStripsData = [
       "https://ik.imagekit.io/yg3bo4zvy/images/black4.jpg?updatedAt=1745023402119",
       "https://ik.imagekit.io/icrguob6c/katan/IMG_3082.HEIC?updatedAt=1749123175089",
       "https://ik.imagekit.io/icrguob6c/katan/IMG_3081.HEIC?updatedAt=1749123175134",
+      "https://ik.imagekit.io/lalitdev/certficate.jpg?updatedAt=1752858625603",
     ],
     colors: ["#000000"],
     colorName: "Black",
@@ -243,6 +252,7 @@ const koraKadhwaStripsData = [
     images: [
       "https://ik.imagekit.io/icrguob6c/katan/IMG_3666.HEIC?updatedAt=1749123186236",
       "https://ik.imagekit.io/icrguob6c/katan/IMG_3665.HEIC?updatedAt=1749123186778",
+      "https://ik.imagekit.io/lalitdev/certficate.jpg?updatedAt=1752858625603",
     ],
     colors: ["#008000"],
     colorName: "Dark Green",
