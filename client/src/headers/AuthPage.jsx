@@ -56,8 +56,8 @@ const LoginForm = ({ setIsLogin, from }) => {
 
     try {
       const response = await axios.post(
-        "https://katar-saree.onrender.com/api/users/login",
-        formData
+        "http://localhost:5000/api/users/login",
+        formDataz
       );
 
       dispatch(
@@ -166,7 +166,7 @@ const SignupForm = ({ setIsLogin, from }) => {
 
     try {
       const response = await axios.post(
-        "https://katar-saree.onrender.com/api/users/register",
+        "http://localhost:5000/api/users/register",
         formData
       );
 
