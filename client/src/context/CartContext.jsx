@@ -14,7 +14,7 @@ export const CartProvider = ({ children }) => {
 
   // Create axios instance with interceptors
   const api = axios.create({
-    baseURL: "http://localhost:5000/api/cart",
+    baseURL: "https://katar-saree.onrender.com/api/cart",
   });
 
   // Add request interceptor for token

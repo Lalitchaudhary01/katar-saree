@@ -14,7 +14,7 @@ export const WishlistProvider = ({ children }) => {
 
   // Axios instance with auth token
   const api = axios.create({
-    baseURL: "http://localhost:5000/api/wishlist",
+    baseURL: "https://katar-saree.onrender.com/api/wishlist",
   });
 
   api.interceptors.request.use((config) => {
