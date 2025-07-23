@@ -57,7 +57,7 @@ const LoginForm = ({ setIsLogin, from }) => {
     try {
       const response = await axios.post(
         "http://localhost:5000/api/users/login",
-        formDataz
+        formData
       );
 
       dispatch(
