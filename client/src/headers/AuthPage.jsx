@@ -57,7 +57,8 @@ const LoginForm = ({ setIsLogin, from }) => {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/users/login`,
-        formData
+        formData,
+        { withCredentials: true }
       );
 
       dispatch(
