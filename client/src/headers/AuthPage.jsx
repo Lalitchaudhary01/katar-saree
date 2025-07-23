@@ -56,7 +56,7 @@ const LoginForm = ({ setIsLogin, from }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/login",
+        `${import.meta.env.VITE_API_BASE_URL}/users/login`,
         formData
       );
 
@@ -166,7 +166,7 @@ const SignupForm = ({ setIsLogin, from }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/register",
+        `${import.meta.env.VITE_API_BASE_URL}/users/register`,
         formData
       );
 
