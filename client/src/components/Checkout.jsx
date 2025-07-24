@@ -159,7 +159,7 @@ const Checkout = () => {
         amount: data.order.amount,
         currency: data.order.currency,
         order_id: data.order.id,
-        name: "Your Store Name",
+        name: "KATAN SAREE BANARAS",
         description: "Order Payment",
         handler: async (response) => {
           // Payment verification logic
@@ -648,12 +648,12 @@ const Checkout = () => {
               className="h-8 object-contain"
             />
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/RuPay.svg/1200px-RuPay.svg.png"
+              src="https://ik.imagekit.io/lalitdev/images.jpeg?updatedAt=1753358943342"
               alt="RuPay"
               className="h-8 object-contain"
             />
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/UPI-Logo-vector.svg/1200px-UPI-Logo-vector.svg.png"
+              src="https://ik.imagekit.io/lalitdev/upi.jpg?updatedAt=1753358943346"
               alt="UPI"
               className="h-8 object-contain"
             />
