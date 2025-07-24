@@ -4,6 +4,7 @@ import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../Redux/authSlice";
+import config from "../api/config"; // Adjust the import path as necessary
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -56,7 +57,7 @@ const LoginForm = ({ setIsLogin, from }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/login",
+        `${config.BASE_URL}/users/login`,
         formData
       );
 
@@ -166,7 +167,7 @@ const SignupForm = ({ setIsLogin, from }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/register",
+        `${config.BASE_URL}/users/register`,
         formData
       );
 

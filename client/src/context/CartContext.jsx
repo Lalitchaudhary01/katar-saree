@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
+import config from "../api/config"; // Adjust the import path as necessary
 
 const CartContext = createContext();
 
@@ -14,7 +15,7 @@ export const CartProvider = ({ children }) => {
 
   // Create axios instance with interceptors
   const api = axios.create({
-    baseURL: "http://localhost:5000/api/cart",
+    baseURL: `${config.BASE_URL}/cart`,
   });
 
   // Add request interceptor for token

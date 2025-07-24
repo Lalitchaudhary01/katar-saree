@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useSelector } from "react-redux";
+import config from "../api/config"; // Adjust the import path as necessary
 
 const WishlistContext = createContext();
 
@@ -14,7 +15,7 @@ export const WishlistProvider = ({ children }) => {
 
   // Axios instance with auth token
   const api = axios.create({
-    baseURL: "http://localhost:5000/api/wishlist",
+    baseURL: `${config.BASE_URL}/wishlist`,
   });
 
   api.interceptors.request.use((config) => {
