@@ -14,8 +14,7 @@ export const CartProvider = ({ children }) => {
 
   // Create axios instance with interceptors
   const api = axios.create({
-    baseURL: `${import.meta.env.VITE_API_BASE_URL}/cart`,
-    withCredentials: true,
+    baseURL: "http://localhost:5000/api/cart",
   });
 
   // Add request interceptor for token

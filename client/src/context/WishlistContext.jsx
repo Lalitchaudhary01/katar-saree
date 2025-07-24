@@ -14,7 +14,7 @@ export const WishlistProvider = ({ children }) => {
 
   // Axios instance with auth token
   const api = axios.create({
-    baseURL: `${import.meta.env.VITE_API_BASE_URL}/wishlist`,
+    baseURL: "http://localhost:5000/api/wishlist",
   });
 
   api.interceptors.request.use((config) => {
