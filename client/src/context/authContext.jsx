@@ -12,34 +12,53 @@ export const AuthProvider = ({ children }) => {
   );
   const navigate = useNavigate();
 
+  // ✅ API Base URL - Production ke liye important
+  const API_BASE_URL =
+    import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
+
   useEffect(() => {
     const verifyToken = async () => {
       if (token) {
         try {
-          const { data } = await axios.get("/api/auth/me", {
+          // ✅ Full URL use karo, relative URL nahi
+          const { data } = await axios.get(`${API_BASE_URL}/auth/me`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
           setUser(data);
           setIsAuthenticated(true);
+          console.log("Token verified successfully"); // Debug log
         } catch (err) {
+          console.log(
+            "Token verification failed:",
+            err.response?.data || err.message
+          );
           logout();
         }
+      } else {
+        setIsAuthenticated(false);
       }
     };
+
     verifyToken();
   }, [token]);
 
   const login = async (email, password) => {
     try {
-      const { data } = await axios.post("/api/auth/login", { email, password });
+      // ✅ Full URL use karo
+      const { data } = await axios.post(`${API_BASE_URL}/auth/login`, {
+        email,
+        password,
+      });
+
       localStorage.setItem("token", data.token);
       setToken(data.token);
       setIsAuthenticated(true);
+      console.log("Login successful"); // Debug log
       return true;
     } catch (err) {
-      console.error("Login failed:", err);
+      console.error("Login failed:", err.response?.data || err.message);
       return false;
     }
   };
@@ -50,7 +69,17 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setIsAuthenticated(false);
     navigate("/login");
+    console.log("Logged out successfully"); // Debug log
   };
+
+  // Debug logging
+  useEffect(() => {
+    console.log("Auth State:", {
+      isAuthenticated,
+      hasToken: !!token,
+      apiBaseUrl: API_BASE_URL,
+    });
+  }, [isAuthenticated, token]);
 
   return (
     <AuthContext.Provider
