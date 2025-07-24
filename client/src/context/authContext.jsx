@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import config from "../api/config"; // Adjust the import path as necessary
 
 const AuthContext = createContext();
 
@@ -16,7 +17,7 @@ export const AuthProvider = ({ children }) => {
     const verifyToken = async () => {
       if (token) {
         try {
-          const { data } = await axios.get("/api/auth/me", {
+          const { data } = await axios.get(`${BASE_URL}/api/auth/me`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
