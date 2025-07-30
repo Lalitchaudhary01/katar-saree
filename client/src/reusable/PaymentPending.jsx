@@ -16,7 +16,7 @@ const PaymentPending = () => {
           Looks like we haven't received your payment for the project yet.
         </p>
         <p className="text-sm text-gray-500 italic mb-6">
-          "Code delivered, but karma pending..."
+          "Code delivered, but payment pending..."
         </p>
         <button className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-full">
           Settle Now
